@@ -14,8 +14,8 @@
 @interface A3WalletVideoItemViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) WalletItem *item;
+@property (nonatomic, strong) WalletItem_ *item;
 @property (nonatomic, assign) BOOL alwaysReturnToOriginalCategory;
-@property (nonatomic, weak) WalletCategory *category;
+@property (nonatomic, weak) WalletCategory_ *category;
 
 @end

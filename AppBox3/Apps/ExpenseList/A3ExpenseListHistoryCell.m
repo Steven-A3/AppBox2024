@@ -7,7 +7,6 @@
 //
 
 #import "A3ExpenseListHistoryCell.h"
-#import "ExpenseListBudget.h"
 #import "NSDate+formatting.h"
 #import "A3DefaultColorDefines.h"
 #import "NSDate+TimeAgo.h"
@@ -90,7 +89,7 @@
     [_resultAmountLabel sizeToFit];
 }
 
-- (void)setExpenseBudgetData:(ExpenseListBudget *)aBudget currencyFormatter:(NSNumberFormatter *)nFormatter {
+- (void)setExpenseBudgetData:(ExpenseListBudget_ *)aBudget currencyFormatter:(NSNumberFormatter *)nFormatter {
     NSDateFormatter *dFormatter = [NSDateFormatter new];
     [dFormatter setDateStyle:NSDateFormatterShortStyle];
     [dFormatter setTimeStyle:NSDateFormatterNoStyle];

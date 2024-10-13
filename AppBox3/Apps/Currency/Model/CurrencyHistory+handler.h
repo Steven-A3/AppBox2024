@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CurrencyHistory.h"
 
-@interface CurrencyHistory (handler)
+@interface CurrencyHistory_ (handler)
 
 - (NSInteger)targetCount;
 - (NSArray *)targets;

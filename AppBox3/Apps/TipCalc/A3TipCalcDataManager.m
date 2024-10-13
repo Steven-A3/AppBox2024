@@ -18,7 +18,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 @implementation A3TipCalcDataManager
 {
-    TipCalcRecent * _tipCalcData;
+    TipCalcRecent_ * _tipCalcData;
 }
 
 - (id)init
@@ -35,7 +35,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     return self;
 }
 
-- (TipCalcRecent *)tipCalcData
+- (TipCalcRecent_ *)tipCalcData
 {
     if (!_tipCalcData) {
         [self setTipCalcDataForMainTableView];
@@ -47,7 +47,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 - (NSArray*)tipCalcHistory
 {
-    NSArray* arrRecent = [TipCalcHistory findAllSortedBy:@"updateDate" ascending:NO];
+    NSArray* arrRecent = [TipCalcHistory_ findAllSortedBy:@"updateDate" ascending:NO];
     
     return arrRecent;
 }
@@ -60,7 +60,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 	return [self.currencyFormatter stringFromNumber:@(value)];
 }
 
-- (void)deepCopyRecently:(TipCalcRecent *)source dest:(TipCalcRecent *)destination
+- (void)deepCopyRecently:(TipCalcRecent_ *)source dest:(TipCalcRecent_ *)destination
 {
     destination.beforeSplit = source.beforeSplit;
     destination.costs = source.costs;
@@ -78,22 +78,22 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     destination.valueType = source.valueType;
 }
 
-- (void)historyToRecently:(TipCalcHistory*)aHistory
+- (void)historyToRecently:(TipCalcHistory_ *)aHistory
 {
-    TipCalcRecent *history = [TipCalcRecent findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
+    TipCalcRecent_ *history = [TipCalcRecent_ findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
     FNLOG(@"%@, %@", aHistory, history);
 
     [[A3SyncManager sharedSyncManager] setObject:[history currencyCode] forKey:A3TipCalcUserDefaultsCurrencyCode state:A3DataObjectStateModified];
 
     self.currencyFormatter = nil;
 
-    TipCalcRecent *currentData = self.tipCalcData;
+    TipCalcRecent_ *currentData = self.tipCalcData;
     [self deepCopyRecently:history dest:currentData];
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
-	_tipCalcData = [TipCalcRecent findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
+	_tipCalcData = [TipCalcRecent_ findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
 }
 
 #pragma mark - calculate
@@ -255,7 +255,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 -(void)setRoundingOption:(BOOL)RoundingOption {
 	self.tipCalcData.showRounding = @(RoundingOption);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -266,13 +266,13 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 #pragma mark Manipulate TipCalc Data
 
 - (void)setTipCalcDataForMainTableView {
-    _tipCalcData = [TipCalcRecent findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
+    _tipCalcData = [TipCalcRecent_ findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
     if(_tipCalcData) {
         _tipCalcData.currencyCode = self.currencyCode;
     }
     else {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        TipCalcRecent * recently = [[TipCalcRecent alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        TipCalcRecent_ * recently = [[TipCalcRecent_ alloc] initWithContext:context];
 		recently.uniqueID = A3TipCalcRecentCurrentDataID;
 		recently.updateDate = [NSDate date];
 		[self resetRecentValues:recently];
@@ -282,7 +282,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
     }
 }
 
-- (void)resetRecentValues:(TipCalcRecent *)recently {
+- (void)resetRecentValues:(TipCalcRecent_ *)recently {
 	recently.knownValue = @(TCKnownValue_CostsBeforeTax);
 	recently.isMain = [NSNumber numberWithBool:YES];
 	recently.costs = @0;
@@ -297,15 +297,15 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 	recently.optionType = @(TCRoundingMethodOption_Exact);
 }
 
-- (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory {
-    _tipCalcData = [TipCalcRecent findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
+- (void)setTipCalcDataForHistoryData:(TipCalcHistory_ *)aHistory {
+    _tipCalcData = [TipCalcRecent_ findFirstByAttribute:@"historyID" withValue:aHistory.uniqueID];
     self.currencyFormatter.currencyCode = _tipCalcData.currencyCode;
 }
 
 #pragma mark Split Option
 - (void)setTipSplitOption:(TipSplitOption)option {
     self.tipCalcData.beforeSplit = @(option);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -316,7 +316,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 #pragma mark KnownValue
 - (void)setKnownValue:(TCKnownValue)value {
     self.tipCalcData.knownValue = value == TCKnownValue_CostAfterTax ? @(TCKnownValue_CostAfterTax) : @(TCKnownValue_CostsBeforeTax);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -350,7 +350,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 #pragma mark Save Data
 
 - (void)saveCoreData {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if ([context hasChanges]) {
         NSError *saveError = nil;
         [context save:&saveError];
@@ -363,20 +363,20 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 - (BOOL)sameDataExist {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMain == NO AND knownValue == %@ AND costs == %@ AND tip == %@ AND tax == %@ AND isPercentTip == %@ AND split == %@ AND currencyCode == %@",
 					_tipCalcData.knownValue, _tipCalcData.costs, _tipCalcData.tip, _tipCalcData.tax, _tipCalcData.isPercentTip, _tipCalcData.split, _tipCalcData.currencyCode ];
-	return [TipCalcRecent countOfEntitiesWithPredicate:predicate] > 0;
+	return [TipCalcRecent_ countOfEntitiesWithPredicate:predicate] > 0;
 }
 
 - (void)saveToHistory {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	TipCalcRecent *recently;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	TipCalcRecent_ *recently;
 	if (![_tipCalcData.costs isEqualToNumber:@0] && ![self sameDataExist]) {
-        TipCalcHistory* history = [[TipCalcHistory alloc] initWithContext:context];
+        TipCalcHistory_ *history = [[TipCalcHistory_ alloc] initWithContext:context];
 		history.uniqueID = [[NSUUID UUID] UUIDString];
 		history.updateDate = [NSDate date];
 		history.labelTip = [self currencyStringFromDouble:[[self tipValueWithSplitWithRounding:YES] doubleValue]];
 		history.labelTotal = [self currencyStringFromDouble:[[self totalBeforeSplitWithTax] doubleValue]];
 		
-		TipCalcRecent *historyData = (TipCalcRecent *) [_tipCalcData cloneInContext:context ];
+		TipCalcRecent_ *historyData = (TipCalcRecent_ *) [_tipCalcData cloneInContext:context ];
 		historyData.uniqueID = [[NSUUID UUID] UUIDString];
 		historyData.historyID = history.uniqueID;
 		historyData.isMain = @NO;
@@ -397,14 +397,14 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
     [context saveIfNeeded];
 
-	_tipCalcData = [TipCalcRecent findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
+	_tipCalcData = [TipCalcRecent_ findFirstByAttribute:@"uniqueID" withValue:A3TipCalcRecentCurrentDataID];
 }
 
 #pragma mark Rounding Method
 
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value {
     self.tipCalcData.valueType =  @(value);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -414,7 +414,7 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
 
 - (void)setRoundingMethodOption:(TCRoundingMethodOption)option {
     self.tipCalcData.optionType = @(option);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 

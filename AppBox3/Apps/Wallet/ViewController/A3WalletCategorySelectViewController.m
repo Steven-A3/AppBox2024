@@ -10,7 +10,6 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "WalletData.h"
-#import "WalletCategory.h"
 
 @interface A3WalletCategorySelectViewController ()
 
@@ -134,7 +133,7 @@
     }
     
     // Configure the cell...
-    WalletCategory *category = _allCategories[indexPath.row];
+    WalletCategory_ *category = _allCategories[indexPath.row];
     cell.textLabel.text = category.name;
     
     if (category == _selectedCategory) {
@@ -150,7 +149,7 @@
 {
     if (_delegate && [_delegate respondsToSelector:@selector(walletCategorySelected:)]) {
 
-		WalletCategory *category = self.allCategories[indexPath.row];
+		WalletCategory_ *category = self.allCategories[indexPath.row];
         [_delegate walletCategorySelected:category];
     }
     

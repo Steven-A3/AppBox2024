@@ -253,7 +253,7 @@ static NSString *const A3V3InstructionDidShowForBattery = @"A3V3InstructionDidSh
     UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"BatteryStatus"];
     self.instructionViewController.delegate = self;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         [self.instructionViewController view];
         self.instructionViewController.batteryTopConstraint.constant = safeAreaInsets.top;

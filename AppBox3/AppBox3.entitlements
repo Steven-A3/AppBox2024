@@ -15,7 +15,7 @@
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>84XB754BWU.com.e2ndesign.TPremium2</string>
-		<string>iCloud.com.net.allaboutapps.appbox</string>
+		<string>iCloud.net.allaboutapps.AppBox</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
@@ -24,8 +24,8 @@
 	</array>
 	<key>com.apple.developer.ubiquity-container-identifiers</key>
 	<array>
+		<string>iCloud.net.allaboutapps.AppBox</string>
 		<string>84XB754BWU.com.e2ndesign.TPremium2</string>
-		<string>iCloud.com.net.allaboutapps.appbox</string>
 	</array>
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
 	<string>$(TeamIdentifierPrefix)net.allaboutapps.AppBox</string>

@@ -1333,7 +1333,7 @@ static NSMutableDictionary *attributes;
 	loginCon.delegate = self;
 	loginCon.selector = @selector(done:);
 	UINavigationController *navCon = [[UINavigationController alloc]initWithRootViewController:loginCon];
-	UIWindow *mainWindow = [[UIApplication sharedApplication]keyWindow];
+	UIWindow *mainWindow = [[UIApplication sharedApplication]myKeyWindow];
     UIViewController *controller = [self topViewController:mainWindow.rootViewController];
 	[controller presentViewController:navCon animated:YES completion:nil];
 }

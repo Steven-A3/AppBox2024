@@ -6,11 +6,10 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "DaysCounterFavorite.h"
+@class DaysCounterEvent_;
 
-@class DaysCounterEvent;
+@interface DaysCounterFavorite_ (extension)
 
-@interface DaysCounterFavorite (extension)
+- (DaysCounterEvent_ *)event;
 
-- (DaysCounterEvent *)event;
 @end

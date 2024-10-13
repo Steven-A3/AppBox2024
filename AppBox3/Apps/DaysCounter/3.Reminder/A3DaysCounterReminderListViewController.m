@@ -16,8 +16,6 @@
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterReminder.h"
 #import "A3DateHelper.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -224,8 +222,8 @@
     UIView *unreadMarkView = [cell viewWithTag:UNREADVIEW_TAG];
     
     if ( [_itemArray count] > 0 ) {
-        DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
-        DaysCounterEvent *item = [reminder event];
+        DaysCounterReminder_ *reminder = [_itemArray objectAtIndex:indexPath.row];
+        DaysCounterEvent_ *item = [reminder event];
         cell.textLabel.text = item.eventName;
         
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
@@ -293,19 +291,19 @@
         return;
     }
     
-    DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterReminder_ *reminder = [_itemArray objectAtIndex:indexPath.row];
     reminder.isUnread = @(NO);
     if ([reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
         reminder.isOn = @(NO);
     }
     
-    DaysCounterEvent *item = [reminder event];
+    DaysCounterEvent_ *item = [reminder event];
     // 미반복의 경우 더이상 Reminder에 올라오지 않도록 함.
     if (item.repeatType && [item.repeatType isEqualToNumber:@(RepeatType_Never)] &&
         [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             item.hasReminder = @(NO);
     }
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager reminderList]];
@@ -362,8 +360,8 @@
         return;
     }
     
-    DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
-    DaysCounterEvent *item = [reminder event];
+    DaysCounterReminder_ *reminder = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterEvent_ *item = [reminder event];
 
     item.alertDatetime = nil;
     [item.managedObjectContext saveIfNeeded];

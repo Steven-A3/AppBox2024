@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "ExpenseListItem.h"
+#import "AppBox3-Swift.h"
 
-@interface ExpenseListItem (management)
+@interface ExpenseListItem_ (management)
 
 - (NSString *)makeOrderString;
+
 @end

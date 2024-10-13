@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class LadyCalendarPeriod;
-@class LadyCalendarAccount;
 @class A3LadyCalendarModelManager;
 
 @interface A3LadyCalendarDetailViewController : UITableViewController

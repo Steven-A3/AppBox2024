@@ -6,13 +6,10 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "ExpenseListBudget.h"
-
-@interface ExpenseListBudget (extension)
+@interface ExpenseListBudget_ (extension)
 
 - (NSInteger)expenseItemsCount;
-
 - (NSArray *)expenseItems;
-
 - (NSArray *)expenseItemsHasData;
+
 @end

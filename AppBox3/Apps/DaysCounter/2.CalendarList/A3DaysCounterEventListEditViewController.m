@@ -12,13 +12,11 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent.h"
 #import "A3DaysCounterEventChangeCalendarViewController.h"
 #import "A3DateHelper.h"
 #import "UIImage+imageWithColor.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
-#import "DaysCounterCalendar.h"
 #import "UITableView+utility.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -150,7 +148,7 @@
 {
     if( [_calendarItem.type integerValue] == CalendarCellType_User ) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID];
-		NSArray *events = [DaysCounterEvent findAllWithPredicate:predicate];
+		NSArray *events = [DaysCounterEvent_ findAllWithPredicate:predicate];
         self.itemArray = [NSMutableArray arrayWithArray:events];
 	} else {
         NSArray *sourceArray = nil;
@@ -204,7 +202,7 @@
     }   
     
     // Configure the cell...
-    DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterEvent_ *item = [_itemArray objectAtIndex:indexPath.row];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UIButton *checkButton = (UIButton*)[cell viewWithTag:11];
     textLabel.text = item.eventName;
@@ -232,8 +230,8 @@
 
 - (void)deleteAllEventsAction
 {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    for(DaysCounterEvent *event in _itemArray){
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    for(DaysCounterEvent_ *event in _itemArray){
         [context deleteObject:event];
     }
     [_checkStatusDict removeAllObjects];
@@ -247,15 +245,15 @@
     NSMutableArray *indexPaths = [NSMutableArray array];
     
     for(NSInteger i=0; i < [_itemArray count]; i++){
-        DaysCounterEvent *item = [_itemArray objectAtIndex:i];
+        DaysCounterEvent_ *item = [_itemArray objectAtIndex:i];
         if( [[_checkStatusDict objectForKey:item.uniqueID] boolValue] ) {
             [removeItems addObject:item];
             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
         }
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    for (DaysCounterEvent *event in removeItems) {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    for (DaysCounterEvent_ *event in removeItems) {
         [context deleteObject:event];
     }
     [_itemArray removeObjectsInArray:removeItems];
@@ -275,7 +273,7 @@
             [self deleteSelectedEventsAction];
         }
         
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
         if( [self.itemArray count] < 1 ){
@@ -354,7 +352,7 @@
     
     button.selected = !button.selected;
     
-    DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterEvent_ *item = [_itemArray objectAtIndex:indexPath.row];
 	[_checkStatusDict setObject:[NSNumber numberWithBool:button.selected] forKey:item.uniqueID];
     if( button.selected )
         [_selectedArray addObject:item];
@@ -443,12 +441,12 @@
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     NSArray *sortedArray = [_selectedArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        DaysCounterEvent *item1 = (DaysCounterEvent *)obj1;
-        DaysCounterEvent *item2 = (DaysCounterEvent *)obj2;
+        DaysCounterEvent_ *item1 = (DaysCounterEvent_ *)obj1;
+        DaysCounterEvent_ *item2 = (DaysCounterEvent_ *)obj2;
         return [item1.effectiveStartDate compare:item2.effectiveStartDate];
     }];
     
-    DaysCounterEvent *eventItem = [sortedArray firstObject];
+    DaysCounterEvent_ *eventItem = [sortedArray firstObject];
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         return [NSString stringWithFormat:NSLocalizedString(@"%@ using AppBox Pro", @"%@ using AppBox Pro"), eventItem.eventName];
@@ -467,7 +465,7 @@
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
 		NSMutableString *txt = [NSMutableString new];
 
-        for (DaysCounterEvent *event in _selectedArray) {
+        for (DaysCounterEvent_ *event in _selectedArray) {
             // 7 days until (계산된 날짜)
             NSString *eventName = event.eventName;
             NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[event.durationOption integerValue]
@@ -500,7 +498,7 @@
 	else {
 		NSMutableString *txt = [NSMutableString new];
         
-        for (DaysCounterEvent *event in _selectedArray) {
+        for (DaysCounterEvent_ *event in _selectedArray) {
             // 7 days until (계산된 날짜)
             NSString *daysString = [A3DaysCounterModelManager stringOfDurationOption:[event.durationOption integerValue]
                                                                             fromDate:[NSDate date]

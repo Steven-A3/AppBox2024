@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "A3KeyboardDelegate.h"
 
-@class LadyCalendarPeriod;
-@class LadyCalendarAccount;
+@class LadyCalendarPeriod_;
 @class A3LadyCalendarModelManager;
 
 @interface A3LadyCalendarAddPeriodViewController : UITableViewController<UITextViewDelegate,A3KeyboardDelegate,UITextFieldDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 
-@property (strong, nonatomic) LadyCalendarPeriod *periodItem;
+@property (strong, nonatomic) LadyCalendarPeriod_ *periodItem;
 @property (assign, nonatomic) BOOL isEditMode;
 @property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
 

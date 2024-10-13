@@ -11,7 +11,7 @@
 #import "UIImage+Resizing.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation WalletFieldItem (initialize)
+@implementation WalletFieldItem_ (initialize)
 
 - (void)didSave {
     dispatch_async(dispatch_get_main_queue(), ^{

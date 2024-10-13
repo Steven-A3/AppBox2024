@@ -8,14 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class LoanCalcHistory;
-@class LoanCalcComparisonHistory;
-
 @protocol LoanCalcHistoryViewControllerDelegate <NSObject>
 
 @required
-- (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory *)history;
-- (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison;
+- (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory_ *)history;
+- (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory_ *)comparison;
 - (void)historyViewControllerDismissed:(UIViewController *)viewController;
 @end
 

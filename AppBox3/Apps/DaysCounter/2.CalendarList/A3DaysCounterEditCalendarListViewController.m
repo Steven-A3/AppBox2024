@@ -14,9 +14,7 @@
 #import "A3DaysCounterAddAndEditCalendarViewController.h"
 #import "UIImage+imageWithColor.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "DaysCounterEvent.h"
 #import "A3SyncManager.h"
-#import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UITableView+utility.h"
 #import "NSManagedObject+extension.h"
@@ -68,7 +66,7 @@
     [super viewWillAppear:animated];
     self.modalVC = nil;
 
-	NSArray *calendars = [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+	NSArray *calendars = [DaysCounterCalendar_ findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 	self.calendarArray = [NSMutableArray arrayWithArray:calendars];
     
     [self.tableView reloadData];
@@ -121,7 +119,7 @@
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:12];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:13];
-    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    DaysCounterCalendar_ *calendar = [_calendarArray objectAtIndex:indexPath.row];
     NSInteger cellType = [calendar.type integerValue];
 
 	if ( cellType == CalendarCellType_System ) {
@@ -141,7 +139,7 @@
     textLabel.text = calendar.name;
     checkButton.selected = [calendar.isShow boolValue];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID];
-	long eventCounts = [DaysCounterEvent countOfEntitiesWithPredicate:predicate];
+	long eventCounts = [DaysCounterEvent_ countOfEntitiesWithPredicate:predicate];
     detailTextLabel.text = [NSString stringWithFormat:@"%ld", eventCounts];
     
     textLabel.font = [UIFont systemFontOfSize:17];
@@ -179,7 +177,7 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
 	[_calendarArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     [tableView reloadData];
@@ -205,11 +203,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    DaysCounterCalendar_ *calendar = [_calendarArray objectAtIndex:indexPath.row];
     BOOL checkState = [calendar.isShow boolValue];
     calendar.isShow = @(!checkState);
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -230,14 +228,14 @@
         return;
     
     NSArray *shownUserCalendar = [_calendarArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@ AND type == %@", @(YES), @(CalendarCellType_User)]];
-    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    DaysCounterCalendar_ *calendar = [_calendarArray objectAtIndex:indexPath.row];
     BOOL checkState = [calendar.isShow boolValue];
     if (checkState && [shownUserCalendar count] <= 1 && [calendar.type isEqualToNumber:@(CalendarCellType_User)]) {
         return;
     }
     
     calendar.isShow = @(!checkState);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
     if (checkState && ([shownUserCalendar count] == 2)) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -276,7 +274,7 @@
     if ( indexPath == nil )
         return;
 
-	DaysCounterCalendar *calendar = _calendarArray[indexPath.row];
+	DaysCounterCalendar_ *calendar = _calendarArray[indexPath.row];
     if ( [calendar.type integerValue] == CalendarCellType_System )
         return;
     

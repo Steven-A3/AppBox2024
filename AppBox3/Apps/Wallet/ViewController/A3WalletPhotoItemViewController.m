@@ -16,8 +16,6 @@
 #import "A3WalletMapCell.h"
 #import "A3WalletNoteCell.h"
 #import "WalletData.h"
-#import "WalletItem.h"
-#import "WalletCategory.h"
 #import "WalletItem+initialize.h"
 #import "WalletItem+Favorite.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -26,9 +24,7 @@
 #import "WalletFieldItem+initialize.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDate+Formatting.h"
-#import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
-#import "WalletField.h"
 #import "UIViewController+A3Addition.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "NSManagedObject+extension.h"
@@ -88,7 +84,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
     
     _item.lastOpened = [NSDate date];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -182,7 +178,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	}
 }
 
-- (WalletCategory *)category {
+- (WalletCategory_ *)category {
 	if (!_category) {
 		_category = [WalletData categoryItemWithID:_item.categoryID];
 	}
@@ -197,8 +193,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         
         NSArray *fieldItems = [_item fieldItemsArraySortedByFieldOrder];
         for (int i = 0; i<fieldItems.count; i++) {
-            WalletFieldItem *fieldItem = fieldItems[i];
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+            WalletFieldItem_ *fieldItem = fieldItems[i];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
             if ([field.type isEqualToString:WalletFieldTypeImage]) {
                 [_photoFieldItems addObject:fieldItem];
             }
@@ -225,8 +221,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
         NSArray *fieldItems = [_item fieldItemsArraySortedByFieldOrder];
         for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
-            WalletFieldItem *fieldItem = fieldItems[idx];
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+            WalletFieldItem_ *fieldItem = fieldItems[idx];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
 			if ([field.type isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
 				continue;
 			}
@@ -282,7 +278,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         _alBumPhotos = [[NSMutableArray alloc] init];
         
         for (NSUInteger idx = 0; idx < self.photoFieldItems.count; idx++) {
-            WalletFieldItem *fieldItem = _photoFieldItems[idx];
+            WalletFieldItem_ *fieldItem = _photoFieldItems[idx];
             MWPhoto *photo = [MWPhoto photoWithImage:[fieldItem photoImageInOriginalDirectory:YES]];
 			[_alBumPhotos addObject:photo];
         }
@@ -364,7 +360,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	FNLOG(@"%ld", (long)page);
 	self.metadataView.titleTextField.text = [_item.name length] ?  _item.name : NSLocalizedString(@"New Item", @"New Item");
 
-	_metadataView.favoriteButton.selected = [WalletFavorite isFavoriteForItemID:self.item.uniqueID];
+	_metadataView.favoriteButton.selected = [WalletFavorite_ isFavoriteForItemID:self.item.uniqueID];
 
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
     if (IS_IPAD || [NSDate isFullStyleLocale]) {
@@ -381,8 +377,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         return;
     }
     
-    WalletFieldItem *fieldItem = _photoFieldItems[page];
-	WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+    WalletFieldItem_ *fieldItem = _photoFieldItems[page];
+	WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
     if ([field.type isEqualToString:WalletFieldTypeImage]) {
         NSDictionary *metadata;
 		if (fieldItem.imageMetaData) {
@@ -469,7 +465,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         _photoScrollView.delegate = self;
         
         for (NSUInteger idx = 0; idx < self.photoFieldItems.count; idx++) {
-            WalletFieldItem *photoFieldItem = _photoFieldItems[idx];
+            WalletFieldItem_ *photoFieldItem = _photoFieldItems[idx];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth* idx, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
 
@@ -503,7 +499,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     if (!_photoThumbs) {
         _photoThumbs = [[NSMutableArray alloc] init];
         for (NSUInteger idx = 0; idx < self.photoFieldItems.count; idx++) {
-            WalletFieldItem *photoFieldItem = _photoFieldItems[idx];
+            WalletFieldItem_ *photoFieldItem = _photoFieldItems[idx];
             UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 ,34, 25)];
 			photoImageView.layer.borderColor = [UIColor whiteColor].CGColor;
 			photoImageView.layer.borderWidth = 1.0;
@@ -535,7 +531,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)favoriteButtonAction:(UIButton *)favorButton
 {
-	BOOL isFavorite = [WalletFavorite isFavoriteForItemID:_item.uniqueID];
+	BOOL isFavorite = [WalletFavorite_ isFavoriteForItemID:_item.uniqueID];
 	[_item changeFavorite:!isFavorite];
     _metadataView.favoriteButton.selected = !isFavorite;
 }
@@ -577,8 +573,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (void)photoTapped:(UITapGestureRecognizer *)tap
 {
     NSInteger index = floorf(_photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width);
-    WalletFieldItem *fieldItem = _photoFieldItems[index];
-    WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+    WalletFieldItem_ *fieldItem = _photoFieldItems[index];
+    WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
     if ([field.type isEqualToString:WalletFieldTypeImage]) {
         _innerPhotoBrowser = [[MWPhotoBrowser alloc] initWithDelegate:self];
         _innerPhotoBrowser.displayActionButton = YES;
@@ -622,7 +618,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 #pragma mark - walletItemEditDelegate
 
--(void)walletItemEdited:(WalletItem *)item
+-(void)walletItemEdited:(WalletItem_ *)item
 {
     _alBumPhotos = nil;
     
@@ -790,9 +786,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         
         cell = mapCell;
     }
-    else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
-        WalletFieldItem *fieldItem = _normalFieldItems[indexPath.row];
-        WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+    else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem_ class]]) {
+        WalletFieldItem_ *fieldItem = _normalFieldItems[indexPath.row];
+        WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
         if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID1 forIndexPath:indexPath];
             

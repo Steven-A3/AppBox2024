@@ -15,14 +15,12 @@
 #import "A3WalletNoteCell.h"
 #import "A3WalletDateInputCell.h"
 #import "WalletData.h"
-#import "WalletItem.h"
 #import "WalletItem+Favorite.h"
 #import "WalletFieldItem+initialize.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
-#import "WalletCategory.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletItemTitleCell.h"
@@ -30,11 +28,9 @@
 #import "NSString+conversion.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
-#import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
 #import "A3SyncManager.h"
 #import "NSMutableArray+A3Sort.h"
-#import "WalletField.h"
 #import "A3NavigationController.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -81,7 +77,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 @property (nonatomic, strong) NSMutableDictionary *categoryItem;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
-@property (nonatomic, strong) WalletFieldItem *currentFieldItem;
+@property (nonatomic, strong) WalletFieldItem_ *currentFieldItem;
 @property (nonatomic, strong) NSIndexPath *dateInputIndexPath;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIViewController *rightSideViewController;
@@ -114,11 +110,11 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 {
     [super viewDidLoad];
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	if (_isAddNewItem) {
 		self.navigationItem.title = NSLocalizedString(@"Add Item", @"Add Item");
         
-        _item = [[WalletItem alloc] initWithContext:context];
+        _item = [[WalletItem_ alloc] initWithContext:context];
 		_item.uniqueID = [[NSUUID UUID] UUIDString];
 		_item.updateDate = [NSDate date];
         _item.lastOpened = [NSDate date];
@@ -231,7 +227,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
-    for (WalletFieldItem *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
+    for (WalletFieldItem_ *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
         @autoreleasepool {
             if ([fieldItem.hasImage boolValue]) {
                 NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
@@ -347,7 +343,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
-	for (WalletFieldItem *fieldItem in [_item fieldItems]) {
+	for (WalletFieldItem_ *fieldItem in [_item fieldItems]) {
 		if (fieldItem.hasImage) {
 			if ([fieldItem.hasImage boolValue]) {
 				[self movePhotoFilesToOriginalDirectoryForFieldItem:fieldItem];
@@ -364,7 +360,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	}
 }
 
-- (void)movePhotoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem *)fieldItem {
+- (void)movePhotoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem_ *)fieldItem {
     @autoreleasepool {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
@@ -414,7 +410,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     }
 }
 
-- (void)deletePhotoFilesForFieldItem:(WalletFieldItem *)fieldItem {
+- (void)deletePhotoFilesForFieldItem:(WalletFieldItem_ *)fieldItem {
     @autoreleasepool {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
@@ -437,7 +433,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     }
 }
 
-- (void)moveVideoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem *)fieldItem {
+- (void)moveVideoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem_ *)fieldItem {
     @autoreleasepool {
         if ([fieldItem.hasVideo boolValue]) {
             NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -497,7 +493,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     }
 }
 
-- (void)deleteVideoFilesForFieldItem:(WalletFieldItem *)fieldItem {
+- (void)deleteVideoFilesForFieldItem:(WalletFieldItem_ *)fieldItem {
     @autoreleasepool {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSURL *videoFileURL = [fieldItem videoFileURLInOriginal:YES];
@@ -525,8 +521,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     
     BOOL result;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", _item.uniqueID];
-	NSArray *fieldItems = [WalletFieldItem findAllWithPredicate:predicate];
-	for (WalletFieldItem *fieldItem in fieldItems) {
+	NSArray *fieldItems = [WalletFieldItem_ findAllWithPredicate:predicate];
+	for (WalletFieldItem_ *fieldItem in fieldItems) {
 		if ([fieldItem.hasImage boolValue]) {
 			NSString *thumbnailImagePathInTemp = [fieldItem photoImageThumbnailPathInOriginal:NO];
             result = [fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
@@ -564,15 +560,15 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 - (NSMutableArray *)sectionItems
 {
     if (!_sectionItems) {
-		NSArray *fields = [WalletField findByAttribute:@"categoryID" withValue:self.category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
+		NSArray *fields = [WalletField_ findByAttribute:@"categoryID" withValue:self.category.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
         _sectionItems = [[NSMutableArray alloc] initWithArray:fields];
         
 		[_sectionItems insertObject:self.titleItem atIndex:0];
 		[_sectionItems insertObject:self.categoryItem atIndex:1];
         
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == NULL", _item.uniqueID];
-		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem findAllWithPredicate:predicate];
-		for (WalletFieldItem *fieldItem in fieldItemsFieldEqualsNULL) {
+		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem_ findAllWithPredicate:predicate];
+		for (WalletFieldItem_ *fieldItem in fieldItemsFieldEqualsNULL) {
 			if ([fieldItem.hasImage boolValue] || [fieldItem.hasVideo boolValue]) {
 				[_sectionItems addObject:fieldItem];
 			}
@@ -628,21 +624,21 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)favoriteButtonAction:(UIButton *)button
 {
-	BOOL isFavorite = ![WalletFavorite isFavoriteForItemID:_item.uniqueID];
+	BOOL isFavorite = ![WalletFavorite_ isFavoriteForItemID:_item.uniqueID];
 	[_item changeFavorite:isFavorite];
     button.selected = isFavorite;
 }
 
-- (WalletFieldItem *)fieldItemForIndexPath:(NSIndexPath *)indexPath create:(BOOL)create {
-	WalletField *field = _sectionItems[indexPath.row];
+- (WalletFieldItem_ *)fieldItemForIndexPath:(NSIndexPath *)indexPath create:(BOOL)create {
+	WalletField_ *field = _sectionItems[indexPath.row];
     
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == %@", _item.uniqueID, field.uniqueID];
-	WalletFieldItem *fieldItem = [WalletFieldItem findFirstWithPredicate:predicate];
+	WalletFieldItem_ *fieldItem = [WalletFieldItem_ findFirstWithPredicate:predicate];
 	if (fieldItem) return fieldItem;
     
 	if (create) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        fieldItem = [[WalletFieldItem alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        fieldItem = [[WalletFieldItem_ alloc] initWithContext:context];
 		fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 		fieldItem.updateDate = [NSDate date];
 		fieldItem.walletItemID = _item.uniqueID;
@@ -657,7 +653,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         return;
     }
     
-	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:self.dateInputIndexPath create:YES];
+	WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:self.dateInputIndexPath create:YES];
 	fieldItem.date = sender.date;
     
     [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -667,7 +663,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)deleteDate:(UIButton *)sender {
 	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:sender];
-	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
+	WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
 	fieldItem.date = nil;
     
 	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -679,8 +675,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if ([_item.categoryID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		BOOL hasImage = NO;
 		BOOL categoryDoesNotHaveImageField = YES;
-		for (WalletFieldItem *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+		for (WalletFieldItem_ *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeImage]) {
 				categoryDoesNotHaveImageField = NO;
 				hasImage = [fieldItem.hasImage boolValue];
@@ -694,8 +690,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	} else if ([_item.categoryID isEqualToString:A3WalletUUIDVideoCategory]) {
 		BOOL hasVideo = NO;
 		BOOL categoryDoesNotHaveVideoField = YES;
-		for (WalletFieldItem *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+		for (WalletFieldItem_ *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeVideo]) {
 				categoryDoesNotHaveVideoField = NO;
 				hasVideo = [fieldItem.hasVideo boolValue];
@@ -721,7 +717,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	
 	NSString *addingItemID = [_item.uniqueID copy];
 	
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	if ([context hasChanges]) {
 		[context rollback];
 	}
@@ -743,8 +739,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         [self.editingObject resignFirstResponder];
     }
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	for (WalletFieldItem *fieldItem in [_item fieldItems]) {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	for (WalletFieldItem_ *fieldItem in [_item fieldItems]) {
 		if (	(!fieldItem.fieldID && !fieldItem.hasImage && !fieldItem.hasVideo ) ||
 				(!fieldItem.value && !fieldItem.date && !fieldItem.hasImage && !fieldItem.hasVideo))
 		{
@@ -800,9 +796,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSFileManager *fileManager = [[NSFileManager alloc] init];
     fileManager.delegate = self;
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
-		WalletFieldItem *fieldItem = _sectionItems[_currentIndexPath.row];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem_ class]]) {
+		WalletFieldItem_ *fieldItem = _sectionItems[_currentIndexPath.row];
 		if ([fieldItem.hasImage boolValue]) {
 			[fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO] error:NULL];
 		} else {
@@ -813,9 +809,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		[_sectionItems removeObjectAtIndex:_currentIndexPath.row];
 		[self.tableView deleteRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 	} else {
-		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:NO];
+		WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:NO];
 		if (fieldItem) {
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
 			if ([field.type isEqualToString:WalletFieldTypeImage]) {
 				[fileManager removeItemAtPath:[fieldItem photoImageThumbnailPathInOriginal:NO ] error:NULL];
 			} else if ([field.type isEqualToString:WalletFieldTypeVideo]) {
@@ -904,7 +900,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if (_isAddNewItem) {
 		return ![self isItemDataEmpty];
 	}
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	return [context hasChanges];
 }
 
@@ -914,7 +910,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         return NO;
     }
     
-    for (WalletFieldItem *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
+    for (WalletFieldItem_ *fieldItem in _item.fieldItemsArraySortedByFieldOrder) {
 		if (fieldItem.date || [fieldItem.hasImage boolValue] || [fieldItem.hasVideo boolValue] || [fieldItem.value length]) {
 			return NO;
 		}
@@ -952,7 +948,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         [self.tableView beginUpdates];
         self.dateInputIndexPath = dateIndexPath;
         
-		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:self.dateInputIndexPath create:YES];
+		WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:self.dateInputIndexPath create:YES];
 		if (fieldItem.date == nil) {
 			fieldItem.date = [NSDate date];
 		}
@@ -980,7 +976,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     }
 }
 
-- (void)changeCategory:(WalletCategory *)toCategory
+- (void)changeCategory:(WalletCategory_ *)toCategory
 {
 	// 카테고리 변경
     // 같은 이름 필드는 값 입력
@@ -994,23 +990,23 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	_isMemoCategory = [_item.categoryID isEqualToString:A3WalletUUIDMemoCategory];
     
     // 현재 변경중인 field item 정보를, 새로운 카테고리에 해당하는 field item으로 바꾼다.
-	NSArray *fieldsOfTargetCategory = [WalletField findByAttribute:@"categoryID" withValue:toCategory.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
+	NSArray *fieldsOfTargetCategory = [WalletField_ findByAttribute:@"categoryID" withValue:toCategory.uniqueID andOrderBy:A3CommonPropertyOrder ascending:YES];
     
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID != NULL", _item.uniqueID];
-    NSMutableArray *originalFieldItems = [[NSMutableArray alloc] initWithArray:[WalletFieldItem findAllWithPredicate:predicate]];
+    NSMutableArray *originalFieldItems = [[NSMutableArray alloc] initWithArray:[WalletFieldItem_ findAllWithPredicate:predicate]];
     NSMutableArray *addedItems = [NSMutableArray new];
     
-	for (WalletField *fieldOfTargetCategory in fieldsOfTargetCategory) {
+	for (WalletField_ *fieldOfTargetCategory in fieldsOfTargetCategory) {
 		@autoreleasepool {
-			NSInteger idx = [originalFieldItems indexOfObjectPassingTest:^BOOL(WalletFieldItem *obj, NSUInteger idx, BOOL *stop) {
-				WalletField *field = [WalletData fieldOfFieldItem:obj];
+			NSInteger idx = [originalFieldItems indexOfObjectPassingTest:^BOOL(WalletFieldItem_ *obj, NSUInteger idx, BOOL *stop) {
+				WalletField_ *field = [WalletData fieldOfFieldItem:obj];
 				return [field.name isEqualToString:fieldOfTargetCategory.name];
 			}];
             
 			if (idx == NSNotFound) continue;
             
-			WalletFieldItem *originalFieldItem = originalFieldItems[idx];
-			WalletField *originalField = [WalletData fieldOfFieldItem:originalFieldItem];
+			WalletFieldItem_ *originalFieldItem = originalFieldItems[idx];
+			WalletField_ *originalField = [WalletData fieldOfFieldItem:originalFieldItem];
 			if ([originalField.type isEqualToString:fieldOfTargetCategory.type]) {
 				originalFieldItem.fieldID = fieldOfTargetCategory.uniqueID;
 				[addedItems addObject:originalFieldItem];
@@ -1037,9 +1033,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         dateFormatter.dateFormat = [dateFormatter customFullStyleFormat];
     }
     
-	for (WalletFieldItem *remainItem in originalFieldItems) {
+	for (WalletFieldItem_ *remainItem in originalFieldItems) {
 		@autoreleasepool {
-			WalletField *remainingItemField = [WalletData fieldOfFieldItem:remainItem];
+			WalletField_ *remainingItemField = [WalletData fieldOfFieldItem:remainItem];
 			if ([remainingItemField.type isEqualToString:WalletFieldTypeDate] && remainItem.date) {
 				[moveToNoteString appendFormat:@"%@ : %@\n", remainingItemField.name, [dateFormatter stringFromDate:remainItem.date]];
 			} else
@@ -1067,8 +1063,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 #pragma mark- UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)imageEditInfo {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    WalletFieldItem *fieldItem = [[WalletFieldItem alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    WalletFieldItem_ *fieldItem = [[WalletFieldItem_ alloc] initWithContext:context];
 	fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 	fieldItem.updateDate = [NSDate date];
 	fieldItem.walletItemID = _item.uniqueID;
@@ -1221,11 +1217,11 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)deleteWalletItemByID:(NSString *)itemID {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", itemID];
-	NSArray *items = [WalletItem findAllWithPredicate:predicate];
-    for (WalletItem *item in items) {
+	NSArray *items = [WalletItem_ findAllWithPredicate:predicate];
+    for (WalletItem_ *item in items) {
         [item deleteWalletItem];
     }
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -1427,7 +1423,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 #pragma mark - CategorySelect delegate
 
-- (void)walletCategorySelected:(WalletCategory *) category
+- (void)walletCategorySelected:(WalletCategory_ *) category
 {
     FNLOG(@"walletCategorySelected : %@", category.name);
     
@@ -1461,7 +1457,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		}
 	} else if ([self.sectionItems objectAtIndex:indexPath.row] != self.categoryItem ) {
         
-		WalletField *field = _sectionItems[indexPath.row];
+		WalletField_ *field = _sectionItems[indexPath.row];
 		if ([field.type isEqualToString:WalletFieldTypeText]) {
 			textField.keyboardType = UIKeyboardTypeDefault;
 			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -1521,7 +1517,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 		_item.name = [text length] ? text : nil;
 	}
 	else if (_sectionItems[indexPath.row] != self.categoryItem) {
-		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
+		WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
         
 		fieldItem.value = [text length] ? text : nil;
 	}
@@ -1535,7 +1531,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	if (item == self.noteItem) return NO;
 	if (item == self.categoryItem || item == self.titleItem) return YES;
     
-	WalletField *field = item;
+	WalletField_ *field = item;
 	return [field.type isEqualToString:WalletFieldTypeDate] ||
     [field.type isEqualToString:WalletFieldTypeImage] ||
     [field.type isEqualToString:WalletFieldTypeVideo];
@@ -1627,9 +1623,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 				[self.navigationController addChildViewController:_rightSideViewController];
             }
         }
-		else if ([self.sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+		else if ([self.sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem_ class]]) {
 			[self.editingObject resignFirstResponder];
-			WalletFieldItem *fieldItem = _sectionItems[indexPath.row];
+			WalletFieldItem_ *fieldItem = _sectionItems[indexPath.row];
 			if ([fieldItem.hasImage boolValue]) {
 				[self askDeleteImage];
 			} else if ([fieldItem.hasVideo boolValue]) {
@@ -1644,7 +1640,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 			}
 		}
         else if ([self.sectionItems objectAtIndex:indexPath.row] != self.titleItem) {
-			WalletField *field = [_sectionItems objectAtIndex:indexPath.row];
+			WalletField_ *field = [_sectionItems objectAtIndex:indexPath.row];
 			_currentFieldItem = [self fieldItemForIndexPath:indexPath create:YES];
             
 			if ([field.type isEqualToString:WalletFieldTypeDate]) {
@@ -1832,23 +1828,23 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 }
 
 - (UITableViewCell *)getFieldTypeCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
-	if ([_sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+	if ([_sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem_ class]]) {
 		UITableViewCell *cell;
-		WalletFieldItem *fieldItem = _sectionItems[indexPath.row];
+		WalletFieldItem_ *fieldItem = _sectionItems[indexPath.row];
 		if ([fieldItem.hasImage boolValue]	) {
 			cell = [self getImageCell:tableView indexPath:indexPath fieldItem:fieldItem];
 		} else if ([fieldItem.hasVideo boolValue]) {
 			cell = [self getVideoCell:tableView indexPath:indexPath fieldItem:fieldItem];
 		} else {
-			FNLOG(@"Invalid Data has been found. WalletFieldItem field == NULL, image == NULL, video == NULL");
+			FNLOG(@"Invalid Data has been found. WalletFieldItem_ field == NULL, image == NULL, video == NULL");
 			UITableViewCell *defaultCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
 			cell = defaultCell;
 		}
 		return cell;
 	}
-	WalletField *field = [_sectionItems objectAtIndex:indexPath.row];
+	WalletField_ *field = [_sectionItems objectAtIndex:indexPath.row];
     
-	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
+	WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
 	UITableViewCell *cell;
 	NSArray *types = @[WalletFieldTypeDate, WalletFieldTypeImage, WalletFieldTypeVideo, WalletFieldTypeText];
 	NSUInteger index = [types indexOfObject:field.type];
@@ -1869,7 +1865,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	return cell;
 }
 
-- (UITableViewCell *)getNormalCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath field:(WalletField *)field fieldItem:(WalletFieldItem *)fieldItem {
+- (UITableViewCell *)getNormalCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath field:(WalletField_ *)field fieldItem:(WalletFieldItem_ *)fieldItem {
 	UITableViewCell *cell;
 	A3WalletItemFieldCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID4 forIndexPath:indexPath];
     
@@ -1886,9 +1882,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	return cell;
 }
 
-- (UITableViewCell *)getVideoCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath fieldItem:(WalletFieldItem *)fieldItem {
+- (UITableViewCell *)getVideoCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath fieldItem:(WalletFieldItem_ *)fieldItem {
 	UITableViewCell *cell;
-	WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+	WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 	if ([fieldItem.hasVideo boolValue]) {
         
 		A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID4 forIndexPath:indexPath];
@@ -1925,9 +1921,9 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	return cell;
 }
 
-- (UITableViewCell *)getImageCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath fieldItem:(WalletFieldItem *)fieldItem {
+- (UITableViewCell *)getImageCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath fieldItem:(WalletFieldItem_ *)fieldItem {
 	UITableViewCell *cell;
-	WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+	WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
 	if ([fieldItem.hasImage boolValue]) {
 		A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID4 forIndexPath:indexPath];
         
@@ -1963,7 +1959,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	return cell;
 }
 
-- (A3WalletItemFieldCell *)getDateCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath fieldItem:(WalletFieldItem *)fieldItem {
+- (A3WalletItemFieldCell *)getDateCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath fieldItem:(WalletFieldItem_ *)fieldItem {
 	A3WalletItemFieldCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemDateCellID4 forIndexPath:indexPath];
     
 	inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2001,7 +1997,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (A3WalletDateInputCell *)getDateInputCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
     // date input cell
-	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0] create:NO];
+	WalletFieldItem_ *fieldItem = [self fieldItemForIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:0] create:NO];
 	A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemDateInputCellID4 forIndexPath:indexPath];
 	dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	dateInputCell.datePicker.date = fieldItem.date ? fieldItem.date: [NSDate date];
@@ -2047,7 +2043,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 	titleCell.titleTextField.placeholder = NSLocalizedString(@"Title", @"Title");
 	titleCell.titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	[titleCell.favoriteButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-	titleCell.favoriteButton.selected = [WalletFavorite isFavoriteForItemID:_item.uniqueID];
+	titleCell.favoriteButton.selected = [WalletFavorite_ isFavoriteForItemID:_item.uniqueID];
     
 	titleCell.titleTextField.text = _item.name;
     

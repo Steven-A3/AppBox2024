@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class ExpenseListBudget;
+@class ExpenseListBudget_;
 
 @protocol A3ExpenseListHistoryDelegate <NSObject>
-- (void)didSelectBudgetHistory:(ExpenseListBudget *)aBudget;
+- (void)didSelectBudgetHistory:(ExpenseListBudget_ *)aBudget;
 - (void)didDismissExpenseHistoryViewController;
 @optional
 - (void)willRemoveHistoryItemBudgetID:(NSString *)aBudgetID;

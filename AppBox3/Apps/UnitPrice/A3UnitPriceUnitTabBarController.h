@@ -9,14 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "A3UnitPriceSelectViewController.h"
 
-@class UnitPriceInfo;
-
 extern NSString *const A3UnitPriceSegmentIndex;
 
 @interface A3UnitPriceUnitTabBarController : UITabBarController
 
-@property (nonatomic, strong) UnitPriceInfo *price;
+@property (nonatomic, strong) UnitPriceInfo_ *price;
 
-- (id)initWithDelegate:(id<A3UnitSelectViewControllerDelegate>)delegate withPrice:(UnitPriceInfo *) price;
+- (id)initWithDelegate:(id<A3UnitSelectViewControllerDelegate>)delegate withPrice:(UnitPriceInfo_ *) price;
 
 @end

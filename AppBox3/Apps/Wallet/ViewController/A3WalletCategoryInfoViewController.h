@@ -12,6 +12,6 @@
 
 @interface A3WalletCategoryInfoViewController : UITableViewController <WalletCategoryEditDelegate>
 
-@property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, strong) WalletCategory_ *category;
 
 @end

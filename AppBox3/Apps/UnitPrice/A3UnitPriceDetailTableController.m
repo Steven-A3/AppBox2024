@@ -9,7 +9,6 @@
 #import "A3UnitPriceDetailTableController.h"
 #import "A3UnitPriceSliderView.h"
 #import "A3UnitPriceUnitTabBarController.h"
-#import "UnitPriceInfo.h"
 #import "A3UnitPriceSliderCell.h"
 #import "A3UnitPriceInputCell.h"
 #import "A3AppDelegate.h"
@@ -117,7 +116,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -130,14 +129,14 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.currencyFormatter = nil;
 	self.currencyFormatter.maximumFractionDigits = 2;
 
-	_price = [UnitPriceInfo findFirstByAttribute:ID_KEY withValue:_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
+	_price = [UnitPriceInfo_ findFirstByAttribute:ID_KEY withValue:_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
 	[self.tableView reloadData];
 }
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
@@ -300,7 +299,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
     NSString *unitName = IS_IPHONE ? [self unitShortName] : [self unitName];
     NSString *priceTxt;
     
-    UnitPriceInfo *priceInfo = self.price;
+    UnitPriceInfo_ *priceInfo = self.price;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
 
@@ -401,7 +400,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 {
     NSString *priceTxt;
     
-    UnitPriceInfo *priceInfo = self.price;
+    UnitPriceInfo_ *priceInfo = self.price;
     
     priceTxt = [self.currencyFormatter stringFromNumber:priceInfo.price ? priceInfo.price : @0];
 
@@ -513,7 +512,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         }
 		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -556,7 +555,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.note = textView.text;
 	self.editingObject = nil;
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -874,7 +873,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 	self.price.unitCategoryID = @(categoryID);
 	self.price.unitID = @(unitID);
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	NSIndexPath *sliderIP = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -1038,7 +1037,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)currencyCode {
-	[UnitPriceInfo changeDefaultCurrencyCode:currencyCode];
+	[UnitPriceInfo_ changeDefaultCurrencyCode:currencyCode];
 
     self.currencyFormatter = nil;
 

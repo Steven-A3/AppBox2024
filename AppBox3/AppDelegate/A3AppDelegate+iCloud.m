@@ -199,16 +199,13 @@
  *  @return YES if it founds entity which duplicated objects
  */
 - (BOOL)deduplicateDatabaseWithModel:(NSManagedObjectModel *)model {
-//    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-//    NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
-
 	BOOL dataHasDuplicatedRecords = NO;
 	for (NSEntityDescription *entityDescription in model.entities) {
 		@autoreleasepool {
 			dataHasDuplicatedRecords |= [self deDupRecordsForEntity:entityDescription.name];
 		}
 	}
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	return dataHasDuplicatedRecords;
@@ -224,7 +221,7 @@
 - (BOOL)deDupRecordsForEntity:(NSString *)entityName {
 	BOOL hasDuplicatedRecords = NO;
 	
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
 
 	NSExpression *keyPathExpression = [NSExpression expressionForKeyPath: @"uniqueID"]; // Does not really matter

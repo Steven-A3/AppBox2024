@@ -9,15 +9,12 @@
 #import <CoreText/CoreText.h>
 #import <AVFoundation/AVFoundation.h>
 #import "A3TranslatorMessageCell.h"
-#import "TranslatorHistory.h"
 #import "A3Formatter.h"
 #import "common.h"
 #import "NSDate+TimeAgo.h"
 #import "SFKImage.h"
-#import "TranslatorFavorite.h"
 #import "NSString+conversion.h"
 #import "TranslatorHistory+manager.h"
-#import "TranslatorGroup.h"
 #import "A3AppDelegate.h"
 #import "Reachability.h"
 #import "A3TranslatorLanguage.h"
@@ -99,7 +96,7 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
 }
 
-+ (CGFloat)cellHeightWithData:(TranslatorHistory *)data bounds:(CGRect)bounds {
++ (CGFloat)cellHeightWithData:(TranslatorHistory_ *)data bounds:(CGRect)bounds {
 	CGFloat height = 0;
 	if ([data.originalText length]) {
 		CGRect boundingRect = boundingRectWithText(data.originalText, bounds);
@@ -137,7 +134,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 #pragma mark - SET MESSAGE ENTITY
 
-- (void)setMessageEntity:(TranslatorHistory *)messageEntity {
+- (void)setMessageEntity:(TranslatorHistory_ *)messageEntity {
 	_messageEntity = messageEntity;
 
 	self.dateLabel.text = [_messageEntity.updateDate timeAgoWithLimit:60 * 60 * 24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
@@ -326,7 +323,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (UIButton *)speakButton {
-	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+	TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
 	if ([self speechAvailableForLanguage:group.targetLanguage]) {
 		_speakWithApple = YES;
 	} else if ([self googleSpeechAvailableForLanguage:group.targetLanguage]) {
@@ -416,7 +413,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		}
 
         NSArray *languages = [self.languageListManager translationLanguageAddingDetectLanguage:NO];
-		TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+		TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
         __block NSString *targetLanguage = group.targetLanguage;
 		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLanguage]];
 		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
@@ -533,7 +530,7 @@ static NSString *const GOOGLE_LISTEN_URL	= @"https://translate.google.com/transl
 
 	NSMutableString *urlString = [NSMutableString stringWithCapacity:300];
 	[urlString appendString:GOOGLE_LISTEN_URL];
-	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
+	TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
 	[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:group.targetLanguage]];
 	[urlString appendString:@"&q="];
 	[urlString appendString:[_messageEntity.translatedText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];

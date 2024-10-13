@@ -12,7 +12,6 @@
 #import "A3PercentCalcHeaderView.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3PercentCalcHistoryViewController.h"
-#import "PercentCalcHistory.h"
 #import "A3JHTableViewEntryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3UserDefaultsKeys.h"
@@ -363,7 +362,7 @@
     if (enable) {
         // History 버튼, 히스토리가 있는 경우에만 활성.
         UIBarButtonItem *historyButton = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
-        historyButton.enabled = [PercentCalcHistory countOfEntities] > 0;
+        historyButton.enabled = [PercentCalcHistory_ countOfEntities] > 0;
         
         
         // Compose 버튼, 헤더에 값이 있는 경우에만 활성하도록..
@@ -509,8 +508,8 @@
 
 - (void)saveCalcHistoryData:(A3PercentCalcData *)aData calcType:(PercentCalcType)calcType {
     // 최근 데이터에 저장했던 데이터인지 체크.
-    NSArray *fetchedRows = [PercentCalcHistory findAllSortedBy:@"updateDate" ascending:NO];
-    for (PercentCalcHistory * entity in fetchedRows) {
+    NSArray *fetchedRows = [PercentCalcHistory_ findAllSortedBy:@"updateDate" ascending:NO];
+    for (PercentCalcHistory_ * entity in fetchedRows) {
         A3PercentCalcData *entityHistory = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class]
                                                                              fromData:entity.historyItem
                                                                                 error:NULL];
@@ -534,8 +533,8 @@
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO
             && [_factorX2 isEqualToNumber:@0]==NO && [_factorY2 isEqualToNumber:@0]==NO) {
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+            PercentCalcHistory_ *entity = [[PercentCalcHistory_ alloc] initWithContext:context];
             entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
             NSError *error;
@@ -553,8 +552,8 @@
             return;
         
         if ([_factorX1 isEqualToNumber:@0]==NO && [_factorY1 isEqualToNumber:@0]==NO) {
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            PercentCalcHistory *entity = [[PercentCalcHistory alloc] initWithContext:context];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+            PercentCalcHistory_ *entity = [[PercentCalcHistory_ alloc] initWithContext:context];
             entity.uniqueID = [[NSUUID UUID] UUIDString];
             entity.updateDate = [NSDate date];
             NSError *error;
@@ -941,7 +940,7 @@
                 break;
         }
         CGPoint offset = self.tableView.contentOffset;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         offset.y = -(44 + safeAreaInsets.top);
         self.tableView.contentOffset = offset;
     } else {

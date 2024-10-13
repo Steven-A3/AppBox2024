@@ -12,7 +12,6 @@
 #import "A3CalculatorButtonsInBasicViewController_iPad.h"
 #import "A3CalculatorButtonsInScientificViewController_iPad.h"
 #import "A3Calculator.h"
-#import "Calculation.h"
 #import "A3ExpressionComponent.h"
 #import "A3CalculatorHistoryViewController.h"
 #import "A3KeyboardView.h"
@@ -25,6 +24,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "AppBox3-Swift.h"
 
 NSString *const A3CalculatorModeBasic = @"basic";
 NSString *const A3CalculatorModeScientific = @"scientific";
@@ -94,7 +94,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 
     // Radian / Degrees 버튼 초기화
     [self.calculator setRadian:[self radian]];
@@ -152,7 +152,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }
@@ -563,7 +563,7 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 
 
 - (BOOL)isCalculationHistoryEmpty {
-    Calculation *lastcalculation = [Calculation findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    Calculation_ *lastcalculation = [Calculation_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
     } else {

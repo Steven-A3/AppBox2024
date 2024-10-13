@@ -11,13 +11,10 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListEditViewController.h"
 #import "A3RoundDateView.h"
 #import "A3DaysCounterSlideShowMainViewController.h"
-#import "DaysCounterCalendar.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
@@ -89,7 +86,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 		self.title = [_sharedManager localizedSystemCalendarNameForCalendarID:_calendarItem.uniqueID];
 	}
     
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
         self.navigationItem.rightBarButtonItem = edit;
@@ -153,7 +150,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 }
 
 - (void)applicationDidEnterBackground {
@@ -177,7 +174,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -282,8 +279,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (NSMutableArray*)sortedArrayByDateAscending:(BOOL)ascending
 {
     NSArray *array = [_sourceArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
-        DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
+        DaysCounterEvent_ *item1 = (DaysCounterEvent_ *)obj1;
+        DaysCounterEvent_ *item2 = (DaysCounterEvent_ *)obj2;
         
         return [item1.effectiveStartDate compare:item2.effectiveStartDate];
     }];
@@ -294,7 +291,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     
     NSMutableArray *sectionArray = [NSMutableArray array];
     NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
-    for (DaysCounterEvent *event in array) {
+    for (DaysCounterEvent_ *event in array) {
 		if (!event.effectiveStartDate) continue;
 
         NSString *sectionKey = [A3DateHelper dateStringFromDate:event.effectiveStartDate withFormat:@"yyyy.MM"];
@@ -315,8 +312,8 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (NSMutableArray*)sortedArrayByNameAscending:(BOOL)ascending
 {
     NSArray *array = [_sourceArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
-        DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
+        DaysCounterEvent_ *item1 = (DaysCounterEvent_ *)obj1;
+        DaysCounterEvent_ *item2 = (DaysCounterEvent_ *)obj2;
         
         return [item1.eventName compare:item2.eventName options:NSCaseInsensitiveSearch];
     }];
@@ -331,7 +328,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 - (void)loadEventData
 {
     if ( [_calendarItem.type integerValue] == CalendarCellType_User) {
-        self.sourceArray = [DaysCounterEvent findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
+        self.sourceArray = [DaysCounterEvent_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", _calendarItem.uniqueID]];
     }
     else {
         if ( [_calendarItem.uniqueID isEqualToString:SystemCalendarID_All] ) {
@@ -357,7 +354,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
     _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:147.0/255.0 green:147.0/255.0 blue:147.0/255.0 alpha:1.0]);
     
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         self.navigationItem.rightBarButtonItem.enabled = ([_sourceArray count] > 0);
     } else {
@@ -597,10 +594,10 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     return 62.0;
 }
 
-- (DaysCounterEvent *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+- (DaysCounterEvent_ *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     // Configure the cell...
-    DaysCounterEvent *item = nil;
+    DaysCounterEvent_ *item = nil;
     if ( _searchResultArray && [self.searchController.searchBar.text length]) {
         item = [_searchResultArray objectAtIndex:indexPath.row];
     } else {
@@ -638,7 +635,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     
     [self adjustFontSizeOfCell:cell];
     
-    DaysCounterEvent *event = [self itemForTableView:tableView atIndexPath:indexPath];
+    DaysCounterEvent_ *event = [self itemForTableView:tableView atIndexPath:indexPath];
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
@@ -647,7 +644,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
     
     if ( event ) {
-		DaysCounterDate *startDate = [event startDate];
+		DaysCounterDate_ *startDate = [event startDate];
         NSDate *nextDate;
         // textLabel
         textLabel.text = event.eventName;
@@ -707,7 +704,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         // RoundDateView
         if ( self.sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
-			DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:event.calendarID];
+			DaysCounterCalendar_ *calendar = [_sharedManager calendarItemByID:event.calendarID];
 			roundDateView.fillColor = [_sharedManager colorForCalendar:calendar];
             roundDateView.strokColor = roundDateView.fillColor;
             roundDateView.date = event.effectiveStartDate;
@@ -766,7 +763,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DaysCounterEvent *item = [self itemForTableView:tableView atIndexPath:indexPath];
+    DaysCounterEvent_ *item = [self itemForTableView:tableView atIndexPath:indexPath];
     
     if ( item == nil ) {
         return;
@@ -797,7 +794,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
         NSArray *items = [dict objectForKey:EventKey_Items];
-        DaysCounterEvent *item = nil;
+        DaysCounterEvent_ *item = nil;
         if ( [items count] > 0) {
             item = [items objectAtIndex:indexPath.row];
         }
@@ -824,7 +821,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
 
 #pragma mark Cell & Item Data Related
 
-- (NSInteger)daysGapForItem:(DaysCounterEvent *)item {
+- (NSInteger)daysGapForItem:(DaysCounterEvent_ *)item {
     NSDate *today = [NSDate date];
     NSInteger resultDaysGap;
     
@@ -846,7 +843,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     return resultDaysGap;
 }
 
-- (NSString *)daysStringForItem:(DaysCounterEvent *)item {
+- (NSString *)daysStringForItem:(DaysCounterEvent_ *)item {
     NSDate *today = [NSDate date];
     NSDate *nextRepeatStartDate;
     NSInteger daysGap;

@@ -6,18 +6,12 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "WalletItem.h"
-
-@class WalletFieldItem;
-
-@interface WalletItem (initialize)
+@interface WalletItem_ (initialize)
 
 - (NSArray *)fieldItems;
-
 - (NSArray *)fieldItemsArraySortedByFieldOrder;
 - (void)assignOrder;
 - (void)verifyNULLField;
-
 - (void)deleteWalletItem;
 
 @end

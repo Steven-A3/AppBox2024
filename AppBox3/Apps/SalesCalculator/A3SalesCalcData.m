@@ -7,7 +7,6 @@
 //
 
 #import "A3SalesCalcData.h"
-#import "SalesCalcHistory.h"
 #import "A3SalesCalcPreferences.h"
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
@@ -107,12 +106,12 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
 			self.price, @(self.priceType), self.discount, @(self.discountType), self.additionalOff, @(self.additionalOffType),
 			self.tax, @(self.taxType), self.notes, @(self.shownPriceType), self.currencyCode];
 
-	SalesCalcHistory *sameData = [SalesCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+	SalesCalcHistory_ *sameData = [SalesCalcHistory_ findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if (sameData) {
         return NO;
     } else {
-        SalesCalcHistory *entity = [[SalesCalcHistory alloc] initWithContext:context];
+        SalesCalcHistory_ *entity = [[SalesCalcHistory_ alloc] initWithContext:context];
         entity.uniqueID = [[NSUUID UUID] UUIDString];
         entity.updateDate = [NSDate date];
         entity.price = self.price;
@@ -133,7 +132,7 @@ static NSString *const A3SalesCalcDataKeyCurrencyCode = @"currencyCode";
     return YES;
 }
 
-+ (A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history
++ (A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory_ *)history
 {
     A3SalesCalcData *data = [A3SalesCalcData new];
     data.historyDate = history.updateDate;

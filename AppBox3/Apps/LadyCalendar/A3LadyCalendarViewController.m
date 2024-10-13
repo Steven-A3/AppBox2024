@@ -17,7 +17,6 @@
 #import "A3DateHelper.h"
 #import "A3LadyCalendarDetailViewController.h"
 #import "A3LadyCalendarAddPeriodViewController.h"
-#import "LadyCalendarPeriod.h"
 #import "A3LadyCalendarCalendarView.h"
 #import "A3LadyCalendarAccountListViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
@@ -26,7 +25,6 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
-#import "LadyCalendarAccount.h"
 #import "HolidayData.h"
 #import "CGColor+Additions.h"
 #import "NSManagedObject+extension.h"
@@ -133,7 +131,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     // TODO
 //  스크롤중에 종료되는 버그로 인해서 일단 제거.
@@ -263,7 +261,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 - (void)reloadWatchingDateAndMove {
 	NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
 	if (!currentWatchingDate) {
-		LadyCalendarPeriod *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+		LadyCalendarPeriod_ *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
 		if (!lastPeriod) {
 			currentWatchingDate = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 		}
@@ -289,7 +287,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -320,7 +318,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 		[_calendarHeaderView removeFromSuperview];
         _collectionView.delegate = nil;
         
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
 		id watchDate = self.dataManager.currentAccount.watchingDate;
@@ -569,7 +567,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 	}
 }
 
-- (LadyCalendarPeriod*)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
+- (LadyCalendarPeriod_ *)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
 {
     if ( indexPath.section == 0 )
         return nil;
@@ -587,7 +585,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
         [self.view addSubview:_addButton];
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
             CGFloat verticalOffset = 0;
-            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
             verticalOffset = -safeAreaInsets.bottom;
 			make.centerX.equalTo(self.view.centerX);
 			make.bottom.equalTo(self.view.bottom).with.offset(-55 + verticalOffset);
@@ -740,7 +738,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
     NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:[self.dataManager currentAccount].uniqueID containPredict:YES];
     if ( [periods count] < 1 )
         return;
-    LadyCalendarPeriod *period = [periods objectAtIndex:0];
+    LadyCalendarPeriod_ *period = [periods objectAtIndex:0];
     A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] init];
     viewController.month = period.startDate;
     viewController.periodItems = [NSMutableArray arrayWithArray:periods];
@@ -757,7 +755,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 - (UIView *)moreMenuView {
 	if (!_moreMenuView) {
         CGFloat verticalOffset = 0;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         verticalOffset = safeAreaInsets.top - 20;
 
         _moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 64 + verticalOffset, self.view.bounds.size.width, 44)];
@@ -913,7 +911,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = -safeAreaInsets.bottom;
 
     UIView *superview = self.view;

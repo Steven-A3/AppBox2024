@@ -9,8 +9,6 @@
 #import "A3LadyCalendarCalendarView.h"
 #import "A3DateHelper.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarPeriod.h"
-#import "LadyCalendarAccount.h"
 #import "HolidayData.h"
 #import "A3AppDelegate.h"
 #import "A3UserDefaults+A3Addition.h"
@@ -402,8 +400,8 @@
 	[_yellowLines removeAllObjects];
 	[_circleArray removeAllObjects];
 
-	for (LadyCalendarPeriod *period in _periods) {
-		LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
+	for (LadyCalendarPeriod_ *period in _periods) {
+		LadyCalendarPeriod_ *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
 		NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
 		NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
 

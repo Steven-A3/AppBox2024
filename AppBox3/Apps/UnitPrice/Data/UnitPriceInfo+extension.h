@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UnitPriceInfo.h"
-
 extern NSString *const PRICE_KEY;
 extern NSString *const SIZE_KEY;
 extern NSString *const QUANTITY_KEY;
@@ -17,21 +15,15 @@ extern NSString *const DISCOUNT_PERCENT_KEY;
 extern NSString *const DISCOUNT_PRICE_KEY;
 extern NSString *const NOTES_KEY;
 
-@interface UnitPriceInfo (extension)
+@interface UnitPriceInfo_ (extension)
 
 - (void)initValues;
-
 + (void)changeDefaultCurrencyCode:(NSString *)currencyCode;
-
 - (void)copyValueFrom:(NSDictionary *)store;
-
 - (NSDictionary *)dictionaryRepresentation;
-
 - (double)unitPrice;
-- (double)unitPrice2WithPrice1:(UnitPriceInfo *)price1;
-
+- (double)unitPrice2WithPrice1:(UnitPriceInfo_ *)price1;
 - (NSString *)unitPriceStringWithFormatter:(NSNumberFormatter *)currencyFormatter showUnit:(BOOL)showUnit;
-
-- (NSString *)unitPrice2StringWithPrice1:(UnitPriceInfo *)price1 formatter:(NSNumberFormatter *)currencyFormatter showUnit:(BOOL)showUnit;
+- (NSString *)unitPrice2StringWithPrice1:(UnitPriceInfo_ *)price1 formatter:(NSNumberFormatter *)currencyFormatter showUnit:(BOOL)showUnit;
 
 @end

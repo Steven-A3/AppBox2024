@@ -13,10 +13,10 @@
 @protocol WalletEditFieldDelegate <NSObject>
 
 @required
-- (void)walletFieldEdited:(WalletField *)field;
+- (void)walletFieldEdited:(WalletField_ *)field;
 
 @optional
-- (void)walletFieldAdded:(WalletField *)field;
+- (void)walletFieldAdded:(WalletField_ *)field;
 - (void)dismissedViewController:(UIViewController *)viewController;
 
 @end
@@ -25,7 +25,7 @@
 
 @property (nonatomic, weak) id<WalletEditFieldDelegate> delegate;
 @property (nonatomic, weak) NSArray *fields;
-@property (nonatomic, strong) WalletField *field;
+@property (nonatomic, strong) WalletField_ *field;
 @property (readwrite) BOOL isAddMode;
 
 @end

@@ -812,12 +812,8 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
             if ([[A3AppDelegate instance].mainMenuViewController.activeAppName isEqualToString:appName]) {
                 return YES;
             }
-        } else {
-//            if ([[A3AppDelegate instance].homeStyleMainMenuViewController.activeAppName isEqualToString:appName]) {
-//                return YES;
-//            }
         }
-        [A3SyncManager.sharedSyncManager.persistentContainer.viewContext reset];
+        [CoreDataStack.shared.persistentContainer.viewContext reset];
 
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];

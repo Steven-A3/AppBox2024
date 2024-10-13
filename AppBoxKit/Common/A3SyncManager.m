@@ -14,6 +14,7 @@
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "A3UserDefaults.h"
 #import "NSFileManager+A3Addition.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 NSString * const A3SyncManagerCloudEnabled = @"A3SyncManagerCloudEnabled";
 NSString * const A3SyncActivityDidBeginNotification = @"A3SyncActivityDidBegin";
@@ -22,7 +23,6 @@ NSString * const A3SyncDeviceSyncStartInfo = @"A3SyncDeviceSyncStartInfo";	// Di
 NSString * const A3SyncStartTime = @"A3SyncStartTime";
 NSString * const A3SyncStartDevice = @"A3SyncStartDevice";
 NSString * const A3SyncStartDenyReason = @"A3SyncStartDenyReason";
-NSString *const A3NotificationCloudCoreDataStoreDidImport = @"A3CloudCoreDataStoreDidImport";
 NSString *const A3NotificationCloudKeyValueStoreDidImport = @"A3CloudKeyValueStoreDidImport";
 
 NSString *const A3DaysCounterImageDirectory = @"DaysCounterImages";
@@ -127,12 +127,21 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	} else {
 		message = NSLocalizedString(@"iCloud delete is in progress. Try after 10 minutes.", nil);
 	}
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:message
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:nil];
+
+    // Add the "OK" action to the alert
+    [alertController addAction:okAction];
+
+    // Present the alert
+    UIViewController *rootViewController = [UIApplication sharedApplication].myKeyWindow.rootViewController;
+    [rootViewController presentViewController:alertController animated:YES completion:nil];
 	return NO;
 }
 
@@ -150,7 +159,8 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 - (CDEICloudFileSystem *)cloudFileSystem {
 	if (!_cloudFileSystem) {
-		_cloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:nil relativePathToRootInContainer:[self rootDirectoryName]];
+		_cloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:@"iCloud.net.allaboutapps.AppBox"
+                                                              relativePathToRootInContainer:[self rootDirectoryName]];
 	}
 	return _cloudFileSystem;
 }
@@ -286,9 +296,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 {
 	_activeMergeCount--;
 	if (_activeMergeCount == 0) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidEndNotification object:nil];
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 	}
 }
 
@@ -296,80 +304,8 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 {
 	_activeMergeCount++;
 	if (_activeMergeCount == 1) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCloudCoreDataStoreDidImport object:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidBeginNotification object:nil];
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 	}
-}
-
-#pragma mark - Persistent Store Ensemble Delegate
-
-
-- (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didSaveMergeChangesWithNotification:(NSNotification *)notification
-{
-    NSManagedObjectContext *rootContext = self.persistentContainer.viewContext;
-	[rootContext performBlockAndWait:^{
-		[rootContext mergeChangesFromContextDidSaveNotification:notification];
-	}];
-}
-
-- (NSArray *)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble globalIdentifiersForManagedObjects:(NSArray *)objects
-{
-	return [objects valueForKeyPath:@"uniqueID"];
-}
-
-- (void)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didDeleechWithError:(NSError *)error {
-	if (error) {
-		if (self.isCloudAvailable && _leechFailCount < 4) {
-			_leechFailCount++;
-			[self enableCloudSync];
-			return;
-		}
-	}
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"iCloud Disabled", nil)
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-	[alertView show];
-	[self reset];
-}
-
-- (BOOL)persistentStoreEnsemble:(CDEPersistentStoreEnsemble *)ensemble didFailToSaveMergedChangesInManagedObjectContext:(NSManagedObjectContext *)savingContext error:(NSError *)error reparationManagedObjectContext:(NSManagedObjectContext *)reparationContext {
-	NSMutableArray *objectIDs = [NSMutableArray array];
-	NSMutableArray *errors = [NSMutableArray array];
-	FNLOG(@"%@", objectIDs);
-	FNLOG(@"%@", errors);
-
-	[savingContext performBlockAndWait:^{
-		if (error.code != NSValidationMultipleErrorsError) {
-			NSManagedObject *object = error.userInfo[@"NSValidationErrorObject"];
-			[objectIDs addObject:object.objectID];
-			[errors addObject:error];
-		} else {
-			NSArray *detailedErrors = error.userInfo[NSDetailedErrorsKey];
-			for (NSError *error_ in detailedErrors) {
-				NSDictionary *detailedInfo = error_.userInfo;
-				NSManagedObject *object = detailedInfo[@"NSValidationErrorObject"];
-				[objectIDs addObject:object.objectID];
-				[errors addObject:error_];
-			}
-		}
-	}];
-
-	[reparationContext performBlockAndWait:^{
-		[objectIDs enumerateObjectsWithOptions:0 usingBlock:^(NSManagedObjectID *objectID, NSUInteger idx, BOOL *stop) {
-			NSError *error_;
-			id object = [reparationContext existingObjectWithID:objectID error:&error_];
-			if (!object) {
-				FNLOG(@"Failed to retrieve invalid object: %@", error_);
-				return;
-			}
-			[object repairWithError:errors[idx]];
-		}];
-	}];
-
-	return YES;
 }
 
 #pragma mark - Upload Download Manager
@@ -427,28 +363,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 			}
 		}];
 	}];
-}
-
-#pragma mark - Persistent Store
-
-- (void)loadPersistentContainerInBundle:(NSBundle *)bundle withCompletion:(void (^)(NSError *))completion {
-    if (_persistentContainer == nil) {
-        NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:@[bundle]];
-        _persistentContainer = [[NSPersistentContainer alloc] initWithName:@"AppBoxStore" managedObjectModel:model];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSPersistentStoreDescription *storeDescription = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:[fileManager storeURL]];
-        _persistentContainer.persistentStoreDescriptions = @[storeDescription];
-        [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *storeDescription, NSError *error) {
-            completion(error);
-        }];
-    }
-}
-
-- (void)unloadPersistentContainer {
-    if (_persistentContainer.viewContext.hasChanges) {
-        [_persistentContainer.viewContext save:nil];
-    }
-    _persistentContainer = nil;
 }
 
 @end

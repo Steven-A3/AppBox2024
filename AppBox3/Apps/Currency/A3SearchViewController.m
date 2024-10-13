@@ -59,7 +59,7 @@
 	if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
 		_tableView.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
 	}
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
 
     if (safeAreaInsets.top > 20) {
         // For iOS 11 and later, we place the search bar in the navigation bar.

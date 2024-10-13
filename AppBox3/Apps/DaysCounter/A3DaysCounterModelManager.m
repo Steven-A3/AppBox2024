@@ -10,10 +10,6 @@
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterDefine.h"
 #import "A3Formatter.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterEventLocation.h"
-#import "DaysCounterReminder.h"
-#import "DaysCounterDate.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaultsKeys.h"
@@ -23,13 +19,11 @@
 #import "NSDateFormatter+LunarDate.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3AppDelegate.h"
-#import "DaysCounterFavorite.h"
 #import "DaysCounterEvent+extension.h"
 #import "NSString+conversion.h"
 #import "A3CurrencyDataManager.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
 #import "NSDate-Utilities.h"
 #import "NSManagedObject+extension.h"
@@ -67,7 +61,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 + (NSMutableArray *)calendars {
-	NSArray *storedCalendars = [DaysCounterCalendar findAllSortedBy:@"order" ascending:YES];
+	NSArray *storedCalendars = [DaysCounterCalendar_ findAllSortedBy:@"order" ascending:YES];
 	if ([storedCalendars count] > 0) {
 		NSMutableArray *mutableCalendars = [NSMutableArray arrayWithArray:storedCalendars];
 		return mutableCalendars;
@@ -141,9 +135,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	]];
 
 	NSInteger order = 1000000;
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	for (NSDictionary *calendar in calendars) {
-        DaysCounterCalendar *newCalendar = [[DaysCounterCalendar alloc] initWithContext:context];
+        DaysCounterCalendar_ *newCalendar = [[DaysCounterCalendar_ alloc] initWithContext:context];
 		newCalendar.uniqueID = calendar[ID_KEY];
 		newCalendar.name = calendar[CalendarItem_Name];
 		newCalendar.colorID = calendar[CalendarItem_ColorID];
@@ -154,7 +148,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	}
     [context saveIfNeeded];
 
-	return [NSMutableArray arrayWithArray:[DaysCounterCalendar findAllSortedBy:@"order" ascending:YES]];
+	return [NSMutableArray arrayWithArray:[DaysCounterCalendar_ findAllSortedBy:@"order" ascending:YES]];
 }
 
 - (void)prepareToUse {
@@ -169,7 +163,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 		[[A3SyncManager sharedSyncManager] setObject:dict forKey:A3DaysCounterUserDefaultsSlideShowOptions state:A3DataObjectStateInitialized];
     }
-	if ([DaysCounterCalendar countOfEntities]  == 0) {
+	if ([DaysCounterCalendar_ countOfEntities]  == 0) {
 		[[self class] calendars];
 	}
 }
@@ -389,7 +383,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return address;
 }
 
-- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem
+- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation_ *)locationItem
 {
     FSVenue *venue = [[FSVenue alloc] init];
     venue.name = locationItem.locationName;
@@ -407,7 +401,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location
 {
-    DaysCounterEventLocation *locationItem = (DaysCounterEventLocation*)location;
+    DaysCounterEventLocation_ *locationItem = (DaysCounterEventLocation_ *)location;
     FSVenue *venue = [[FSVenue alloc] init];
     venue.name = locationItem.locationName;
     venue.contact = locationItem.contact;
@@ -420,7 +414,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return venue;
 }
 
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel {
+- (BOOL)addEvent:(DaysCounterEvent_ *)eventModel {
     if ( !eventModel.alertDatetime ) {
         eventModel.alertDatetime = nil;
         eventModel.hasReminder = @(NO);
@@ -434,13 +428,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
     eventModel.updateDate = [NSDate date];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     return YES;
 }
 
-- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem {
+- (BOOL)modifyEvent:(DaysCounterEvent_ *)eventItem {
     if ( !eventItem.effectiveStartDate ) {
         eventItem.effectiveStartDate = [eventItem.startDate solarDate];
     }
@@ -456,8 +450,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	DaysCounterReminder *reminder = [eventItem reminderItem];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	DaysCounterReminder_ *reminder = [eventItem reminderItem];
     if ([eventItem.hasReminder boolValue] && reminder) {
         reminder.isUnread = @(YES);
         reminder.isOn = @(NO);
@@ -475,7 +469,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSArray *)visibleCalendarList
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"isShow", @YES];
-    return [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
+    return [DaysCounterCalendar_ findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
 }
 
 - (NSArray *)allUserVisibleCalendarList
@@ -486,28 +480,28 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 															  @"isShow",
 															  @YES
 	];
-    return [DaysCounterCalendar findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+    return [DaysCounterCalendar_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 - (NSArray *)allUserCalendarList
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", CalendarItem_Type, @(CalendarCellType_User)];
-    return [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
+    return [DaysCounterCalendar_ findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
 }
 
 - (id)calendarItemByID:(NSString *)calendarID {
-    return [DaysCounterCalendar findFirstByAttribute:@"uniqueID" withValue:calendarID];
+    return [DaysCounterCalendar_ findFirstByAttribute:@"uniqueID" withValue:calendarID];
 }
 
-- (BOOL)removeEvent:(DaysCounterEvent *)event {
+- (BOOL)removeEvent:(DaysCounterEvent_ *)event {
 	[event deletePhoto];
 
-	[DaysCounterDate deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
-	[DaysCounterEventLocation deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
-	[DaysCounterFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
-	[DaysCounterReminder deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterDate_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterEventLocation_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterFavorite_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
+	[DaysCounterReminder_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"eventID == %@", event.uniqueID]];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:event];
     
     [context saveIfNeeded];
@@ -515,14 +509,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	return YES;
 }
 
-- (BOOL)removeCalendar:(DaysCounterCalendar *)calendar
+- (BOOL)removeCalendar:(DaysCounterCalendar_ *)calendar
 {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:calendar];
 
     BOOL retValue = NO;
-    NSArray *events = [DaysCounterEvent findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID]];
-    for (DaysCounterEvent *event in events) {
+    NSArray *events = [DaysCounterEvent_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID]];
+    for (DaysCounterEvent_ *event in events) {
         retValue = [self removeEvent:event];
     }
 
@@ -533,7 +527,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return retValue;
 }
 
-- (UIColor *)colorForCalendar:(DaysCounterCalendar *)calendar {
+- (UIColor *)colorForCalendar:(DaysCounterCalendar_ *)calendar {
 	NSUInteger index = [calendar.colorID unsignedIntegerValue];
 	return [self calendarColorArray][index][CalendarItem_Color];
 }
@@ -588,31 +582,31 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfAllEvents
 {
-    return [DaysCounterEvent countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
+    return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
 }
 
 - (NSInteger)numberOfAllEventsToIncludeHiddenCalendar
 {
-    return [DaysCounterEvent countOfEntities];
+    return [DaysCounterEvent_ countOfEntities];
 }
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date withHiddenCalendar:(BOOL)hiddenCalendar
 {
     if (hiddenCalendar) {
-        return [DaysCounterEvent countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate > %@ || repeatEndDate > %@) || (repeatType != %@ && repeatEndDate == nil)", date, date, @(RepeatType_Never)]];
+        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate > %@ || repeatEndDate > %@) || (repeatType != %@ && repeatEndDate == nil)", date, date, @(RepeatType_Never)]];
     }
     else {
-        return [DaysCounterEvent countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", [self hiddenCalendars], date, date, @(RepeatType_Never)]];
+        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))", [self hiddenCalendars], date, date, @(RepeatType_Never)]];
     }
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date withHiddenCalendar:(BOOL)hiddenCalendar
 {
     if (hiddenCalendar) {
-        return [DaysCounterEvent countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@)", date, @(RepeatType_Never), date]];
+        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@)", date, @(RepeatType_Never), date]];
     }
     else {
-        return [DaysCounterEvent countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", [self hiddenCalendars], date, @(RepeatType_Never), date]];
+        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", [self hiddenCalendars], date, @(RepeatType_Never), date]];
     }
 }
 
@@ -624,12 +618,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && photoID != nil", [self hiddenCalendars]]];
+    return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && photoID != nil", [self hiddenCalendars]]];
 }
 
 - (NSDate*)dateOfLatestEvent
 {
-    DaysCounterEvent *event = [DaysCounterEvent findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    DaysCounterEvent_ *event = [DaysCounterEvent_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if ( event == nil )
         return nil;
     
@@ -638,13 +632,13 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray*)allEventsList
 {
-    return [DaysCounterEvent findAllWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
+    return [DaysCounterEvent_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@", [self hiddenCalendars]]];
 }
 
 - (NSArray*)allEventsListContainedImage
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && photoID != nil", [self hiddenCalendars]];
-    return [DaysCounterEvent findAllSortedBy:@"effectiveStartDate"
+    return [DaysCounterEvent_ findAllSortedBy:@"effectiveStartDate"
                                    ascending:YES
                                withPredicate:predicate];
 }
@@ -658,7 +652,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					date,
 					date,
 					@(RepeatType_Never)];
-    return [DaysCounterEvent findAllWithPredicate:predicate];
+    return [DaysCounterEvent_ findAllWithPredicate:predicate];
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
@@ -670,19 +664,19 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 					date,
 					@(RepeatType_Never),
 					date];
-    return [DaysCounterEvent findAllWithPredicate:predicate];
+    return [DaysCounterEvent_ findAllWithPredicate:predicate];
 }
 
 - (NSArray*)favoriteEventsList
 {
-    return [DaysCounterFavorite findAllSortedBy:@"order" ascending:YES];
+    return [DaysCounterFavorite_ findAllSortedBy:@"order" ascending:YES];
 }
 
 - (void)arrangeReminderList
 {
     NSDate *now = [NSDate date];
-    NSArray *reminders = [DaysCounterReminder findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
-    [reminders enumerateObjectsUsingBlock:^(DaysCounterReminder *reminder, NSUInteger idx, BOOL *stop) {
+    NSArray *reminders = [DaysCounterReminder_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
+    [reminders enumerateObjectsUsingBlock:^(DaysCounterReminder_ *reminder, NSUInteger idx, BOOL *stop) {
         if ([reminder.isUnread isEqualToNumber:@(NO)]) {
             if ([reminder.startDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
                 reminder.isOn = @(NO);
@@ -694,7 +688,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSArray*)reminderList
 {
     [self arrangeReminderList];
-    return [DaysCounterReminder findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
+    return [DaysCounterReminder_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
 }
 
 + (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay
@@ -999,7 +993,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [names objectAtIndex:type];
 }
 
-- (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView
+- (void)setupEventSummaryInfo:(DaysCounterEvent_ *)item toView:(UIView*)toView
 {
     A3DaysCounterSlideshowEventSummaryView *categoryCell = (A3DaysCounterSlideshowEventSummaryView *)toView;
 
@@ -1174,7 +1168,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 #pragma mark - Period
 
-- (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
+- (DaysCounterEvent_ *)closestEventObjectOfCalendar:(DaysCounterCalendar_ *)calendar
 {
     NSDateComponents *nowComp = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[NSDate date]];
     nowComp.hour = 0;
@@ -1183,7 +1177,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSDate *today = [[[A3AppDelegate instance] calendar] dateFromComponents:nowComp];
 
 	// return Today or closest until
-	DaysCounterEvent *closestEvent = [DaysCounterEvent findFirstWithPredicate:
+	DaysCounterEvent_ *closestEvent = [DaysCounterEvent_ findFirstWithPredicate:
 			[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate >= %@",
 					calendar.uniqueID,
 					today]
@@ -1192,12 +1186,12 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 	if (closestEvent) return closestEvent;
 
 	// return closest since
-	closestEvent =  [DaysCounterEvent findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
+	closestEvent =  [DaysCounterEvent_ findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@ AND effectiveStartDate < %@", calendar.uniqueID, today] sortedBy:@"effectiveStartDate" ascending:YES];
 	if (closestEvent) return closestEvent;
-	return [DaysCounterEvent findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID] sortedBy:@"effectiveStartDate" ascending:YES];
+	return [DaysCounterEvent_ findFirstWithPredicate:[NSPredicate predicateWithFormat:@"calendarID == %@", calendar.uniqueID] sortedBy:@"effectiveStartDate" ascending:YES];
 }
 
-+ (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now
++ (NSDate *)effectiveDateForEvent:(DaysCounterEvent_ *)event basisTime:(NSDate *)now
 {
     if ([event.repeatType isEqual:@(RepeatType_Never)]) {
         return [event.startDate solarDate];
@@ -1272,7 +1266,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 }
 
 #pragma mark EventModel Dictionary
-- (void)recalculateEventDatesForEvent:(DaysCounterEvent *)eventModel
+- (void)recalculateEventDatesForEvent:(DaysCounterEvent_ *)eventModel
 {
     // EffectiveStartDate 갱신.
     eventModel.effectiveStartDate = [A3DaysCounterModelManager effectiveDateForEvent:eventModel basisTime:[NSDate date]];
@@ -1295,7 +1289,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 + (void)reloadAlertDateListForLocalNotification {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 
     // 기존 등록 얼럿 제거.
     [[[UIApplication sharedApplication] scheduledLocalNotifications] enumerateObjectsUsingBlock:^(UILocalNotification *notification, NSUInteger idx, BOOL *stop) {
@@ -1305,7 +1299,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
     }];
 
-	NSArray *alertItems = [DaysCounterEvent findByAttribute:@"hasReminder" withValue:@YES];
+	NSArray *alertItems = [DaysCounterEvent_ findByAttribute:@"hasReminder" withValue:@YES];
 	
 	if (![alertItems count])
         return;
@@ -1323,8 +1317,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     nowDateComp.second = 0;
     __block NSDate *now = [calendar dateFromComponents:nowDateComp];
     NSMutableArray *localNotifications = [NSMutableArray new];
-    [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-		DaysCounterReminder *reminder = [event reminderItem];
+    [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent_ *event, NSUInteger idx, BOOL *stop) {
+		DaysCounterReminder_ *reminder = [event reminderItem];
         if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) {
             [context deleteObject:reminder];
 			reminder = nil;
@@ -1346,7 +1340,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 		reminder = [event reminderItem];
         if ([event.hasReminder isEqualToNumber:@(YES)]) {
             if (!reminder) {
-                reminder = [[DaysCounterReminder alloc] initWithContext:context];
+                reminder = [[DaysCounterReminder_ alloc] initWithContext:context];
 				reminder.uniqueID = [[NSUUID UUID] UUIDString];
 				reminder.updateDate = [NSDate date];
                 reminder.eventID = event.uniqueID;
@@ -1404,7 +1398,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     [context saveIfNeeded];
 }
 
-+ (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event
++ (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent_ *)event
 {
     NSDateComponents *alertIntervalComp = [NSDateComponents new];
     alertIntervalComp.minute = -[event.alertInterval integerValue];
@@ -1506,9 +1500,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 #pragma mark - Manipulate DaysCounterDateModel Object
 
-+ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
++ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent_ *)eventModel endDate:(BOOL)isEndDate;
 {
-    DaysCounterDate *dateModel = isEndDate ? [eventModel endDateCreateIfNotExist:YES ] : eventModel.startDate;
+   DaysCounterDate_ *dateModel = isEndDate ? [eventModel endDateCreateIfNotExist:YES ] : eventModel.startDate;
 
     BOOL isResultLeapMonth;
     if ([eventModel.isLunar boolValue]) {
@@ -1543,7 +1537,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     }
 }
 
-+ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDate *)dateObject toLunar:(BOOL)isLunar
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDate_ *)dateObject toLunar:(BOOL)isLunar
 {
     NSDateComponents * dateComp;
     if (isLunar) {
@@ -1570,7 +1564,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 #pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
 
-+ (NSString *)dateStringFromDateModel:(DaysCounterDate *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay {
++ (NSString *)dateStringFromDateModel:(DaysCounterDate_ *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay {
     NSString *dateString;
     if (isLunar) {
         NSDateFormatter *formatter = [NSDateFormatter new];
@@ -1619,7 +1613,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return dateString;
 }
 
-+ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDate *)dateModel isLeapMonth:(BOOL)isLeapMonth
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDate_ *)dateModel isLeapMonth:(BOOL)isLeapMonth
 {
     NSString *dateString;
     NSDateFormatter *formatter = [NSDateFormatter new];

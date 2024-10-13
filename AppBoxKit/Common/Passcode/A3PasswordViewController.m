@@ -280,7 +280,7 @@
 
 	[self prepareAsLockscreen];
 
-    UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+    UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
 	if (!mainWindow) {
 //		UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
 		[rootViewController presentViewController:self animated:NO completion:NULL];

@@ -9,7 +9,7 @@
 #import "LadyCalendarPeriod+extension.h"
 #import "A3AppDelegate.h"
 
-@implementation LadyCalendarPeriod (extension)
+@implementation LadyCalendarPeriod_ (extension)
 
 - (void)awakeFromFetch {
 	[super awakeFromFetch];

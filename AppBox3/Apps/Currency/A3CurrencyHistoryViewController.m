@@ -8,9 +8,7 @@
 
 #import "A3CurrencyHistoryViewController.h"
 #import "A3CurrencyHistory2RowCell.h"
-#import "CurrencyHistory.h"
 #import "A3CurrencyHistory3RowCell.h"
-#import "CurrencyHistoryItem.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
@@ -132,9 +130,9 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
-		[CurrencyHistory truncateAll];
-		[CurrencyHistoryItem truncateAll];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+		[CurrencyHistory_ truncateAll];
+		[CurrencyHistoryItem_ truncateAll];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
 		[self.tableView reloadData];
@@ -150,7 +148,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-			_fetchedResultsController = [CurrencyHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+			_fetchedResultsController = [CurrencyHistory_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -182,14 +180,14 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	CurrencyHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	CurrencyHistory_ *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	return 50.0 + [history targetCount] * 14.0;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	CurrencyHistory *currencyHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
+	CurrencyHistory_ *currencyHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
 
 	A3NumberFormatter *nf = [[A3NumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
@@ -210,7 +208,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	((UILabel *) cell.rightLabels[0]).text = [currencyHistory.updateDate timeAgo];
 
 	for (NSInteger index = 1; index < numberOfLines; index++) {
-		CurrencyHistoryItem *item = items[index - 1];
+		CurrencyHistoryItem_ *item = items[index - 1];
 		float rate = item.rate.floatValue / currencyHistory.rate.floatValue;
 		[nf setCurrencyCode:item.currencyCode];
 
@@ -233,9 +231,9 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        CurrencyHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
-		for (CurrencyHistoryItem *historyItem in history.targets) {
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        CurrencyHistory_ *history = [_fetchedResultsController objectAtIndexPath:indexPath];
+		for (CurrencyHistoryItem_ *historyItem in history.targets) {
             [context deleteObject:historyItem];
 		}
         [context deleteObject:history];

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @class A3RoundedSideButton;
-@class TipCalcRecent;
 @class A3TipCalcDataManager;
 
 @interface A3TipCalcHeaderView : UIView
@@ -21,7 +20,7 @@
 
 - (id)initWithFrame:(CGRect)frame dataManager:(A3TipCalcDataManager *)dataManager;
 - (void)showDetailInfoButton;
-- (void)setResult:(TipCalcRecent *)result;
-- (void)setResult:(TipCalcRecent *)result withAnimation:(BOOL)animate;
+- (void)setResult:(TipCalcRecent_ *)result;
+- (void)setResult:(TipCalcRecent_ *)result withAnimation:(BOOL)animate;
 
 @end

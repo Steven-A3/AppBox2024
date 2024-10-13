@@ -6,9 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "WalletItem.h"
-
-@interface WalletItem (Favorite)
+@interface WalletItem_ (Favorite)
 
 - (void)changeFavorite:(BOOL)isAdd;
 

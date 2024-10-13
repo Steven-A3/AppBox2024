@@ -9,10 +9,10 @@
 #import <AppBoxKit/AppBoxKit.h>
 #import "ExpenseListItem+management.h"
 
-@implementation ExpenseListItem (management)
+@implementation ExpenseListItem_ (management)
 
 - (NSString *)makeOrderString {
-	ExpenseListItem *lastItem = [ExpenseListItem findFirstOrderedByAttribute:@"order" ascending:NO];
+	ExpenseListItem_ *lastItem = [ExpenseListItem_ findFirstOrderedByAttribute:@"order" ascending:NO];
 	return [NSString orderStringWithOrder:[lastItem.order integerValue] + 1000000];
 }
 

@@ -80,7 +80,7 @@
 	[self.view addSubview:_lbAMPM];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top;
 
     _weekdayMonthDay = [[UILabel alloc] init];
@@ -166,7 +166,7 @@
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top;
 
     _weekdayMonthDayBaseline.offset(IS_IPHONE && ![UIWindow interfaceOrientationIsPortrait] ? 27 : 50 + verticalOffset);
@@ -300,7 +300,7 @@
 		CGFloat offsetTitle = isPortrait ? 52 : 161;
 
         CGFloat verticalOffsetFromTop = 0;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         verticalOffsetFromTop = safeAreaInsets.top;
 
         if (isPortrait) {

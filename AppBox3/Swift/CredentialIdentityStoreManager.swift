@@ -24,7 +24,7 @@ import AppBoxKit
     }
 
     func updateCredentialStore() {
-        let context = A3SyncManager.shared().persistentContainer.viewContext;
+        guard let context = CoreDataStack.shared.persistentContainer?.viewContext else { return }
         
         // Account Catetory를 읽어들인다.
         let url = Bundle.main.url(forResource: "WalletCategoryPreset", withExtension: "plist")!
@@ -47,14 +47,14 @@ import AppBoxKit
             let IDofPassword = filterByValue(array: fields, key: "name", value: "Password")
             let IDofURL = filterByValue(array: fields, key: "name", value: "URL")
             
-            let request: NSFetchRequest = WalletFieldItem.fetchRequest()
+            let request: NSFetchRequest = WalletFieldItem_.fetchRequest()
             request.returnsObjectsAsFaults = false
             request.predicate = NSPredicate(format: "fieldID == %@ OR fieldID == %@ OR fieldID == %@", IDofName!, IDofPassword!, IDofURL!)
             //            request.propertiesToFetch = ["walletItemID", "fieldID", "value"]
             //            request.propertiesToGroupBy = ["walletItemID"]
             //            request.resultType = .dictionaryResultType
             
-            let result = try! context.fetch(request) as? [WalletFieldItem] ?? []
+            let result = try! context.fetch(request)
             //            os_log("%@", result)
             
             let groupByItemID = Dictionary(grouping: result, by: { $0!.walletItemID } )
@@ -88,7 +88,7 @@ import AppBoxKit
         }
     }
     
-    func getValueFromWalletFieldItem(array: [WalletFieldItem], value: String) -> String? {
+    func getValueFromWalletFieldItem(array: [WalletFieldItem_], value: String) -> String? {
         let results = array.filter {
             $0.fieldID == value
         }

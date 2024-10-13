@@ -12,7 +12,6 @@
 #import "UIViewController+A3Addition.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "CurrencyFavorite.h"
 #import "A3YahooCurrency.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -198,7 +197,7 @@ NSString *const A3NotificationCurrencyCodeSelected = @"A3NotificationCurrencyCod
         return NO;
     }
     
-	return [CurrencyFavorite countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"%K == %@", ID_KEY, object]] > 0;
+	return [CurrencyFavorite_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"%K == %@", ID_KEY, object]] > 0;
 }
 
 #pragma mark - Table view delegate

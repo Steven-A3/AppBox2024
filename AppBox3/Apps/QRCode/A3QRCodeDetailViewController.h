@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class QRCodeHistory;
-
 @interface A3QRCodeDetailViewController : UIViewController
 
-@property (nonatomic, strong) QRCodeHistory *historyData;
+@property (nonatomic, strong) QRCodeHistory_ *historyData;
 @property (nonatomic, strong) NSArray<NSArray *> *sections;
 @property (nonatomic, assign) BOOL showSearchOnGoogleButton;
 

@@ -97,7 +97,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[self setButtonTintColor];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = -safeAreaInsets.bottom;
 
     CGRect bounds = [self screenBoundsAdjustedWithOrientation];
@@ -290,7 +290,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self.view addSubview:_clockAppsButton];
 
         CGFloat verticalOffset = 0;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         verticalOffset = safeAreaInsets.top;
         
 		[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
@@ -356,7 +356,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 		[self.view addSubview:_yahooButton];
 
         CGFloat verticalOffset = 0;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         verticalOffset = -safeAreaInsets.bottom;
 
 		[_yahooButton makeConstraints:^(MASConstraintMaker *make) {
@@ -391,7 +391,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[self.view addSubview:_chooseColorButton];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = -safeAreaInsets.bottom;
 
 	[_chooseColorButton makeConstraints:^(MASConstraintMaker *make) {
@@ -932,7 +932,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	_scrollView.contentSize = CGSizeMake(bounds.size.width * 4, bounds.size.height);
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top - 26;
 
     if (IS_IPHONE && [UIWindow interfaceOrientationIsLandscape]) {

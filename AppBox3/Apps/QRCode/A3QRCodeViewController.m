@@ -8,7 +8,6 @@
 
 #import "A3QRCodeViewController.h"
 #import "A3AppDelegate.h"
-#import "QRCodeHistory.h"
 #import "A3QRCodeHistoryViewController.h"
 #import "A3NavigationController.h"
 #import "UIViewController+A3Addition.h"
@@ -120,7 +119,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[_bottomToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[_statusToolbar setBackgroundImage:image forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 
-    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] myKeyWindow].safeAreaInsets;
     _statusToolbarHeightConstraint.constant = safeAreaInsets.top;
     _bottomToolbarBottomSpaceConstraint.constant = safeAreaInsets.bottom;
 
@@ -269,12 +268,12 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 				AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 			}
             
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode.stringValue];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+			QRCodeHistory_ *history = [QRCodeHistory_ findFirstByAttribute:@"scanData" withValue:barcode.stringValue];
 			if (history) {
 				history.created = [NSDate date];
 			} else {
-                history = [[QRCodeHistory alloc] initWithContext:context];
+                history = [[QRCodeHistory_ alloc] initWithContext:context];
 				history.uniqueID = [[NSUUID UUID] UUIDString];
 				history.created = [NSDate date];
 				history.type = barcode.type;
@@ -359,12 +358,12 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	CIQRCodeFeature *feature = [features firstObject];
 	void(^alertBlock)(void) = nil;
 	if (feature) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-		QRCodeHistory *newItem = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:feature.messageString];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+		QRCodeHistory_ *newItem = [QRCodeHistory_ findFirstByAttribute:@"scanData" withValue:feature.messageString];
 		if (newItem) {
 			newItem.created = [NSDate date];
 		} else {
-            newItem = [[QRCodeHistory alloc] initWithContext:context];
+            newItem = [[QRCodeHistory_ alloc] initWithContext:context];
 			newItem.uniqueID = [[NSUUID UUID] UUIDString];
 			newItem.created = [NSDate date];
 			newItem.type = feature.type;
@@ -408,8 +407,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		if ([JSON[@"responseStatus"] integerValue] == 200) {
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-			QRCodeHistory *history = [QRCodeHistory findFirstByAttribute:@"scanData" withValue:barcode];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+			QRCodeHistory_ *history = [QRCodeHistory_ findFirstByAttribute:@"scanData" withValue:barcode];
             NSError *error;
 			history.searchData = [NSKeyedArchiver archivedDataWithRootObject:JSON requiringSecureCoding:YES error:&error];
             if (error) {
@@ -426,7 +425,7 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[operation start];
 }
 
-- (void)presentDetailViewControllerWithData:(QRCodeHistory *)data {
+- (void)presentDetailViewControllerWithData:(QRCodeHistory_ *)data {
 	A3QRCodeDetailViewController *viewController = [A3QRCodeDetailViewController new];
 	viewController.historyData = data;
 	[self.navigationController pushViewController:viewController animated:YES];

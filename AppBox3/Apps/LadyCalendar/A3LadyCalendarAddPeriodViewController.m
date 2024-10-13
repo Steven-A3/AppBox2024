@@ -11,7 +11,6 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "UIColor+A3Addition.h"
@@ -22,7 +21,6 @@
 #import "LadyCalendarPeriod+extension.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "LadyCalendarAccount.h"
 #import "A3UserDefaults.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -36,7 +34,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 @property (strong, nonatomic) NSMutableArray *sectionsArray;
 @property (strong, nonatomic) NSString *inputItemKey;
-@property (strong, nonatomic) LadyCalendarPeriod *prevPeriod;
+@property (strong, nonatomic) LadyCalendarPeriod_ *prevPeriod;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
 @property (copy, nonatomic) UIColor *textColorBeforeEditing;
 @property (weak, nonatomic) UITextField *editingTextField;
@@ -119,7 +117,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 						ItemKey_Type : @(PeriodCellType_Delete)
 						}]]}];
 		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
-		LadyCalendarPeriod *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
+		LadyCalendarPeriod_ *latestPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
 		_isLatestPeriod = [_periodItem.startDate isEqualToDate:latestPeriod.startDate];
 	} else {
 		A3LadyCalendarModelManager *modelManager = [A3LadyCalendarModelManager new];
@@ -127,8 +125,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		
 		self.prevPeriod = [_dataManager lastPeriod];
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        _periodItem = [[LadyCalendarPeriod alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        _periodItem = [[LadyCalendarPeriod_ alloc] initWithContext:context];
 		_periodItem.updateDate = [NSDate date];
 		_periodItem.cycleLength = cycleLength == 0 ? @28 : @(cycleLength);
 		_periodItem.isPredict = @NO;
@@ -594,7 +592,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)deletePeriodAction
 {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:_periodItem];
     [context saveIfNeeded];
 
@@ -849,7 +847,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     }
 
     // cycle length 변경.
-    LadyCalendarPeriod *currentPeriod = [_dataManager currentPeriodFromDate:fromDate];
+    LadyCalendarPeriod_ *currentPeriod = [_dataManager currentPeriodFromDate:fromDate];
     if (_isEditMode && currentPeriod && [currentPeriod.startDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970]) {
         _prevPeriod = currentPeriod;
     }
@@ -908,9 +906,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.updateDate = [NSDate date];
 	_periodItem.isPredict = @NO;
 
-    LadyCalendarAccount *account = self.dataManager.currentAccount;
+    LadyCalendarAccount_ *account = self.dataManager.currentAccount;
 	account.watchingDate = _periodItem.startDate;
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     [_dataManager recalculateDates];
@@ -929,7 +927,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)cancelAction:(id)sender
 {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	if ([context hasChanges]) {
 		[context rollback];
 	}

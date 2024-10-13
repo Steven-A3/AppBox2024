@@ -14,8 +14,6 @@
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3DaysCounterRepeatCustomCell.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterDate.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "DaysCounterEvent+extension.h"
 #import "UITableView+utility.h"

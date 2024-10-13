@@ -20,10 +20,8 @@ extern NSString *const A3PedometerSettingsNumberOfGoalSteps;
 - (UIColor *)colorForLessThan50Percent;
 - (UIColor *)colorForLessThan100Percent;
 - (UIColor *)colorForMoreThan100Percent;
-
 - (NSString *)stringFromDistance:(NSNumber *)distance;
-
 - (BOOL)usesMetricSystem;
-
 - (NSDictionary *)distanceValueForMeasurementSystemFromDistance:(NSNumber *)distance;
+
 @end

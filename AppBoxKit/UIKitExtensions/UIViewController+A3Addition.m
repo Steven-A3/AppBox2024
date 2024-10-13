@@ -210,7 +210,7 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 	CGRect clippingViewFrame = moreMenuView.frame;
     
     CGFloat vertifcalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top == 59) {
         clippingViewFrame.origin.y = 38.7 + safeAreaInsets.top;
     } else {
@@ -467,12 +467,8 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 }
 
 - (void)alertInternetConnectionIsNotAvailable {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"Internet connection is not available.", nil)
-													   delegate:nil
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:nil];
-	[alertView show];
+    [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                        message:NSLocalizedString(@"Internet connection is not available.", nil)];
 }
 
 - (void)willDismissFromRightSide
@@ -480,12 +476,8 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 
 }
 - (void)alertCloudNotEnabled {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"iCloud", @"iCloud")
-														message:NSLocalizedString(@"iCloud_goto_settings", @"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.")
-													   delegate:self
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:nil];
-	[alertView show];
+    [self presentAlertWithTitle:NSLocalizedString(@"iCloud", @"iCloud")
+                        message:NSLocalizedString(@"iCloud_goto_settings", @"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.")];
 }
 
 - (UIActionSheet *)actionSheetAskingImagePickupWithDelete:(BOOL)deleteEnable delegate:(id <UIActionSheetDelegate>)delegate {

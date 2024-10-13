@@ -7,14 +7,13 @@
 //
 
 #import "LoanCalcComparisonHistory+extension.h"
-#import "LoanCalcHistory.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation LoanCalcComparisonHistory (extension)
+@implementation LoanCalcComparisonHistory_ (extension)
 
 - (NSArray *)details {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"comparisonHistoryID == %@", self.uniqueID];
-	return [LoanCalcHistory findAllWithPredicate:predicate];
+	return [LoanCalcHistory_ findAllWithPredicate:predicate];
 }
 
 @end

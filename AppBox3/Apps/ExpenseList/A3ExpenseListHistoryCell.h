@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ExpenseListBudget;
+@class ExpenseListBudget_;
+
 @interface A3ExpenseListHistoryCell : UITableViewCell
-- (void)setExpenseBudgetData:(ExpenseListBudget *)aBudget currencyFormatter:(NSNumberFormatter *)nFormatter;
+
+- (void)setExpenseBudgetData:(ExpenseListBudget_ *)aBudget currencyFormatter:(NSNumberFormatter *)nFormatter;
+
 @end

@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "DaysCounterReminder.h"
+@class DaysCounterEvent_;
 
-@class DaysCounterEvent;
+@interface DaysCounterReminder_ (extension)
 
-@interface DaysCounterReminder (extension)
-
-- (DaysCounterEvent *)event;
+- (DaysCounterEvent_ *)event;
 @end

@@ -168,7 +168,7 @@ static NSString *const A3V3InstructionDidShowForHolidaysCountryView = @"A3V3Inst
 	UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Holidays_2"];
     self.instructionViewController.delegate = self;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         [self.instructionViewController view];
         self.instructionViewController.topConstraint.constant = safeAreaInsets.top;

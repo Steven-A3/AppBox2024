@@ -15,7 +15,6 @@
 #import "A3DateKeyboardViewController_iPad.h"
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "SFKImage.h"
-#import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "A3UIDevice.h"

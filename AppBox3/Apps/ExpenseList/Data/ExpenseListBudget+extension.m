@@ -8,23 +8,22 @@
 
 #import <AppBoxKit/AppBoxKit.h>
 #import "ExpenseListBudget+extension.h"
-#import "ExpenseListItem.h"
 
-@implementation ExpenseListBudget (extension)
+@implementation ExpenseListBudget_ (extension)
 
 - (NSInteger)expenseItemsCount {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", self.uniqueID];
-	return [ExpenseListItem countOfEntitiesWithPredicate:predicate];
+	return [ExpenseListItem_ countOfEntitiesWithPredicate:predicate];
 }
 
 - (NSArray *)expenseItems {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", self.uniqueID];
-	return [ExpenseListItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [ExpenseListItem_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 - (NSArray *)expenseItemsHasData {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ AND hasData == YES", self.uniqueID];
-	return [ExpenseListItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [ExpenseListItem_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 @end

@@ -18,7 +18,6 @@
 #import "A3KeychainUtils.h"
 #import "A3LaunchViewController.h"
 #import "A3MainViewController.h"
-#import "DaysCounterEvent.h"
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3LadyCalendarDetailViewController.h"
@@ -39,9 +38,7 @@
 #import "A3LadyCalendarModelManager.h"
 #import "A3NavigationController.h"
 #import "A3HomeStyleMenuViewController.h"
-#import "WalletItem.h"
 #import "WalletFieldItem+initialize.h"
-#import "WalletCategory.h"
 #import <CoreMotion/CoreMotion.h>
 #import "TJDropbox.h"
 #import "ACSimpleKeychain.h"
@@ -54,11 +51,11 @@
 #import <AdSupport/AdSupport.h>
 #import "TJDropboxAuthenticator.h"
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import "Pedometer.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "AppBox3-Swift.h"
 #import <AppBoxKit/AppBoxKit.h>
+#import <AppBoxKit/AppBoxKit-Swift.h>
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
 #import "UIViewController+extension.h"
@@ -91,7 +88,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 @property (nonatomic, strong) NSTimer *locationUpdateTimer;
 @property (nonatomic, copy) NSString *deviceToken;
 @property (nonatomic, copy) NSString *alertURLString;
-// TODO: 3D Touch 장비 입수후 테스트 필요
 @property (nonatomic, strong) UIApplicationShortcutItem *shortcutItem;
 @property (nonatomic, strong) GADRequest *adRequest;
 @property (nonatomic, strong) GADBannerView *adBannerView;
@@ -284,62 +280,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         [[UIApplication sharedApplication] endBackgroundTask:identifier];
         identifier = UIBackgroundTaskInvalid;
     }];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        NSManagedObjectContext *managedObjectContext = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        [managedObjectContext performBlock:^{
-            if (managedObjectContext.hasChanges) {
-                BOOL shouldSaveChanges = NO;
-                NSArray *insertedObjects = [[managedObjectContext insertedObjects] allObjects];
-                for (id insertedObj in insertedObjects) {
-                    if ([insertedObj isKindOfClass:[WalletItem class]]) {
-                        WalletItem *insertedWalletItem = insertedObj;
-                        if     (    [[insertedWalletItem.name stringByTrimmingSpaceCharacters] length] ||
-                                [[insertedWalletItem.note stringByTrimmingSpaceCharacters] length])
-                        {
-                            shouldSaveChanges = YES;
-                            break;
-                        }
-                    }
-                    if ([insertedObj isKindOfClass:[WalletFieldItem class]]) {
-                        WalletFieldItem *fieldItem = insertedObj;
-                        if (    [[fieldItem.value stringByTrimmingSpaceCharacters] length] ||
-                                fieldItem.hasImage || fieldItem.hasVideo || fieldItem.date)
-                        {
-                            shouldSaveChanges = YES;
-                            break;
-                        }
-                    }
-                    if ([insertedObj isKindOfClass:[WalletCategory class]]) {
-                        WalletCategory *category = insertedObj;
-                        if ([[category.name stringByTrimmingSpaceCharacters] length]) {
-                            shouldSaveChanges = YES;
-                            break;
-                        }
-                    }
-                    if ([insertedObj isKindOfClass:[DaysCounterEvent class]]) {
-                        DaysCounterEvent *event = insertedObj;
-                        if ([[event.eventName stringByTrimmingSpaceCharacters] length] ||
-                                [[event.notes stringByTrimmingSpaceCharacters] length] ||
-                                event.photoID )
-                        {
-                            shouldSaveChanges = YES;
-                            break;
-                        }
-                    }
-                }
-                FNLOG(@"Core data changes will be saved: %@", shouldSaveChanges ? @"YES" : @"NO");
-                if (shouldSaveChanges) {
-                    [managedObjectContext save:NULL];
-                }
-            }
-
-            [[A3SyncManager sharedSyncManager] synchronizeWithCompletion:^(NSError *error) {
-                [[UIApplication sharedApplication] endBackgroundTask:identifier];
-                identifier = UIBackgroundTaskInvalid;
-            }];
-        }];
-    });
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -383,8 +323,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Saves changes in the application's managed object context before the application terminates.
-    [A3SyncManager.sharedSyncManager.persistentContainer.viewContext saveIfNeeded];
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -637,7 +575,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
     FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
 
-    DaysCounterEvent *eventItem = [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
+    DaysCounterEvent_ *eventItem = [DaysCounterEvent_ findFirstByAttribute:@"uniqueID" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
     A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] init];
     viewController.isNotificationPopup = YES;
     viewController.eventItem = eventItem;
@@ -1003,37 +941,17 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 #pragma mark - Setup Core Data Managed Object Context
 
 - (void)setupAfterLoadCoredata {
-    NSManagedObjectModel *model = [A3SyncManager sharedSyncManager].persistentContainer.managedObjectModel;
+    NSPersistentContainer *container = CoreDataStack.shared.persistentContainer;
+    if (!container) {
+        return;
+    }
+
+    NSManagedObjectModel *model = container.managedObjectModel;
+    if (!model) {
+        return;
+    }
     if ([self deduplicateDatabaseWithModel:model]) {
-        // 중복 데이터가 발견되었다면, 동기화를 끄고, 사용자에게 새로 시작하도록 안내를 한다.
-        if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
-            A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            sharedSyncManager.storePath = [[fileManager storeURL] path];
-            [sharedSyncManager setupEnsemble];
-            [sharedSyncManager disableCloudSync];
-            
-            [[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
-            [[A3UserDefaults standardUserDefaults] synchronize];
-            
-            UIAlertView *alertSyncDisabled = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                                        message:NSLocalizedString(@"iCloud Sync is disabled due to duplicated records in your data. Tap Help to enable sync again.", nil)
-                                                                       delegate:self
-                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                              otherButtonTitles:NSLocalizedString(@"Help", @"Help"), nil];
-            alertSyncDisabled.tag = 31;
-            [alertSyncDisabled show];
-        }
-    } else {
-        if ([[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled]) {
-            A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            sharedSyncManager.storePath = [[fileManager storeURL] path];
-            [sharedSyncManager setupEnsemble];
-            [sharedSyncManager synchronizeWithCompletion:NULL];
-            [sharedSyncManager uploadMediaFilesToCloud];
-            [sharedSyncManager downloadMediaFilesFromCloud];
-        }
+        FNLOG("Duplicated data has been detected and managed.");
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -1047,18 +965,18 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (void)setupContext
 {
-    [self setupStoreFiles];
+    [self migrateV47StoreFilesToAfterV48];
+
+    // Access the shared instance
+    CoreDataStack *coreDataStack = [CoreDataStack shared];
     
-    A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
-    [syncManager loadPersistentContainerInBundle:[NSBundle bundleForClass:[self class]] withCompletion:^(NSError * error) {
-        if (error == nil) {
-            self.isCoreDataReady = YES;
-            [self setupAfterLoadCoredata];
-        }
+    // Setup the Core Data stack
+    [coreDataStack setupStackWithCompletion:^{
+        NSLog(@"Core Data stack setup is complete.");
     }];
 }
 
-- (void)setupStoreFiles {
+- (void)migrateV47StoreFilesToAfterV48 {
     // 2023년 3월 13일 - MagicalRecord 제거 시작
     // Library folder 아래로 AppBoxPro 폴더를 만들고, AppBoxStore.sqlite를 찾는다.
     // 만약 해당 파일이 없다면 oldStorePath를 찾아서 해당 파일이 있으면 옮기고 없으면 loadPersistentContainer를 할 때 새롭게 생성이 될거라고 믿는다.
@@ -1256,21 +1174,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 #endif
     
     application.applicationIconBadgeNumber = 0;
-
-    NSString *url = [userInfo objectForKey:@"url"];
-    NSString *urlTitle = [userInfo objectForKey:@"urlTitle"];
-    if (![urlTitle length]) {
-        urlTitle = url;
-    }
-    self.alertURLString = url;
-    NSString *alertTitle = [userInfo objectForKey:@"alertTitle"];
-
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:alertTitle message:[apsInfo objectForKey:@"alert"] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    alertView.tag = ABAD_ALERT_PUSH_ALERT;
-    if ([url length]) {
-        [alertView addButtonWithTitle:urlTitle];
-    }
-    [alertView show];
 }
 
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings

@@ -14,7 +14,6 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3SyncManager.h"
-#import "DaysCounterCalendar.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "A3UIDevice.h"
@@ -59,8 +58,8 @@
     self.colorArray = [_sharedManager calendarColorArray];
     
     if ( !_isEditMode ) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        self.calendar = [[DaysCounterCalendar alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        self.calendar = [[DaysCounterCalendar_ alloc] initWithContext:context];
 		_calendar.uniqueID = [[NSUUID UUID] UUIDString];
 		_calendar.isShow = @YES;
 		_calendar.colorID = @6;
@@ -357,7 +356,7 @@
 }
 
 - (void)rollbackChanges {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if ([context hasChanges]) {
         [context rollback];
     }
@@ -383,7 +382,7 @@
 		_calendar.name = NSLocalizedString(@"Untitled", @"Untitled");
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if ( !_isEditMode ) {
 		[_calendar assignOrderAsFirst];
     }

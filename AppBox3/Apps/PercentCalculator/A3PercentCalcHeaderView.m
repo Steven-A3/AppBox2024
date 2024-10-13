@@ -9,7 +9,6 @@
 #import "A3PercentCalcHeaderView.h"
 #import "A3PercentCalculator.h"
 #import <QuartzCore/QuartzCore.h>
-#import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
 #import "NSNumberFormatter+Extension.h"
 #import "A3UIDevice.h"

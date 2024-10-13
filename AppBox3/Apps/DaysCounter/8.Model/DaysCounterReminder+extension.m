@@ -8,12 +8,11 @@
 
 #import <AppBoxKit/AppBoxKit.h>
 #import "DaysCounterReminder+extension.h"
-#import "DaysCounterEvent.h"
 
-@implementation DaysCounterReminder (extension)
+@implementation DaysCounterReminder_ (extension)
 
-- (DaysCounterEvent *)event {
-	return [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:self.eventID];
+- (DaysCounterEvent_ *)event {
+	return [DaysCounterEvent_ findFirstByAttribute:@"uniqueID" withValue:self.eventID];
 }
 
 @end

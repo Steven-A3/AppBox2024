@@ -9,7 +9,6 @@
 #import "A3SalesCalcHistoryViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "SalesCalcHistory.h"
 #import "A3SalesCalcData.h"
 #import "A3SalesCalcHistoryCell.h"
 #import "A3DefaultColorDefines.h"
@@ -109,7 +108,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [SalesCalcHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [SalesCalcHistory_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -122,26 +121,40 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
 -(void)clearButtonAction
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                               destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
-                                                    otherButtonTitles:nil];
-    [actionSheet showInView:self.view];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [SalesCalcHistory truncateAll];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                         message:nil
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Clear History", @"Clear History")
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+        // Clear history logic
+        [SalesCalcHistory_ truncateAll];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
-        _fetchedResultsController = nil;
+        self->_fetchedResultsController = nil;
         [self.tableView reloadData];
         
-        if ([_delegate respondsToSelector:@selector(clearSelectHistoryData)]) {
-            [_delegate clearSelectHistoryData];
+        if ([self->_delegate respondsToSelector:@selector(clearSelectHistoryData)]) {
+            [self->_delegate clearSelectHistoryData];
         }
-	}
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+
+    [actionSheet addAction:clearAction];
+    [actionSheet addAction:cancelAction];
+    
+    // For iPad, you need to specify a popover source
+    if (IS_IPAD) {
+        actionSheet.popoverPresentationController.sourceView = self.view;
+        actionSheet.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+        actionSheet.popoverPresentationController.permittedArrowDirections = 0; // No arrow
+    }
+
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 - (void)doneButtonAction:(id)sender
@@ -173,7 +186,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SalesCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+    SalesCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
     A3SalesCalcData *historyData = [A3SalesCalcData loadDataFromHistory:aData];
     FNLOG(@"%@", historyData);
     
@@ -187,7 +200,7 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([_delegate respondsToSelector:@selector(didSelectHistoryData:)]) {
-        SalesCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+        SalesCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
         A3SalesCalcData *historyData = [A3SalesCalcData loadDataFromHistory:aData];
         [_delegate didSelectHistoryData:historyData];
         [self doneButtonAction:nil];
@@ -207,8 +220,8 @@ NSString *const A3SalesCalcHistoryCellID = @"cell1";
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        SalesCalcHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        SalesCalcHistory_ *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:history];
         [context saveIfNeeded];
         

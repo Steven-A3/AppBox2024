@@ -132,7 +132,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
@@ -171,7 +171,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 - (void)removeObserver {
 	FNLOG();
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
@@ -354,7 +354,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 					barButton.enabled = ([self.dataManager.tipCalcData.costs doubleValue] > 0.0 && [self.dataManager.tipCalcData.tip doubleValue] > 0.0);
 					break;
 				case A3RightBarButtonTagHistoryButton:
-					barButton.enabled = [TipCalcHistory countOfEntities] > 0;
+					barButton.enabled = [TipCalcHistory_ countOfEntities] > 0;
 					break;
 				case A3RightBarButtonTagSettingsButton:
 					barButton.enabled = YES;
@@ -857,7 +857,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
             [weakSelf refreshMoreButtonState];
 
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
             [context saveIfNeeded];
 
 			A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *) [weakSelf.tableView cellForCellSubview:textField];
@@ -1040,7 +1040,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 #pragma mark A3TipCalcHistorySelectDelegate
 
-- (void)didSelectHistoryData:(TipCalcHistory *)aHistory {
+- (void)didSelectHistoryData:(TipCalcHistory_ *)aHistory {
 	[self.dataManager saveToHistory];
 
     [self.dataManager historyToRecently:aHistory];
@@ -1227,7 +1227,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_CostAfterTax ? NSLocalizedString(@"Amount After Tax", @"Amount After Tax") : NSLocalizedString(@"Amount Before Tax", @"Amount Before Tax");
 
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
             [context saveIfNeeded];
 			break;
 		}
@@ -1308,7 +1308,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
 	[self rightBarButtonDoneButton];
 
-	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:[TipCalcHistory class]], self.settingsButton];
+	_arrMenuButtons = @[self.composeButton, self.shareButton, [self historyButton:[TipCalcHistory_ class]], self.settingsButton];
 	_moreMenuView = [self presentMoreMenuWithButtons:_arrMenuButtons pullDownView:self.view];
 	_isShowMoreMenu = YES;
 

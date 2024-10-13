@@ -21,7 +21,7 @@
 @interface A3WalletListViewController : UIViewController <FMMoveTableViewDelegate, FMMoveTableViewDataSource, A3WalletViewControllerProtocol>
 
 @property (nonatomic, strong) FMMoveTableView *tableView;
-@property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, strong) WalletCategory_ *category;
 @property (nonatomic, assign) BOOL isFromMoreTableViewController;
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSMutableArray *items;
@@ -31,10 +31,10 @@
 - (void)removeObserver;
 
 - (void)initializeViews;
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem_ *)item;
 - (void)showLeftNavigationBarItems;
 - (void)addButtonConstraints;
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem_ *)item;
 - (void)dismissInstructionViewController:(UIView *)view;
 - (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification;
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations;

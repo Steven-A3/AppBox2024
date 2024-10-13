@@ -24,7 +24,7 @@
     [super viewDidLoad];
 
 	[self.navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	self.title = NSLocalizedString(@"Settings", @"Settings");
 	FNLOG(@"%@", self.navigationController.navigationBar.titleTextAttributes);
@@ -45,6 +45,10 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
 }
 
 #pragma mark - UITableViewDelegate

@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UnitPriceHistory.h"
-
-@interface UnitPriceHistory (extension)
+@interface UnitPriceHistory_ (extension)
 
 - (NSArray *)unitPrices;
+
 @end

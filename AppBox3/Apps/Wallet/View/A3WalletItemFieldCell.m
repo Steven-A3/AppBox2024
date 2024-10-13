@@ -9,7 +9,6 @@
 #import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletItemFieldCell.h"
 #import "UIImage+imageWithColor.h"
-#import "WalletField.h"
 #import "NSString+WalletStyle.h"
 #import "AppBox3-Swift.h"
 

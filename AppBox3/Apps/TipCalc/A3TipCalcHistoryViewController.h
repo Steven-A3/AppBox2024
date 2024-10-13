@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class TipCalcHistory;
 @protocol A3TipCalcHistorySelectDelegate <NSObject>
--(void)didSelectHistoryData:(TipCalcHistory *)aHistory;
+-(void)didSelectHistoryData:(TipCalcHistory_ *)aHistory;
 -(void)clearSelectHistoryData;
 -(void)dismissHistoryViewController;
 @end

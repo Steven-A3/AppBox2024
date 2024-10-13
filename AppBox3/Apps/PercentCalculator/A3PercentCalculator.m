@@ -7,7 +7,6 @@
 //
 
 #import "A3PercentCalculator.h"
-#import "PercentCalcHistory.h"
 
 @implementation A3PercentCalculator
 

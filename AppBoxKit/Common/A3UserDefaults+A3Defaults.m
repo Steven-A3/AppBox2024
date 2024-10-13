@@ -197,7 +197,11 @@
 - (UIColor *)clockWaveColor {
 	NSData *data = [self objectForKey:A3ClockWaveClockColor];
 	if (data) {
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        NSError *error;
+        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
+        if (error == nil) {
+            return color;
+        }
 	}
 	return [UIColor colorWithRed:63.0/255.0 green:156.0/255.0 blue:250.0/255.0 alpha:1.0];
 }
@@ -213,7 +217,11 @@
 - (UIColor *)clockFlipDarkColor {
 	NSData *data = [self objectForKey:A3ClockFlipDarkColor];
 	if (data) {
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        NSError *error;
+        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
+        if (error == nil) {
+            return color;
+        }
 	}
 	return [UIColor blackColor];
 }
@@ -229,7 +237,11 @@
 - (UIColor *)clockFlipLightColor {
 	NSData *data = [self objectForKey:A3ClockFlipLightColor];
 	if (data) {
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        NSError *error;
+        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
+        if (error == nil) {
+            return color;
+        }
 	}
 	return [UIColor whiteColor];
 }
@@ -245,7 +257,11 @@
 - (UIColor *)clockLEDColor {
 	NSData *data = [self objectForKey:A3ClockLEDColor];
 	if (data) {
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        NSError *error;
+        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
+        if (error == nil) {
+            return color;
+        }
 	}
 	return [UIColor whiteColor];
 }

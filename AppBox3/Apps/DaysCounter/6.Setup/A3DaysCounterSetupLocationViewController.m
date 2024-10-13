@@ -24,8 +24,6 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "A3GradientView.h"
 #import "MBProgressHUD.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterEventLocation.h"
 #import "DaysCounterEvent+extension.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
@@ -279,7 +277,7 @@
 #pragma mark Search
 - (void)initializeSelectedLocation
 {
-    DaysCounterEventLocation *locationInfo  = [_eventModel location];
+    DaysCounterEventLocation_ *locationInfo  = [_eventModel location];
     if (!locationInfo) {
         return;
     }
@@ -659,10 +657,10 @@
             item = [self.nearbyVenues objectAtIndex:indexPath.row];
         }
 
-        DaysCounterEventLocation *locItem = [_eventModel location];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        DaysCounterEventLocation_ *locItem = [_eventModel location];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         if (!locItem) {
-            locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
+            locItem = [[DaysCounterEventLocation_ alloc] initWithContext:context];
             locItem.uniqueID = [[NSUUID UUID] UUIDString];
         }
 		
@@ -828,8 +826,8 @@
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
             [self.eventModel deleteLocation];
             
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            DaysCounterEventLocation *locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+            DaysCounterEventLocation_ *locItem = [[DaysCounterEventLocation_ alloc] initWithContext:context];
 			locItem.uniqueID = [[NSUUID UUID] UUIDString];
 			locItem.updateDate = [NSDate date];
             locItem.eventID = self.eventModel.uniqueID;

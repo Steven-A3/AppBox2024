@@ -11,10 +11,10 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "UIViewController+A3Addition.h"
-#import "Calculation.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "UIViewController+extension.h"
+#import "AppBox3-Swift.h"
 
 @interface A3CalculatorViewController () <GADBannerViewDelegate>
 
@@ -74,8 +74,8 @@
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression {
-    NSArray *results = [Calculation findAllSortedBy:@"updateDate" ascending:NO];
-    Calculation *lastcalculation = results.firstObject;
+    NSArray *results = [Calculation_ findAllSortedBy:@"updateDate" ascending:NO];
+    Calculation_ *lastcalculation = results.firstObject;
     NSString *mathExpression = [self.calculator getMathExpression];
     // Compare code and value.
     if (lastcalculation) {
@@ -84,8 +84,8 @@
         }
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    Calculation *calculation = [[Calculation alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    Calculation_ *calculation = [[Calculation_ alloc] initWithContext:context];
     calculation.uniqueID = [[NSUUID UUID] UUIDString];
     NSDate *keyDate = [NSDate date];
     calculation.expression = mathExpression;

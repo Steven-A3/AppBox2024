@@ -14,7 +14,6 @@
 #import "WalletData.h"
 #import "A3WalletListBigPhotoCell.h"
 #import "NSDate+TimeAgo.h"
-#import "WalletCategory.h"
 #import "WalletItem+initialize.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3WalletListBigVideoCell.h"
@@ -26,7 +25,6 @@
 #import "A3InstructionViewController.h"
 #import "NSMutableArray+A3Sort.h"
 #import "NSString+WalletStyle.h"
-#import "WalletField.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate.h"
 #import "NSManagedObject+extension.h"
@@ -229,7 +227,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem_ *)item {
 	UITableViewCell *cell;
 	if ([_category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		A3WalletListBigPhotoCell *photoCell;
@@ -247,8 +245,8 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		NSMutableArray *photoPick = [[NSMutableArray alloc] init];
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (int i=0; i<fieldItems.count; i++) {
-			WalletFieldItem *fieldItem = fieldItems[i];
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+			WalletFieldItem_ *fieldItem = fieldItems[i];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeImage] && [fieldItem.hasImage boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -260,7 +258,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		[photoCell resetThumbImages];
 
 		for (int i=0; i<showPhotoCount; i++) {
-			WalletFieldItem *fieldItem = photoPick[i];
+			WalletFieldItem_ *fieldItem = photoPick[i];
 			[photoCell addThumbImage:fieldItem.thumbnailImage];
 		}
 
@@ -282,8 +280,8 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		NSMutableArray *photoPick = [[NSMutableArray alloc] init];
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (int i=0; i<fieldItems.count; i++) {
-			WalletFieldItem *fieldItem = fieldItems[i];
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+			WalletFieldItem_ *fieldItem = fieldItems[i];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -294,7 +292,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 
 		[videoCell resetThumbImages];
 		for (int i=0; i<showPhotoCount; i++) {
-			WalletFieldItem *fieldItem = photoPick[i];
+			WalletFieldItem_ *fieldItem = photoPick[i];
 			UIImage *thumbImg = [fieldItem thumbnailImage];
 			float duration = [WalletData getDurationOfMovie:[fieldItem videoFileURLInOriginal:YES ]];
 			[videoCell addThumbImage:thumbImg withDuration:duration];
@@ -308,8 +306,8 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		NSMutableArray *photoPick = [[NSMutableArray alloc] init];
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (int i=0; i<fieldItems.count; i++) {
-			WalletFieldItem *fieldItem = fieldItems[i];
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+			WalletFieldItem_ *fieldItem = fieldItems[i];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeImage] && [fieldItem.hasImage boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -321,7 +319,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		[photoCell resetThumbImages];
 
 		for (NSUInteger idx = 0; idx < showPhotoCount; idx++) {
-			WalletFieldItem *fieldItem = photoPick[idx];
+			WalletFieldItem_ *fieldItem = photoPick[idx];
 			UIImage *thumbImg = [fieldItem thumbnailImage];
 
 			[photoCell addThumbImage:thumbImg isVideo:NO ];
@@ -336,8 +334,8 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		NSMutableArray *photoPick = [[NSMutableArray alloc] init];
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
-			WalletFieldItem *fieldItem = fieldItems[idx];
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+			WalletFieldItem_ *fieldItem = fieldItems[idx];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
 				[photoPick addObject:fieldItem];
 			}
@@ -348,7 +346,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 
 		[videoCell resetThumbImages];
 		for (NSUInteger idx =0; idx < showPhotoCount; idx++) {
-			WalletFieldItem *fieldItem = photoPick[idx];
+			WalletFieldItem_ *fieldItem = photoPick[idx];
 			UIImage *thumbImg = [fieldItem thumbnailImage];
 			[videoCell addThumbImage:thumbImg isVideo:YES ];
 		}
@@ -381,9 +379,9 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 
 		NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 		if (fieldItems.count > 0) {
-			WalletFieldItem *fieldItem = fieldItems[0];
+			WalletFieldItem_ *fieldItem = fieldItems[0];
 			NSString *itemValue = @"";
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+			WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 			if ([field.type isEqualToString:WalletFieldTypeDate]) {
 				NSDateFormatter *df = [[NSDateFormatter alloc] init];
 				[df setDateStyle:NSDateFormatterFullStyle];
@@ -411,7 +409,7 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 	return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem_ *)item {
 	if ([item.categoryID isEqualToString:A3WalletUUIDPhotoCategory]) {
 		NSString *boardName = @"WalletPhoneStoryBoard";
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
@@ -451,14 +449,14 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 {
 	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 

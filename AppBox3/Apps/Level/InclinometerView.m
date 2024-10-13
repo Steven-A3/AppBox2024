@@ -39,7 +39,7 @@
 
 		UIImage *circleImage, *lineImage;
         CGRect backgroundViewFrame = [A3UIDevice screenBoundsAdjustedWithOrientation];
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         CGFloat verticalOffset = safeAreaInsets.top;
         backgroundViewFrame.size.height -= safeAreaInsets.top + safeAreaInsets.bottom;
 		CGFloat diffCircle, diffLine;
@@ -174,7 +174,7 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
 
 - (void)updateBubbleForRadian:(float)rads {
     CGFloat halfViralLengthBubble = kHalfVialLengthBubble;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.bottom > 0) {
         halfViralLengthBubble = 102 * _scale;
     }
@@ -241,7 +241,7 @@ const float pitchVsDegree[] = {4.5, 9.5, 14.0, 18.5, 22.5, 26.5, 30.5, 33.75, 37
     float newY = self.center.y - maxY + 3.0;
 	
     CGFloat offsetY = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.bottom > 0) {
         offsetY = -40;
     }

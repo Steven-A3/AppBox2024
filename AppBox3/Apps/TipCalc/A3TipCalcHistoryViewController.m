@@ -102,7 +102,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [TipCalcHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [TipCalcHistory_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -125,8 +125,8 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		[TipCalcHistory truncateAll];
-		[TipCalcRecent deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != NULL"]];
+		[TipCalcHistory_ truncateAll];
+		[TipCalcRecent_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID != NULL"]];
 
         _fetchedResultsController = nil;
         [self.tableView reloadData];
@@ -166,7 +166,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TipCalcHistory *aHistory = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    TipCalcHistory_ *aHistory = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     A3TipCalcHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3TipCalcHistoryCellID forIndexPath:indexPath];
     [cell setHistoryData:aHistory];
@@ -179,7 +179,7 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if ([_delegate respondsToSelector:@selector(didSelectHistoryData:)]) {
-        TipCalcHistory *aData = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        TipCalcHistory_ *aData = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [_delegate didSelectHistoryData:aData];
         [self doneButtonAction:nil];
     }
@@ -198,9 +198,9 @@ NSString* const A3TipCalcHistoryCellID = @"TipCalcHistoryCell";
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        TipCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [TipCalcRecent deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        TipCalcHistory_ *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [TipCalcRecent_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context deleteObject:history];
         [context saveIfNeeded];
         _fetchedResultsController = nil;

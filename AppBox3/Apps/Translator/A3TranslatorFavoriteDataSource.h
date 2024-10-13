@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "FMMoveTableView.h"
 
-@class TranslatorFavorite;
-
 @protocol A3TranslatorFavoriteDelegate <NSObject>
-- (void)translatorFavoriteItemSelected:(TranslatorFavorite *)item;
+- (void)translatorFavoriteItemSelected:(TranslatorFavorite_ *)item;
 @end
 
 @interface A3TranslatorFavoriteDataSource : NSObject<FMMoveTableViewDelegate, FMMoveTableViewDataSource>

@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "WalletFavorite.h"
-
-@interface WalletFavorite (initialize)
+@interface WalletFavorite_ (initialize)
 
 + (BOOL)isFavoriteForItemID:(NSString *)itemID;
-
 - (void)assignOrder;
+
 @end

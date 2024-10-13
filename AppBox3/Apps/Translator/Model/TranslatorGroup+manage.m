@@ -9,10 +9,10 @@
 #import "TranslatorGroup+manage.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation TranslatorGroup (manage)
+@implementation TranslatorGroup_ (manage)
 
 - (void)setupOrder {
-	TranslatorGroup *group = [TranslatorGroup findFirstOrderedByAttribute:@"order" ascending:NO];
+	TranslatorGroup_ *group = [TranslatorGroup_ findFirstOrderedByAttribute:@"order" ascending:NO];
 	NSString *largestInOrder = group.order;
 	NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
 	FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);

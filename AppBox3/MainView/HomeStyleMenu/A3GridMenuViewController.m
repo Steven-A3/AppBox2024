@@ -141,7 +141,7 @@ A3InstructionViewControllerDelegate>
 }
 
 - (void)setupPageControl {
-    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] myKeyWindow].safeAreaInsets;
     FNLOG(@"%@, %f, %f, %f", [A3UIDevice deviceInformationDictionary][@"Model"], safeAreaInsets.top, safeAreaInsets.bottom, safeAreaInsets.left);
 
     if (_pageControl == nil) {
@@ -556,7 +556,7 @@ A3InstructionViewControllerDelegate>
     // HouseAds Height
     // safeAreaInsets.bottom
     
-    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] myKeyWindow].safeAreaInsets;
 
     if (IS_IPHONE) {
         CGFloat contentHeight = toSize.height;

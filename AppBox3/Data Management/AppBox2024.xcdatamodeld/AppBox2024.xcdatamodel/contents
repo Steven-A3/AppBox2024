@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AbbreviationFavorite_" representedClassName="AbbreviationFavorite_" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Calculation_" representedClassName="Calculation_" syncable="YES">
+        <attribute name="expression" optional="YES" attributeType="String"/>
+        <attribute name="result" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="CurrencyFavorite_" representedClassName="CurrencyFavorite_" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    </entity>
+    <entity name="CurrencyHistory_" representedClassName="CurrencyHistory_" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="CurrencyHistoryItem_" representedClassName="CurrencyHistoryItem_" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="historyID" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="DaysCounterCalendar_" representedClassName="DaysCounterCalendar_" syncable="YES">
+        <attribute name="colorID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="isShow" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    </entity>
+    <entity name="DaysCounterDate_" representedClassName="DaysCounterDate_" syncable="YES">
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="eventID" optional="YES" attributeType="String"/>
+        <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="isStartDate" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="minute" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="solarDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="DaysCounterEvent_" representedClassName="DaysCounterEvent_" syncable="YES">
+        <attribute name="alertDatetime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="alertInterval" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="alertType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="calendarID" attributeType="String" defaultValueString=""/>
+        <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="effectiveStartDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="eventName" optional="YES" attributeType="String"/>
+        <attribute name="hasReminder" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="photoID" optional="YES" attributeType="String"/>
+        <attribute name="repeatEndDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="DaysCounterEventLocation_" representedClassName="DaysCounterEventLocation_" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="city" optional="YES" attributeType="String"/>
+        <attribute name="contact" optional="YES" attributeType="String"/>
+        <attribute name="country" optional="YES" attributeType="String"/>
+        <attribute name="eventID" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" usesScalarValueType="NO"/>
+        <attribute name="locationName" optional="YES" attributeType="String"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" usesScalarValueType="NO"/>
+        <attribute name="state" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="DaysCounterFavorite_" representedClassName="DaysCounterFavorite_" syncable="YES">
+        <attribute name="eventID" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="DaysCounterReminder_" representedClassName="DaysCounterReminder_" syncable="YES">
+        <attribute name="alertDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="eventID" optional="YES" attributeType="String"/>
+        <attribute name="isOn" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="isUnread" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="ExpenseListBudget_" representedClassName="ExpenseListBudget_" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isModified" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="location" optional="YES" attributeType="Binary"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="paymentType" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="totalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="usedAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="ExpenseListBudgetLocation_" representedClassName="ExpenseListBudgetLocation_" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="budgetID" optional="YES" attributeType="String"/>
+        <attribute name="city" optional="YES" attributeType="String"/>
+        <attribute name="contact" optional="YES" attributeType="String"/>
+        <attribute name="country" optional="YES" attributeType="String"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="state" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="ExpenseListHistory_" representedClassName="ExpenseListHistory_" syncable="YES">
+        <attribute name="budgetID" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="ExpenseListItem_" representedClassName="ExpenseListItem_" syncable="YES">
+        <attribute name="budgetID" optional="YES" attributeType="String"/>
+        <attribute name="hasData" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="itemDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="itemName" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="KaomojiFavorite_" representedClassName="KaomojiFavorite_" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="LadyCalendarAccount_" representedClassName="LadyCalendarAccount_" syncable="YES">
+        <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="watchingDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="LadyCalendarPeriod_" representedClassName="LadyCalendarPeriod_" syncable="YES">
+        <attribute name="accountID" attributeType="String" defaultValueString=""/>
+        <attribute name="cycleLength" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="endDate" attributeType="Date" defaultDateTimeInterval="749545980" usesScalarValueType="NO"/>
+        <attribute name="isAutoSave" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="isPredict" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="ovulation" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="periodEnds" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="startDate" attributeType="Date" defaultDateTimeInterval="749545980" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="LoanCalcComparisonHistory_" representedClassName="LoanCalcComparisonHistory_" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="totalAmountA" optional="YES" attributeType="String"/>
+        <attribute name="totalAmountB" optional="YES" attributeType="String"/>
+        <attribute name="totalInterestA" optional="YES" attributeType="String"/>
+        <attribute name="totalInterestB" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="LoanCalcHistory_" representedClassName="LoanCalcHistory_" syncable="YES">
+        <attribute name="calculationMode" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="comparisonHistoryID" optional="YES" attributeType="String"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="downPayment" optional="YES" attributeType="String"/>
+        <attribute name="editing" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="extraPaymentMonthly" optional="YES" attributeType="String"/>
+        <attribute name="extraPaymentOnetime" optional="YES" attributeType="String"/>
+        <attribute name="extraPaymentOnetimeYearMonth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="extraPaymentYearly" optional="YES" attributeType="String"/>
+        <attribute name="extraPaymentYearlyMonth" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="interestRate" optional="YES" attributeType="String"/>
+        <attribute name="interestRatePerYear" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="monthlyPayment" optional="YES" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="orderInComparison" optional="YES" attributeType="String"/>
+        <attribute name="principal" optional="YES" attributeType="String"/>
+        <attribute name="showAdvanced" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="showDownPayment" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="showExtraPayment" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="term" optional="YES" attributeType="String"/>
+        <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="Pedometer_" representedClassName="Pedometer_" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="distance" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="floorsAscended" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="floorsDescended" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="numberOfSteps" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="PercentCalcHistory_" representedClassName="PercentCalcHistory_" syncable="YES">
+        <attribute name="historyItem" optional="YES" attributeType="Binary"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="QRCodeHistory_" representedClassName="QRCodeHistory_" syncable="YES">
+        <attribute name="created" attributeType="Date" defaultDateTimeInterval="749546040" usesScalarValueType="NO"/>
+        <attribute name="dimension" optional="YES" attributeType="String"/>
+        <attribute name="productName" optional="YES" attributeType="String"/>
+        <attribute name="scanData" optional="YES" attributeType="String"/>
+        <attribute name="searchData" optional="YES" attributeType="Binary"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    </entity>
+    <entity name="SalesCalcHistory_" representedClassName="SalesCalcHistory_" syncable="YES">
+        <attribute name="additionalOff" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="additionalOffType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="discount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="discountType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="priceType" optional="YES" attributeType="Integer 16" usesScalarValueType="NO"/>
+        <attribute name="shownPriceType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="tax" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="taxType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TipCalcHistory_" representedClassName="TipCalcHistory_" syncable="YES">
+        <attribute name="labelTip" optional="YES" attributeType="String"/>
+        <attribute name="labelTotal" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TipCalcRecent_" representedClassName="TipCalcRecent_" syncable="YES">
+        <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="historyID" optional="YES" attributeType="String"/>
+        <attribute name="isMain" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="isPercentTax" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO"/>
+        <attribute name="isPercentTip" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO"/>
+        <attribute name="knownValue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="optionType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="showRounding" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="showSplit" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="showTax" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="split" optional="YES" attributeType="Double" defaultValueString="1" usesScalarValueType="NO"/>
+        <attribute name="tax" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="tip" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TranslatorFavorite_" representedClassName="TranslatorFavorite_" syncable="YES">
+        <attribute name="groupID" optional="YES" attributeType="String"/>
+        <attribute name="historyID" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TranslatorGroup_" representedClassName="TranslatorGroup_" syncable="YES">
+        <attribute name="order" attributeType="String" defaultValueString=""/>
+        <attribute name="sourceLanguage" attributeType="String" defaultValueString=""/>
+        <attribute name="targetLanguage" attributeType="String" defaultValueString=""/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TranslatorHistory_" representedClassName="TranslatorHistory_" syncable="YES">
+        <attribute name="groupID" optional="YES" attributeType="String"/>
+        <attribute name="originalText" attributeType="String" defaultValueString=""/>
+        <attribute name="translatedText" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" attributeType="Date" defaultDateTimeInterval="749546040" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="UnitHistory_" representedClassName="UnitHistory_" syncable="YES">
+        <attribute name="categoryID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="UnitHistoryItem_" representedClassName="UnitHistoryItem_" syncable="YES">
+        <attribute name="order" attributeType="String" defaultValueString=""/>
+        <attribute name="targetUnitItemID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String"/>
+        <attribute name="unitHistoryID" optional="YES" attributeType="String"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="UnitPriceHistory_" representedClassName="UnitPriceHistory_" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="UnitPriceInfo_" representedClassName="UnitPriceInfo_" syncable="YES">
+        <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="discountPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="historyID" optional="YES" attributeType="String"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="priceName" optional="YES" attributeType="String"/>
+        <attribute name="quantity" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="size" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="unitCategoryID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="unitID" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="WalletCategory_" representedClassName="WalletCategory_" syncable="YES">
+        <attribute name="doNotShow" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="icon" optional="YES" attributeType="String"/>
+        <attribute name="isSystem" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    </entity>
+    <entity name="WalletFavorite_" representedClassName="WalletFavorite_" syncable="YES">
+        <attribute name="itemID" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="WalletField_" representedClassName="WalletField_" syncable="YES">
+        <attribute name="categoryID" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="style" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    </entity>
+    <entity name="WalletFieldItem_" representedClassName="WalletFieldItem_" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fieldID" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="hasImage" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="hasVideo" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="imageMetaData" optional="YES" attributeType="Binary"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="value" optional="YES" attributeType="String"/>
+        <attribute name="videoCreationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="videoExtension" optional="YES" attributeType="String"/>
+        <attribute name="walletItemID" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="WalletItem_" representedClassName="WalletItem_" syncable="YES">
+        <attribute name="categoryID" attributeType="String" defaultValueString=""/>
+        <attribute name="lastOpened" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="order" optional="YES" attributeType="String"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <configuration name="Cloud" usedWithCloudKit="YES">
+        <memberEntity name="TranslatorHistory_"/>
+        <memberEntity name="AbbreviationFavorite_"/>
+        <memberEntity name="Calculation_"/>
+        <memberEntity name="CurrencyFavorite_"/>
+        <memberEntity name="CurrencyHistory_"/>
+        <memberEntity name="CurrencyHistoryItem_"/>
+        <memberEntity name="DaysCounterCalendar_"/>
+        <memberEntity name="DaysCounterDate_"/>
+        <memberEntity name="DaysCounterEvent_"/>
+        <memberEntity name="DaysCounterEventLocation_"/>
+        <memberEntity name="DaysCounterFavorite_"/>
+        <memberEntity name="DaysCounterReminder_"/>
+        <memberEntity name="ExpenseListBudget_"/>
+        <memberEntity name="ExpenseListBudgetLocation_"/>
+        <memberEntity name="ExpenseListHistory_"/>
+        <memberEntity name="ExpenseListItem_"/>
+        <memberEntity name="KaomojiFavorite_"/>
+        <memberEntity name="LadyCalendarAccount_"/>
+        <memberEntity name="LadyCalendarPeriod_"/>
+        <memberEntity name="LoanCalcComparisonHistory_"/>
+        <memberEntity name="LoanCalcHistory_"/>
+        <memberEntity name="Pedometer_"/>
+        <memberEntity name="PercentCalcHistory_"/>
+        <memberEntity name="QRCodeHistory_"/>
+        <memberEntity name="SalesCalcHistory_"/>
+        <memberEntity name="TipCalcHistory_"/>
+        <memberEntity name="TipCalcRecent_"/>
+        <memberEntity name="TranslatorFavorite_"/>
+        <memberEntity name="TranslatorGroup_"/>
+        <memberEntity name="UnitHistory_"/>
+        <memberEntity name="WalletItem_"/>
+        <memberEntity name="UnitHistoryItem_"/>
+        <memberEntity name="UnitPriceHistory_"/>
+        <memberEntity name="UnitPriceInfo_"/>
+        <memberEntity name="WalletCategory_"/>
+        <memberEntity name="WalletFavorite_"/>
+        <memberEntity name="WalletField_"/>
+        <memberEntity name="WalletFieldItem_"/>
+    </configuration>
+</model>

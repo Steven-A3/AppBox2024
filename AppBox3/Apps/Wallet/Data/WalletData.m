@@ -9,9 +9,6 @@
 #import "WalletData.h"
 #import "WalletFieldItem+initialize.h"
 #import "WalletItem+initialize.h"
-#import "WalletCategory.h"
-#import "WalletField.h"
-#import "WalletItem.h"
 #import <AVFoundation/AVFoundation.h>
 #import "A3AppDelegate.h"
 #import <AppBoxKit/AppBoxKit.h>
@@ -145,11 +142,11 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createLocalizedPresetCategories {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSArray *presetCategories = [self categoryPresetData];
 	NSMutableArray *categories = [NSMutableArray new];
 	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
-        WalletCategory *newCategory = [[WalletCategory alloc] initWithContext:context];
+        WalletCategory_ *newCategory = [[WalletCategory_ alloc] initWithContext:context];
 		newCategory.uniqueID = category[PRESET_ID_KEY];
 		newCategory.name = NSLocalizedStringFromTable(category[PRESET_NAME_KEY], @"WalletPreset", nil);
 		newCategory.icon = category[PRESET_ICON_KEY];
@@ -158,7 +155,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		[categories addObject:newCategory];
 
 		[category[PRESET_FIELDS_KEY] enumerateObjectsUsingBlock:^(NSDictionary *field, NSUInteger idx, BOOL *stop) {
-            WalletField *newField = [[WalletField  alloc] initWithContext:context];
+            WalletField_ *newField = [[WalletField_  alloc] initWithContext:context];
 			newField.uniqueID = field[PRESET_ID_KEY];
 			newField.categoryID = newCategory.uniqueID;
 			newField.name = NSLocalizedStringFromTable(field[PRESET_NAME_KEY], @"WalletPreset", nil);
@@ -168,11 +165,11 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		}];
 	}];
 
-	[categories sortUsingComparator:^NSComparisonResult(WalletCategory *obj1, WalletCategory *obj2) {
+	[categories sortUsingComparator:^NSComparisonResult(WalletCategory_ *obj1, WalletCategory_ *obj2) {
 		return [obj1.name compare:obj2.name];
 	}];
 	NSInteger order = 1000000;
-	for (WalletCategory *category in categories) {
+	for (WalletCategory_ *category in categories) {
 		category.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
 	}
@@ -181,8 +178,8 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createSystemCategory {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    WalletCategory *allCategory = [[WalletCategory alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    WalletCategory_ *allCategory = [[WalletCategory_ alloc] initWithContext:context];
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
 	allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
 	allCategory.icon = @"wallet_folder";
@@ -190,7 +187,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	allCategory.doNotShow = @NO;
 	[allCategory assignOrderAsFirst];
 
-    WalletCategory *favoriteCategory = [[WalletCategory alloc] initWithContext:context];
+    WalletCategory_ *favoriteCategory = [[WalletCategory_ alloc] initWithContext:context];
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 	favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
 	favoriteCategory.icon = @"star01";
@@ -202,8 +199,8 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createRecentsCategory {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    WalletCategory *recentsCategory = [[WalletCategory alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    WalletCategory_ *recentsCategory = [[WalletCategory_ alloc] initWithContext:context];
     recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
     recentsCategory.name = NSLocalizedString(@"Recents", nil);
     recentsCategory.icon = @"history";
@@ -213,19 +210,19 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)initializeWalletCategories {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [WalletData createLocalizedPresetCategories];
     [WalletData createSystemCategory];
     [context saveIfNeeded];
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	if (hideDoNotShow) {
-		NSArray *categories = [WalletCategory findAllSortedBy:@"order" ascending:YES];
+		NSArray *categories = [WalletCategory_ findAllSortedBy:@"order" ascending:YES];
 		BOOL dataUpdated = NO;
 		for (NSInteger idx = 0; idx < MIN(IS_IPHONE ? 4 : 7, [categories count]); idx++) {
-			WalletCategory *category = categories[idx];
+			WalletCategory_ *category = categories[idx];
 			if (category.doNotShow.boolValue) {
 				category.doNotShow = @NO;
 				dataUpdated = YES;
@@ -236,9 +233,9 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 		}
 		
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", @"doNotShow", @(hideDoNotShow)];
-		return [WalletCategory findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+		return [WalletCategory_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 	} else {
-		return [WalletCategory findAllSortedBy:@"order" ascending:YES];
+		return [WalletCategory_ findAllSortedBy:@"order" ascending:YES];
 	}
 }
 
@@ -247,14 +244,14 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 	return [walletCategories count] - 2;
 }
 
-+ (WalletCategory *)firstEditableWalletCategory {
++ (WalletCategory_ *)firstEditableWalletCategory {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isSystem == NO AND doNotShow = NO"];
-    return [WalletCategory findFirstWithPredicate:predicate sortedBy:A3CommonPropertyOrder ascending:YES];
+    return [WalletCategory_ findFirstWithPredicate:predicate sortedBy:A3CommonPropertyOrder ascending:YES];
 }
 
 + (NSArray *)categoriesExcludingSystemCategories {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isSystem == NO"];
-	return [WalletCategory findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
+	return [WalletCategory_ findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:predicate];
 }
 
 + (NSArray *)iconList
@@ -290,27 +287,27 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
              @"wallet_wallet"];
 }
 
-+ (WalletCategory *)categoryItemWithID:(NSString *)categoryID {
-	return [WalletCategory findFirstByAttribute:@"uniqueID" withValue:categoryID];
++ (WalletCategory_ *)categoryItemWithID:(NSString *)categoryID {
+	return [WalletCategory_ findFirstByAttribute:@"uniqueID" withValue:categoryID];
 }
 
-+ (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem {
-	return [WalletField findFirstByAttribute:@"uniqueID" withValue:fieldItem.fieldID];
++ (WalletField_ *)fieldOfFieldItem:(WalletFieldItem_ *)fieldItem {
+	return [WalletField_ findFirstByAttribute:@"uniqueID" withValue:fieldItem.fieldID];
 }
 
 + (NSString *)stringRepresentationOfContents {
     NSMutableString *contents = [[NSMutableString alloc] init];
     
-    NSArray *categories = [WalletCategory findAllSortedBy:@"order" ascending:YES];
-    [categories enumerateObjectsUsingBlock:^(WalletCategory * _Nonnull category, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray *fields = [WalletField findByAttribute:@"categoryID" withValue:category.uniqueID];
+    NSArray *categories = [WalletCategory_ findAllSortedBy:@"order" ascending:YES];
+    [categories enumerateObjectsUsingBlock:^(WalletCategory_ * _Nonnull category, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *fields = [WalletField_ findByAttribute:@"categoryID" withValue:category.uniqueID];
         if ([fields count]) {
-            NSArray *items = [WalletItem findByAttribute:@"categoryID" withValue:category.uniqueID];
+            NSArray *items = [WalletItem_ findByAttribute:@"categoryID" withValue:category.uniqueID];
             // Add category name here
             [contents appendString:[NSString stringWithFormat:@"%@: %@\n", [NSLocalizedString(@"Category", nil) uppercaseString], category.name]];
             // Add field header here
             [contents appendString:[NSString stringWithFormat:@"%@\n", [NSLocalizedString(@"Columns Header", nil) uppercaseString]]];
-            [fields enumerateObjectsUsingBlock:^(WalletField * _Nonnull field, NSUInteger idx, BOOL * _Nonnull stop) {
+            [fields enumerateObjectsUsingBlock:^(WalletField_ * _Nonnull field, NSUInteger idx, BOOL * _Nonnull stop) {
                 [contents appendString:[NSString stringWithFormat:@"%@ (%@, %@), ",
                                         field.name,
                                         NSLocalizedString(field.type, nil),
@@ -318,11 +315,11 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
             }];
             [contents deleteCharactersInRange:NSMakeRange(contents.length - 2, 2)];
             [contents appendString:@"\n"];
-            [items enumerateObjectsUsingBlock:^(WalletItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+            [items enumerateObjectsUsingBlock:^(WalletItem_ * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
                 NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
                 // Add field items
                 if ([fieldItems count]) {
-                    [fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull fieldItem, NSUInteger idx, BOOL * _Nonnull stop) {
+                    [fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem_ * _Nonnull fieldItem, NSUInteger idx, BOOL * _Nonnull stop) {
                         [contents appendString:fieldItem.value ? fieldItem.value : @""];
                         [contents appendString:@", "];
                     }];
@@ -352,7 +349,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
     BOOL needAdjustment = LANGUAGE_KOREAN;
     // Segregate the time zones into the appropriate arrays.
-    for (WalletItem *object in array) {
+    for (WalletItem_ *object in array) {
         if (!object.name) {
             object.name = @"";
         }
@@ -396,14 +393,14 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     NSMutableString *contents = [[NSMutableString alloc] init];
     [contents appendString:NSLocalizedStringFromTable(@"exportHeader", @"walletExport", nil)];
     
-    NSArray *categories = [WalletCategory findAllSortedBy:@"order" ascending:YES];
-    for (WalletCategory *category in categories) {
+    NSArray *categories = [WalletCategory_ findAllSortedBy:@"order" ascending:YES];
+    for (WalletCategory_ *category in categories) {
         if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory] || [category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) continue;
         
         FNLOG(@"%@", category.uniqueID);
         FNLOG(@"%@", category.name);
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", category.uniqueID];
-        NSArray *allRows = [WalletItem findAllSortedBy:@"name" ascending:YES withPredicate:predicate];
+        NSArray *allRows = [WalletItem_ findAllSortedBy:@"name" ascending:YES withPredicate:predicate];
         
         if ([allRows count] == 0) continue;
         
@@ -413,24 +410,24 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 
         [contents appendString:@"<table>"];
         
-        NSArray *fields = [WalletField findByAttribute:@"categoryID" withValue:category.uniqueID];
+        NSArray *fields = [WalletField_ findByAttribute:@"categoryID" withValue:category.uniqueID];
         [contents appendString:@"<tr>"];
         [contents appendString:[NSString stringWithFormat:@"<th style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</th>", NSLocalizedString(@"Title", nil)]];
-        for (WalletField *field in fields) {
+        for (WalletField_ *field in fields) {
             [contents appendString:[NSString stringWithFormat:@"<th style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</th>", field.name ?: @""]];
         }
         [contents appendString:[NSString stringWithFormat:@"<th style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</th>", NSLocalizedString(@"Memo", nil)]];
         [contents appendString:@"</tr>"];
 
         // Append table header row
-        for (WalletItem *row in allRows) {
+        for (WalletItem_ *row in allRows) {
             [contents appendString:@"<tr>"];
             [contents appendString:[NSString stringWithFormat:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</td>", row.name ?: @""]];
-            for (WalletField *field in fields) {
+            for (WalletField_ *field in fields) {
                 NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@ AND fieldID == %@", row.uniqueID, field.uniqueID];
-                NSArray *fieldItems = [WalletFieldItem findAllWithPredicate:predicate];
+                NSArray *fieldItems = [WalletFieldItem_ findAllWithPredicate:predicate];
                 if ([fieldItems count]) {
-                    WalletFieldItem *fieldItem = fieldItems[0];
+                    WalletFieldItem_ *fieldItem = fieldItems[0];
                     [contents appendString:[NSString stringWithFormat:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\">%@</td>", fieldItem.value ?: @""]];
                 } else {
                     [contents appendString:@"<td style=\"border: 1px solid #dddddd;text-align: left;padding: 8px;\"></td>"];

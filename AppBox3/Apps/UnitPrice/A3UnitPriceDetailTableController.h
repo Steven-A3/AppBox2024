@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class UnitPriceInfo;
-
 @protocol A3UnitPriceModifyDelegate <NSObject>
 
-- (void)unitPriceInfoChanged:(UnitPriceInfo *)price;
+- (void)unitPriceInfoChanged:(UnitPriceInfo_ *)price;
 
 @end
 
@@ -20,6 +18,6 @@
 
 @property (nonatomic, assign) id<A3UnitPriceModifyDelegate> delegate;
 @property (nonatomic, assign) BOOL isPriceA;
-@property (nonatomic, strong) UnitPriceInfo *price;
+@property (nonatomic, strong) UnitPriceInfo_ *price;
 
 @end

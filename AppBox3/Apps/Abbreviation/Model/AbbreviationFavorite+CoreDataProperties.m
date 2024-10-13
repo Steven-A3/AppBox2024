@@ -11,7 +11,7 @@
 @implementation AbbreviationFavorite (CoreDataProperties)
 
 + (NSFetchRequest<AbbreviationFavorite *> *)fetchRequest {
-	return [[NSFetchRequest alloc] initWithEntityName:@"AbbreviationFavorite"];
+	return [[NSFetchRequest alloc] initWithEntityName:@"AbbreviationFavorite_"];
 }
 
 @dynamic order;

@@ -240,7 +240,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (void)configureLayout {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     CGFloat verticalBottomOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         verticalBottomOffset = -safeAreaInsets.bottom;
         _topToolBar.frame = CGRectMake(0, safeAreaInsets.top, screenBounds.size.width, 44);
@@ -414,7 +414,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 	self.bottomToolBar.hidden = hidden;
 
     CGFloat verticalBottomOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalBottomOffset = -safeAreaInsets.bottom;
     
 	[self.bottomToolBar setFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - 74 + verticalBottomOffset , self.view.frame.size.width, 74 + safeAreaInsets.bottom)];

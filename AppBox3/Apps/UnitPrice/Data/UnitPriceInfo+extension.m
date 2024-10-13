@@ -20,7 +20,7 @@ NSString *const DISCOUNT_PERCENT_KEY = @"discountPercent";
 NSString *const DISCOUNT_PRICE_KEY = @"discountPrice";
 NSString *const NOTES_KEY		= @"note";
 
-@implementation UnitPriceInfo (extension)
+@implementation UnitPriceInfo_ (extension)
 
 - (void)initValues {
 	self.unitCategoryID = @(-1);
@@ -83,7 +83,7 @@ NSString *const NOTES_KEY		= @"note";
 	return 0.0;
 }
 
-- (double)unitPrice2WithPrice1:(UnitPriceInfo *)price1 {
+- (double)unitPrice2WithPrice1:(UnitPriceInfo_ *)price1 {
 	double priceValue = self.price.floatValue;
 	double sizeValue = self.size.doubleValue;
 	if (sizeValue == 0.0) sizeValue = 1.0;
@@ -179,7 +179,7 @@ NSString *const NOTES_KEY		= @"note";
 	return unitPriceTxt;
 }
 
-- (NSString *)unitShortNameForPriceInfo:(UnitPriceInfo *)priceInfo {
+- (NSString *)unitShortNameForPriceInfo:(UnitPriceInfo_ *)priceInfo {
 	if (!validUnit(priceInfo.unitCategoryID) || !validUnit(priceInfo.unitID)) {
 		return @"";
 	}
@@ -189,7 +189,7 @@ NSString *const NOTES_KEY		= @"note";
 	return NSLocalizedStringFromTable([NSString stringWithCString:unitNames[categoryID][unitID] encoding:NSUTF8StringEncoding], @"unitShort", nil);
 }
 
-- (NSString *)unitPrice2StringWithPrice1:(UnitPriceInfo *)price1 formatter:(NSNumberFormatter *)currencyFormatter showUnit:(BOOL)showUnit {
+- (NSString *)unitPrice2StringWithPrice1:(UnitPriceInfo_ *)price1 formatter:(NSNumberFormatter *)currencyFormatter showUnit:(BOOL)showUnit {
 	NSString *unitPriceTxt = @"";
 	NSString *price1UnitShortName, *unitShortName;
 	price1UnitShortName = validUnit(price1.unitID) ? [self unitShortNameForPriceInfo:price1] : NSLocalizedString(@"None", @"None");

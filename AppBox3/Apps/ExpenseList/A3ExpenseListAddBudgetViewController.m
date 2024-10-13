@@ -17,7 +17,6 @@
 #import "A3JHTableViewDateEntryElement.h"
 #import "A3ExpenseListMainViewController.h"
 #import "A3JHSelectTableViewController.h"
-#import "ExpenseListBudget.h"
 #import "A3TableViewDatePickerElement.h"
 #import "A3DefaultColorDefines.h"
 #import "A3JHTableViewExpandableHeaderCell.h"
@@ -53,7 +52,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 @interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate,
 		A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewControllerProtocol>
-@property (nonatomic, strong) ExpenseListBudget *currentBudget;
+@property (nonatomic, strong) ExpenseListBudget_ *currentBudget;
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputBeginBlock;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputChangedBlock;
@@ -108,7 +107,7 @@ enum A3ExpenseListAddBudgetCellType {
     return self;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style withExpenseListBudget:(ExpenseListBudget *)budget
+- (id)initWithStyle:(UITableViewStyle)style withExpenseListBudget:(ExpenseListBudget_ *)budget
 {
     self = [super initWithStyle:style];
     if (self) {
@@ -160,7 +159,7 @@ enum A3ExpenseListAddBudgetCellType {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidAppear) name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 }
@@ -176,7 +175,7 @@ enum A3ExpenseListAddBudgetCellType {
 		return;
 	}
 	// reload data
-	_currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
+	_currentBudget = [ExpenseListBudget_ findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
 	[self.tableView reloadData];
 
 	[self enableControls:_barButtonEnabled];
@@ -184,7 +183,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	FNLOG();
 	if (IS_IPAD) {
@@ -276,10 +275,10 @@ enum A3ExpenseListAddBudgetCellType {
 		NSArray *section0 = [self section0_Array];
 		NSArray *elements = [self expandableCellElements];
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-		ExpenseListBudget *resultBudget;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+		ExpenseListBudget_ *resultBudget;
 		if (!_currentBudget) {
-            resultBudget = [[ExpenseListBudget alloc] initWithContext:context];
+            resultBudget = [[ExpenseListBudget_ alloc] initWithContext:context];
 			resultBudget.uniqueID = [[NSUUID UUID] UUIDString];
 			resultBudget.updateDate = [NSDate date];
 		} else {

@@ -23,7 +23,6 @@
 
 @end
 
-@class LadyCalendarAccount;
 @class A3LadyCalendarModelManager;
 
 @interface A3LadyCalendarCalendarView : UIView

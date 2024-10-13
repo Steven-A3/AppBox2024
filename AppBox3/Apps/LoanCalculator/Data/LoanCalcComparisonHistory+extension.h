@@ -6,9 +6,7 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "LoanCalcComparisonHistory.h"
-
-@interface LoanCalcComparisonHistory (extension)
+@interface LoanCalcComparisonHistory_ (extension)
 
 - (NSArray *)details;
 @end

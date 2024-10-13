@@ -14,9 +14,6 @@
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "A3ExpenseListHistoryViewController.h"
 #import "A3ExpenseListColumnSectionView.h"
-#import "ExpenseListBudget.h"
-#import "ExpenseListItem.h"
-#import "ExpenseListHistory.h"
 #import "NSString+conversion.h"
 #import "ExpenseListItem+management.h"
 #import "NSMutableArray+A3Sort.h"
@@ -92,8 +89,8 @@ NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationE
 
 @implementation A3ExpenseListMainViewController
 {
-    ExpenseListBudget *_currentBudget;
-    ExpenseListItem *_selectedItem;
+    ExpenseListBudget_ *_currentBudget;
+    ExpenseListItem_ *_selectedItem;
 	BOOL    _isShowMoreMenu;
     UITapGestureRecognizer *_tapGestureRecognizer;
 	BOOL _isAutoMovingAddBudgetView;
@@ -191,7 +188,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 	}
 
 	[self registerContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	
@@ -253,7 +250,7 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
@@ -316,11 +313,11 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagComposeButton:{
 					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ and hasData == YES", _currentBudget.uniqueID];
-					[barButtonItem setEnabled:[ExpenseListItem countOfEntitiesWithPredicate:predicate] > 0];
+					[barButtonItem setEnabled:[ExpenseListItem_ countOfEntitiesWithPredicate:predicate] > 0];
 					break;
 				}
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled:[ExpenseListHistory countOfEntities] > 0];
+					[barButtonItem setEnabled:[ExpenseListHistory_ countOfEntities] > 0];
 					break;
 				case A3RightBarButtonTagShareButton:
 					[barButtonItem setEnabled:_currentBudget.category != nil];
@@ -569,7 +566,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)addItemWithFocus:(BOOL)focus
 {
-    ExpenseListItem *item = [self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
+    ExpenseListItem_ *item = [self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 	item.budgetID = _currentBudget.uniqueID;
     item.itemDate = [NSDate date];
     item.itemName = @"";
@@ -578,7 +575,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	item.order = [item makeOrderString];
     item.hasData = @(YES);
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	NSInteger focusingRow = [_currentBudget expenseItemsCount] - 1;
@@ -693,8 +690,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)clearCurrentBudget {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    for (ExpenseListItem * item in [_currentBudget expenseItems]) {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    for (ExpenseListItem_ * item in [_currentBudget expenseItems]) {
         [context deleteObject:item];
     }
     
@@ -802,9 +799,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_moreMenuButtons = @[help, /*share, */addNew, history];
 	// AddNew
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@ and hasData == YES", _currentBudget.uniqueID];
-    addNew.enabled = [ExpenseListItem countOfEntitiesWithPredicate:predicate] > 0;
+    addNew.enabled = [ExpenseListItem_ countOfEntitiesWithPredicate:predicate] > 0;
 	// History
-    history.enabled = [ExpenseListHistory countOfEntities] > 0;
+    history.enabled = [ExpenseListHistory_ countOfEntities] > 0;
 	// Share
 //    share.enabled = _currentBudget.category != nil;
 
@@ -817,10 +814,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 	[self createExpenseListItemWithBudgetID:_currentBudget.uniqueID];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
-    _currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
+    _currentBudget = [ExpenseListBudget_ findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
     _tableDataSourceArray = [self loadBudgetFromDB];
     
     [self.tableView reloadData];
@@ -829,7 +826,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 #pragma mark - Data Manipulate
 
-- (void)validateEmptyItem:(ExpenseListItem *)item andAutoInsertCellBelow:(A3ExpenseListItemCell *)aCell
+- (void)validateEmptyItem:(ExpenseListItem_ *)item andAutoInsertCellBelow:(A3ExpenseListItemCell *)aCell
 {
     // item 유효성 체크.
     //if ( _selectedItem != item && (item.itemName.length==0 && [item.price isEqualToNumber:@0] && [item.qty isEqualToNumber:@1]) ) {
@@ -859,7 +856,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         
         // 상단에 빈 행이 있는 경우에는 자동추가하지 않음.
         for (int i=0; i < indexPath.row; i++) {
-            ExpenseListItem *aItem = [_tableDataSourceArray objectAtIndex:i];
+            ExpenseListItem_ *aItem = [_tableDataSourceArray objectAtIndex:i];
             if (aItem.itemDate == nil || ![aItem.hasData boolValue]) {
                 return;
             }
@@ -878,7 +875,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             
             // 다음 행에 아이템 추가 (초기값).
             NSIndexPath * indexPath = [self.tableView indexPathForCell:aCell];
-            ExpenseListItem * nextItem = [_tableDataSourceArray objectAtIndex:indexPath.row+1];
+            ExpenseListItem_ * nextItem = [_tableDataSourceArray objectAtIndex:indexPath.row+1];
             if (!nextItem.itemDate || ![nextItem.hasData boolValue]) {
                 A3ExpenseListItemCell * nextCell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+1 inSection:0]];
                 
@@ -928,7 +925,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 - (void)calculateAndDisplayResultWithAnimation:(BOOL)animation saveData:(BOOL)saveData {
     // 전체 사용금액 계산.
     double usedBudget = 0.0;
-    for (ExpenseListItem *item in _tableDataSourceArray) {
+    for (ExpenseListItem_ *item in _tableDataSourceArray) {
         usedBudget += item.price.doubleValue * item.qty.doubleValue;
     }
     _currentBudget.usedAmount = @(usedBudget);
@@ -937,7 +934,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self.headerView setResult:_currentBudget withAnimation:animation];
     // 현재 상태 저장.
 	if (saveData) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 	}
 }
@@ -954,20 +951,20 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)reloadBudgetDataCreateIfNotExist:(BOOL)create {
-    _currentBudget = [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
+    _currentBudget = [ExpenseListBudget_ findFirstByAttribute:@"uniqueID" withValue:A3ExpenseListCurrentBudgetID];
 
 	if (!_currentBudget && create) {
 		// 주제: 특별한 ID 할당이 필요
 		// 배경:
 		// Current Budget 은 iCloud 동기화를 사용하는 경우, 복수의 장비에서 수정 사항이 발생
 		// iPhone 에서 수정한 내용이 iPad 에서 바로 반영이 되어야 하고, 별도의 budget 이 아닌
-		// 같은 ExpenseListBudget 과 ExpenseListItem 이 편집의 대상이 됨
+		// 같은 ExpenseListBudget 과 ExpenseListItem_ 이 편집의 대상이 됨
 		// 한 장비에서 UUID 를 생성하고 오프라인 상태에 있던 다른 장비에서 UUID 를 또 생성한 경우,
 		// 두 개의 서로다른 ID 가 발생하여 동기화를 할 방법이 없는 문제가 생김
 		// History 상태에서는 수정사항이 발생하지 않으므로 History 로 넘길때 고유 ID 를 만들어 부여 함
-		// 이는 ExpenseListBudget 뿐만 아니라 ExpenseListItem 도 동일함
+		// 이는 ExpenseListBudget 뿐만 아니라 ExpenseListItem_도 동일함
 		// 이를 지원하는 방법: Current ExpenseBudget 의 uniqueID 는 항상 A3ExpenseListCurrentBudgetID
-		// ExpenseListItem 의 uniqueID 는 A3ExpenseListCurrentBudgetID + 순차 번호
+		// ExpenseListItem_의 uniqueID 는 A3ExpenseListCurrentBudgetID + 순차 번호
 
 		// iPhone 과 iPad 에서 동시에 데이터를 보여주어야 하는데, 동기화 정보가 장비를 넘어갈 때 마다 데이터를 지우고 만들고 하면,
 		// 무한 반복 상황이 발생함. iPad 에서 18개를 만들고, iPhone 에서 받아서 데이터 없는 것을 지우고, 수정 사항이 생겼으므로,
@@ -975,14 +972,14 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 		// 결론: 최초 18개를 무조건 만들고 그 상태를 유지하기로 함
 		int defaultCount = kDefaultItemCount_iPad;
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        _currentBudget = [[ExpenseListBudget alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        _currentBudget = [[ExpenseListBudget_ alloc] initWithContext:context];
 		_currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 		_currentBudget.updateDate = [NSDate date];
         _currentBudget.isModified = @(NO);
 
 		for (NSInteger idx = 0; idx < defaultCount; idx++) {
-            ExpenseListItem *item = [[ExpenseListItem alloc] initWithContext:context];
+            ExpenseListItem_ *item = [[ExpenseListItem_ alloc] initWithContext:context];
 			item.uniqueID = [self itemIDWithIndex:idx];
 			item.updateDate = [NSDate date];
 			item.budgetID = _currentBudget.uniqueID;
@@ -1002,11 +999,11 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	_tableDataSourceArray = [self loadBudgetFromDB];
 }
 
-- (ExpenseListItem *)createExpenseListItemWithBudgetID:(NSString *)budgetID {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+- (ExpenseListItem_ *)createExpenseListItemWithBudgetID:(NSString *)budgetID {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetID == %@", budgetID];
-    ExpenseListItem *newItem = [[ExpenseListItem alloc] initWithContext:context];
-	ExpenseListItem *lastItem = [ExpenseListItem findFirstWithPredicate:predicate sortedBy:@"uniqueID" ascending:NO];
+    ExpenseListItem_ *newItem = [[ExpenseListItem_ alloc] initWithContext:context];
+	ExpenseListItem_ *lastItem = [ExpenseListItem_ findFirstWithPredicate:predicate sortedBy:@"uniqueID" ascending:NO];
 	NSString *lastUniqueID = lastItem.uniqueID;
 	NSInteger largestIndex = 0;
 	if (lastUniqueID) {
@@ -1034,17 +1031,17 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	// 현재 예산에 새 ID 를 부여하고 history 로 전환
     _currentBudget.currencyCode = [self defaultCurrencyCode];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	ExpenseListBudget *budgetInHistory = (ExpenseListBudget *) [_currentBudget cloneInContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	ExpenseListBudget_ *budgetInHistory = (ExpenseListBudget_ *) [_currentBudget cloneInContext:context];
 	budgetInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 
-    ExpenseListHistory * history = [[ExpenseListHistory alloc] initWithContext:context];
+    ExpenseListHistory_ * history = [[ExpenseListHistory_ alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
 	history.budgetID = budgetInHistory.uniqueID;
 
-	for (ExpenseListItem *item in _tableDataSourceArray) {
-		ExpenseListItem *itemInHistory = (ExpenseListItem *) [item cloneInContext:context];
+	for (ExpenseListItem_ *item in _tableDataSourceArray) {
+		ExpenseListItem_ *itemInHistory = (ExpenseListItem_ *) [item cloneInContext:context];
 		itemInHistory.uniqueID = [[NSUUID UUID] UUIDString];
 		itemInHistory.budgetID = budgetInHistory.uniqueID;
 	}
@@ -1124,7 +1121,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)setupCell:(A3ExpenseListItemCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-	ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
+	ExpenseListItem_ *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
 	cell.delegate = self;
 
 //    cell.nameField.userInteractionEnabled = YES;
@@ -1156,7 +1153,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
+	ExpenseListItem_ *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
 	//if (item.itemDate == nil || ![item.hasData boolValue]) {
     if (![item.hasData boolValue]) {
 		return NO;
@@ -1182,15 +1179,15 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     
     _selectedItem = nil;
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if (_tableDataSourceArray.count > defaultItemCount) {
-        ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
+        ExpenseListItem_ *aItem = _tableDataSourceArray[indexPath.row];
         [context deleteObject:aItem];
 
         [self reloadBudgetDataWithAnimation:YES saveData:NO ];
     }
     else {
-        ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
+        ExpenseListItem_ *aItem = _tableDataSourceArray[indexPath.row];
         aItem.itemDate = nil;
         aItem.itemName = nil;
         aItem.price = nil;
@@ -1199,13 +1196,13 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         aItem.hasData = @(NO);
         
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            ExpenseListItem * aItem = (ExpenseListItem *)evaluatedObject;
+            ExpenseListItem_ * aItem = (ExpenseListItem_ *)evaluatedObject;
             return ([aItem.hasData boolValue] && (aItem.itemName.length>0 || aItem.price || [aItem.qty compare:@1] == NSOrderedDescending));
         }];
         
         NSArray * filtered = [_tableDataSourceArray filteredArrayUsingPredicate:predicate];
         if (filtered.count==0) {
-            ExpenseListItem *aItem = [_tableDataSourceArray objectAtIndex:0];
+            ExpenseListItem_ *aItem = [_tableDataSourceArray objectAtIndex:0];
             aItem.itemName = @"";
             aItem.itemDate = [NSDate date];
             aItem.price = @0;
@@ -1239,15 +1236,15 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 - (void)re_sort_DataSourceToSeparateValidAndEmpty {
     NSArray *hasDataArray = [_tableDataSourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == %@", @(YES)]];
-    hasDataArray = [hasDataArray sortedArrayUsingComparator:^NSComparisonResult(ExpenseListItem * obj1, ExpenseListItem * obj2) {
+    hasDataArray = [hasDataArray sortedArrayUsingComparator:^NSComparisonResult(ExpenseListItem_ * obj1, ExpenseListItem_ * obj2) {
         return [obj1.order integerValue] > [obj2.order integerValue];
     }];
-    [hasDataArray enumerateObjectsUsingBlock:^(ExpenseListItem * obj, NSUInteger idx, BOOL *stop) {
+    [hasDataArray enumerateObjectsUsingBlock:^(ExpenseListItem_  * obj, NSUInteger idx, BOOL *stop) {
         obj.order = [NSString orderStringWithOrder:idx + 1000000];
     }];
 
     NSArray *emptyDataArray = [_tableDataSourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == %@ || hasData == nil", @(NO)]];
-    [emptyDataArray enumerateObjectsUsingBlock:^(ExpenseListItem * obj, NSUInteger idx, BOOL *stop) {
+    [emptyDataArray enumerateObjectsUsingBlock:^(ExpenseListItem_ * obj, NSUInteger idx, BOOL *stop) {
         obj.order = [NSString orderStringWithOrder:([hasDataArray count] + idx) + 1000000];
     }];
     
@@ -1286,7 +1283,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         [self re_sort_DataSourceToSeparateValidAndEmpty];
         [self.tableView reloadData];
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
     });
 	return NO;
@@ -1294,7 +1291,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 #pragma mark - BudgetSetting Delegate
 
-- (void)setExpenseBudgetDataFor:(ExpenseListBudget *)aBudget
+- (void)setExpenseBudgetDataFor:(ExpenseListBudget_ *)aBudget
 {
     _currentBudget = aBudget;
     
@@ -1303,7 +1300,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 
 #pragma mark History Delegate
 
-- (BOOL)isAddedBudget:(ExpenseListBudget *)aBudget{
+- (BOOL)isAddedBudget:(ExpenseListBudget_ *)aBudget{
     if (aBudget.category) {
         return YES;
     }
@@ -1311,7 +1308,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     return NO;
 }
 
--(void)didSelectBudgetHistory:(ExpenseListBudget *)aBudget
+-(void)didSelectBudgetHistory:(ExpenseListBudget_ *)aBudget
 {
     // 현재 화면의 데이터 저장, 입력된 데이터가 없는 경우는 제외.
     // - 새로 추가되어 편집중이던 예산
@@ -1328,10 +1325,10 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     [self clearCurrentBudget];
 
     // 선택된 히스토리 버젯으로 복원.
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSDate *updateDate = [NSDate date];
     
-	_currentBudget = (ExpenseListBudget *) [aBudget cloneInContext:context];
+	_currentBudget = (ExpenseListBudget_ *) [aBudget cloneInContext:context];
     _currentBudget.uniqueID = A3ExpenseListCurrentBudgetID;
 	_currentBudget.updateDate = updateDate;
     _currentBudget.isModified = @(NO);
@@ -1341,8 +1338,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     self.currencyFormatter.currencyCode = [self defaultCurrencyCode];
 	_headerView.currencyFormatter = self.currencyFormatter;
 
-	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem *item, NSUInteger idx, BOOL *stop) {
-		ExpenseListItem *newCurrentItem = (ExpenseListItem *) [item cloneInContext:context];
+	[[aBudget expenseItems] enumerateObjectsUsingBlock:^(ExpenseListItem_ *item, NSUInteger idx, BOOL *stop) {
+		ExpenseListItem_ *newCurrentItem = (ExpenseListItem_ *) [item cloneInContext:context];
 		newCurrentItem.uniqueID = [self itemIDWithIndex:idx];
         FNLOG(@"uniqueID : %@", newCurrentItem.uniqueID);
 		newCurrentItem.budgetID = _currentBudget.uniqueID;
@@ -1463,7 +1460,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	[self changeDirectionButtonStateFor:textField];
 
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
+    ExpenseListItem_ *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
     if (![item.hasData boolValue] && _selectedItem != item) {
         item.itemDate = [NSDate date];
         item.price = @0;
@@ -1542,7 +1539,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
         return;
     }
 
-    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
+    ExpenseListItem_ *item = [_tableDataSourceArray objectAtIndex:index.row];
     NSDate * updateDate = [NSDate date];
 
 	if (textField == cell.nameField) {
@@ -1616,7 +1613,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
             [self.tableView reloadData];
 			FNLOG(@"TableView reload data!!!");
         }
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
 		_editingTextField = nil;
@@ -1646,7 +1643,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	}
 	
 	[self enableControls:YES];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	_editingTextField = nil;
@@ -1656,7 +1653,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     finalize();
 }
 
-- (BOOL)isEmptyItemRow:(ExpenseListItem *)item {
+- (BOOL)isEmptyItemRow:(ExpenseListItem_ *)item {
     if (item.itemName.length==0 && (!item.price || [item.price isEqualToNumber:@0]) && (!item.qty || [item.qty isEqualToNumber:@1] || [item.qty isEqualToNumber:@0] )) {
         return YES;
     }
@@ -1664,7 +1661,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     return NO;
 }
 
-- (BOOL)isSameFocusingOnItemRow:(ExpenseListItem *)item toTextField:(UITextField *)textField {
+- (BOOL)isSameFocusingOnItemRow:(ExpenseListItem_ *)item toTextField:(UITextField *)textField {
     if (([self editingObject] != textField && _selectedItem == item)) {
         return YES;
     }
@@ -1676,7 +1673,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
     self.editingObject = nil;
     
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
-    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
+    ExpenseListItem_ *item = [_tableDataSourceArray objectAtIndex:index.row];
     [self validateEmptyItem:item andAutoInsertCellBelow:aCell];
     [self scrollToTopOfTableView];
     [self reloadBudgetDataWithAnimation:YES saveData:NO ];
@@ -1719,7 +1716,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
-    ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
+    ExpenseListItem_ *aItem = _tableDataSourceArray[indexPath.row];
 
 	UITextField *textField = (UITextField *) self.editingObject;
     textField.text = @"";

@@ -33,9 +33,9 @@ extern NSString *const A3WalletUUIDPhotoCategory;
 extern NSString *const A3WalletUUIDVideoCategory;
 extern NSString *const A3WalletUUIDMemoCategory;
 
-@class WalletFieldItem;
-@class WalletField;
-@class WalletCategory;
+@class WalletFieldItem_;
+@class WalletField_;
+@class WalletCategory_;
 
 @interface WalletData : NSObject
 
@@ -52,11 +52,11 @@ extern NSString *const A3WalletUUIDMemoCategory;
 + (void)initializeWalletCategories;
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow;
 + (NSUInteger)visibleCategoryCount;
-+ (WalletCategory *)firstEditableWalletCategory;
++ (WalletCategory_ *)firstEditableWalletCategory;
 + (NSArray *)categoriesExcludingSystemCategories;
 + (NSArray *)iconList;
-+ (WalletCategory *)categoryItemWithID:(NSString *)categoryID;
-+ (WalletField *)fieldOfFieldItem:(WalletFieldItem *)fieldItem;
++ (WalletCategory_ *)categoryItemWithID:(NSString *)categoryID;
++ (WalletField_ *)fieldOfFieldItem:(WalletFieldItem_ *)fieldItem;
 + (NSString *)stringRepresentationOfContents;
 + (NSString *)htmlRepresentationOfContents;
 

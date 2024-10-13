@@ -13,7 +13,6 @@
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+MMDrawerController.h"
-#import "Calculation.h"
 #import "A3CalculatorHistoryViewController.h"
 #import "A3KeyboardView.h"
 #import "A3InstructionViewController.h"
@@ -71,7 +70,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         _pageControlHeight = safeAreaInsets.bottom != 0 ? 30 : 20;
     }
     return self;
@@ -116,7 +115,7 @@
     [_keyboardView.radianDegreeButton setTitle:([self radian] ? @"Deg" : @"Rad") forState:UIControlStateNormal];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -152,7 +151,7 @@
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -218,7 +217,7 @@
 }
 
 - (CGFloat)getSVbottomOffSet:(CGRect) screenBounds {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if ([UIWindow interfaceOrientationIsPortrait]) {
         return -(safeAreaInsets.bottom + _pageControlHeight);
     }
@@ -256,7 +255,7 @@
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
 
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
     if (![UIWindow interfaceOrientationIsPortrait] && safeAreaInsets.bottom > 0) {
@@ -270,7 +269,7 @@
 }
 
 - (CGFloat)getResultLabelRightOffSet:(CGRect) screenBounds {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (![UIWindow interfaceOrientationIsPortrait] && safeAreaInsets.bottom > 0) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
             return -10;
@@ -351,7 +350,7 @@
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         make.bottom.equalTo(self.view.bottom).with.offset(-safeAreaInsets.bottom);
 		make.height.equalTo(@(self.pageControlHeight));
 	}];
@@ -390,7 +389,7 @@
 		[self.view addSubview:self.degreeRadianLabel];
         [_degreeRadianLabel makeConstraints:^(MASConstraintMaker *make) {
             CGFloat leftOffset = 12;
-            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
             if (safeAreaInsets.bottom > 0) {
                 if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
                     leftOffset = 42;
@@ -542,7 +541,7 @@
         frame.size.height = [self getNumberPadScrollViewHeight];
         
         // iPhone X
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         if (safeAreaInsets.bottom > 0) {
             if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
                 frame.origin.x = safeAreaInsets.left - 14;
@@ -715,7 +714,7 @@ static NSString *const A3V3InstructionDidShowForCalculator = @"A3V3InstructionDi
 }
 
 - (BOOL) isCalculationHistoryEmpty {
-    Calculation *lastcalculation = [Calculation findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    Calculation_ *lastcalculation = [Calculation_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastcalculation != nil ) {
         return NO;
     } else {

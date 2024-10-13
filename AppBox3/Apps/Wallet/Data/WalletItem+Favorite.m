@@ -7,35 +7,34 @@
 //
 
 #import "WalletItem+Favorite.h"
-#import "WalletFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "WalletFavorite+initialize.h"
 #import "A3AppDelegate.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation WalletItem (Favorite)
+@implementation WalletItem_ (Favorite)
 
 - (void)changeFavorite:(BOOL)isAdd
 {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if (isAdd) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemID == %@", self.uniqueID];
-        if ([WalletFavorite countOfEntitiesWithPredicate:predicate] == 0) {
-            WalletFavorite *favorite = [[WalletFavorite alloc] initWithContext:context];
+        if ([WalletFavorite_ countOfEntitiesWithPredicate:predicate] == 0) {
+            WalletFavorite_ *favorite = [[WalletFavorite_ alloc] initWithContext:context];
             favorite.uniqueID = [[NSUUID UUID] UUIDString];
             favorite.updateDate = [NSDate date];
             favorite.itemID = self.uniqueID;
             [favorite assignOrder];
 
             // order set
-            NSArray *favors = [WalletFavorite findAllSortedBy:@"order" ascending:YES];
+            NSArray *favors = [WalletFavorite_ findAllSortedBy:@"order" ascending:YES];
             NSMutableArray *tmp = [[NSMutableArray alloc] initWithArray:favors];
             [tmp addObjectToSortedArray:favorite];
 
         }
     } else {
-		NSArray *favors = [WalletFavorite findByAttribute:@"itemID" withValue:self.uniqueID];
-		for (WalletFavorite *favor in favors) {
+		NSArray *favors = [WalletFavorite_ findByAttribute:@"itemID" withValue:self.uniqueID];
+		for (WalletFavorite_ *favor in favors) {
             [context deleteObject:favor];
 		}
     }

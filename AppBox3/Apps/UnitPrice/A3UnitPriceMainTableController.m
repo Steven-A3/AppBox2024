@@ -11,8 +11,6 @@
 #import "A3UnitPriceSliderView.h"
 #import "A3UnitPriceHistoryViewController.h"
 #import "A3UnitPriceDetailTableController.h"
-#import "UnitPriceInfo.h"
-#import "UnitPriceHistory.h"
 #import "A3UnitPriceCompareSliderCell.h"
 #import "A3UnitPriceInfoCell.h"
 #import "A3AppDelegate.h"
@@ -44,8 +42,8 @@ NSString *const A3UnitPricePrice2DefaultID = @"UnitPriceDefault2";
     float price2UnitPrice;
 }
 
-@property (nonatomic, strong) UnitPriceInfo *price1;
-@property (nonatomic, strong) UnitPriceInfo *price2;
+@property (nonatomic, strong) UnitPriceInfo_ *price1;
+@property (nonatomic, strong) UnitPriceInfo_ *price2;
 @property (nonatomic, strong) UIBarButtonItem *historyBarItem;
 @property (nonatomic, strong) UIBarButtonItem *composeBarItem;
 @property (nonatomic, strong) UILabel *resultLB;
@@ -123,7 +121,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillHide) name:A3NotificationRightSideViewWillDismiss object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 }
 
 - (void)cloudStoreDidImport {
@@ -142,7 +140,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	[self removeContentSizeCategoryDidChangeNotification];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -205,7 +203,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	_barButtonEnabled = enable;
     if (enable) {
 		self.composeBarItem.enabled = price1UnitPrice > 0 && price2UnitPrice > 0;
-		self.historyBarItem.enabled = [UnitPriceHistory countOfEntities] > 0;
+		self.historyBarItem.enabled = [UnitPriceHistory_ countOfEntities] > 0;
     }
     else {
 		self.composeBarItem.enabled = NO;
@@ -301,13 +299,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     return _historyBarItem;
 }
 
-- (UnitPriceInfo *)price1
+- (UnitPriceInfo_ *)price1
 {
     if (!_price1) {
-		_price1 = [UnitPriceInfo findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice1DefaultID];
+		_price1 = [UnitPriceInfo_ findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice1DefaultID];
 		if (!_price1) {
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            _price1 = [[UnitPriceInfo alloc] initWithContext:context];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+            _price1 = [[UnitPriceInfo_ alloc] initWithContext:context];
             _price1.uniqueID = A3UnitPricePrice1DefaultID;
             _price1.priceName = @"A";
             [_price1 initValues];
@@ -317,13 +315,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     return _price1;
 }
 
-- (UnitPriceInfo *)price2
+- (UnitPriceInfo_ *)price2
 {
 	if (!_price2) {
-		_price2 = [UnitPriceInfo findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice2DefaultID];
+		_price2 = [UnitPriceInfo_ findFirstByAttribute:ID_KEY withValue:A3UnitPricePrice2DefaultID];
 		if (!_price2) {
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-            _price2 = [[UnitPriceInfo alloc] initWithContext:context];
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+            _price2 = [[UnitPriceInfo_ alloc] initWithContext:context];
             _price2.uniqueID = A3UnitPricePrice2DefaultID;
             _price2.priceName = @"B";
             [_price2 initValues];
@@ -372,7 +370,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)didHistoryDeletedHistoryViewController:(UIViewController *)viewController
 {
-    NSArray *histories = [UnitPriceHistory findAllWithPredicate:nil];
+    NSArray *histories = [UnitPriceHistory_ findAllWithPredicate:nil];
     if (histories.count>0) {
         self.historyBarItem.enabled = YES;
     }
@@ -381,7 +379,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     }
 }
 
-- (void)historyViewController:(UIViewController *)viewController selectHistory:(UnitPriceHistory *)history
+- (void)historyViewController:(UIViewController *)viewController selectHistory:(UnitPriceHistory_ *)history
 {
     if (history) {
         if (price1UnitPrice > 0 && price2UnitPrice > 0) {
@@ -389,7 +387,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         }
         
         FNLOG(@"Selected History\n%@", [history description]);
-		for (UnitPriceInfo *item in [history unitPrices]) {
+		for (UnitPriceInfo_ *item in [history unitPrices]) {
 			if ([item.priceName isEqualToString:@"A"]) {
 				_price1.price = item.price;
 				_price1.unitCategoryID = item.unitCategoryID;
@@ -412,11 +410,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
                 _price2.historyID = item.historyID;
 			}
 		}
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
 		if (![self.defaultCurrencyCode isEqualToString:history.currencyCode]) {
-			[UnitPriceInfo changeDefaultCurrencyCode:history.currencyCode];
+			[UnitPriceInfo_ changeDefaultCurrencyCode:history.currencyCode];
 			[self.currencyFormatter setCurrencyCode:history.currencyCode];
 			[self.currencyFormatter setMaximumFractionDigits:2];
 		}
@@ -428,11 +426,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 #pragma mark - A3UnitPriceInfoModifyDelegate
 
-- (void)unitPriceInfoChanged:(UnitPriceInfo *)price
+- (void)unitPriceInfoChanged:(UnitPriceInfo_ *)price
 {
     // unit 보정 과정
-    UnitPriceInfo *priceSelf;
-    UnitPriceInfo *priceOther;
+    UnitPriceInfo_ *priceSelf;
+    UnitPriceInfo_ *priceOther;
     
     if (price == _price1) {
         priceSelf = _price1;
@@ -500,8 +498,8 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         return YES; // 신규
     }
     
-    UnitPriceInfo *price1History = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"historyID == %@ && priceName == %@ && uniqueID != %@", _price1.historyID, @"A", @"UnitPriceDefault1"]];
-    UnitPriceInfo *price2History = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"historyID == %@ && priceName == %@ && uniqueID != %@", _price2.historyID, @"B", @"UnitPriceDefault2"]];
+    UnitPriceInfo_ *price1History = [UnitPriceInfo_ findFirstWithPredicate:[NSPredicate predicateWithFormat:@"historyID == %@ && priceName == %@ && uniqueID != %@", _price1.historyID, @"A", @"UnitPriceDefault1"]];
+    UnitPriceInfo_ *price2History = [UnitPriceInfo_ findFirstWithPredicate:[NSPredicate predicateWithFormat:@"historyID == %@ && priceName == %@ && uniqueID != %@", _price2.historyID, @"B", @"UnitPriceDefault2"]];
     
     NSArray *allkeys = [[[_price1 entity] attributesByName] allKeys];
     for (NSString *key in allkeys) {
@@ -528,14 +526,14 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     FNLOG(@"+ putHistory !!");
 
     if ([self hasChangesOfPriceWithHistory]) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        UnitPriceHistory *history = [[UnitPriceHistory alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        UnitPriceHistory_ *history = [[UnitPriceHistory_ alloc] initWithContext:context];
         history.uniqueID = [[NSUUID UUID] UUIDString];
         NSDate *keyDate = [NSDate date];
         history.updateDate = keyDate;
         history.currencyCode = [self defaultCurrencyCode];
         
-        UnitPriceInfo *priceAItem = [[UnitPriceInfo  alloc] initWithContext:context];
+        UnitPriceInfo_ *priceAItem = [[UnitPriceInfo_  alloc] initWithContext:context];
         priceAItem.uniqueID = [[NSUUID UUID] UUIDString];
         priceAItem.updateDate = [NSDate date];
         priceAItem.priceName = @"A";
@@ -549,7 +547,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
         priceAItem.note = _price1.note;
         priceAItem.historyID = history.uniqueID;
         
-        UnitPriceInfo *priceBItem = [[UnitPriceInfo  alloc] initWithContext:context];
+        UnitPriceInfo_ *priceBItem = [[UnitPriceInfo_  alloc] initWithContext:context];
         priceBItem.uniqueID = [[NSUUID UUID] UUIDString];
         priceBItem.updateDate = [NSDate date];
         priceBItem.priceName = @"B";
@@ -578,7 +576,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 	[self.price1 initValues];
 	[self.price2 initValues];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     [self.tableView reloadData];
@@ -586,13 +584,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 #pragma mark - Cell Configure
 
-- (NSString *)shortUnitNameForPriceInfo:(UnitPriceInfo *)priceInfo {
+- (NSString *)shortUnitNameForPriceInfo:(UnitPriceInfo_ *)priceInfo {
 	if (!validUnit(priceInfo.unitID)  || !validUnit(priceInfo.unitCategoryID)) return @"";
 	return NSLocalizedStringFromTable([self.unitDataManager unitNameForUnitID:[priceInfo.unitID unsignedIntegerValue] categoryID:[priceInfo.unitCategoryID unsignedIntegerValue]],
 	@"unitShort", nil);
 }
 
-- (NSString *)unitNameForPriceInfo:(UnitPriceInfo *)priceInfo {
+- (NSString *)unitNameForPriceInfo:(UnitPriceInfo_ *)priceInfo {
 	if (!validUnit(priceInfo.unitID) || !validUnit(priceInfo.unitCategoryID)) return @"";
 	return NSLocalizedStringFromTable([self.unitDataManager unitNameForUnitID:[priceInfo.unitID unsignedIntegerValue] categoryID:[priceInfo.unitCategoryID unsignedIntegerValue]],
 	@"unit", nil);
@@ -885,7 +883,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
 	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-	UnitPriceInfo *priceInfo = self.price1;
+	UnitPriceInfo_ *priceInfo = self.price1;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
 	sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
@@ -927,7 +925,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
 	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-    UnitPriceInfo *priceInfo = self.price2;
+    UnitPriceInfo_ *priceInfo = self.price2;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
     unitShortName = validUnit(priceInfo.unitID) ? [self shortUnitNameForPriceInfo:priceInfo] : NSLocalizedString(@"None", @"None");

@@ -8,8 +8,6 @@
 
 #import "A3CalendarViewDelegate.h"
 
-@class LadyCalendarAccount;
-
 @interface A3LadyCalendarViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;

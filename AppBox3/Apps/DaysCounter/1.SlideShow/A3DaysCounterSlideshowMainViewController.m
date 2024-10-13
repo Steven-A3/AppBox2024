@@ -16,7 +16,6 @@
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterDefine.h"
-#import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterSlideshowOptionViewController.h"
@@ -126,7 +125,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 
 	self.eventsArray = [_sharedManager allEventsListContainedImage];
     if ([_eventsArray count] > 0) {
@@ -143,7 +142,7 @@
 - (void)applicationWillResignActive {
 	if (_activityViewController) {
 		[self dismissViewControllerAnimated:NO completion:^{
-			_activityViewController = nil;
+            self->_activityViewController = nil;
 		}];
 	}
 	if (_popoverVC) {
@@ -207,7 +206,7 @@
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
 	if (_prevShownEventID) {
-		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
+		NSUInteger eventIdx = [_eventsArray indexOfObjectPassingTest:^BOOL(DaysCounterEvent_ *item, NSUInteger idx, BOOL *stop) {
 			return [item.uniqueID isEqualToString:_prevShownEventID];
 		}];
 
@@ -263,7 +262,7 @@
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewDidAppear object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
@@ -351,7 +350,7 @@
         nowComp.second = 0;
         NSDate *today = [[[A3AppDelegate instance] calendar] dateFromComponents:nowComp];
         
-        [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
+        [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent_ *event, NSUInteger idx, BOOL *stop) {
             if ([event.effectiveStartDate timeIntervalSince1970] >= [today timeIntervalSince1970]) {
                 indexOfTodayPhoto = idx;
                 *stop = YES;
@@ -620,7 +619,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
         return;
     }
 
-    DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
+    DaysCounterEvent_ *item = [_eventsArray objectAtIndex:currentIndex];
     _prevShownEventID = item.uniqueID;
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
@@ -808,7 +807,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
-    DaysCounterEvent *eventItem = [_eventsArray objectAtIndex:currentIndex];
+    DaysCounterEvent_ *eventItem = [_eventsArray objectAtIndex:currentIndex];
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         return [NSString stringWithFormat:NSLocalizedString(@"%@ using AppBox Pro", @"%@ using AppBox Pro"), eventItem.eventName];
@@ -824,7 +823,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterSlideshow = @"A3V3Ins
 
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
-    DaysCounterEvent *eventItem = [_eventsArray objectAtIndex:currentIndex];
+    DaysCounterEvent_ *eventItem = [_eventsArray objectAtIndex:currentIndex];
     if (!eventItem) {
         return nil;
     }

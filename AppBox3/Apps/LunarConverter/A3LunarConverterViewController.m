@@ -88,7 +88,7 @@
 	CGFloat viewHeight = 84 * 3 + 1;
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         verticalOffset = 30;
     }
@@ -438,7 +438,7 @@
 }
 
 - (CGFloat)keyboardHeightForInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (IS_IPHONE) {
         if (safeAreaInsets.top > 20) {
             return 260;

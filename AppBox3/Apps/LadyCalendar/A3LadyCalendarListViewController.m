@@ -13,7 +13,6 @@
 #import "A3LadyCalendarDetailViewController.h"
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3ColoredCircleView.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -87,7 +86,7 @@
 {
     NSMutableArray *groupedArray = [NSMutableArray array];
     NSMutableDictionary *groupInfo = [NSMutableDictionary dictionary];
-    for (LadyCalendarPeriod *item in array) {
+    for (LadyCalendarPeriod_ *item in array) {
 		NSDateComponents *components = [[[A3AppDelegate instance] calendar] components:NSCalendarUnitYear fromDate:item.startDate];
         NSInteger year = components.year;
         NSString *key = [NSString stringWithFormat:@"%ld", (long)year];
@@ -103,7 +102,7 @@
     self.itemArray = groupedArray;
 }
 
-- (LadyCalendarPeriod *)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
+- (LadyCalendarPeriod_ *)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
 {
     if ( indexPath.section == 0 && indexPath.row == 0 )
         return nil;
@@ -115,13 +114,13 @@
     return [items objectAtIndex:prevRow];
 }
 
-- (LadyCalendarPeriod *)nextPeriodFromIndexPath:(NSIndexPath*)indexPath
+- (LadyCalendarPeriod_ *)nextPeriodFromIndexPath:(NSIndexPath*)indexPath
 {
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
     if ( (indexPath.section+1 >= [_itemArray count]) && (indexPath.row+1 >= [items count]) )
         return nil;
     
-    LadyCalendarPeriod *periodItem = nil;
+    LadyCalendarPeriod_ *periodItem = nil;
     if ( (indexPath.row+1) >= [items count] ) {
         NSInteger nextSection = indexPath.section+1;
         periodItem = [[[_itemArray objectAtIndex:nextSection] objectForKey:ItemKey_Items] objectAtIndex:0];
@@ -136,9 +135,9 @@
 - (NSMutableArray*)sameMonthItemFromIndexPath:(NSIndexPath*)indexPath
 {
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-    LadyCalendarPeriod *prevItem = [self previousPeriodFromIndexPath:indexPath];
-    LadyCalendarPeriod *item = [items objectAtIndex:indexPath.row];
-    LadyCalendarPeriod *nextItem = [self nextPeriodFromIndexPath:indexPath];
+    LadyCalendarPeriod_ *prevItem = [self previousPeriodFromIndexPath:indexPath];
+    LadyCalendarPeriod_ *item = [items objectAtIndex:indexPath.row];
+    LadyCalendarPeriod_ *nextItem = [self nextPeriodFromIndexPath:indexPath];
     
     NSString *itemYearDate = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"yyyyMM"];
     NSString *prevYearDate = ( prevItem ? [A3DateHelper dateStringFromDate:prevItem.startDate withFormat:@"yyyyMM"] : nil );
@@ -236,7 +235,7 @@
     }
     
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-    LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
+    LadyCalendarPeriod_ *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
 
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
@@ -262,7 +261,7 @@
             textLabel.text = [NSString stringWithFormat:@"%@ - %@", [dateFormatter stringFromDate:item.startDate], [dateFormatter stringFromDate:item.endDate]];
         }
         
-        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
+        LadyCalendarPeriod_ *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
         NSInteger cycleLength = 0;
         
         if ( prevPeriod ) {
@@ -292,7 +291,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-    LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
+    LadyCalendarPeriod_ *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
     if ( item ) {
         A3ColoredCircleView *circleView = (A3ColoredCircleView*)[cell viewWithTag:12];
         if ( [item.isPredict boolValue] )
@@ -310,9 +309,9 @@
 {
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-        LadyCalendarPeriod *period = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
+        LadyCalendarPeriod_ *period = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
         
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         if (period) {
             [context deleteObject:period];
             [context saveIfNeeded];
@@ -337,7 +336,7 @@
 {
 	if (![_itemArray count]) return NO;
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-    LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
+    LadyCalendarPeriod_ *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
     
     return ( item ? ![item.isPredict boolValue] : NO);
 }
@@ -345,7 +344,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-    LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
+    LadyCalendarPeriod_ *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
     
     if ( item == nil )
         return;

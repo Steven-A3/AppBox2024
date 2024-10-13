@@ -243,7 +243,7 @@
 
 #pragma mark -
 
-- (void)setResult:(TipCalcRecent *)result {
+- (void)setResult:(TipCalcRecent_ *)result {
 
     // tipLabel
     double dTip = 0.0;
@@ -338,7 +338,7 @@
     }
 }
 
-- (void)setResult:(TipCalcRecent *)result withAnimation:(BOOL)animate {
+- (void)setResult:(TipCalcRecent_ *)result withAnimation:(BOOL)animate {
     if (animate) {
         [UIView animateWithDuration:0.25
                               delay:0

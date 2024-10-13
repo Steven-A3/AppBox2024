@@ -28,8 +28,6 @@
 #import "LoanCalcPreference.h"
 #import "LoanCalcData+Calculation.h"
 #import "LoanCalcString.h"
-#import "LoanCalcHistory.h"
-#import "LoanCalcComparisonHistory.h"
 #import "A3NumberKeyboardViewController.h"
 #import "SFKImage.h"
 #import "UITableView+utility.h"
@@ -484,8 +482,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     if (IS_IPAD) {
         // 히스토리가 존재하는지 체크
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
-        LoanCalcHistory *history = [LoanCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+        LoanCalcHistory_ *history = [LoanCalcHistory_ findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+        LoanCalcComparisonHistory_ *comparison = [LoanCalcComparisonHistory_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
         
         //self.navigationItem.rightBarButtonItems = @[setting, history, share];
         UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
@@ -758,7 +756,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
     FNLOG(@"%f", self.tableView.contentOffset.y);
     
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
 	if ((self.tableView.contentOffset.y == -63) || (safeAreaInsets.top > 20 && self.tableView.contentOffset.y == -88)) {
 		CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 		frame = CGRectOffset(frame, 0, 1);
@@ -767,8 +765,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 	// 히스토리가 존재하는지 체크
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"orderInComparison == nil"];
-	LoanCalcHistory *history = [LoanCalcHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
-	LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+	LoanCalcHistory_ *history = [LoanCalcHistory_ findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	LoanCalcComparisonHistory_ *comparison = [LoanCalcComparisonHistory_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
 	if (!history && !comparison) {
 		// 둘다 없음
@@ -1020,10 +1018,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     }
 }
 
-- (LoanCalcHistory *)loanHistoryForLoanData:(LoanCalcData *)loan
+- (LoanCalcHistory_ *)loanHistoryForLoanData:(LoanCalcData *)loan
 {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    LoanCalcHistory *history = [[LoanCalcHistory alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    LoanCalcHistory_ *history = [[LoanCalcHistory_ alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
     history.calculationMode = @(loan.calculationMode);
     history.updateDate = [NSDate date];
@@ -1050,7 +1048,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     return history;
 }
 
-- (void)loadLoanCalcData:(LoanCalcData *)data fromLoanCalcHistory:(LoanCalcHistory *)history
+- (void)loadLoanCalcData:(LoanCalcData *)data fromLoanCalcHistory:(LoanCalcHistory_ *)history
 {
     data.downPayment = @(history.downPayment.doubleValue);
     data.extraPaymentMonthly = @(history.extraPaymentMonthly.doubleValue);
@@ -1450,10 +1448,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 
 - (void)putLoanHistory
 {
-    if (![LoanCalcHistory sameDataExistForLoanCalcData:self.loanData type:nil]) {
+    if (![LoanCalcHistory_ sameDataExistForLoanCalcData:self.loanData type:nil]) {
         [self loanHistoryForLoanData:self.loanData];
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
     }
 }
@@ -1745,17 +1743,17 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 {
     BOOL shouldSave;
     
-	shouldSave = ![LoanCalcHistory sameDataExistForLoanCalcData:_loanDataA type:@"A"] ||
-			![LoanCalcHistory sameDataExistForLoanCalcData:_loanDataB type:@"B"];
+	shouldSave = ![LoanCalcHistory_ sameDataExistForLoanCalcData:_loanDataA type:@"A"] ||
+			![LoanCalcHistory_ sameDataExistForLoanCalcData:_loanDataB type:@"B"];
     
     if (shouldSave) {
-        LoanCalcHistory *historyA = [self loanHistoryForLoanData:_loanDataA];
-        LoanCalcHistory *historyB = [self loanHistoryForLoanData:_loanDataB];
+        LoanCalcHistory_ *historyA = [self loanHistoryForLoanData:_loanDataA];
+        LoanCalcHistory_ *historyB = [self loanHistoryForLoanData:_loanDataB];
 		historyA.orderInComparison = @"A";
 		historyB.orderInComparison = @"B";
         
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        LoanCalcComparisonHistory *comparison = [[LoanCalcComparisonHistory alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        LoanCalcComparisonHistory_ *comparison = [[LoanCalcComparisonHistory_ alloc] initWithContext:context];
         comparison.uniqueID = [[NSUUID UUID] UUIDString];
         comparison.updateDate = [NSDate date];
         comparison.totalInterestA = [_loanDataA totalInterest].stringValue;
@@ -2207,7 +2205,7 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 	}
 }
 
-- (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory *)history
+- (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory_ *)history
 {
 	[self putCurrentDataToHistory];
 
@@ -2227,15 +2225,15 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     [self refreshRightBarItems];
 }
 
-- (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison {
+- (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory_ *)comparison {
 	[self putCurrentDataToHistory];
 
 	if (![self.defaultCurrencyCode isEqualToString:comparison.currencyCode]) {
 		[self changeDefaultCurrencyCode:comparison.currencyCode];
 	}
 
-	LoanCalcHistory *historyA, *historyB;
-	for (LoanCalcHistory *history in comparison.details) {
+	LoanCalcHistory_ *historyA, *historyB;
+	for (LoanCalcHistory_ *history in comparison.details) {
 		if ([history.orderInComparison isEqualToString:@"A"]) {
 			historyA = history;
 		} else {
@@ -2659,22 +2657,21 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     return nil;
 }
 
--(void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	if (self.tableView.contentInset.top == 0) {
-        if SYSTEM_VERSION_LESS_THAN(@"11") {
-            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+- (void)scrollToTopOfTableView {
+    [UIView animateWithDuration:0.35
+                          delay:0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        if (self.tableView.contentInset.top == 0) {
+            if (@available(iOS 11.0, *)) {
+                [self.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:NO];
+            } else {
+                self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+            }
         } else {
-            [self.tableView scrollsToTop];
+            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
         }
-	}
-	else {
-		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
-	}
-	[UIView commitAnimations];
+    } completion:nil];
 }
 
 #pragma mark Configure TableView Cell

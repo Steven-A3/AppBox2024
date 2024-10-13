@@ -11,7 +11,6 @@
 #import "A3CurrencyTableViewController.h"
 #import "A3CurrencyPickerStyleViewController.h"
 #import "A3CurrencyDataManager.h"
-#import "CurrencyHistory.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3CurrencySettingsViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
@@ -71,7 +70,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
 		settings.tag = A3RightBarButtonTagSettingsButton;
 		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-		self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
+		self.historyBarButton = [self historyBarButton:[CurrencyHistory_ class]];
 		self.historyBarButton.tag = A3RightBarButtonTagHistoryButton;
 		space.width = 24.0;
 		UIBarButtonItem *help = [self instructionHelpBarButton];
@@ -257,7 +256,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
  	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         __typeof__(self) strongSelf = weakSelf;
-        strongSelf.moreMenuButtons = @[[strongSelf instructionHelpButton], strongSelf.shareButton, [strongSelf historyButton:[CurrencyHistory class] ], strongSelf.settingsButton];
+        strongSelf.moreMenuButtons = @[[strongSelf instructionHelpButton], strongSelf.shareButton, [strongSelf historyButton:[CurrencyHistory_ class] ], strongSelf.settingsButton];
 		strongSelf.moreMenuView = [strongSelf presentMoreMenuWithButtons:strongSelf.moreMenuButtons pullDownView:nil];
         strongSelf.isShowMoreMenu = YES;
 	});
@@ -386,7 +385,7 @@ NSString *const A3CurrencyConverterSelectedViewIndex = @"A3CurrencyConverterSele
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagHistoryButton:
-					[barButtonItem setEnabled:[CurrencyHistory countOfEntities] > 0];
+					[barButtonItem setEnabled:[CurrencyHistory_ countOfEntities] > 0];
 					break;
 				case A3RightBarButtonTagShareButton:
 				case A3RightBarButtonTagSettingsButton:

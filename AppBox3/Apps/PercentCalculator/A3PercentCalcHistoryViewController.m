@@ -13,7 +13,6 @@
 #import "A3PercentCalculator.h"
 #import "A3PercentCalcHistoryCell.h"
 #import "A3PercentCalcHistoryCompareCell.h"
-#import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+iPad_rightSideView.h"
@@ -116,7 +115,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [PercentCalcHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [PercentCalcHistory_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -141,10 +140,10 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [PercentCalcHistory truncateAll];
+        [PercentCalcHistory_ truncateAll];
         _fetchedResultsController = nil;
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
         [self.tableView reloadData];
@@ -182,8 +181,14 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
-    A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchiveObjectWithData:aData.historyItem];
+    PercentCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+    NSError *error = nil;
+    A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class] fromData:aData.historyItem error:&error];
+
+    if (error) {
+        NSLog(@"Failed to unarchive A3PercentCalcData: %@", error.localizedDescription);
+    }
+
     NSArray *results = [A3PercentCalculator percentCalculateFor:historyData];
     if (results==nil) {
         FNLOG(@"no");
@@ -375,9 +380,14 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
-    A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchiveObjectWithData:aData.historyItem];
-    
+    PercentCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+    NSError *error = nil;
+    A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class] fromData:aData.historyItem error:&error];
+
+    if (error) {
+        NSLog(@"Failed to unarchive A3PercentCalcData: %@", error.localizedDescription);
+    }
+
     return historyData.dataType==PercentCalcType_5 ? 84.0 : 62.0;
 }
 
@@ -386,19 +396,24 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     
-    PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+    PercentCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
     if (!aData) {
         return;
     }
     
     if ([_delegate respondsToSelector:@selector(setHistoryData:)]) {
-        A3PercentCalcData *history = [NSKeyedUnarchiver unarchiveObjectWithData:aData.historyItem];
+        NSError *error = nil;
+        A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class] fromData:aData.historyItem error:&error];
+
+        if (error) {
+            NSLog(@"Failed to unarchive A3PercentCalcData: %@", error.localizedDescription);
+        }
         
-        if (!history) {
+        if (!historyData) {
             return;
         }
         
-        [_delegate setHistoryData:history];
+        [_delegate setHistoryData:historyData];
         
         [self doneButtonAction:nil];
     }
@@ -412,8 +427,8 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        PercentCalcHistory *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        PercentCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:aData];
         [context saveIfNeeded];
         _fetchedResultsController = nil;

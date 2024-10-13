@@ -9,16 +9,13 @@
 #import "A3TranslatorViewController.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3TranslatorMessageViewController.h"
-#import "TranslatorHistory.h"
 #import "NSDate+TimeAgo.h"
 #import "A3TranslatorCircleView.h"
 #import "A3TranslatorFavoriteDataSource.h"
 #import "A3TranslatorListCell.h"
 #import "UIView+Screenshot.h"
 #import "UIViewController+A3Addition.h"
-#import "TranslatorGroup.h"
 #import "A3TranslatorLanguage.h"
-#import "TranslatorFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3InstructionViewController.h"
@@ -81,7 +78,7 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     [self setupInstructionView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
@@ -113,7 +110,7 @@
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -145,7 +142,7 @@
 	
 	if (!_viewWillAppearCalled) {
 		_viewWillAppearCalled = YES;
-		if (!_instructionViewController && [TranslatorGroup countOfEntities] == 0) {
+		if (!_instructionViewController && [TranslatorGroup_ countOfEntities] == 0) {
 			double delayInSeconds = 0.2;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -265,7 +262,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
     [self.instructionViewController.view removeFromSuperview];
     self.instructionViewController = nil;
 
-	if (_instructionPresentedVeryFirst && [TranslatorGroup countOfEntities] == 0) {
+	if (_instructionPresentedVeryFirst && [TranslatorGroup_ countOfEntities] == 0) {
 		double delayInSeconds = 0.2;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -286,7 +283,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[self.view addSubview:_segmentedControl];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top - 20;
 
     [_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
@@ -370,11 +367,11 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	return _favoriteDataSource;
 }
 
-- (void)translatorFavoriteItemSelected:(TranslatorFavorite *)item {
+- (void)translatorFavoriteItemSelected:(TranslatorFavorite_ *)item {
 	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
 
-	TranslatorHistory *history = [TranslatorHistory findFirstByAttribute:@"uniqueID" withValue:item.historyID];
-	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:history.groupID];
+	TranslatorHistory_ *history = [TranslatorHistory_ findFirstByAttribute:@"uniqueID" withValue:item.historyID];
+	TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:history.groupID];
 	viewController.originalTextLanguage = group.sourceLanguage;
 	viewController.translatedTextLanguage = group.targetLanguage;
 	viewController.delegate = self;
@@ -392,7 +389,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-		_fetchedResultsController = [TranslatorGroup fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
+		_fetchedResultsController = [TranslatorGroup_ fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
 	}
 
 	return _fetchedResultsController;
@@ -406,10 +403,10 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	UITableViewCell *cell;
 	static NSString *cellIdentifier = @"TranslatorListCell";
 
-	TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+	TranslatorGroup_ *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID];
-	TranslatorHistory *history = [TranslatorHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	TranslatorHistory_ *history = [TranslatorHistory_ findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 	NSDate *updateDate = history.updateDate;
 	if (IS_IPHONE) {
 		UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -440,7 +437,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 													 [self.languageListManager localizedNameForCode:group.targetLanguage]];
 
 	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorHistory countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]]];
+    circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[TranslatorHistory_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]]];
 	cell.imageView.image = [circleView imageByRenderingView];
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -454,10 +451,10 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
-		[TranslatorHistory deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
-		[TranslatorFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+		TranslatorGroup_ *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+		[TranslatorHistory_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
+		[TranslatorFavorite_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"groupID == %@", group.uniqueID]];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context deleteObject:group];
 
 		[self.fetchedResultsController performFetch:nil];
@@ -480,7 +477,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
-	TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+	TranslatorGroup_ *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
 	viewController.originalTextLanguage = group.sourceLanguage;
 	viewController.translatedTextLanguage = group.targetLanguage;
@@ -503,7 +500,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 	_fetchedResultsController = nil;
 }
@@ -514,7 +511,7 @@ static NSString *const A3V3InstructionDidShowForTranslator = @"A3V3InstructionDi
 	[self.view addSubview:bannerView];
 	
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = -safeAreaInsets.bottom;
     
 	UIView *superview = self.view;

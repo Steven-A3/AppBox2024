@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class UnitPriceHistory;
-
 @protocol UnitPriceHistoryViewControllerDelegate <NSObject>
 
 @required
-- (void)historyViewController:(UIViewController *)viewController selectHistory:(UnitPriceHistory *)history;
+- (void)historyViewController:(UIViewController *)viewController selectHistory:(UnitPriceHistory_ *)history;
 - (void)didHistoryDeletedHistoryViewController:(UIViewController *)viewController;
 
 @end

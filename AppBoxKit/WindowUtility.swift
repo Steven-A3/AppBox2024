@@ -25,3 +25,22 @@ extension UIWindow {
         return self.getCurrentInterfaceOrientation().isLandscape
     }
 }
+
+extension UIApplication {
+    @objc public var myKeyWindow: UIWindow? {
+        return self.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+    }
+    
+    @objc static
+    public func printCallStackIfDebug() {
+#if DEBUG
+        let callStack = Thread.callStackSymbols
+        for symbol in callStack {
+            print(symbol)
+        }
+#endif
+    }
+}

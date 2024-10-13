@@ -11,7 +11,6 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEventLocation.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3UIDevice.h"
 

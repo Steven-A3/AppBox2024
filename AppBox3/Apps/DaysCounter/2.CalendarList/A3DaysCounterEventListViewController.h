@@ -11,11 +11,11 @@
 
 @class A3WalletSegmentedControl;
 @class A3DaysCounterModelManager;
-@class DaysCounterCalendar;
+@class DaysCounterCalendar_;
 
 @interface A3DaysCounterEventListViewController : UIViewController
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) DaysCounterCalendar *calendarItem;
+@property (strong, nonatomic) DaysCounterCalendar_ *calendarItem;
 @property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;

@@ -17,7 +17,6 @@
 #import "A3UserDefaults.h"
 #import "A3UserDefaults+A3Defaults.h"
 #import "A3AppDelegate.h"
-#import "CurrencyFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3CurrencyViewController.h"
 #import "UIViewController+A3Addition.h"
@@ -27,8 +26,6 @@
 #import "NSManagedObject+extension.h"
 #import "UIImageView+AFNetworking.h"
 #import "UIView+Screenshot.h"
-#import "CurrencyHistory.h"
-#import "CurrencyHistoryItem.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "Reachability.h"
@@ -138,7 +135,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	UIView *superview = self.view;
 	[self.view addSubview:self.plusButton];
 
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     CGFloat verticalOffset = safeAreaInsets.bottom;
 
     [self.plusButton makeConstraints:^(MASConstraintMaker *make) {
@@ -525,9 +522,9 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedCode {
-    NSArray *result = [CurrencyFavorite findByAttribute:@"uniqueID" withValue:selectedCode];
+    NSArray *result = [CurrencyFavorite_ findByAttribute:@"uniqueID" withValue:selectedCode];
     if ([result count]) {
-        NSInteger indexOfSelectedCurrency = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSInteger indexOfSelectedCurrency = [self.favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite_ * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             return [obj.uniqueID isEqualToString:selectedCode];
         }];
         if (indexOfSelectedCurrency != NSNotFound) {
@@ -537,8 +534,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         return;
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    CurrencyFavorite *newObject = [[CurrencyFavorite alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    CurrencyFavorite_ *newObject = [[CurrencyFavorite_ alloc] initWithContext:context];
     newObject.uniqueID = selectedCode;
     [newObject assignOrderAsLast];
 
@@ -820,7 +817,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
-	CurrencyFavorite *favorite = self.favorites[row];
+	CurrencyFavorite_ *favorite = self.favorites[row];
 	NSString *currencyCode = favorite.uniqueID;
 	if (!view) {
 		UIView *newView = [UIView new];
@@ -927,7 +924,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (row >= [self.favorites count]) {
 		return nil;
 	}
-	CurrencyFavorite *favorite = self.favorites[row];
+	CurrencyFavorite_ *favorite = self.favorites[row];
 	return [_currencyDataManager dataForCurrencyCode:favorite.uniqueID];
 }
 
@@ -935,7 +932,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (NSArray *)favorites {
 	if (!_favorites) {
-		_favorites = [CurrencyFavorite findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+		_favorites = [CurrencyFavorite_ findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 	}
 	return _favorites;
 }
@@ -1208,8 +1205,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	A3YahooCurrency *fromCurrencyInfo = [self currencyInfoAtRow:fromRow];
 	A3YahooCurrency *toCurrencyInfo = [self currencyInfoAtRow:toRow];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    CurrencyHistory *history = [[CurrencyHistory alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    CurrencyHistory_ *history = [[CurrencyHistory_ alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	NSDate *keyDate = [NSDate date];
 	history.updateDate = keyDate;
@@ -1217,7 +1214,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	history.rate = fromCurrencyInfo.rateToUSD;
 	history.value = @([value floatValueEx]);
 	
-    CurrencyHistoryItem *item = [[CurrencyHistoryItem alloc] initWithContext:context];
+    CurrencyHistoryItem_ *item = [[CurrencyHistoryItem_ alloc] initWithContext:context];
 	item.uniqueID = [[NSUUID UUID] UUIDString];
 	item.updateDate = keyDate;
 	item.historyID = history.uniqueID;

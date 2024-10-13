@@ -7,31 +7,30 @@
 //
 
 #import "TranslatorHistory+manager.h"
-#import "TranslatorFavorite.h"
 #import "A3AppDelegate.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation TranslatorHistory (manager)
+@implementation TranslatorHistory_ (manager)
 
-- (TranslatorFavorite *)favorite {
-	return [TranslatorFavorite findFirstByAttribute:@"historyID" withValue:self.uniqueID];
+- (TranslatorFavorite_ *)favorite {
+	return [TranslatorFavorite_ findFirstByAttribute:@"historyID" withValue:self.uniqueID];
 }
 
 - (void)setAsFavoriteMember:(BOOL)isFavorite {
-	TranslatorFavorite *favorite = [self favorite];
+	TranslatorFavorite_ *favorite = [self favorite];
 	if (favorite && isFavorite) return;
 	if (!favorite && !isFavorite) return;
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	if (isFavorite) {
 		// Add Favorite
-        favorite = [[TranslatorFavorite alloc] initWithContext:context];
+        favorite = [[TranslatorFavorite_ alloc] initWithContext:context];
 		favorite.uniqueID = [[NSUUID UUID] UUIDString];
 		favorite.updateDate = [NSDate date];
 		favorite.historyID = self.uniqueID;
 		favorite.groupID = self.groupID;
 
-		TranslatorFavorite *lastFavorite = [TranslatorFavorite findFirstOrderedByAttribute:@"order" ascending:NO];
+		TranslatorFavorite_ *lastFavorite = [TranslatorFavorite_ findFirstOrderedByAttribute:@"order" ascending:NO];
 		NSString *largest = lastFavorite.order;
 		NSString *nextLargest = [NSString orderStringWithOrder:[largest integerValue] + 1000000];
 		favorite.order = nextLargest;

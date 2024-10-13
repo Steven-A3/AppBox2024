@@ -8,7 +8,6 @@
 
 #import "A3ExpenseListHeaderView.h"
 #import "A3OverlappedCircleView.h"
-#import "ExpenseListBudget.h"
 #import "A3CommonColorDefine.h"
 #import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
@@ -26,7 +25,7 @@
 
 @implementation A3ExpenseListHeaderView
 {
-    ExpenseListBudget *_budget;
+    ExpenseListBudget_ *_budget;
     
     UIView *_sliderBaseLineView;                // 베이스 라인. (회색,녹색)
     UIView *_sliderRedLineView;                 // 사용금액 적색 라인.
@@ -247,7 +246,7 @@
     }
 }
 
--(void)setResult:(ExpenseListBudget *)budget withAnimation:(BOOL)animation
+-(void)setResult:(ExpenseListBudget_ *)budget withAnimation:(BOOL)animation
 {
     NSNumber *usedAmount;
     NSNumber *totalAmount;

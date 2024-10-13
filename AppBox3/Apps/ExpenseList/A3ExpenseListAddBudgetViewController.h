@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @protocol A3ExpenseBudgetSettingDelegate;
-@class ExpenseListBudget;
+@class ExpenseListBudget_;
+
 @interface A3ExpenseListAddBudgetViewController : UITableViewController
+
 @property (nonatomic, weak) id<A3ExpenseBudgetSettingDelegate> delegate;
 
-- (id)initWithStyle:(UITableViewStyle)style withExpenseListBudget:(ExpenseListBudget *)budget;
+- (id)initWithStyle:(UITableViewStyle)style withExpenseListBudget:(ExpenseListBudget_ *)budget;
 - (void)showKeyboard;
+
 @end

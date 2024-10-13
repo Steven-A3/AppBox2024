@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class TipCalcHistory;
 @interface A3TipCalcHistoryCell : UITableViewCell
 
--(void)setHistoryData:(TipCalcHistory *)aHistory;
+-(void)setHistoryData:(TipCalcHistory_ *)aHistory;
 
 @end

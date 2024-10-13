@@ -10,11 +10,9 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
-#import "UnitPriceHistory.h"
 #import "A3UnitPriceHistoryCell.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UnitPriceHistory+extension.h"
-#import "UnitPriceInfo.h"
 #import "UnitPriceInfo+extension.h"
 #import "A3DefaultColorDefines.h"
 #import "A3UnitPriceMainTableController.h"
@@ -126,36 +124,54 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 }
 
 - (void)clearButtonAction:(id)button {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-															 delegate:self
-													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-											   destructiveButtonTitle:NSLocalizedString(@"Clear History", @"Clear History")
-													otherButtonTitles:nil];
-	[actionSheet showInView:self.view];
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                         message:nil
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Clear History", @"Clear History")
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+        [self clearHistory];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [actionSheet addAction:clearAction];
+    [actionSheet addAction:cancelAction];
+    
+    // For iPad, you need to specify a popover source to avoid crashes
+    if (IS_IPAD) {
+        actionSheet.popoverPresentationController.sourceView = self.view;
+        actionSheet.popoverPresentationController.sourceRect = [button frame];
+        actionSheet.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        
-        NSUInteger section = [self.tableView numberOfSections];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        for (int i=0; i<section; i++) {
-            NSUInteger row = [self.tableView numberOfRowsInSection:i];
-            for (int j=0; j<row; j++) {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
-                UnitPriceHistory *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:ip];
-                [UnitPriceInfo deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
-                [context deleteObject:unitPriceHistory];
-            }
+- (void)clearHistory {
+    NSUInteger section = [self.tableView numberOfSections];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+
+    for (int i = 0; i < section; i++) {
+        NSUInteger row = [self.tableView numberOfRowsInSection:i];
+        for (int j = 0; j < row; j++) {
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
+            UnitPriceHistory_ *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:ip];
+            [UnitPriceInfo_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", unitPriceHistory.uniqueID]];
+            [context deleteObject:unitPriceHistory];
         }
-        [context saveIfNeeded];
-		_fetchedResultsController = nil;
-		[self.tableView reloadData];
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(didHistoryDeletedHistoryViewController:)]) {
-            [_delegate didHistoryDeletedHistoryViewController:self];
-        }
-	}
+    }
+    
+    [context saveIfNeeded];
+    _fetchedResultsController = nil;
+    [self.tableView reloadData];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(didHistoryDeletedHistoryViewController:)]) {
+        [_delegate didHistoryDeletedHistoryViewController:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -167,7 +183,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (NSFetchedResultsController *)fetchedResultsController {
     
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [UnitPriceHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [UnitPriceHistory_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -175,17 +191,17 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	return _fetchedResultsController;
 }
 
-- (void)deleteHistory:(UnitPriceHistory *)history
+- (void)deleteHistory:(UnitPriceHistory_ *)history
 {
     [self releaseMainDefaultPriceObjects];
     
-	[UnitPriceInfo deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+	[UnitPriceInfo_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", history.uniqueID]];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:history];
     [context saveIfNeeded];
 }
 
-- (double)calcuUnitPriceOfHistoryItem:(UnitPriceInfo *)item
+- (double)calcuUnitPriceOfHistoryItem:(UnitPriceInfo_ *)item
 {
     double unitPrice = 0;
     
@@ -223,7 +239,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UnitPriceHistory *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
+    UnitPriceHistory_ *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
     
     if (_delegate && [_delegate respondsToSelector:@selector(historyViewController:selectHistory:)]) {
         [_delegate historyViewController:self selectHistory:unitPriceHistory];
@@ -250,7 +266,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UnitPriceHistory *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
+    UnitPriceHistory_ *unitPriceHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
     
 	A3UnitPriceHistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceHistoryCellID forIndexPath:indexPath];
     
@@ -260,8 +276,8 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
     cell.timeLabel.font = [UIFont systemFontOfSize:12.0];
     cell.timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 
-	UnitPriceInfo *unitPriceAItem, *unitPriceBItem;
-	for (UnitPriceInfo *item in [unitPriceHistory unitPrices]) {
+	UnitPriceInfo_ *unitPriceAItem, *unitPriceBItem;
+	for (UnitPriceInfo_ *item in [unitPriceHistory unitPrices]) {
 		if ([item.priceName isEqualToString:@"A"]) {
 			unitPriceAItem = item;
 		} else {
@@ -306,7 +322,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
         // Delete the row from the data source
         [self releaseMainDefaultPriceObjects];
         
-        UnitPriceHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
+        UnitPriceHistory_ *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [self deleteHistory:history];
 		_fetchedResultsController = nil;
         
@@ -321,12 +337,12 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 - (void)releaseMainDefaultPriceObjects
 {
     // Main화면에서 관리되던 Price 오브젝트의, history로 부터 복원됨 여부를 표시하던 historyID 를 초기화 합니다.
-    UnitPriceInfo *price1 = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice1DefaultID]];
+    UnitPriceInfo_ *price1 = [UnitPriceInfo_ findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice1DefaultID]];
     price1.historyID = nil;
-    UnitPriceInfo *price2 = [UnitPriceInfo findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice2DefaultID]];
+    UnitPriceInfo_ *price2 = [UnitPriceInfo_ findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@", A3UnitPricePrice2DefaultID]];
     price2.historyID = nil;
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 

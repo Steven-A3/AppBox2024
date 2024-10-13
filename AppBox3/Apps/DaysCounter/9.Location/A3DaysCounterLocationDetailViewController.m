@@ -19,8 +19,6 @@
 #import "NSString+conversion.h"
 #import "A3DaysCounterLocationPopupViewController.h"
 #import "A3GradientView.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterEventLocation.h"
 #import "DaysCounterEvent+extension.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "NSManagedObject+extension.h"
@@ -84,7 +82,7 @@
     [super viewDidAppear:animated];
     
     if ( _isEditMode ) {
-        DaysCounterEventLocation *locItem = [_eventModel location];
+        DaysCounterEventLocation_ *locItem = [_eventModel location];
         if ( (locItem.latitude && locItem.longitude) &&
             ([locItem.latitude doubleValue] != _locationItem.location.coordinate.latitude ||
              [locItem.longitude doubleValue] != _locationItem.location.coordinate.longitude) ) {
@@ -272,8 +270,8 @@
 {
     [_eventModel deleteLocation];
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    DaysCounterEventLocation *locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    DaysCounterEventLocation_ *locItem = [[DaysCounterEventLocation_ alloc] initWithContext:context];
 	locItem.uniqueID = [[NSUUID UUID] UUIDString];
 	locItem.updateDate = [NSDate date];
     locItem.eventID = _eventModel.uniqueID;
@@ -301,7 +299,7 @@
 }
 
 - (IBAction)deleteLocationAction:(id)sender {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:_eventModel];
     
     if ( _isEditMode ) {

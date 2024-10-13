@@ -10,10 +10,8 @@
 #import "A3DaysCounterModelManager.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
-#import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3DaysCounterDefine.h"
-#import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -62,7 +60,7 @@
     
     self.navigationController.navigationBar.topItem.prompt = NSLocalizedString(@"Move these events to a new calendar.", @"Move these events to a new calendar.");
     
-    self.itemArray = [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@ AND type == %@", _currentCalendar.uniqueID, @(CalendarCellType_User)]];
+    self.itemArray = [DaysCounterCalendar_ findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"uniqueID != %@ AND type == %@", _currentCalendar.uniqueID, @(CalendarCellType_User)]];
 
     [self.tableView reloadData];
 }
@@ -113,7 +111,7 @@
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:10];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
     
-    DaysCounterCalendar *calendar = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterCalendar_ *calendar = [_itemArray objectAtIndex:indexPath.row];
     textLabel.text = calendar.name;
     textLabel.textColor = [calendar.isShow boolValue] ? [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0] : [UIColor colorWithRed:143.0/255.0 green:143.0/255.0 blue:143.0/255.0 alpha:1.0];
     imageView.tintColor = [_sharedManager colorForCalendar:calendar];
@@ -151,14 +149,14 @@
         return;
     }
     
-    DaysCounterCalendar *targetCalendar = [_itemArray objectAtIndex:self.selectedIndexPath.row];
+    DaysCounterCalendar_ *targetCalendar = [_itemArray objectAtIndex:self.selectedIndexPath.row];
 
-    for(DaysCounterEvent *event in _eventArray){
+    for(DaysCounterEvent_ *event in _eventArray){
         event.calendarID = targetCalendar.uniqueID;
     }
-	DaysCounterEvent *event = _eventArray[0];
+	DaysCounterEvent_ *event = _eventArray[0];
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
     
     if (_doneActionCompletionBlock) {

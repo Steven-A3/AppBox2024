@@ -12,7 +12,6 @@
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DateHelper.h"
-#import "LadyCalendarAccount.h"
 #import "A3UserDefaultsKeys.h"
 #import "GCPlaceholderTextView.h"
 #import "NSString+conversion.h"
@@ -89,9 +88,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 			}
 	]];
 	if ( !_isEditMode ) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 
-        _accountItem = [[LadyCalendarAccount alloc] initWithContext:context];
+        _accountItem = [[LadyCalendarAccount_ alloc] initWithContext:context];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
 	}
 
@@ -474,7 +473,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	_accountItem.name = inputName;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"name", inputName];
-	_sameNameExists = [LadyCalendarAccount countOfEntitiesWithPredicate:predicate] > 1;
+	_sameNameExists = [LadyCalendarAccount_ countOfEntitiesWithPredicate:predicate] > 1;
 
 	if (_sameNameExists) {
 		[self.alertHUD showAnimated:YES];
@@ -571,7 +570,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context reset];
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -590,7 +589,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[_accountItem assignOrderAsLast];
 	}
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	[self dismissViewControllerAnimated:YES completion:nil];

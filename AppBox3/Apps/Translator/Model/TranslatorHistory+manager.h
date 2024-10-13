@@ -7,12 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TranslatorHistory.h"
 
-@class TranslatorFavorite;
+@interface TranslatorHistory_ (manager)
 
-@interface TranslatorHistory (manager)
-- (TranslatorFavorite *)favorite;
-
+- (TranslatorFavorite_ *)favorite;
 - (void)setAsFavoriteMember:(BOOL)isFavorite;
+
 @end

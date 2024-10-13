@@ -10,10 +10,8 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3DaysCounterDefine.h"
-#import "DaysCounterCalendar.h"
 #import "NSMutableArray+A3Sort.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -22,7 +20,7 @@
 
 @interface A3DaysCounterSetupCalendarViewController ()
 @property (strong, nonatomic) NSArray *calendarArray;
-@property (strong, nonatomic) DaysCounterCalendar *originalValue;
+@property (strong, nonatomic) DaysCounterCalendar_ *originalValue;
 
 - (void)cancelAction:(id)sender;
 @end
@@ -57,7 +55,7 @@
     }
     self.title = NSLocalizedString(@"Calendar", @"Calendar");
 
-    self.calendarArray = [DaysCounterCalendar findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)]];
+    self.calendarArray = [DaysCounterCalendar_ findAllSortedBy:A3CommonPropertyOrder ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"type == %@", @(CalendarCellType_User)]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -117,7 +115,7 @@
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:10];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
     
-    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    DaysCounterCalendar_ *calendar = [_calendarArray objectAtIndex:indexPath.row];
     textLabel.text = calendar.name;
     if ([calendar.isShow boolValue]) {
         textLabel.textColor = [UIColor blackColor];
@@ -136,7 +134,7 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DaysCounterCalendar *calendar = [_calendarArray objectAtIndex:indexPath.row];
+    DaysCounterCalendar_ *calendar = [_calendarArray objectAtIndex:indexPath.row];
     _eventModel.calendarID = calendar.uniqueID;
     
     [tableView reloadData];

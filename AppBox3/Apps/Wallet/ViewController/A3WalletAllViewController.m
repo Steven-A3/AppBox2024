@@ -79,7 +79,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     self.tableView.contentInset = UIEdgeInsetsZero;
@@ -111,7 +111,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	[super removeObserver];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -169,7 +169,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
     FNLOG(@"%f", self.tableView.contentOffset.y);
     
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if ((safeAreaInsets.top == 20) &&
         !_searchString &&
         !_dataEmpty &&
@@ -180,7 +180,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
             [UIView animateWithDuration:0.5
                              animations:^{
                 CGFloat verticalOffset = 0;
-                UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+                UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
                 verticalOffset = safeAreaInsets.top - 20;
                 self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
             }
@@ -219,7 +219,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	
 	[self.navigationItem.leftBarButtonItem setEnabled:enable];
 	[self.navigationItem.rightBarButtonItem setEnabled:enable];
-	BOOL segmentedControlEnable = enable && [WalletItem countOfEntities] > 0;
+	BOOL segmentedControlEnable = enable && [WalletItem_ countOfEntities] > 0;
 	[self.segmentedControlRef setTintColor:segmentedControlEnable ? nil : [UIColor colorWithRed:147.0 / 255.0 green:147.0 / 255.0 blue:147.0 / 255.0 alpha:1.0]];
 	[self.segmentedControlRef setEnabled:segmentedControlEnable];
 	self.tabBarController.tabBar.tintColor = enable ? nil : [UIColor colorWithRGBRed:201 green:201 blue:201 alpha:255];
@@ -311,7 +311,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     if (!super.items) {
 		NSMutableArray *items;
         NSString *sortValue = (self.sortingMode == kSortingDate) ? @"updateDate" : @"name";
-        items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:sortValue ascending:self.isAscendingSort]];
+        items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:sortValue ascending:self.isAscendingSort]];
 		_dataEmpty = ![items count];
 		if (_dataEmpty) {
 			[items addObject:self.emptyItem];
@@ -441,7 +441,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     
     // update
     NSString *dateText = @"-";
-    WalletItem *recentItem = [WalletItem findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    WalletItem_ *recentItem = [WalletItem_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (recentItem && recentItem.updateDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		[formatter setDateStyle:IS_IPHONE ? NSDateFormatterShortStyle : NSDateFormatterMediumStyle];
@@ -590,7 +590,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
     viewController.hidesBottomBarWhenPushed = YES;
     
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
-    WalletItem *lastItem = [WalletItem findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    WalletItem_ *lastItem = [WalletItem_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
     if (lastItem) {
         viewController.category = [WalletData categoryItemWithID:lastItem.categoryID];
     }
@@ -633,7 +633,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
     self.instructionViewController.delegate = self;
 
-	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
     [mainWindow addSubview:self.instructionViewController.view];
 	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
 
@@ -669,30 +669,13 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 }
 
 - (void)setupSearchBar {
-    void(^final)(void) = ^{
-        [self.searchBarButton setEnabled:!self.dataEmpty];
-    };
-    
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
-    if (safeAreaInsets.top > 20) {
-        // For iOS 11 and later, we place the search bar in the navigation bar.
-        self.navigationController.navigationBar.prefersLargeTitles = NO;
-        self.navigationItem.searchController = self.searchController;
-        
-        // We want the search bar visible all the time.
-        self.navigationItem.hidesSearchBarWhenScrolling = NO;
-        
-        final();
-        return;
-    }
     if (!_dataEmpty) {
         [self.searchController.searchBar sizeToFit];
         self.tableView.tableHeaderView = self.searchController.searchBar;
-        FNLOG(@"%@", self.tableView.tableHeaderView);
     } else {
         self.tableView.tableHeaderView = nil;
     }
-    final();
+    [self.searchBarButton setEnabled:!self.dataEmpty];
 }
 
 #pragma mark - UISearchControllerDelegate
@@ -727,12 +710,12 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 	NSMutableArray *uniqueIDs = [NSMutableArray new];
 	if (searchText && [searchText length]) {
 		NSPredicate *predicateForValues = [NSPredicate predicateWithFormat:@"value contains[cd] %@", searchText];
-		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem"];
+		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem_"];
 		fetchRequest.predicate = predicateForValues;
 		fetchRequest.resultType = NSDictionaryResultType;
 		fetchRequest.propertiesToFetch = @[@"walletItemID"];
 		NSError *error;
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
 		for (NSDictionary *item in results) {
 			[uniqueIDs addObjectsFromArray:[item allValues]];
@@ -770,7 +753,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 }
 
 #pragma mark - WalletItemAddDelegate
-- (void)walletItemAddCompleted:(WalletItem *)addedItem
+- (void)walletItemAddCompleted:(WalletItem_ *)addedItem
 {
     [self refreshItems];
 }
@@ -780,7 +763,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
     
 }
 
-- (void)walletItemEdited:(WalletItem *)item {
+- (void)walletItemEdited:(WalletItem_ *)item {
     [self refreshItems];
 }
 
@@ -797,7 +780,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
         }
         itemContainingArray = self.items;
     }
-    WalletItem *item = itemContainingArray[indexPath.row];
+    WalletItem_ *item = itemContainingArray[indexPath.row];
     _previousContentOffset = self.tableView.contentOffset.y;
 
     [super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
@@ -841,8 +824,8 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 		itemContainArray = self.items;
 	}
 
-	if ([[itemContainArray objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
-		WalletItem *item = itemContainArray[indexPath.row];
+	if ([[itemContainArray objectAtIndex:indexPath.row] isKindOfClass:[WalletItem_ class]]) {
+		WalletItem_ *item = itemContainArray[indexPath.row];
 		cell = [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
 	else if ((tableView == self.tableView) && ([self.items objectAtIndex:indexPath.row] == self.topItem)) {
@@ -901,7 +884,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		WalletItem *item;
+		WalletItem_ *item;
 		if (_filteredResults) {
 			item = _filteredResults[indexPath.row];
 
@@ -930,7 +913,7 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 			[self updateTopViewInfo:_topViewRef];
 		}
 		[item deleteWalletItem];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 	}
 }

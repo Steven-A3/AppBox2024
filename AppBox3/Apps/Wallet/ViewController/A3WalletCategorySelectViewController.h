@@ -13,13 +13,13 @@
 @protocol WalletCategorySelectDelegate <NSObject>
 
 @required
-- (void)walletCategorySelected:(WalletCategory *) category;
+- (void)walletCategorySelected:(WalletCategory_ *) category;
 
 @end
 
 @interface A3WalletCategorySelectViewController : UITableViewController
 
 @property (nonatomic, weak) id<WalletCategorySelectDelegate> delegate;
-@property (nonatomic, strong) WalletCategory *selectedCategory;
+@property (nonatomic, strong) WalletCategory_ *selectedCategory;
 
 @end

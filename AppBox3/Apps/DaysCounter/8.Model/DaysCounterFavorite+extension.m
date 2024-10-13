@@ -8,12 +8,13 @@
 
 #import <AppBoxKit/AppBoxKit.h>
 #import "DaysCounterFavorite+extension.h"
-#import "DaysCounterEvent.h"
 
-@implementation DaysCounterFavorite (extension)
+@class DaysCounterEvent_;
 
-- (DaysCounterEvent *)event {
-	return [DaysCounterEvent findFirstByAttribute:@"uniqueID" withValue:self.eventID];
+@implementation DaysCounterFavorite_(extension)
+
+- (DaysCounterEvent_ *)event {
+	return [DaysCounterEvent_ findFirstByAttribute:@"uniqueID" withValue:self.eventID];
 }
 
 @end

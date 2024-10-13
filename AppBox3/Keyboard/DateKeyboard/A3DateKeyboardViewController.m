@@ -30,7 +30,7 @@
 }
 
 - (CGFloat)keyboardHeight {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (IS_IPHONE) {
         if (safeAreaInsets.top > 20) {
             return 260;

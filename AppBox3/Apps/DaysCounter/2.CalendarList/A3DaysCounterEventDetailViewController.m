@@ -12,21 +12,16 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DateHelper.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterEventLocation.h"
-#import "DaysCounterDate.h"
 #import "FSVenue.h"
 #import "A3DaysCounterEventDetailLocationViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "NSDate+LunarConverter.h"
 #import "A3DaysCounterEventInfoCell.h"
 #import "SFKImage.h"
-#import "DaysCounterReminder.h"
 #import "DaysCounterEvent+extension.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "UIViewController+tableViewStandardDimension.h"
-#import "DaysCounterCalendar.h"
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -172,7 +167,7 @@
     [self.tableView reloadData];
 }
 
-- (void)constructItemsFromEvent:(DaysCounterEvent*)event
+- (void)constructItemsFromEvent:(DaysCounterEvent_ *)event
 {
     self.itemArray = [NSMutableArray array];
     [_itemArray addObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_Title)}];
@@ -212,7 +207,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
 	[self.eventItem reminderItem].isUnread = @(NO);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -324,7 +319,7 @@
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
-            DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+            DaysCounterCalendar_ *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
             if ( calendar ) {
                 nameLabel.text = calendar.name;
                 colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
@@ -339,7 +334,7 @@
         case EventCellType_Location:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            DaysCounterEventLocation *location = _eventItem.location;
+            DaysCounterEventLocation_ *location = _eventItem.location;
             if ( location ) {
                 FSVenue *venue = [[FSVenue alloc] init];
                 venue.location.country = location.country;
@@ -386,7 +381,7 @@
 
 #pragma mark start of EventInfoCell
 
-- (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent*)event
+- (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent_ *)event
 {
     cell.favoriteStarImageView.image = [[UIImage imageNamed:@"star02_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     cell.favoriteStarImageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
@@ -435,7 +430,7 @@
     }
 }
 
-- (void)updateEventInfoCellToNoRepeatEventInfo:(DaysCounterEvent*)info cell:(A3DaysCounterEventInfoCell *)cell
+- (void)updateEventInfoCellToNoRepeatEventInfo:(DaysCounterEvent_ *)info cell:(A3DaysCounterEventInfoCell *)cell
 {
     NSDate *now = [NSDate date];
     NSInteger daysGap;
@@ -481,7 +476,7 @@
     [self updateTitleCellCurrentPart:cell withEventInfo:info];
 }
 
-- (void)updateEventInfoCellToRepeatEventInfo:(DaysCounterEvent*)info cell:(A3DaysCounterEventInfoCell *)cell
+- (void)updateEventInfoCellToRepeatEventInfo:(DaysCounterEvent_ *)info cell:(A3DaysCounterEventInfoCell *)cell
 {
     [self adjustLayoutForEventInfoCell:cell eventInfo:info];
     [self updateTitleCellCurrentPart:cell withEventInfo:info];  // Set Data (until or since or Today/now)
@@ -517,7 +512,7 @@
     }
 }
 
-- (void)adjustLayoutForEventInfoCell:(A3DaysCounterEventInfoCell *)cell eventInfo:(DaysCounterEvent *)eventInfo
+- (void)adjustLayoutForEventInfoCell:(A3DaysCounterEventInfoCell *)cell eventInfo:(DaysCounterEvent_ *)eventInfo
 {
     BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
     BOOL hasEndDate = [_eventItem.isPeriod boolValue];
@@ -591,7 +586,7 @@
 }
 
 #pragma mark end of UpdateEventInfoCell
-- (void)updateTitleCellCurrentPart:(A3DaysCounterEventInfoCell *)cell withEventInfo:(DaysCounterEvent *)info
+- (void)updateTitleCellCurrentPart:(A3DaysCounterEventInfoCell *)cell withEventInfo:(DaysCounterEvent_ *)info
 {
     UILabel *markLabel;
     UILabel *daysLabel;
@@ -727,7 +722,7 @@
     }
     else {
         // Has Repeat
-        DaysCounterDate *startDate = [info startDate];
+       DaysCounterDate_ *startDate = [info startDate];
         NSDate *nextDate;
 		if ([info.isLunar boolValue]) {
 			nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[info startDate]
@@ -907,7 +902,7 @@ EXIT_FUCTION:
     markLabel.layer.cornerRadius = 9.0;
 }
 
-- (void)updateTitleCellSincePart:(A3DaysCounterEventInfoCell *)cell withEventInfo:(DaysCounterEvent *)info
+- (void)updateTitleCellSincePart:(A3DaysCounterEventInfoCell *)cell withEventInfo:(DaysCounterEvent_ *)info
 {
     UILabel *markLabel;
     UILabel *daysLabel;
@@ -1015,7 +1010,7 @@ EXIT_FUCTION:
     markLabel.layer.cornerRadius = 9.0;
 }
 
-- (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell isSince:(BOOL)isSince isTypeA:(BOOL)isTypeA eventInfo:(DaysCounterEvent*)info
+- (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell isSince:(BOOL)isSince isTypeA:(BOOL)isTypeA eventInfo:(DaysCounterEvent_ *)info
 {
     UILabel *markLabel;
     UILabel *daysLabel;

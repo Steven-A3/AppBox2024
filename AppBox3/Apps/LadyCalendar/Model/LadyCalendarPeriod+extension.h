@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LadyCalendarPeriod.h"
 
-@interface LadyCalendarPeriod (extension)
+@interface LadyCalendarPeriod_ (extension)
 
 
 - (void)reassignUniqueIDWithStartDate;

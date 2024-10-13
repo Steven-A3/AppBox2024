@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class DaysCounterEvent;
+@class DaysCounterEvent_;
 @class A3DaysCounterModelManager;
 @protocol A3DaysCounterEventDetailViewControllerDelegate;
 
 @interface A3DaysCounterEventDetailViewController : UITableViewController
 @property (strong, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) DaysCounterEvent *eventItem;
+@property (strong, nonatomic) DaysCounterEvent_ *eventItem;
 @property (weak, nonatomic) id<A3DaysCounterEventDetailViewControllerDelegate> delegate;
 @property (assign, nonatomic) BOOL isNotificationPopup;
 
@@ -25,7 +25,7 @@
 
 @protocol A3DaysCounterEventDetailViewControllerDelegate <NSObject>
 @optional
-- (void)willDeleteEvent:(DaysCounterEvent*)event daysCounterEventDetailViewController:(A3DaysCounterEventDetailViewController*)ctrl;
+- (void)willDeleteEvent:(DaysCounterEvent_*)event daysCounterEventDetailViewController:(A3DaysCounterEventDetailViewController*)ctrl;
 - (void)willChangeEventDetailViewController:(A3DaysCounterEventDetailViewController*)ctrl;
 - (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController*)ctrl;
 

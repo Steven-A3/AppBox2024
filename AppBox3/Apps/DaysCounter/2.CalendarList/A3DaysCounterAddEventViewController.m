@@ -18,9 +18,6 @@
 #import "A3DaysCounterSetupCalendarViewController.h"
 #import "A3DaysCounterSetupDurationViewController.h"
 #import "A3DaysCounterSetupLocationViewController.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterEventLocation.h"
-#import "DaysCounterDate.h"
 #import "NSDate+LunarConverter.h"
 #import "SFKImage.h"
 #import "Reachability.h"
@@ -33,7 +30,6 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSDateFormatter+A3Addition.h"
 #import "NSString+conversion.h"
-#import "DaysCounterCalendar.h"
 #import "CLLocationManager+authorization.h"
 #import "A3Utilities.h"
 #import "A3StandardLeft15Cell.h"
@@ -131,8 +127,8 @@
     else {
 		_isAddingEvent = YES;
         self.title = NSLocalizedString(@"Add Event", @"Add Event");
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        _eventItem = [[DaysCounterEvent alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        _eventItem = [[DaysCounterEvent_ alloc] initWithContext:context];
 
 		// 사진 저장 및 기타 연관 정보 저장을 위해서
 		// uniqueID가 필요합니다. 만약 추가인지 수정인지를 구분해야 한다면
@@ -156,7 +152,7 @@
 			_eventItem.calendarID = self.calendarID;
         }
         else {
-			DaysCounterCalendar *firstVisibleUserCalendar = [_sharedManager allUserVisibleCalendarList][0];
+			DaysCounterCalendar_ *firstVisibleUserCalendar = [_sharedManager allUserVisibleCalendarList][0];
 			_eventItem.calendarID = firstVisibleUserCalendar.uniqueID;
         }
     }
@@ -344,7 +340,7 @@
         return YES;
     }
     
-    DaysCounterEventLocation *location = _eventItem.location;
+    DaysCounterEventLocation_ *location = _eventItem.location;
     if ( location ) {
         return YES;
     }
@@ -460,7 +456,7 @@
     [self.tableView endUpdates];
 }
 
-- (void)configureTableViewDataSourceForEventInfo:(DaysCounterEvent*)info
+- (void)configureTableViewDataSourceForEventInfo:(DaysCounterEvent_ *)info
 {
     NSMutableArray *section1_Items = [NSMutableArray array];
     
@@ -802,7 +798,7 @@
     BOOL isStartDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
                                                                 isKorean:[A3UIDevice useKoreanLunarCalendar]];
     BOOL isEndDateLeapMonth = NO;
-	DaysCounterDate *endDate = [_eventItem endDateCreateIfNotExist:NO ];
+	DaysCounterDate_ *endDate = [_eventItem endDateCreateIfNotExist:NO ];
     if (endDate) {
         isEndDateLeapMonth = [NSDate isLunarLeapMonthAtDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:endDate toLunar:YES]
                                                              isKorean:[A3UIDevice useKoreanLunarCalendar]];
@@ -965,7 +961,7 @@
     UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
     
-	DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+	DaysCounterCalendar_ *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
     if (calendar) {
         nameLabel.text = calendar.name;
         colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
@@ -988,7 +984,7 @@
 {
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-    DaysCounterEventLocation *location = _eventItem.location;
+    DaysCounterEventLocation_ *location = _eventItem.location;
     if ( location ) {
         FSVenue *venue = [[FSVenue alloc] init];
         venue.location.country = location.country;
@@ -1399,7 +1395,7 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
         UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
         UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-        DaysCounterCalendar *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+        DaysCounterCalendar_ *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
         if (calendar) {
             nameLabel.text = calendar.name;
             colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
@@ -1679,7 +1675,7 @@
 
 	NSString *addingEventID = [_eventItem.uniqueID copy];
 	
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if ([context hasChanges]) {
         [context rollback];
     }
@@ -1689,8 +1685,8 @@
 		// 데이터가 저장이 됩니다.
 		// 다시 추가 화면으로 돌아와서 취소를 한 경우에는 해당 데이터를 지워주어야 합니다.
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", addingEventID];
-		NSArray *events = [DaysCounterEvent findAllWithPredicate:predicate];
-		for (DaysCounterEvent *event in events) {
+		NSArray *events = [DaysCounterEvent_ findAllWithPredicate:predicate];
+		for (DaysCounterEvent_ *event in events) {
 			[_sharedManager removeEvent:event];
 		}
 	}
@@ -1945,8 +1941,8 @@
     
     if ( swButton.on ) {
         if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
-			DaysCounterDate *startDate = [_eventItem startDate];
-			DaysCounterDate *endDate = [_eventItem endDateCreateIfNotExist:YES ];
+			DaysCounterDate_ *startDate = [_eventItem startDate];
+			DaysCounterDate_ *endDate = [_eventItem endDateCreateIfNotExist:YES ];
             endDate.day = startDate.day;
             endDate.hour = startDate.hour;
             endDate.isLeapMonth = startDate.isLeapMonth;
@@ -2032,7 +2028,7 @@
     else {
         dateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[datePicker date]];
         dateComp.second = 0;
-        DaysCounterDate *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ];
+       DaysCounterDate_ *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : [_eventItem endDateCreateIfNotExist:NO ];
         if ([dateData.hour integerValue] != dateComp.hour || [dateData.minute integerValue] != dateComp.minute) {
             NSInteger durationFlag = [_eventItem.durationOption integerValue];
             durationFlag |= DurationOption_Hour|DurationOption_Minutes;
@@ -2362,8 +2358,8 @@
 
 - (void)deleteLocationAction
 {
-    DaysCounterEventLocation *location = [_eventItem location];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    DaysCounterEventLocation_ *location = [_eventItem location];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:location];
     
     [self.tableView reloadData];
@@ -2624,10 +2620,10 @@
             CLPlacemark *placeMark = [placemarks objectAtIndex:0];
             NSDictionary *addressDict = placeMark.addressDictionary;
 
-            DaysCounterEventLocation *locItem = [self.eventItem location];
+            DaysCounterEventLocation_ *locItem = [self.eventItem location];
             if (!locItem) {
-                NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-                locItem = [[DaysCounterEventLocation alloc] initWithContext:context];
+                NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+                locItem = [[DaysCounterEventLocation_ alloc] initWithContext:context];
                 locItem.uniqueID = [[NSUUID UUID] UUIDString];
             }
 

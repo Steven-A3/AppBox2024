@@ -10,7 +10,7 @@
 #import "LoanCalcData.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation LoanCalcHistory (extension)
+@implementation LoanCalcHistory_ (extension)
 
 + (BOOL)sameDataExistForLoanCalcData:(LoanCalcData *)data type:(NSString *)type {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
@@ -31,7 +31,7 @@
 			        type
 	];
 
-	return [LoanCalcHistory countOfEntitiesWithPredicate:predicate] > 0;
+	return [LoanCalcHistory_ countOfEntitiesWithPredicate:predicate] > 0;
 }
 
 @end

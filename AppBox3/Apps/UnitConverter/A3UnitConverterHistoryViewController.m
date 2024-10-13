@@ -9,9 +9,7 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
-#import "UnitHistory.h"
 #import "A3UnitDataManager.h"
-#import "UnitHistoryItem.h"
 #import "A3UnitConverterHistoryCell.h"
 #import "A3UnitConverterHistory3RowCell.h"
 #import "TemperatureConverter.h"
@@ -145,8 +143,8 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
-		[UnitHistory truncateAll];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+		[UnitHistory_ truncateAll];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
@@ -162,7 +160,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (NSFetchedResultsController *)fetchedResultsController {
     
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [UnitHistory fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [UnitHistory_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -186,7 +184,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UnitHistory *unitHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
+    UnitHistory_ *unitHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
     
 	A3UnitConverterHistory3RowCell *cell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterHistory3RowCellID forIndexPath:indexPath];
 	if (!cell) {
@@ -223,7 +221,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
      */
     
 	for (NSUInteger index = 1; index < numberOfLines; index++) {
-		UnitHistoryItem *item = items[index - 1];
+		UnitHistoryItem_ *item = items[index - 1];
         
         ((UILabel *) cell.leftLabels[index]).font = [UIFont systemFontOfSize:13.0];
         ((UILabel *) cell.leftLabels[index]).textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
@@ -319,7 +317,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UnitHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	UnitHistory_ *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	return 50.0 + [history.targets count] * 14.0;
 }
 
@@ -336,8 +334,8 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        UnitHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        UnitHistory_ *history = [_fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:history];
         [context saveIfNeeded];
 		_fetchedResultsController = nil;

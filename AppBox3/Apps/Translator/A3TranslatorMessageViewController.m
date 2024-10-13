@@ -7,7 +7,6 @@
 //
 
 #import "A3TranslatorMessageViewController.h"
-#import "TranslatorHistory.h"
 #import "A3TranslatorMessageCell.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3TranslatorLanguageTVDelegate.h"
@@ -17,13 +16,11 @@
 #import "Reachability.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
-#import "TranslatorGroup.h"
 #import "TranslatorHistory+manager.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "TranslatorGroup+manage.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
-#import "TranslatorFavorite.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
@@ -64,7 +61,7 @@ const NSInteger kTranslatorAlertViewType_DeleteAll = 2;
 @property (nonatomic, strong) UIButton *setTargetLanguageButton;
 @property (nonatomic, strong) NSLayoutConstraint *setTargetLanguageButtonConstraint;
 
-@property (nonatomic, strong) TranslatorHistory *translatingMessage;
+@property (nonatomic, strong) TranslatorHistory_ *translatingMessage;
 
 @property (nonatomic, strong) UIBarButtonItem *toolbarDeleteButton;
 @property (nonatomic, strong) UIBarButtonItem *toolbarSetFavoriteButton;
@@ -127,7 +124,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 
 	[self setupBarButtons];
@@ -142,7 +139,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 - (void)removeObserver {
 	[self removeContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -424,7 +421,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[self.view addSubview:_languageSelectView];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.top - 20;
 	[_languageSelectView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(@(64.0 + verticalOffset));
@@ -736,7 +733,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self.view addSubview:_searchResultsTableView];
 
         CGFloat verticalOffset = 0;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         verticalOffset = safeAreaInsets.top - 20;
         
 		[_searchResultsTableView makeConstraints:^(MASConstraintMaker *make) {
@@ -822,7 +819,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[self.view addSubview:_textEntryBarView];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = safeAreaInsets.bottom;
     if (safeAreaInsets.top > 20) {
         UIView *bottomView = [UIView new];
@@ -954,12 +951,12 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 		_translateButton.enabled = NO;
 
-		TranslatorHistory *firstObject = nil;
+		TranslatorHistory_ *firstObject = nil;
 		if ([_messages count]) {
 			firstObject = [_messages firstObject];
 		}
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        _translatingMessage = [[TranslatorHistory alloc] initWithContext:context];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        _translatingMessage = [[TranslatorHistory_ alloc] initWithContext:context];
 		_translatingMessage.uniqueID = [[NSUUID UUID] UUIDString];
 		_translatingMessage.updateDate = [NSDate date];
 		if (firstObject) {
@@ -1070,20 +1067,20 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 }
 
 - (void)addTranslatedString:(NSString *)translatedString detectedSourceLanguage:(NSString *)detectedLanguage {
-	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:_translatingMessage.groupID];
+	TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:_translatingMessage.groupID];
 	if (group && (![group.sourceLanguage isEqualToString:detectedLanguage] || ![group.targetLanguage isEqualToString:_translatedTextLanguage])) {
 		_translatingMessage.groupID = nil;
 	}
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	if (!group) {
 		NSString *uniqueID = [NSString stringWithFormat:@"%@-%@", detectedLanguage, _translatedTextLanguage];
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", uniqueID];
-		TranslatorGroup *groupCandidate = [TranslatorGroup findFirstWithPredicate:predicate];
+		TranslatorGroup_ *groupCandidate = [TranslatorGroup_ findFirstWithPredicate:predicate];
 		if (groupCandidate) {
 			_translatingMessage.groupID = groupCandidate.uniqueID;
 		} else if (!groupCandidate) {
-            TranslatorGroup *newGroup = [[TranslatorGroup alloc] initWithContext:context];
+            TranslatorGroup_ *newGroup = [[TranslatorGroup_ alloc] initWithContext:context];
 			newGroup.uniqueID = uniqueID;
 			newGroup.updateDate = [NSDate date];
 			[newGroup setupOrder];
@@ -1150,7 +1147,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 
 	[UIView animateWithDuration:animationDuration animations:^{
         CGFloat verticalOffset = 0;
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         verticalOffset = -safeAreaInsets.bottom;
 		self.textEntryBarViewBottomConstraint.offset = verticalOffset;
         
@@ -1264,7 +1261,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	TranslatorHistory *data = [self.messages objectAtIndex:indexPath.row];
+	TranslatorHistory_ *data = [self.messages objectAtIndex:indexPath.row];
 	return [A3TranslatorMessageCell cellHeightWithData:data bounds:self.view.bounds];
 }
 
@@ -1378,7 +1375,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	FNLOG();
 	if (_selectedCell) {
 		NSIndexPath *indexPath = [_messageTableView indexPathForCell:_selectedCell];
-		TranslatorHistory *history = self.messages[indexPath.row];
+		TranslatorHistory_ *history = self.messages[indexPath.row];
 		[UIPasteboard generalPasteboard].string = history.translatedText;
 	}
 }
@@ -1387,7 +1384,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	FNLOG();
 	if (_selectedCell) {
 		NSIndexPath *indexPath = [_messageTableView indexPathForCell:_selectedCell];
-		TranslatorHistory *history = self.messages[indexPath.row];
+		TranslatorHistory_ *history = self.messages[indexPath.row];
 		[UIPasteboard generalPasteboard].string = history.originalText;
 	}
 }
@@ -1480,8 +1477,8 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 	NSString *translatedLanguage = nil;
 	NSString *lineBreak = asHTML ? @"</br>" : @"\n";
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
-		TranslatorHistory *item = _messages[indexPath.row];
-		TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:item.groupID];
+		TranslatorHistory_ *item = _messages[indexPath.row];
+		TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:item.groupID];
 		translatedLanguage = [self.languageListManager localizedNameForCode:group.targetLanguage];
 		if ([item.originalText length] && [item.translatedText length] && [translatedLanguage length]) {
 			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is \"%@\"%@", item.originalText, item.translatedText, lineBreak]];
@@ -1526,26 +1523,26 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 - (void)setFavoriteActionFromToolbar {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
-		TranslatorHistory *item = _messages[indexPath.row];
+		TranslatorHistory_ *item = _messages[indexPath.row];
 		[item setAsFavoriteMember:YES];
 
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
 - (void)unsetFavoriteActionFromToolbar {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
-		TranslatorHistory *item = _messages[indexPath.row];
+		TranslatorHistory_ *item = _messages[indexPath.row];
 		[item setAsFavoriteMember:NO];
 
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -1590,10 +1587,10 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 - (void)deleteSelectedMessageItems
 {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     for (NSIndexPath *indexPath in selectedIndexPaths) {
-        TranslatorHistory *itemToDelete = _messages[indexPath.row];
-        [TranslatorFavorite deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
+        TranslatorHistory_ *itemToDelete = _messages[indexPath.row];
+        [TranslatorFavorite_ deleteAllMatchingPredicate:[NSPredicate predicateWithFormat:@"historyID == %@", itemToDelete.uniqueID]];
         [context deleteObject:itemToDelete];
     }
 
@@ -1625,17 +1622,17 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 
 - (NSArray *)messages {
 	if (!_messages) {
-		_messages = [TranslatorHistory findAllSortedBy:@"updateDate" ascending:YES withPredicate:[self predicateForMessages]];
+		_messages = [TranslatorHistory_ findAllSortedBy:@"updateDate" ascending:YES withPredicate:[self predicateForMessages]];
 	}
 	return _messages;
 }
 
 - (void)deleteAllMessages {
 	NSPredicate *predicate = [self predicateForMessages];
-	[TranslatorHistory deleteAllMatchingPredicate:predicate];
-	[TranslatorFavorite deleteAllMatchingPredicate:predicate];
+	[TranslatorHistory_ deleteAllMatchingPredicate:predicate];
+	[TranslatorFavorite_ deleteAllMatchingPredicate:predicate];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	_messages = nil;

@@ -12,6 +12,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3SyncManager.h"
 #import "common.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 @implementation NSManagedObject (extension)
 
@@ -68,7 +69,7 @@
 }
 
 + (NSNumber *)aggregationOperation:(NSString *)operator_ column:(NSString *)column predicate:(NSPredicate *)predicate {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSExpression *expression = [NSExpression expressionForFunction:operator_ arguments:@[[NSExpression expressionForKeyPath:column] ] ];
     
     NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
@@ -106,7 +107,7 @@
 }
 
 + (instancetype)findFirstWithPredicate:(NSPredicate *)searchterm sortedBy:(NSString *)property ascending:(BOOL)ascending {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSFetchRequest *fetchRequest = [self fetchRequest];
     if (searchterm) {
         [fetchRequest setPredicate:searchterm];
@@ -131,7 +132,7 @@
 }
 
 + (NSArray *)findAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)searchTerm {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSFetchRequest *fetchRequest = [self fetchRequest];
     if (searchTerm) {
         [fetchRequest setPredicate:searchTerm];
@@ -148,7 +149,7 @@
 }
 
 + (NSArray *)findAllWithPredicate:(NSPredicate *)predicate {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSFetchRequest *fetchRequest = [self fetchRequest];
     if (predicate) {
         [fetchRequest setPredicate:predicate];
@@ -173,7 +174,7 @@
 }
 
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(NSString *)value {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", attribute, value];
     return [self findFirstWithPredicate:predicate];
 }
@@ -187,7 +188,7 @@
 }
 
 + (NSUInteger)countOfEntitiesWithPredicate:(NSPredicate *)predicate {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSFetchRequest *fetchRequest = [self fetchRequest];
     if (predicate) {
         [fetchRequest setPredicate:predicate];
@@ -206,7 +207,7 @@
 }
 
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSFetchRequest *fetchRequest = [self fetchRequest];
     if (predicate) {
         [fetchRequest setPredicate:predicate];
@@ -228,7 +229,7 @@
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortTerm ascending:ascending];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                                 managedObjectContext:context
                                                                                   sectionNameKeyPath:groupingKeyPath

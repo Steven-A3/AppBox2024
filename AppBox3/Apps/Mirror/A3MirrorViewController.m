@@ -363,7 +363,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
 	}
 	[_topBar setItems:[self topToolBarBarButtons] animated:YES];
 
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
 	[self.statusToolbar setFrame:CGRectMake(0, 0, screenBounds.size.width , safeAreaInsets.top)];
 
 	[self setToolBarsHidden:_topBar.hidden];
@@ -888,7 +888,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = -safeAreaInsets.bottom;
 	[self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, self.view.frame.size.height - 74 + verticalOffset, self.view.frame.size.width, 74 + safeAreaInsets.bottom)];
 	if(hidden == YES) {

@@ -9,7 +9,6 @@
 #import "A3BackupRestoreManager.h"
 #import "A3AppDelegate.h"
 #import "NSString+conversion.h"
-#import "DaysCounterEvent.h"
 #import "DaysCounterEvent+extension.h"
 #import "WalletFieldItem+initialize.h"
 #import "AAAZip.h"
@@ -21,9 +20,6 @@
 #import "A3UserDefaults.h"
 #import "TJDropbox.h"
 #import "ACSimpleKeychain.h"
-#import "WalletField.h"
-#import "WalletItem.h"
-#import "WalletCategory.h"
 #import "UIViewController+A3Addition.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
@@ -86,8 +82,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)addDaysCounterPhotosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
-    NSArray *daysCounterEvents = [DaysCounterEvent findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
-    [daysCounterEvents enumerateObjectsUsingBlock:^(DaysCounterEvent * _Nonnull event, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSArray *daysCounterEvents = [DaysCounterEvent_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"photoID != NULL"]];
+    [daysCounterEvents enumerateObjectsUsingBlock:^(DaysCounterEvent_ * _Nonnull event, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *photoPath = [[event photoURLInOriginalDirectory:YES] path];
         if (![fileManager fileExistsAtPath:photoPath]) return;
         NSString *filename = forBackup ?
@@ -103,8 +99,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)addWalletPhotosVideosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
-    NSArray *walletImages = [WalletFieldItem findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
-    [walletImages enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSArray *walletImages = [WalletFieldItem_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasImage == YES"]];
+    [walletImages enumerateObjectsUsingBlock:^(WalletFieldItem_ * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         NSString *photoPath = [[item photoImageURLInOriginalDirectory:YES] path];
         if (![fileManager fileExistsAtPath:photoPath]) return;
         NSString *filename = forBackup ?
@@ -117,9 +113,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
            }];
     }];
 
-    NSArray *walletVideos = [WalletFieldItem findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
-    [walletVideos enumerateObjectsUsingBlock:^(WalletFieldItem * _Nonnull video, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray *items = [WalletItem findByAttribute:@"uniqueID" withValue:video.walletItemID];
+    NSArray *walletVideos = [WalletFieldItem_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"hasVideo == YES"]];
+    [walletVideos enumerateObjectsUsingBlock:^(WalletFieldItem_ * _Nonnull video, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *items = [WalletItem_ findByAttribute:@"uniqueID" withValue:video.walletItemID];
         if ([items count] == 0) return;
         
         NSString *videoFilePath = [[video videoFileURLInOriginal:YES] path];
@@ -178,7 +174,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     // Temporary directory
     [self removeExistingTempFile:fileManager path:tempCoreDataPath];
     
-    NSPersistentContainer *persistentContainer = A3SyncManager.sharedSyncManager.persistentContainer;
+    NSPersistentContainer *persistentContainer = CoreDataStack.shared.persistentContainer;
     for (NSPersistentStoreDescription *description in persistentContainer.persistentStoreDescriptions) {
         if ([description.type isEqualToString:NSInMemoryStoreType]) {
             continue;
@@ -201,7 +197,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)backupCoreDataStore {
-    [A3SyncManager.sharedSyncManager.persistentContainer.viewContext reset];
+    [CoreDataStack.shared.persistentContainer.viewContext reset];
 
     _backupCoreDataStorePath = [self migrateCoreDataStoreToTemp];
 
@@ -583,7 +579,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    NSPersistentContainer *persistentContainer = A3SyncManager.sharedSyncManager.persistentContainer;
+    NSPersistentContainer *persistentContainer = CoreDataStack.shared.persistentContainer;
     NSManagedObjectContext *context = persistentContainer.viewContext;
     [context reset];
     
@@ -605,9 +601,9 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         }
 	}
     
-    [A3SyncManager.sharedSyncManager unloadPersistentContainer];
-
-	[self deleteCoreDataStoreFilesAt:toURL];
+    [CoreDataStack.shared unloadPersistentContainer];
+    [CoreDataStack.shared deleteStoreFiles];
+    
 	[self removeMediaFiles];
 
 	NSString *backupInfoFilePath = [backupFilePath stringByAppendingPathComponent:A3BackupInfoFilename];

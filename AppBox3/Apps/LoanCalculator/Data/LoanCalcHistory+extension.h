@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "LoanCalcHistory.h"
-
 @class LoanCalcData;
 
-@interface LoanCalcHistory (extension)
+@interface LoanCalcHistory_ (extension)
 
 + (BOOL)sameDataExistForLoanCalcData:(LoanCalcData *)data type:(NSString *)type;
 

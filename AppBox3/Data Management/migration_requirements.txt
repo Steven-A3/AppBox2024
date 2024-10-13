@@ -1,0 +1,65 @@
+Language: Swift
+Using Core Data
+
+OLD STORE with OLD MODEL
+AppGroupContainerURL/Library/AppBox/AppBoxStore.sqlite with Model name AppBox3.xcdatamodeld
+
+NEW STORE with NEW MODEL
+AppGroupContainerURL/Library/AppBox/AppBoxStore2024.sqlite with model name AppBox2024.xcdatamodeld
+
+OLD and new model has the same entities and little different on one entity WalletFieldItem
+Here are the entity names extracted from the provided XML Core Data model:
+
+1. **AbbreviationFavorite**
+2. **Calculation**
+3. **CurrencyFavorite**
+4. **CurrencyHistory**
+5. **CurrencyHistoryItem**
+6. **DaysCounterCalendar**
+7. **DaysCounterDate**
+8. **DaysCounterEvent**
+9. **DaysCounterEventLocation**
+10. **DaysCounterFavorite**
+11. **DaysCounterReminder**
+12. **ExpenseListBudget**
+13. **ExpenseListBudgetLocation**
+14. **ExpenseListHistory**
+15. **ExpenseListItem**
+16. **KaomojiFavorite**
+17. **LadyCalendarAccount**
+18. **LadyCalendarPeriod**
+19. **LoanCalcComparisonHistory**
+20. **LoanCalcHistory**
+21. **Pedometer**
+22. **PercentCalcHistory**
+23. **QRCodeHistory**
+24. **SalesCalcHistory**
+25. **TipCalcHistory**
+26. **TipCalcRecent**
+27. **TranslatorFavorite**
+28. **TranslatorGroup**
+29. **TranslatorHistory**
+30. **UnitHistory**
+31. **UnitHistoryItem**
+32. **UnitPriceHistory**
+33. **UnitPriceInfo**
+34. **WalletCategory**
+35. **WalletFavorite**
+36. **WalletField**
+37. **WalletFieldItem**
+38. **WalletItem**
+
+These are the entity names defined in your Core Data model.
+
+Fetch every data for all entities from old store and insert it to new store.
+
+When insert the DaysCounterEvent entity, it has photoID as a attribute.
+generate the photoID with UUID() and rename the file libraryDirectory/DaysCounterImages/{old photoID} with generateid ID
+
+When insert the WalletFieldItem entity, if the hasImage attribute equals true then 
+assign the imageID of the WalletFieldItem entity in new model with new UUID()
+rename the file in libraryDirectory/WalletImages/{WalletFieldItem.uniqueID of old model} with the new imageID
+
+When insert the WalletFieldItem entity, if the hasVideo attribute equals true then 
+assign the videoID of the WalletFieldItem entity in new model with new UUID()
+rename the file in libraryDirectory/WalletVideos/{WalletFieldItem.uniqueID of old model} with the new imageID

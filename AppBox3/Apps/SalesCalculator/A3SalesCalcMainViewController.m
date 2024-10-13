@@ -23,7 +23,6 @@
 #import "A3SalesCalcCalculator.h"
 #import "A3DefaultColorDefines.h"
 #import "A3TextViewElement.h"
-#import "SalesCalcHistory.h"
 #import "A3SearchViewController.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "A3CurrencySelectViewController.h"
@@ -302,7 +301,7 @@ enum A3TableElementCellType {
 		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButtonItem, NSUInteger idx, BOOL *stop) {
 			switch (barButtonItem.tag) {
 				case A3RightBarButtonTagHistoryButton:
-                    barButtonItem.enabled = [SalesCalcHistory countOfEntities] > 0 ? YES : NO;
+                    barButtonItem.enabled = [SalesCalcHistory_ countOfEntities] > 0 ? YES : NO;
 					break;
 				case A3RightBarButtonTagComposeButton:
                     barButtonItem.enabled = ([self.preferences.calcData.price doubleValue] > 0.0 && [self.preferences.calcData.discount doubleValue] > 0.0) ? YES : NO;

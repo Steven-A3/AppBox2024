@@ -153,7 +153,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 	_minValueTopLineHeightConstraint.constant = 1.0 / scale;
 	_maxValueTopLineHeightConstraint.constant = 1.0 / scale;
     
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     _generateButtonHeightConstraint.constant = 44 + safeAreaInsets.bottom;
 
     if (IS_IPAD) {
@@ -421,7 +421,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
             UIInterfaceOrientation interfaceOrientation = size.width > size.height ? UIInterfaceOrientationLandscapeLeft : UIInterfaceOrientationPortrait;
             [self.numberKeyboardViewController rotateToInterfaceOrientation:interfaceOrientation];
             
-            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+            UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
             self.generateButtonHeightConstraint.constant = 44 + safeAreaInsets.bottom;
         }
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
@@ -531,7 +531,7 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 		frame.origin.y += keyboardViewController.keyboardHeight;
 		keyboardView.frame = frame;
 		
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         self.generateButtonBottomConstraint.constant = safeAreaInsets.top > 20 ? safeAreaInsets.bottom : 0;
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];

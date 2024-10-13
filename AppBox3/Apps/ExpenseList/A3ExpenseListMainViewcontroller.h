@@ -12,11 +12,11 @@
 extern NSString *const A3ExpenseListCurrentBudgetID;
 extern NSString *const A3NotificationExpenseListCurrencyCodeChanged;
 
-@class ExpenseListBudget;
+@class ExpenseListBudget_;
 
 @protocol A3ExpenseBudgetSettingDelegate <NSObject>
 
--(void)setExpenseBudgetDataFor:(ExpenseListBudget *)aBudget;
+-(void)setExpenseBudgetDataFor:(ExpenseListBudget_ *)aBudget;
 
 @end
 

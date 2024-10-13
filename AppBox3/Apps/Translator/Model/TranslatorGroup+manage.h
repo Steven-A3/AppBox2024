@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TranslatorGroup.h"
 
-@interface TranslatorGroup (manage)
+@interface TranslatorGroup_ (manage)
 
 - (void)setupOrder;
 @end

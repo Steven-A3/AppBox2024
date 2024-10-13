@@ -7,14 +7,13 @@
 //
 
 #import "UnitHistory+extension.h"
-#import "UnitHistoryItem.h"
 #import <AppBoxKit/AppBoxKit.h>
 
-@implementation UnitHistory (extension)
+@implementation UnitHistory_ (extension)
 
 - (NSArray *)targets {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitHistoryID == %@", self.uniqueID];
-	return [UnitHistoryItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
+	return [UnitHistoryItem_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate];
 }
 
 @end

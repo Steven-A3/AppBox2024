@@ -7,12 +7,9 @@
 //
 
 #import "A3TranslatorFavoriteDataSource.h"
-#import "TranslatorHistory.h"
 #import "A3TranslatorLanguage.h"
 #import "NSDate+TimeAgo.h"
 #import "A3TranslatorFavoriteCell.h"
-#import "TranslatorFavorite.h"
-#import "TranslatorGroup.h"
 #import "NSMutableArray+A3Sort.h"
 #import "TranslatorHistory+manager.h"
 #import "A3AppDelegate.h"
@@ -41,7 +38,7 @@
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-		_fetchedResultsController = [TranslatorFavorite fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
+		_fetchedResultsController = [TranslatorFavorite_ fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
 	}
 	return _fetchedResultsController;
 }
@@ -60,9 +57,9 @@
 		cell = [[A3TranslatorFavoriteCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	}
 
-	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	TranslatorHistory *history = [TranslatorHistory findFirstByAttribute:@"uniqueID" withValue:item.historyID];
-	TranslatorGroup *group = [TranslatorGroup findFirstByAttribute:@"uniqueID" withValue:history.groupID];
+	TranslatorFavorite_ *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	TranslatorHistory_ *history = [TranslatorHistory_ findFirstByAttribute:@"uniqueID" withValue:item.historyID];
+	TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:history.groupID];
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%@ to %@", @"%@ to %@"), [self.languageListManager localizedNameForCode:group.sourceLanguage],
 													 [self.languageListManager localizedNameForCode:group.targetLanguage]];
 	cell.detailTextLabel.text = history.originalText;
@@ -83,7 +80,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	TranslatorFavorite_ *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	[_delegate translatorFavoriteItemSelected:item];
 
@@ -96,8 +93,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-		TranslatorFavorite *favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+		TranslatorFavorite_ *favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
         [context deleteObject:favorite];
 
 		[self.fetchedResultsController performFetch:nil];
@@ -112,7 +109,7 @@
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
 	[self.fetchedResultsController performFetch:nil];

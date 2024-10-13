@@ -10,7 +10,6 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
-#import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3LadyCalendarAddPeriodViewController.h"
 #import "UIColor+A3Addition.h"
@@ -77,7 +76,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		[self rightBarButtonDoneButton];
 	}
 	if (_periodID) {
-		LadyCalendarPeriod *period = [LadyCalendarPeriod findFirstByAttribute:@"uniqueID" withValue:_periodID];
+		LadyCalendarPeriod_ *period = [LadyCalendarPeriod_ findFirstByAttribute:@"uniqueID" withValue:_periodID];
 		_periodItems = [NSMutableArray arrayWithArray:@[ period ] ];
 		_month = period.startDate;
 	}
@@ -168,7 +167,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     NSMutableArray *rowDataArray = [NSMutableArray array];
 
 	NSUInteger indexOfData = 0;
-    for( LadyCalendarPeriod *period in array ){
+    for( LadyCalendarPeriod_ *period in array ){
 		[rowDataArray addObjectsFromArray:[self rowDataForItemIsPredict:[period.isPredict boolValue] startDate:period.startDate notes:period.notes index:indexOfData]];
 
 		indexOfData++;
@@ -190,7 +189,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[rowDataArray addObject:@{ItemKey_Type:@(DetailCellType_Blank)}];
     
     // predicted 인 경우, rightBarButton 제거.
-    LadyCalendarPeriod *period = [array firstObject];
+    LadyCalendarPeriod_ *period = [array firstObject];
 
     if (period && [period.isPredict boolValue] && ([A3DateHelper diffDaysFromDate:[NSDate date] toDate:[period startDate] isAllDay:YES] > 28)) {
         if (_isFromNotification != YES) {
@@ -236,7 +235,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSDictionary *rowInfo = self.rowDataArray[(NSUInteger) indexPath.row];
-	LadyCalendarPeriod *period = _periodItems[ [rowInfo[ItemKey_Index] integerValue] ];
+	LadyCalendarPeriod_ *period = _periodItems[ [rowInfo[ItemKey_Index] integerValue] ];
     
 
 	UITableViewCell *returnCell;
@@ -366,7 +365,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     
     NSDictionary *rowInfo = [_rowDataArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[rowInfo objectForKey:ItemKey_Type] integerValue];
-	LadyCalendarPeriod *period = _periodItems[[rowInfo[ItemKey_Index] integerValue]];
+	LadyCalendarPeriod_ *period = _periodItems[[rowInfo[ItemKey_Index] integerValue]];
     if( cellType == DetailCellType_Notes ){
         NSString *str = ( [period.notes length] > 0 ? period.notes : @"" );
         CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width - (IS_IPHONE ? 20.0 : 43.0), CGFLOAT_MAX)
@@ -401,7 +400,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
-	LadyCalendarPeriod *editingPeriod = [_periodItems objectAtIndex:0];
+	LadyCalendarPeriod_ *editingPeriod = [_periodItems objectAtIndex:0];
     viewCtrl.periodItem = editingPeriod;
 	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -412,7 +411,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
 	NSDictionary *rowInfo = _rowDataArray[button.tag];
     
-    LadyCalendarPeriod *item = _periodItems[(NSUInteger) [rowInfo[ItemKey_Index] integerValue]];
+    LadyCalendarPeriod_ *item = _periodItems[(NSUInteger) [rowInfo[ItemKey_Index] integerValue]];
 
 	A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] init];
 	viewCtrl.dataManager = self.dataManager;

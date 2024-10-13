@@ -637,7 +637,7 @@
 	[self.view addSubview:self.weatherLabel];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     verticalOffset = -safeAreaInsets.bottom;
     
 	[self.weatherImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -773,7 +773,7 @@
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
 	
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
         scale = MIN(screenBounds.size.width, screenBounds.size.height) / 320;

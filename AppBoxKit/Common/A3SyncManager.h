@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const A3SyncManagerCloudEnabled;
 extern NSString *const A3SyncDeviceSyncStartInfo;
-extern NSString *const A3NotificationCloudCoreDataStoreDidImport;
 extern NSString *const A3NotificationCloudKeyValueStoreDidImport;
 extern NSString *const A3DaysCounterImageDirectory;
 extern NSString *const A3DaysCounterImageThumbnailDirectory;
@@ -69,7 +68,6 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 @property (nonatomic, strong) CDEICloudFileSystem *cloudFileSystem;
 @property (nonatomic, copy) NSString *storePath;
 @property (nonatomic, strong) NSFileManager *fileManager;
-@property (strong, nonatomic) NSPersistentContainer *persistentContainer;
 
 + (instancetype)sharedSyncManager;
 
@@ -84,9 +82,6 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 
 - (void)uploadMediaFilesToCloud;
 - (void)downloadMediaFilesFromCloud;
-
-- (void)loadPersistentContainerInBundle:(NSBundle *)bundle withCompletion:(void (^)(NSError *))completion;
-- (void)unloadPersistentContainer;
 
 @end
 

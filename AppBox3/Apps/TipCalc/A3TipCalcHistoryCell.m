@@ -9,15 +9,13 @@
 #import "A3TipCalcHistoryCell.h"
 #import "NSDate+TimeAgo.h"
 #import "A3DefaultColorDefines.h"
-#import "TipCalcHistory.h"
-#import "TipCalcRecent.h"
 #import "A3TipCalcDataManager.h"
 
 @interface A3TipCalcHistoryCell ()
 
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *resultLabel;
-@property (nonatomic, strong) TipCalcHistory *historyData;
+@property (nonatomic, strong) TipCalcHistory_ *historyData;
 
 @end
 
@@ -75,7 +73,7 @@
     }];
 }
 
--(void)adjustConstraintLayoutForData:(TipCalcHistory *)aHistory {
+-(void)adjustConstraintLayoutForData:(TipCalcHistory_ *)aHistory {
     if (![aHistory labelTip] || ![aHistory labelTotal]) {
         return;
     }
@@ -122,7 +120,7 @@
 
 #pragma mark -
 
--(void)setHistoryData:(TipCalcHistory *)aHistory {
+-(void)setHistoryData:(TipCalcHistory_ *)aHistory {
     _historyData = aHistory;
 }
 

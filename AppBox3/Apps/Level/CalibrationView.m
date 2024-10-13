@@ -60,7 +60,7 @@
 
 - (void)setupSubviews {
 	UIImage *backgroundImage;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
 	if (viewMode == surfaceMode) {
         if (safeAreaInsets.top > 20) {
             backgroundImage = [UIImage imageNamed:@"bg_Inclinometer_surface_cal_iPhoneX"];

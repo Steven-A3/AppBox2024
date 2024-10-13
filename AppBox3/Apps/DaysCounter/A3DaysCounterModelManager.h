@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "FSVenue.h"
 
-@class DaysCounterEvent;
-@class DaysCounterEventLocation;
-@class DaysCounterDate;
-@class DaysCounterCalendar;
+@class DaysCounterEvent_;
+@class DaysCounterEventLocation_;
+@class DaysCounterDate_;
+@class DaysCounterCalendar_;
 
 @interface A3DaysCounterModelManager : NSObject
 
@@ -32,14 +32,14 @@
 
 - (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail;
 - (NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
-- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
+- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation_ *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-- (BOOL)addEvent:(DaysCounterEvent *)eventModel;
+- (BOOL)addEvent:(DaysCounterEvent_ *)eventModel;
 
-- (BOOL)modifyEvent:(DaysCounterEvent *)eventItem;
+- (BOOL)modifyEvent:(DaysCounterEvent_ *)eventItem;
 
-- (BOOL)removeEvent:(DaysCounterEvent *)eventItem;
+- (BOOL)removeEvent:(DaysCounterEvent_ *)eventItem;
 
 - (NSArray *)visibleCalendarList;
 - (NSArray *)allUserVisibleCalendarList;
@@ -47,7 +47,7 @@
 
 - (id)calendarItemByID:(NSString *)calendarID;
 
-- (BOOL)removeCalendar:(DaysCounterCalendar *)calendar;
+- (BOOL)removeCalendar:(DaysCounterCalendar_ *)calendar;
 
 - (NSInteger)numberOfAllEvents;
 - (NSInteger)numberOfAllEventsToIncludeHiddenCalendar;
@@ -57,7 +57,7 @@
 - (NSInteger)numberOfEventContainedImage;
 - (NSDate*)dateOfLatestEvent;
 
-- (UIColor *)colorForCalendar:(DaysCounterCalendar *)calendar;
+- (UIColor *)colorForCalendar:(DaysCounterCalendar_ *)calendar;
 
 - (NSArray *)calendarColorArray;
 
@@ -73,7 +73,7 @@
 + (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle isStrictShortType:(BOOL)isStrictShortType;
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
-- (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
+- (void)setupEventSummaryInfo:(DaysCounterEvent_ *)item toView:(UIView*)toView;
 
 + (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays;
@@ -82,14 +82,14 @@
 + (BOOL)hasHourMinDurationOption:(NSInteger)durationOption;
 
 #pragma mark - Period
-- (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar;
-+ (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
+- (DaysCounterEvent_ *)closestEventObjectOfCalendar:(DaysCounterCalendar_ *)calendar;
++ (NSDate *)effectiveDateForEvent:(DaysCounterEvent_ *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
-- (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
+- (void)recalculateEventDatesForEvent:(DaysCounterEvent_ *)event;
 
 #pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (NSString *)localizedSystemCalendarNameForCalendarID:(NSString *)calendarID;
-+ (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
++ (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent_ *)event;
 + (void)reloadAlertDateListForLocalNotification;
 
 #pragma mark - Lunar
@@ -97,11 +97,11 @@
 + (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
 
 #pragma mark - Manipulate DaysCounterDateModel Object
-+ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
-+ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDate *)dateObject toLunar:(BOOL)isLunar;
++ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent_ *)eventModel endDate:(BOOL)isEndDate;
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDate_ *)dateObject toLunar:(BOOL)isLunar;
 
 #pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
-+ (NSString *)dateStringFromDateModel:(DaysCounterDate *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay;
++ (NSString *)dateStringFromDateModel:(DaysCounterDate_ *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay;
 + (NSString *)dateStringFromEffectiveDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
-+ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDate *)dateModel isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDate_ *)dateModel isLeapMonth:(BOOL)isLeapMonth;
 @end

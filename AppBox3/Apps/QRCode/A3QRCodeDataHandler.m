@@ -18,7 +18,6 @@
 #import "MXLCalendarManager.h"
 #import "A3AppDelegate.h"
 #import "A3QRCodeDetailViewController.h"
-#import "QRCodeHistory.h"
 #import "Reachability.h"
 #import "A3BasicWebViewController.h"
 #import "UIViewController+extension.h"
@@ -37,14 +36,14 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 @property (nonatomic, copy) NSString *phoneNumber;
 @property (nonatomic, weak) UIViewController *targetViewController;
 @property (nonatomic, strong) MXLCalendar *parsedEventCalendar;
-@property (nonatomic, strong) QRCodeHistory *targetHistory;
+@property (nonatomic, strong) QRCodeHistory_ *targetHistory;
 @property (nonatomic, strong) NSURL *targetURL;
 
 @end
 
 @implementation A3QRCodeDataHandler
 
-- (void)performActionWithData:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
+- (void)performActionWithData:(QRCodeHistory_ *)history inViewController:(UIViewController *)viewController {
 	// Detection Order
 	// GEO:37.566535,126.97769
 	// SMS:"SMS:01074727077:hello" , SMS:(number):(message)
@@ -68,12 +67,19 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	[self handleText:history inViewController:viewController];
 }
 
-- (BOOL)handleSkype:(QRCodeHistory *)history {
+- (BOOL)handleSkype:(QRCodeHistory_ *)history {
 	NSURL *skypeURL = [NSURL URLWithString:history.scanData];
-	return [[UIApplication sharedApplication] openURL:skypeURL];
+    [[UIApplication sharedApplication] openURL:skypeURL options:@{} completionHandler:^(BOOL success) {
+        if (success) {
+            NSLog(@"Successfully opened Skype URL.");
+        } else {
+            NSLog(@"Failed to open Skype URL.");
+        }
+    }];
+    return YES;
 }
 
-- (BOOL)handleGEOLocation:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
+- (BOOL)handleGEOLocation:(QRCodeHistory_ *)history inViewController:(UIViewController *)viewController {
 	NSArray *components = [[history.scanData substringFromIndex:4] componentsSeparatedByString:@","];
 	if ([components count] != 2) return NO;
 	
@@ -107,7 +113,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	return YES;
 }
 
-- (BOOL)handleSMS:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
+- (BOOL)handleSMS:(QRCodeHistory_ *)history inViewController:(UIViewController *)viewController {
 	NSArray *components = [history.scanData componentsSeparatedByString:@":"];
 	if ([components count] != 3) return NO;
 
@@ -141,7 +147,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	}
 }
 
-- (BOOL)handleMeCard:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
+- (BOOL)handleMeCard:(QRCodeHistory_ *)history inViewController:(UIViewController *)viewController {
 	self.targetHistory = history;
 	self.targetViewController = viewController;
 
@@ -308,7 +314,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	[newPersonView.navigationController popViewControllerAnimated:YES];
 }
 
-- (BOOL)handleVCard:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
+- (BOOL)handleVCard:(QRCodeHistory_ *)history inViewController:(UIViewController *)viewController {
 	_targetHistory = history;
 	_targetViewController = viewController;
 
@@ -408,7 +414,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	NSLog(@"kABPersonFirstNameProperty: %@", (__bridge NSString *)ABRecordCopyValue(record, kABPersonSocialProfileProperty));
 }
 
-- (BOOL)handleVCalendar:(QRCodeHistory *)history inViewController:(UIViewController *)viewController {
+- (BOOL)handleVCalendar:(QRCodeHistory_ *)history inViewController:(UIViewController *)viewController {
 	MXLCalendarManager *parser = [MXLCalendarManager new];
 	[parser parseICSString:history.scanData withCompletionHandler:^(MXLCalendar *calendar, NSError *error) {
 		if (error) {
@@ -429,13 +435,13 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	return YES;
 }
 
-- (void)handleText:(QRCodeHistory *)history inViewController:(UIViewController *)controller {
+- (void)handleText:(QRCodeHistory_ *)history inViewController:(UIViewController *)controller {
 	A3QRCodeTextViewController *viewController = [A3QRCodeTextViewController new];
 	viewController.text = history.scanData;
 	[controller.navigationController pushViewController:viewController animated:YES];
 }
 
-- (BOOL)handleMedicalID:(QRCodeHistory *)history inViewController:(UIViewController *)controller {
+- (BOOL)handleMedicalID:(QRCodeHistory_ *)history inViewController:(UIViewController *)controller {
 	NSMutableArray<NSArray *> *sections = [NSMutableArray new];
 	NSScanner *scanner = [NSScanner scannerWithString:history.scanData];
 	
@@ -542,7 +548,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	return YES;
 }
 
-- (BOOL)handleWiFiDetails:(QRCodeHistory *)history inViewController:(UIViewController *)controller {
+- (BOOL)handleWiFiDetails:(QRCodeHistory_ *)history inViewController:(UIViewController *)controller {
 	NSMutableArray<NSArray *> *sections = [NSMutableArray new];
 	NSScanner *scanner = [NSScanner scannerWithString:history.scanData];
 	
@@ -581,7 +587,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 	return YES;
 }
 
-- (BOOL)handleByDataDetector:(QRCodeHistory *)history inViewController:(UIViewController *)controller {
+- (BOOL)handleByDataDetector:(QRCodeHistory_ *)history inViewController:(UIViewController *)controller {
 	NSDataDetector *dataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink | NSTextCheckingTypePhoneNumber error:nil];
 	NSTextCheckingResult *match = [dataDetector firstMatchInString:history.scanData options:0 range:NSMakeRange(0, [history.scanData length])];
 	if ((match.resultType == NSTextCheckingTypeLink) && [[match.URL.scheme lowercaseString] isEqualToString:@"mailto"]) {

@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "A3DateKeyboardViewController.h"
-@class DaysCounterEvent;
+@class DaysCounterEvent_;
 @class A3DaysCounterModelManager;
 @interface A3DaysCounterSetupEndRepeatViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,A3DateKeyboardDelegate>
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) DaysCounterEvent *eventModel;
+@property (strong, nonatomic) DaysCounterEvent_ *eventModel;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) void (^dismissCompletionBlock)(void);
 @end

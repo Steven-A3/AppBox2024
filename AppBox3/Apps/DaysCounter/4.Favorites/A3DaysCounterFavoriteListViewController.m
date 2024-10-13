@@ -17,11 +17,8 @@
 #import "A3DaysCounterEventDetailViewController.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "DaysCounterEvent.h"
-#import "DaysCounterDate.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListNameCell.h"
-#import "DaysCounterFavorite.h"
 #import "NSMutableArray+A3Sort.h"
 #import "DaysCounterEvent+extension.h"
 #import "NSDate+formatting.h"
@@ -90,7 +87,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
 	[self registerContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
@@ -105,7 +102,7 @@
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -309,8 +306,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     }
     
     if ( [_itemArray count] > 0) {
-        DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-		DaysCounterEvent *event = [favorite event];
+        DaysCounterFavorite_ *favorite = [_itemArray objectAtIndex:indexPath.row];
+		DaysCounterEvent_ *event = [favorite event];
         textLabel.text = event.eventName;
 		if ([event.photoID length]) {
 			imageView.image = [favorite.event thumbnailImageInOriginalDirectory:YES];
@@ -416,8 +413,8 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        DaysCounterFavorite_ *favorite = [_itemArray objectAtIndex:indexPath.row];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context deleteObject:favorite];
 
 		[_itemArray removeObjectAtIndex:indexPath.row];
@@ -440,7 +437,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
     if ( [_itemArray count] < 1 ) {
         return;
     }
-    DaysCounterFavorite *favorite = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterFavorite_ *favorite = [_itemArray objectAtIndex:indexPath.row];
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] init];
     viewCtrl.eventItem = favorite.event;
@@ -452,7 +449,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterFavorite = @"A3V3Inst
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[_itemArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 

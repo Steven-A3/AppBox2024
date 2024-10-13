@@ -21,8 +21,6 @@
 #import "UIViewController+A3Addition.h"
 #import "A3UnitConverterHistoryViewController.h"
 #import "A3UnitConverterSelectViewController.h"
-#import "UnitHistory.h"
-#import "UnitHistoryItem.h"
 #import "TemperatureConverter.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
@@ -172,7 +170,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	[self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 
     [self setupBannerViewForAdUnitID:AdMobAdUnitIDUnitConverter keywords:@[@"Shopping"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
 
@@ -201,7 +199,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -266,7 +264,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
             case A3RightBarButtonTagHistoryButton:
             {
                 if (enable) {
-                    barButton.enabled = [UnitHistory countOfEntities] > 0;
+                    barButton.enabled = [UnitHistory_ countOfEntities] > 0;
                 } else {
                     barButton.enabled = NO;
                 }
@@ -436,7 +434,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
     UIButton *history = [self historyButton:NULL];
     UIButton *help = [self instructionHelpButton];
     
-    history.enabled = [UnitHistory countOfEntities] > 0 ? YES : NO;
+    history.enabled = [UnitHistory_ countOfEntities] > 0 ? YES : NO;
     
 	_moreMenuButtons = @[help, share, history];
 	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:_fmMoveTableView];
@@ -543,7 +541,7 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
     
     if (!_unitValue) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", @(_categoryID)];
-        UnitHistory *history = [UnitHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+        UnitHistory_ *history = [UnitHistory_ findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 		if (history) {
             _unitValue = @(history.value.floatValue);
         }
@@ -649,7 +647,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
     _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"UnitConverter"];
     self.instructionViewController.delegate = self;
 
-	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
 	[mainWindow addSubview:self.instructionViewController.view];
 	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
 
@@ -1466,7 +1464,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
             FNLOG(@"Calculated : %f", value);
         }
         
-        if ([self.unitValue floatValue] != 1.0 || ([self.unitValue floatValue] != 1.0 && [UnitHistory countOfEntities] > 0)) {
+        if ([self.unitValue floatValue] != 1.0 || ([self.unitValue floatValue] != 1.0 && [UnitHistory_ countOfEntities] > 0)) {
 			[self putHistoryWithValue:@(value)];
 		}
 	}
@@ -2100,7 +2098,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 - (void)putHistoryWithValue:(NSNumber *)value {
 	NSString *categoryName = [_dataManager categoryNameForID:_categoryID];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryName];
-	UnitHistory *latestHistory = [UnitHistory findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
+	UnitHistory_ *latestHistory = [UnitHistory_ findFirstWithPredicate:predicate sortedBy:@"updateDate" ascending:NO];
 
 	// Compare code and value.
 	if (latestHistory && [latestHistory.unitID isEqualToNumber:_convertItems[[self firstUnitIndex]]] && [value isEqualToNumber:latestHistory.value])
@@ -2109,8 +2107,8 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		return;
 	}
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    UnitHistory *history = [[UnitHistory alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    UnitHistory_ *history = [[UnitHistory_ alloc] initWithContext:context];
 	history.uniqueID = [[NSUUID UUID] UUIDString];
 	history.updateDate = [NSDate date];
 	history.unitID = _convertItems[[self firstUnitIndex]];
@@ -2122,7 +2120,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		if (obj == self.equalItem) return;
 		if (obj == self.adItem) return;
 		
-        UnitHistoryItem *item = [[UnitHistoryItem alloc] initWithContext:context];
+        UnitHistoryItem_ *item = [[UnitHistoryItem_ alloc] initWithContext:context];
 		item.uniqueID = [[NSUUID UUID] UUIDString];
 		item.updateDate = [NSDate date];
 		item.unitHistoryID = history.uniqueID;

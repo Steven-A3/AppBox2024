@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "A3DaysCounterChangeLocationViewController.h"
 
-@class DaysCounterEvent;
+@class DaysCounterEvent_;
 @class A3DaysCounterModelManager;
 @interface A3DaysCounterSetupLocationViewController : UIViewController<MKMapViewDelegate,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UIActionSheetDelegate,UIPopoverControllerDelegate,A3DaysCounterChangeLocationViewControllerDelegate>{
     BOOL isLoading;
@@ -18,7 +18,7 @@
     BOOL isSearchActive;
 }
 @property (weak, nonatomic) A3DaysCounterModelManager *sharedManager;
-@property (strong, nonatomic) DaysCounterEvent *eventModel;
+@property (strong, nonatomic) DaysCounterEvent_ *eventModel;
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UITableView *infoTableView;

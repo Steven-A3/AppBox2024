@@ -6,21 +6,19 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "DaysCounterEvent.h"
+@class DaysCounterDate_;
+@class DaysCounterEventLocation_;
+@class DaysCounterFavorite_;
+@class DaysCounterReminder_;
 
-@class DaysCounterDate;
-@class DaysCounterEventLocation;
-@class DaysCounterFavorite;
-@class DaysCounterReminder;
+@interface DaysCounterEvent_ (extension)
 
-@interface DaysCounterEvent (extension)
-
-- (DaysCounterReminder *)reminderItem;
-- (DaysCounterFavorite *)favorite;
-- (DaysCounterDate *)startDate;
-- (DaysCounterDate *)endDateCreateIfNotExist:(BOOL)createIfNotExist;
-- (void)setEndDate:(DaysCounterDate *)dateObject;
-- (DaysCounterEventLocation *)location;
+- (DaysCounterReminder_ *)reminderItem;
+- (DaysCounterFavorite_ *)favorite;
+- (DaysCounterDate_ *)startDate;
+- (DaysCounterDate_ *)endDateCreateIfNotExist:(BOOL)createIfNotExist;
+- (void)setEndDate:(DaysCounterDate_ *)dateObject;
+- (DaysCounterEventLocation_ *)location;
 - (void)toggleFavorite;
 - (NSURL *)photoURLInOriginalDirectory:(BOOL)inOriginalDirectory;
 - (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory;

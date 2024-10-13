@@ -12,7 +12,6 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3UserDefaultsKeys.h"
-#import "DaysCounterEvent.h"
 #import "MPFoldTransition.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"

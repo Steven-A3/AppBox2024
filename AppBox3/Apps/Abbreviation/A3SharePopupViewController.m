@@ -187,7 +187,7 @@ extern NSString *const A3AbbreviationKeyMeaning;
         }
     }];
     
-	_hudView = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication] keyWindow] animated:YES];
+    _hudView = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication] myKeyWindow] animated:YES];
 	_hudView.square = YES;
 	_hudView.mode = MBProgressHUDModeCustomView;
 	UIImage *image = [[UIImage imageNamed:@"Favorites"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];

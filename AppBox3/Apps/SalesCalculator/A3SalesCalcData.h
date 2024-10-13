@@ -14,8 +14,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 	ShowPriceType_SalePriceWithTax
 };
 
-
-@class SalesCalcHistory;
 @class A3SalesCalcPreferences;
 @interface A3SalesCalcData : NSObject <NSCoding>
 
@@ -34,6 +32,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 
 -(BOOL)saveDataToHistoryWithCurrencyCode:(NSString *)currencyCode;
 
-+(A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory *)history;
++(A3SalesCalcData *)loadDataFromHistory:(SalesCalcHistory_ *)history;
 
 @end

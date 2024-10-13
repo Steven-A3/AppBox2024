@@ -6,10 +6,12 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "ExpenseListHistory.h"
+#import "AppBox3-Swift.h"
 
-@class ExpenseListBudget;
+@class ExpenseListBudget_;
 
-@interface ExpenseListHistory (extension)
-- (ExpenseListBudget *)budgetData;
+@interface ExpenseListHistory_ (extension)
+
+- (ExpenseListBudget_ *)budgetData;
+
 @end

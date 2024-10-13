@@ -9,7 +9,6 @@
 #import "A3QRCodeDetailViewController.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3QRCodeDetailCell.h"
-#import "QRCodeHistory.h"
 #import "UIViewController+A3Addition.h"
 #import "A3QRCodeTextViewController.h"
 #import "A3BasicWebViewController.h"
@@ -86,7 +85,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setHistoryData:(QRCodeHistory *)data {
+- (void)setHistoryData:(QRCodeHistory_ *)data {
 	_historyData = data;
 	NSMutableArray *sections = [NSMutableArray new];
 	if (data.searchData) {

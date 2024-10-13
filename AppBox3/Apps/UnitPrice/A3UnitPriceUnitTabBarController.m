@@ -8,7 +8,6 @@
 
 #import "A3UnitPriceUnitTabBarController.h"
 #import "UIViewController+A3Addition.h"
-#import "UnitPriceInfo.h"
 #import "A3UnitDataManager.h"
 #import "UIViewController+extension.h"
 #import "A3AppDelegate.h"
@@ -42,7 +41,7 @@ NSString *const A3UnitPriceSegmentIndex = @"A3UnitPriceSegmentIndex";
     return self;
 }
 
-- (id)initWithDelegate:(id<A3UnitSelectViewControllerDelegate>)delegate withPrice:(UnitPriceInfo *)price
+- (id)initWithDelegate:(id<A3UnitSelectViewControllerDelegate>)delegate withPrice:(UnitPriceInfo_ *)price
 {
     self = [super init];
     

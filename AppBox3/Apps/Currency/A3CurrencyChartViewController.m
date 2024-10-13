@@ -223,7 +223,7 @@
 - (void)makeFixedConstraint {
 	BOOL isIPHONE35 = IS_IPHONE35;
 
-    UIEdgeInsets safeAreaInset = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInset = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     CGFloat verticalOffset = safeAreaInset.top - 20;
 	UIView *superview = _tableView.superview;
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {

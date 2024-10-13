@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class TranslatorHistory;
 @class A3TranslatorMessageCell;
 
 @protocol A3TranslatorMessageCellDelegate <NSObject>
@@ -17,12 +16,12 @@
 
 @interface A3TranslatorMessageCell : UITableViewCell
 
-@property (nonatomic, strong) TranslatorHistory *messageEntity;
+@property (nonatomic, strong) TranslatorHistory_ *messageEntity;
 @property (nonatomic, strong) UIImageView *rightMessageView;
 @property (nonatomic, strong) UIImageView *leftMessageView;
 @property (nonatomic, weak) id<A3TranslatorMessageCellDelegate> delegate;
 
-+ (CGFloat)cellHeightWithData:(TranslatorHistory *)data bounds:(CGRect)bounds;
++ (CGFloat)cellHeightWithData:(TranslatorHistory_ *)data bounds:(CGRect)bounds;
 
 - (void)changeFavoriteButtonImage;
 @end

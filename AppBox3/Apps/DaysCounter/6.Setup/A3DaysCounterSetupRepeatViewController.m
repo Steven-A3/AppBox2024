@@ -15,7 +15,6 @@
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "SFKImage.h"
 #import "A3DaysCounterRepeatCustomCell.h"
-#import "DaysCounterEvent.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardTableViewCell.h"
 #import "UITableView+utility.h"

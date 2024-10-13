@@ -13,7 +13,7 @@
 @protocol WalletCategoryEditDelegate <NSObject>
 
 @required
-- (void)walletCategoryEdited:(WalletCategory *)category;
+- (void)walletCategoryEdited:(WalletCategory_ *)category;
 
 @optional
 - (void)walletCateEditCanceled;

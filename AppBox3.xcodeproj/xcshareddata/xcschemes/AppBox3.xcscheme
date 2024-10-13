@@ -68,6 +68,17 @@
                ReferencedContainer = "container:AppBox3.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6848C39C2CB8D9EF00FEEA7D"
+               BuildableName = "AppBoxKit2Tests.xctest"
+               BlueprintName = "AppBoxKit2Tests"
+               ReferencedContainer = "container:AppBox3.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

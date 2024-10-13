@@ -11,12 +11,12 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "NSDate+TimeAgo.h"
 #import "UIViewController+A3Addition.h"
-#import "Calculation.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "AppBox3-Swift.h"
 
 NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
@@ -113,8 +113,8 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
-		[Calculation truncateAll];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+		[Calculation_ truncateAll];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
 
 		[self.tableView reloadData];
@@ -133,7 +133,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-        _fetchedResultsController = [Calculation fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+        _fetchedResultsController = [Calculation_ fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -156,14 +156,14 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	// Calculation *calcualtion= [self.fetchedResultsController objectAtIndexPath:indexPath];
+	// Calculation_ *calcualtion= [self.fetchedResultsController objectAtIndexPath:indexPath];
 	return 50.0 + 12.0;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
+	Calculation_ *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
     
 	//NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	//[nf setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -199,8 +199,8 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
-        Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        Calculation_ *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context deleteObject:calculation];
         [context saveIfNeeded];
 
@@ -211,7 +211,7 @@ NSString *const A3CalculatorHistoryRowCellID = @"CcellRow";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    Calculation *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
+    Calculation_ *calculation = [_fetchedResultsController objectAtIndexPath:indexPath];
     [self.calculator setMathExpression:calculation.expression];
 	[self.calculator saveExpression];
 

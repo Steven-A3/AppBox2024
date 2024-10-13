@@ -8,7 +8,6 @@
 
 #import <AppBoxKit/AppBoxKit.h>
 #import "A3WalletRecentsViewController.h"
-#import "WalletItem.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "UIColor+A3Addition.h"
@@ -30,7 +29,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     self.tableView.contentInset = UIEdgeInsetsZero;
@@ -42,8 +41,7 @@
 
 - (void)removeObserver {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextWillSaveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     if (IS_IPAD) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -94,7 +92,9 @@
 }
 
 - (void)cloudStoreDidImport {
-    [self refreshItems];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshItems];
+    });
 }
 
 - (void)viewWillLayoutSubviews {
@@ -136,7 +136,7 @@
     if (!super.items) {
         
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastOpened != NULL"];
-        super.items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"lastOpened" ascending:NO withPredicate:predicate]];
+        super.items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:@"lastOpened" ascending:NO withPredicate:predicate]];
     }
     
     return super.items;

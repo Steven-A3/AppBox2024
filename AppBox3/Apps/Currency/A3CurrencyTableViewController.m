@@ -7,7 +7,6 @@
 //
 
 #import "A3CurrencyTableViewController.h"
-#import "CurrencyHistory.h"
 #import "A3CurrencyTVDataCell.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
@@ -20,7 +19,6 @@
 #import "Reachability.h"
 #import "A3CurrencySettingsViewController.h"
 #import "A3UserDefaults+A3Defaults.h"
-#import "CurrencyHistoryItem.h"
 #import "UIViewController+MMDrawerController.h"
 #import "NSString+conversion.h"
 #import "UIViewController+A3Addition.h"
@@ -32,7 +30,6 @@
 #import "A3InstructionViewController.h"
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
-#import "CurrencyFavorite.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "UIViewController+tableViewStandardDimension.h"
@@ -53,7 +50,7 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property(nonatomic, strong) NSMutableArray *favorites;
 @property(nonatomic, strong) NSMutableDictionary *equalItem;
 @property(nonatomic, strong) NSMutableDictionary *adItem;
-@property(nonatomic, strong) CurrencyHistory *history;
+@property(nonatomic, strong) CurrencyHistory_ *history;
 @property(nonatomic, strong) NSMutableDictionary *textFields;
 @property(nonatomic, strong) NSArray *moreMenuButtons;
 @property(nonatomic, strong) UIView *moreMenuView;
@@ -145,7 +142,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     [self.view addSubview:self.plusButton];
 
     [self.plusButton makeConstraints:^(MASConstraintMaker *make) {
-        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         make.centerX.equalTo(superview.centerX);
         make.centerY.equalTo(superview.bottom).with.offset(-32 - safeAreaInsets.bottom);
         make.width.equalTo(@44);
@@ -242,14 +239,14 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)addObserver {
     FNLOG();
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
     if (IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuViewDidHide) name:A3NotificationMainMenuDidHide object:nil];
     }
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataChanged:) name:NSManagedObjectContextObjectsDidChangeNotification object:context];
     [self registerContentSizeCategoryDidChangeNotification];
 
@@ -261,14 +258,14 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     [self removeContentSizeCategoryDidChangeNotification];
 
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+    [notificationCenter removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     [notificationCenter removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     [notificationCenter removeObserver:self name:A3CurrencySettingsChangedNotification object:nil];
     if (IS_IPAD) {
         [notificationCenter removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
         [notificationCenter removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
     }
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [notificationCenter removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:context];
     [notificationCenter removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [notificationCenter removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -340,7 +337,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
 - (void)coreDataChanged:(NSNotification *)notification {
     if (IS_IPAD) {
-        [_mainViewController.historyBarButton setEnabled:[CurrencyHistory countOfEntities] > 0];
+        [_mainViewController.historyBarButton setEnabled:[CurrencyHistory_ countOfEntities] > 0];
     }
 }
 
@@ -402,7 +399,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 
     [self rightBarButtonDoneButton];
 
-    _moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory class]], self.settingsButton];
+    _moreMenuButtons = @[[self instructionHelpButton], self.shareButton, [self historyButton:[CurrencyHistory_ class]], self.settingsButton];
     _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons pullDownView:nil];
     _isShowMoreMenu = YES;
 }
@@ -618,7 +615,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 - (NSMutableArray *)favorites {
     if (!_favorites) {
-        NSArray *array = [CurrencyFavorite findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+        NSArray *array = [CurrencyFavorite_ findAllSortedBy:A3CommonPropertyOrder ascending:YES];
         _favorites = [array mutableCopy];
         [self addEqualItem];
         if (_adItem) {
@@ -743,7 +740,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     dataCell.valueField.delegate = self;
 
-    CurrencyFavorite *favorite = self.favorites[dataIndex];
+    CurrencyFavorite_ *favorite = self.favorites[dataIndex];
     NSString *currencyCode = favorite.uniqueID;
     A3YahooCurrency *favoriteInfo = [_currencyDataManager dataForCurrencyCode:currencyCode];
 
@@ -762,7 +759,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         }
     } else {
         NSString *favoriteZero = nil;
-        for (CurrencyFavorite *object in self.favorites) {
+        for (CurrencyFavorite_ *object in self.favorites) {
             if (![object isEqual:_equalItem] && ![object isEqual:_adItem]) {
                 favoriteZero = object.uniqueID;
                 break;
@@ -899,7 +896,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     viewController.isFromCurrencyConverter = YES;
 
     if (selectedIndex >= 0 && selectedIndex <= ([_favorites count] - 1)) {
-        CurrencyFavorite *selectedFavorite = _favorites[selectedIndex];
+        CurrencyFavorite_ *selectedFavorite = _favorites[selectedIndex];
         NSString *selectedItem = selectedFavorite.uniqueID;
         viewController.selectedCurrencyCode = selectedItem;
     }
@@ -922,7 +919,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     [_favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     __weak __typeof__(self) weakSelf = self;
@@ -951,7 +948,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     UITableViewCell *alreadyAddedFavoriteCell = nil;
     for (NSInteger idx = 0; idx < [_favorites count]; idx++) {
-        CurrencyFavorite *favorite = [_favorites objectAtIndex:idx];
+        CurrencyFavorite_ *favorite = [_favorites objectAtIndex:idx];
         if (![favorite respondsToSelector:@selector(uniqueID)] || ![favorite.uniqueID isEqualToString:selectedCode]) {
             continue;
         }
@@ -973,8 +970,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         return;
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    CurrencyFavorite *newObject = [[CurrencyFavorite alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    CurrencyFavorite_ *newObject = [[CurrencyFavorite_ alloc] initWithContext:context];
     newObject.uniqueID = selectedCode;
 
     if (_isAddingCurrency) {
@@ -986,7 +983,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
 
     } else {
-        CurrencyFavorite *oldObject = self.favorites[_selectedRow];
+        CurrencyFavorite_ *oldObject = self.favorites[_selectedRow];
         newObject.order = oldObject.order;
         [_favorites replaceObjectAtIndex:_selectedRow withObject:newObject];
 
@@ -1014,7 +1011,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     [self dismissMoreMenu];
 
-    CurrencyFavorite *favoriteItem = self.favorites[0];
+    CurrencyFavorite_ *favoriteItem = self.favorites[0];
     NSString *favorite = favoriteItem.uniqueID;
 
     if (textField == _textFields[favorite]) {
@@ -1071,7 +1068,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         textField.text = self.previousValue;
     } else {
         double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
-        CurrencyFavorite *favoriteZero = self.favorites[0];
+        CurrencyFavorite_ *favoriteZero = self.favorites[0];
         textField.text = [_currencyDataManager stringFromNumber:@(value) withCurrencyCode:favoriteZero.uniqueID isShare:NO];
         if (![textField.text isEqualToString:self.previousValue]) {
             valueChanged = YES;
@@ -1081,7 +1078,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     if (valueChanged) {
         [self putHistoryWithValue:@([self.previousValue floatValueEx])];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
     }
     self.tableViewController.refreshControl = self.refreshControl;
@@ -1095,7 +1092,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
     if ([textField isKindOfClass:[UITextField class]]) {
         textField.text = [self.decimalFormatter stringFromNumber:@0];
-        CurrencyFavorite *favoriteZero = self.favorites[0];
+        CurrencyFavorite_ *favoriteZero = self.favorites[0];
         self.previousValue = [_currencyDataManager stringFromNumber:@1 withCurrencyCode:favoriteZero.uniqueID isShare:NO];
     }
 }
@@ -1124,7 +1121,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
     [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 
-    CurrencyFavorite *favoriteZero = self.favorites[0];
+    CurrencyFavorite_ *favoriteZero = self.favorites[0];
     _calculatorTargetTextField.text = [_currencyDataManager stringFromNumber:[numberFormatter numberFromString:value] withCurrencyCode:favoriteZero.uniqueID isShare:NO];
 
     if (![_calculatorTargetTextField.text isEqualToString:self.previousValue]) {
@@ -1134,7 +1131,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     if (valueChanged) {
         [self putHistoryWithValue:@([self.previousValue floatValueEx])];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
     }
 }
@@ -1152,14 +1149,14 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         if (targetTextField == textField) {
             continue;
         }
-        CurrencyFavorite *fromCurrency = self.favorites[fromIndex];
+        CurrencyFavorite_ *fromCurrency = self.favorites[fromIndex];
         NSString *sourceCurrency = fromCurrency.uniqueID;
-        NSUInteger targetIndex = [_favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *obj, NSUInteger idx, BOOL *stop) {
+        NSUInteger targetIndex = [_favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite_ *obj, NSUInteger idx, BOOL *stop) {
             if ([obj isEqual:_equalItem] || [obj isEqual:_adItem]) return NO;
             return [obj.uniqueID isEqualToString:key];
         }];
         if (targetIndex != NSNotFound) {
-            CurrencyFavorite *target = self.favorites[targetIndex];
+            CurrencyFavorite_ *target = self.favorites[targetIndex];
             NSString *targetCurrency = target.uniqueID;
             float rate = [self rateForSource:sourceCurrency target:targetCurrency];
             targetTextField.text = [_currencyDataManager stringFromNumber:@(fromValue * rate) withCurrencyCode:targetCurrency isShare:NO];
@@ -1181,7 +1178,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (NSIndexPath *)indexPathForDataCell:(A3CurrencyTVDataCell *)cell {
     if (![cell isMemberOfClass:[A3CurrencyTVDataCell class]]) return nil;
 
-    NSInteger indexOfRow = [_favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+    NSInteger indexOfRow = [_favorites indexOfObjectPassingTest:^BOOL(CurrencyFavorite_ *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
         return ((obj != (id) _equalItem) && (obj != (id) _adItem) && [obj.uniqueID isEqualToString:cell.codeLabel.text]);
     }];
     if (indexOfRow != NSNotFound) {
@@ -1212,13 +1209,13 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 
     [self.favorites exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
 
-    CurrencyFavorite *sourceCurrency = self.favorites[sourceIndexPath.row];
-    CurrencyFavorite *targetCurrency = self.favorites[targetIndexPath.row];
+    CurrencyFavorite_ *sourceCurrency = self.favorites[sourceIndexPath.row];
+    CurrencyFavorite_ *targetCurrency = self.favorites[targetIndexPath.row];
     NSString *orderOfSource = sourceCurrency.order;
     sourceCurrency.order = targetCurrency.order;
     targetCurrency.order = orderOfSource;
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 
     [self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -1240,7 +1237,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     viewController.currencyDataManager = _currencyDataManager;
     viewController.initialValue = [self lastInputValue];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    CurrencyFavorite *favorite0 = self.favorites[0], *favoriteN = self.favorites[indexPath.row == 0 ? 2 + (_adItem ? 1 : 0) : indexPath.row];
+    CurrencyFavorite_ *favorite0 = self.favorites[0], *favoriteN = self.favorites[indexPath.row == 0 ? 2 + (_adItem ? 1 : 0) : indexPath.row];
     NSString *favoriteZero = favorite0.uniqueID, *favorite = favoriteN.uniqueID;
     viewController.originalSourceCode = favoriteZero;
     viewController.originalTargetCode = favorite;
@@ -1293,18 +1290,18 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         return;
     }
     
-    CurrencyFavorite *favorite = self.favorites[indexPath.row];
+    CurrencyFavorite_ *favorite = self.favorites[indexPath.row];
     NSString *deletingFavoriteID = favorite.uniqueID;
 
     if (deletingFavoriteID) {
         [self.textFields removeObjectForKey:deletingFavoriteID];
 
-        CurrencyFavorite *deletingObject = self.favorites[indexPath.row];
+        CurrencyFavorite_ *deletingObject = self.favorites[indexPath.row];
         [self.favorites removeObjectAtIndex:indexPath.row];
 
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context deleteObject:deletingObject];
 
         [context saveIfNeeded];
@@ -1414,7 +1411,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 }
 
 - (NSString *)stringForShareOfSource:(NSUInteger)sourceIdx target:(NSUInteger)targetIdx {
-    CurrencyFavorite *sourceFavorite = self.favorites[sourceIdx], *targetFavorite = self.favorites[targetIdx];
+    CurrencyFavorite_ *sourceFavorite = self.favorites[sourceIdx], *targetFavorite = self.favorites[targetIdx];
     NSString *source = sourceFavorite.uniqueID, *target = targetFavorite.uniqueID;
     float rate = [self rateForSource:source target:target];
     return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
@@ -1438,9 +1435,9 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     }
     _currentValueIsNotFromUser = NO;
 
-    CurrencyFavorite *currencyZero = self.favorites[0];
+    CurrencyFavorite_ *currencyZero = self.favorites[0];
     NSString *baseCurrency = currencyZero.uniqueID;
-    CurrencyHistory *latestHistory = [CurrencyHistory findFirstOrderedByAttribute:@"updateDate" ascending:NO];
+    CurrencyHistory_ *latestHistory = [CurrencyHistory_ findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
     // Compare code and value.
     if (latestHistory) {
@@ -1452,8 +1449,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         }
     }
 
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    CurrencyHistory *history = [[CurrencyHistory alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    CurrencyHistory_ *history = [[CurrencyHistory_ alloc] initWithContext:context];
     history.uniqueID = [[NSUUID UUID] UUIDString];
     NSDate *keyDate = [NSDate date];
     history.updateDate = keyDate;
@@ -1466,11 +1463,11 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     NSMutableSet *targets = [[NSMutableSet alloc] init];
     
     for (; idx < historyItemCount; idx++) {
-        CurrencyFavorite *favoriteN = self.favorites[idx + 2];
-        if (![favoriteN isKindOfClass:[CurrencyFavorite class]]) {
+        CurrencyFavorite_ *favoriteN = self.favorites[idx + 2];
+        if (![favoriteN isKindOfClass:[CurrencyFavorite_ class]]) {
             continue;
         }
-        CurrencyHistoryItem *item = [[CurrencyHistoryItem alloc] initWithContext:context];
+        CurrencyHistoryItem_ *item = [[CurrencyHistoryItem_ alloc] initWithContext:context];
         item.uniqueID = [[NSUUID UUID] UUIDString];
         item.updateDate = keyDate;
         item.historyID = history.uniqueID;
@@ -1546,7 +1543,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
     keyboardViewController.textInputTarget = textField;
 
-    CurrencyFavorite *favorite = self.favorites[0];
+    CurrencyFavorite_ *favorite = self.favorites[0];
     keyboardViewController.currencyCode = favorite.uniqueID;
 
     CGRect bounds = [A3UIDevice screenBoundsAdjustedWithOrientation];

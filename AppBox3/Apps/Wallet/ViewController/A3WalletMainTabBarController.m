@@ -15,10 +15,8 @@
 #import "A3WalletMoreTableViewController.h"
 #import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletItemViewController.h"
-#import "WalletItem.h"
 #import "WalletData.h"
 #import "A3AppDelegate.h"
-#import "WalletCategory.h"
 #import "A3CenterViewDelegate.h"
 #import "UITabBarController+extension.h"
 #import "A3WalletRecentsViewController.h"
@@ -45,16 +43,16 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     [super viewDidLoad];
 
 	self.delegate = self;
-	if ([WalletCategory countOfEntities] == 0) {
+	if ([WalletCategory_ countOfEntities] == 0) {
 		[WalletData initializeWalletCategories];
 	}
 
     // Recents Category는 4.6.23에서 추가가 된다.
     // Recents Category가 있는지 확인한다.
-    NSArray *recentsCategory = [WalletCategory findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
+    NSArray *recentsCategory = [WalletCategory_ findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
     if ([recentsCategory count] == 0) {
         [WalletData createRecentsCategory];
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
     }
     
@@ -156,7 +154,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 }
 
 - (void)popToRootViewControllerForCategoryID:(NSString *)categoryID {
-	NSUInteger indexOfCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+	NSUInteger indexOfCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory_ *category, NSUInteger idx, BOOL *stop) {
 		return [category.uniqueID isEqualToString:categoryID];
 	}];
 	if (indexOfCategory < [self numberOfCategoriesInTabBar]) {
@@ -175,7 +173,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 		[self popToRootViewControllerForCategoryID:A3WalletUUIDAllCategory];
 		[self popToRootViewControllerForCategoryID:A3WalletUUIDFavoriteCategory];
 
-		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory_ *category, NSUInteger idx, BOOL *stop) {
 			return [category.uniqueID isEqualToString:categoryID];
 		}];
 		NSUInteger numberOfCategoriesInTabBar = [self numberOfCategoriesInTabBar];
@@ -206,7 +204,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 		A3WalletItemViewController *itemViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
 		itemViewController.hidesBottomBarWhenPushed = YES;
-		WalletItem *item = [WalletItem findByAttribute:@"uniqueID" withValue:itemID][0];
+		WalletItem_ *item = [WalletItem_ findByAttribute:@"uniqueID" withValue:itemID][0];
 		itemViewController.item = item;
 		itemViewController.showCategory = YES;
 		itemViewController.alwaysReturnToOriginalCategory = YES;
@@ -219,7 +217,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[self setupTabBar];
 	if (notification.userInfo) {
 		NSString *categoryID = [notification.userInfo valueForKey:@"uniqueID"];
-		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory_ *category, NSUInteger idx, BOOL *stop) {
 			BOOL match = [category.uniqueID isEqualToString:categoryID];
 			if (match) *stop = YES;
 			return match;
@@ -292,7 +290,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	NSUInteger numberOfItemsOnTapBar = [self numberOfCategoriesInTabBar];
 	for (NSUInteger idx = 0; idx < MIN(numberOfItemsOnTapBar, [self.categories count]); idx++) {
 
-        WalletCategory *category = self.categories[idx];
+        WalletCategory_ *category = self.categories[idx];
         UIViewController *viewController;
         UIImage *selectedIcon;
         

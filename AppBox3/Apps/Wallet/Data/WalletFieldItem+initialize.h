@@ -8,7 +8,7 @@
 
 #import "AppBox3-Swift.h"
 
-@interface WalletFieldItem (initialize)
+@interface WalletFieldItem_ (initialize)
 
 - (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory;
 - (UIImage *)photoImageInOriginalDirectory:(BOOL)inOriginalDirectory;

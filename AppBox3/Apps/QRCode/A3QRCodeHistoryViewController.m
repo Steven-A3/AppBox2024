@@ -8,7 +8,6 @@
 
 #import <AddressBook/AddressBook.h>
 #import "A3QRCodeHistoryViewController.h"
-#import "QRCodeHistory.h"
 #import "A3StandardTableViewCell.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "UIViewController+A3Addition.h"
@@ -36,7 +35,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UIView *navigationBarExtensionView;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSArray<QRCodeHistory *> *historyArray;
+@property (nonatomic, strong) NSArray<QRCodeHistory_ *> *historyArray;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) A3QRCodeDataHandler *dataHandler;
 @property (nonatomic, copy) NSString *barcodeToSearch;
@@ -141,19 +140,19 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	}
 	if (actionSheet.tag == A3QRCodeHistoryActionSheetTypeClearHistory) {
 		if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 			switch (_segmentedControl.selectedSegmentIndex) {
 				case 0:
-					[QRCodeHistory truncateAll];
+					[QRCodeHistory_ truncateAll];
 					break;
 				case 1: {
 					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"1"];
-					[QRCodeHistory deleteAllMatchingPredicate:predicate];
+					[QRCodeHistory_ deleteAllMatchingPredicate:predicate];
 					break;
 				}
 				case 2: {
 					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dimension == %@", @"2"];
-					[QRCodeHistory deleteAllMatchingPredicate:predicate];
+					[QRCodeHistory_ deleteAllMatchingPredicate:predicate];
 					break;
 				}
 				default:
@@ -282,7 +281,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	if (!cell) {
 		cell = [[A3StandardTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"defaultCell"];
 	}
-	QRCodeHistory *history = self.historyArray[indexPath.row];
+	QRCodeHistory_ *history = self.historyArray[indexPath.row];
 	if 	(	![self processCellForGEOLocation:cell history:history] &&
 			![self processCellForMeCard:cell history:history] &&
 			![self processCellForVCard:cell history:history] &&
@@ -304,7 +303,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	return cell;
 }
 
-- (BOOL)processCellForVCard:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+- (BOOL)processCellForVCard:(A3StandardTableViewCell *)cell history:(QRCodeHistory_ *)history {
 	if (![history.scanData hasPrefix:@"BEGIN:VCARD"]) return NO;
 
 	CFDataRef vCardData = (__bridge CFDataRef)[history.scanData dataUsingEncoding:NSUTF8StringEncoding];
@@ -330,7 +329,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	return YES;
 }
 
-- (BOOL)processCellForMeCard:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+- (BOOL)processCellForMeCard:(A3StandardTableViewCell *)cell history:(QRCodeHistory_ *)history {
 	if (![history.scanData hasPrefix:@"MECARD:"]) return NO;
 
 	NSScanner *scanner = [NSScanner scannerWithString:history.scanData];
@@ -348,7 +347,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	return YES;
 }
 
-- (BOOL)processCellForGEOLocation:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+- (BOOL)processCellForGEOLocation:(A3StandardTableViewCell *)cell history:(QRCodeHistory_ *)history {
 	if (![history.scanData hasPrefix:@"GEO:"]) { return NO;}
 	
 	NSArray *components = [[history.scanData substringFromIndex:4] componentsSeparatedByString:@","];
@@ -377,7 +376,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	return YES;
 }
 
-- (BOOL)processCellForEvent:(A3StandardTableViewCell *)cell history:(QRCodeHistory *)history {
+- (BOOL)processCellForEvent:(A3StandardTableViewCell *)cell history:(QRCodeHistory_ *)history {
 	if (![history.scanData hasPrefix:@"BEGIN:VCALENDAR"]) return NO;
 	
 	MXLCalendarManager *parser = [MXLCalendarManager new];
@@ -396,8 +395,8 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-		QRCodeHistory *history = self.historyArray[indexPath.row];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+		QRCodeHistory_ *history = self.historyArray[indexPath.row];
         [context deleteObject:history];
 
         [context saveIfNeeded];
@@ -407,7 +406,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	QRCodeHistory *history = self.historyArray[indexPath.row];
+	QRCodeHistory_ *history = self.historyArray[indexPath.row];
 	if ([history.dimension isEqualToString:@"1"]) {
 		if ([[[A3AppDelegate instance] reachability] isReachableViaWiFi]) {
 			[self presentWebViewControllerWithBarCode:history.scanData];
@@ -445,9 +444,9 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 - (NSArray *)historyArray {
 	if (!_historyArray) {
 		if (self.segmentedControl.selectedSegmentIndex == 0) {
-			_historyArray = [QRCodeHistory findAllSortedBy:@"created" ascending:NO];
+			_historyArray = [QRCodeHistory_ findAllSortedBy:@"created" ascending:NO];
 		} else {
-            _historyArray = [QRCodeHistory findByAttribute:@"dimension"
+            _historyArray = [QRCodeHistory_ findByAttribute:@"dimension"
                                                  withValue:[NSString stringWithFormat:@"%ld", (long)self.segmentedControl.selectedSegmentIndex]
                                                 andOrderBy:@"created"
                                                  ascending:NO];
@@ -477,7 +476,7 @@ typedef NS_ENUM(NSUInteger, A3QRCodeHistoryActionSheetType) {
 	[self.view addSubview:bannerView];
 
     CGFloat verticalOffset = 0;
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (safeAreaInsets.top > 20) {
         verticalOffset = safeAreaInsets.bottom;
     }

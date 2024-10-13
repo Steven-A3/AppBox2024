@@ -12,7 +12,6 @@
 #import "A3WalletListBigVideoCell.h"
 #import "A3WalletListBigPhotoCell.h"
 #import "WalletData.h"
-#import "WalletItem.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
@@ -24,8 +23,6 @@
 #import "A3InstructionViewController.h"
 #import "WalletItem+initialize.h"
 #import "A3UserDefaults.h"
-#import "WalletCategory.h"
-#import "WalletField.h"
 #import "NSString+conversion.h"
 #import "A3WalletListPhotoCell.h"
 #import "NSManagedObject+extension.h"
@@ -84,7 +81,7 @@
         self.navigationItem.rightBarButtonItems = @[infoBarButton, self.searchBarButton];
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     
 // TODO
 // 카테코리 테이블에서 임시로 순서변경 제스쳐 제거.
@@ -94,8 +91,6 @@
         }
     }
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
     
     self.tableView.contentInset = UIEdgeInsetsMake(-21.5, 0, 0, 0);
 }
@@ -117,7 +112,7 @@
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -181,9 +176,7 @@
         _searchController.searchBar.text = _searchString;
     }
     if (!_didPassViewDidAppear) {
-        if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10") {
-            self.tableView.contentOffset = CGPointMake(0, -64);
-        }
+        self.tableView.contentOffset = CGPointMake(0, -64);
     }
     _previousContentOffset = CGFLOAT_MAX;
     _searchString = nil;
@@ -196,7 +189,7 @@
 	
 	[self setupInstructionView];
 
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if ((safeAreaInsets.top == 20) &&
         !_searchController.active &&
         ([self.items count] > 0) &&
@@ -210,33 +203,46 @@
                 [UIView animateWithDuration:0.3
                                  animations:^{
                     CGFloat verticalOffset = 0;
-                    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+                    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
                     verticalOffset = safeAreaInsets.top - 20;
                     self.tableView.contentOffset = CGPointMake(0, -(8 + verticalOffset));
                 }
                                  completion:nil];
             }
         });
+    } else {
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
+        if (_didPassViewDidAppear) {
+            if (safeAreaInsets.top != 0) {
+                self.tableView.contentOffset = CGPointMake(0, -(safeAreaInsets.top + 64));
+            } else {
+                self.tableView.contentOffset = CGPointMake(0, -50);
+            }
+        } else {
+            if (safeAreaInsets.top != 0) {
+                self.tableView.contentOffset = CGPointMake(0, -(safeAreaInsets.top + 64));
+            } else {
+                self.tableView.contentOffset = CGPointMake(0, -64);
+            }
+        }
     }
 
-//    double delayInSeconds = 3.0;
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//        [self refreshItems];
-//    });
-    
     _didPassViewDidAppear = YES;
 }
 
 - (void)cloudStoreDidImport {
-	self.items = nil;
-	[self refreshItems];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        FNLOG(@"cloudStoreDidImport");
+        self.items = nil;
+        [self refreshItems];
 
-	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-	[self updateNavigationBarTitle];
+        // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
+        [self updateNavigationBarTitle];
 
-	// more button 활성화여부
-	[self itemCountCheck];
+        // more button 활성화여부
+        [self itemCountCheck];
+    });
 }
 
 - (void)initializeViews
@@ -267,8 +273,8 @@
 		FNLOG();
 		NSMutableArray *items;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
-//        items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
-        items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
+//        items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+        items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }
 
@@ -368,7 +374,7 @@
 }
 
 - (void)deleteItemAction:(id)sender {
-    // 선택된 walletItem 삭제하기
+    // 선택된 WalletItem_ 삭제하기
     if (self.tableView.editing == NO) {
         return;
     }
@@ -399,9 +405,9 @@
 	for (NSInteger index = 0; index < ips.count; index++) {
 		NSIndexPath *ip = ips[index];
         NSArray *section = self.sectionsArray[ip.section];
-		if ([section[ip.row] isKindOfClass:[WalletItem class]]) {
+		if ([section[ip.row] isKindOfClass:[WalletItem_ class]]) {
 
-			WalletItem *item = section[ip.row];
+			WalletItem_ *item = section[ip.row];
 			NSString *convertInfoText = @"";
 
 			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
@@ -422,10 +428,10 @@
 
 				NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 				if (fieldItems.count>0) {
-					WalletFieldItem *fieldItem = fieldItems[0];
+					WalletFieldItem_ *fieldItem = fieldItems[0];
 					NSString *itemValue;
 
-					WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+					WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 					if ([field.type isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
 						[df setDateStyle:NSDateFormatterFullStyle];
@@ -476,9 +482,9 @@
 	self.shareTextList = [NSMutableArray new];
 
 	for (NSUInteger index = 0; index < self.items.count; index++) {
-		if ([self.items[index] isKindOfClass:[WalletItem class]]) {
+		if ([self.items[index] isKindOfClass:[WalletItem_ class]]) {
 
-			WalletItem *item = self.items[index];
+			WalletItem_ *item = self.items[index];
 			NSString *convertInfoText = @"";
 
 			if ([self.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory]) {
@@ -500,9 +506,9 @@
 
 				NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
 				if (fieldItems.count>0) {
-					WalletFieldItem *fieldItem = fieldItems[0];
+					WalletFieldItem_ *fieldItem = fieldItems[0];
 					NSString *itemValue = @"";
-					WalletField *field = [WalletData fieldOfFieldItem:fieldItem];
+					WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];
 					if ([field.type isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
 						[df setDateStyle:NSDateFormatterFullStyle];
@@ -595,7 +601,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     self.instructionViewController = [instructionStoryBoard     instantiateViewControllerWithIdentifier:@"Wallet_2"];
     self.instructionViewController.delegate = self;
 
-	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
 	[mainWindow addSubview:self.instructionViewController.view];
 	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
 
@@ -613,27 +619,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 #pragma mark - Search relative
 
 - (void)setupSearchBar {
-    void(^final)(void) = ^ {
-        [self.searchBarButton setEnabled:[self.items count] > 0];
-    };
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
-    if (safeAreaInsets.top > 20) {
-        // For iOS 11 and later, we place the search bar in the navigation bar.
-        self.navigationController.navigationBar.prefersLargeTitles = NO;
-        self.navigationItem.searchController = self.searchController;
-        
-        // We want the search bar visible all the time.
-        self.navigationItem.hidesSearchBarWhenScrolling = NO;
-        
-        final();
-        return;
-    }
     if ([self.items count] > 0) {
         self.tableView.tableHeaderView = self.searchController.searchBar;
     } else {
         self.tableView.tableHeaderView = nil;
     }
-    final();
+    [self.searchBarButton setEnabled:[self.items count] > 0];
 }
 
 - (void)searchAction:(id)sender {
@@ -668,12 +659,12 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 	NSMutableArray *uniqueIDs = [NSMutableArray new];
 	if (searchText && [searchText length]) {
 		NSPredicate *predicateForValues = [NSPredicate predicateWithFormat:@"value contains[cd] %@", searchText];
-		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem"];
+		NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletFieldItem_"];
 		fetchRequest.predicate = predicateForValues;
 		fetchRequest.resultType = NSDictionaryResultType;
 		fetchRequest.propertiesToFetch = @[@"walletItemID"];
 		NSError *error;
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 		NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
 		for (NSDictionary *item in results) {
 			[uniqueIDs addObjectsFromArray:[item allValues]];
@@ -687,7 +678,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
     } else {
         predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
     }
-    self.items = [NSMutableArray arrayWithArray:[WalletItem findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
+    self.items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
     [self configureSections];
     
     [self.tableView reloadData];
@@ -771,14 +762,14 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
 
             for (NSInteger idx = self.items.count-1; idx >= 0; idx--) {
-                if ([self.items[idx] isKindOfClass:[WalletItem class]]) {
+                if ([self.items[idx] isKindOfClass:[WalletItem_ class]]) {
 
-                    WalletItem *item = self.items[idx];
+                    WalletItem_ *item = self.items[idx];
                     [self.items removeObject:item];
 					[item deleteWalletItem];
 				}
             }
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
             [context saveIfNeeded];
             
             [self.tableView reloadData];
@@ -801,13 +792,13 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
                 [mis addIndex:indexPath.row];
 
                 NSArray *section = self.sectionsArray[indexPath.section];
-                if ([section[indexPath.row] isKindOfClass:[WalletItem class]]) {
+                if ([section[indexPath.row] isKindOfClass:[WalletItem_ class]]) {
 
-                    WalletItem *item = section[indexPath.row];
+                    WalletItem_ *item = section[indexPath.row];
 					[item deleteWalletItem];
 				}
             }
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
             [context saveIfNeeded];
             [self.items removeObjectsAtIndexes:mis];
 
@@ -823,7 +814,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 #pragma mark - WalletItemAddDelegate
 
-- (void)walletItemAddCompleted:(WalletItem *)addedItem
+- (void)walletItemAddCompleted:(WalletItem_ *)addedItem
 {
     [self refreshItems];
 }
@@ -833,7 +824,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 }
 
-- (void)walletItemEdited:(WalletItem *)item {
+- (void)walletItemEdited:(WalletItem_ *)item {
     [self refreshItems];
 }
 
@@ -864,7 +855,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
 	BOOL needAdjustment = LANGUAGE_KOREAN;
     // Segregate the time zones into the appropriate arrays.
-    for (WalletItem *object in self.items) {
+    for (WalletItem_ *object in self.items) {
 		if (!object.name) {
 			object.name = @"";
 		}
@@ -900,7 +891,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
             // If the table view or its contents were editable, you would make a mutable copy here.
             NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"name")];
 
-            WalletItem *firstItem = sortedDataArrayForSection[0];
+            WalletItem_ *firstItem = sortedDataArrayForSection[0];
 			NSString *firstLetter = @" ";
 			if ([firstItem.name length]) {
 				firstLetter = [[[firstItem name] substringToIndex:1] componentsSeparatedByKorean];
@@ -1018,8 +1009,8 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *section = self.sectionsArray[indexPath.section];
-    WalletItem *item = section[indexPath.row];
-	if ([item isKindOfClass:[WalletItem class]]) {
+    WalletItem_ *item = section[indexPath.row];
+	if ([item isKindOfClass:[WalletItem_ class]]) {
 		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
 	return nil;
@@ -1039,10 +1030,10 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
         // Delete the row from the data source
 
         NSArray *section = self.sectionsArray[indexPath.section];
-        if ([section[indexPath.row] isKindOfClass:[WalletItem class]]) {
-            WalletItem *item = section[indexPath.row];
+        if ([section[indexPath.row] isKindOfClass:[WalletItem_ class]]) {
+            WalletItem_ *item = section[indexPath.row];
 			NSArray *fieldItems = [item fieldItemsArraySortedByFieldOrder];
-			[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem *fieldItem, NSUInteger idx, BOOL *stop) {
+			[fieldItems enumerateObjectsUsingBlock:^(WalletFieldItem_ *fieldItem, NSUInteger idx, BOOL *stop) {
 				BOOL result;
 				NSFileManager *fileManager = [[NSFileManager alloc] init];
 				fileManager.delegate = self;
@@ -1077,7 +1068,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 
             [item deleteWalletItem];
             
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
             [context saveIfNeeded];
 
             self.items = nil;

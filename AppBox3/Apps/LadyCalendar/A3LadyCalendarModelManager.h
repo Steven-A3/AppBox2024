@@ -9,18 +9,15 @@
 extern NSString *const A3NotificationLadyCalendarPeriodDataChanged;
 extern NSString *const A3LadyCalendarChangedDateKey;
 
-@class LadyCalendarPeriod;
-@class LadyCalendarAccount;
-
 @interface A3LadyCalendarModelManager : NSObject
 
-@property (nonatomic, strong) LadyCalendarAccount *currentAccount;
+@property (nonatomic, strong) LadyCalendarAccount_ *currentAccount;
 
 + (void)alertMessage:(NSString*)message title:(NSString*)title;
 - (NSString *)defaultAccountName;
 - (void)prepare;
 - (void)prepareAccount;
-- (void)deleteAccount:(LadyCalendarAccount *)account;
+- (void)deleteAccount:(LadyCalendarAccount_ *)account;
 - (void)makePredictPeriodsBeforeCurrentPeriod;
 - (NSInteger)numberOfAccount;
 - (void)setWatchingDateForCurrentAccount:(NSDate *)date;
@@ -29,12 +26,12 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending;
 - (NSArray*)periodListWithMonth:(NSDate*)month accountID:(NSString*)accountID containPredict:(BOOL)containPredict;
 - (NSArray*)periodListWithMonth:(NSDate*)month period:(NSInteger)period accountID:(NSString*)accountID;
-- (LadyCalendarPeriod *)currentPeriodFromDate:(NSDate *)date;
-- (LadyCalendarPeriod *)previousPeriodFromDate:(NSDate *)date;
-- (LadyCalendarPeriod *)nextPeriodFromDate:(NSDate *)date;
+- (LadyCalendarPeriod_ *)currentPeriodFromDate:(NSDate *)date;
+- (LadyCalendarPeriod_ *)previousPeriodFromDate:(NSDate *)date;
+- (LadyCalendarPeriod_ *)nextPeriodFromDate:(NSDate *)date;
 - (NSArray *)periodListStartsInMonth:(NSDate *)month;
 - (NSArray *)periodListInRangeWithMonth:(NSDate*)month accountID:(NSString*)accountID;
-- (LadyCalendarPeriod *)lastPeriod;
+- (LadyCalendarPeriod_ *)lastPeriod;
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID;
 - (NSMutableDictionary*)createDefaultSetting;
 - (NSDictionary*)currentSetting;

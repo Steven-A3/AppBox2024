@@ -44,8 +44,6 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
     TCRoundingMethodOption_Off
 };
 
-#import "TipCalcRecent.h"
-#import "TipCalcHistory.h"
 #import <CoreLocation/CoreLocation.h>
 
 @interface A3TipCalcDataManager : NSObject<CLLocationManagerDelegate>
@@ -55,7 +53,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 
 @property (nonatomic, weak) id<A3TipCalcDataManagerDelegate> delegate;
 
-- (TipCalcRecent *)tipCalcData;
+- (TipCalcRecent_ *)tipCalcData;
 - (NSArray*)tipCalcHistory;
 
 @property (nonatomic, strong) NSNumber * defaultTax;
@@ -64,7 +62,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 - (NSString *)currencyCode;
 - (NSString *)currencyStringFromDouble:(double)value;
 
-- (void)historyToRecently:(TipCalcHistory*)aHistory;
+- (void)historyToRecently:(TipCalcHistory_ *)aHistory;
 
 - (NSString*)sharedDataIsMail:(BOOL)isMail;
 
@@ -82,7 +80,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 
 #pragma mark Manipulate TipCalc Data
 - (void)setTipCalcDataForMainTableView;
-- (void)setTipCalcDataForHistoryData:(TipCalcHistory *)aHistory;
+- (void)setTipCalcDataForHistoryData:(TipCalcHistory_ *)aHistory;
 
 #pragma mark Split Option
 - (void)setTipSplitOption:(TipSplitOption)option;

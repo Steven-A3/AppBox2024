@@ -14,7 +14,7 @@
 
 @interface A3WalletItemFieldCell : UITableViewCell
 
-@property (nonatomic, weak) WalletFieldItem *fieldItem;
+@property (nonatomic, weak) WalletFieldItem_ *fieldItem;
 @property (nonatomic, copy) NSString *fieldStyle;
 @property (nonatomic, weak) IBOutlet JVFloatLabeledTextField *valueTextField;
 @property (nonatomic, strong) UIButton *deleteButton;

@@ -20,7 +20,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] myKeyWindow].safeAreaInsets;
     if (safeAreaInsets.top > 20) {
         _topSpaceConstraint.constant = safeAreaInsets.top - 20;
     }

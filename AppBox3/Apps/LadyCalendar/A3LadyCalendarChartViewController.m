@@ -11,11 +11,9 @@
 #import "UIViewController+NumberKeyboard.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DateHelper.h"
-#import "LadyCalendarPeriod.h"
 #import "A3LineChartView.h"
 #import "UIColor+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
-#import "LadyCalendarAccount.h"
 #import "A3UIDevice.h"
 
 @interface A3LadyCalendarChartViewController ()
@@ -154,8 +152,8 @@
     NSString *dateFormat = [dateFormatter formatStringByRemovingMediumYearComponent:[dateFormatter dateFormat]];
     
 	for (NSInteger idx=0; idx < [array count]; idx++) {
-		LadyCalendarPeriod *period = [array objectAtIndex:idx];
-        LadyCalendarPeriod *prevPeriod = ( idx - 1 > 0 ? [array objectAtIndex:idx - 1] : nil);
+		LadyCalendarPeriod_ *period = [array objectAtIndex:idx];
+        LadyCalendarPeriod_ *prevPeriod = ( idx - 1 > 0 ? [array objectAtIndex:idx - 1] : nil);
 		NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
 		[periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(idx, mensPeriod)]];
 		_minMenstrualPeriod = ( _minMenstrualPeriod < 0 ? mensPeriod : MIN(_minMenstrualPeriod, mensPeriod) );
@@ -344,7 +342,7 @@
     }
     NSDate *currentMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
     NSDate *fromMonth = [A3DateHelper dateByAddingMonth:1 fromDate:currentMonth];
-    LadyCalendarAccount *account = [_dataManager currentAccount];
+    LadyCalendarAccount_ *account = [_dataManager currentAccount];
     self.itemArray = [_dataManager periodListWithMonth:fromMonth period:periodMonth accountID:account.uniqueID];
     if ( [self.itemArray count] > 0 ) {
         [self makeChartDataWithArray:_itemArray];

@@ -158,7 +158,7 @@
 }
 
 - (void)myLayoutSubviews {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     CGRect frame = self.view.bounds;
     frame.origin.y += safeAreaInsets.top;
     frame.size.height -= safeAreaInsets.top + safeAreaInsets.bottom;
@@ -477,7 +477,7 @@
     FNLOGRECT(bannerView.frame);
     FNLOG(@"%f", bannerView.adSize.size.height);
 
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     CGFloat bottomOffset = safeAreaInsets.bottom;
     
     [self.view bringSubviewToFront:bannerView];

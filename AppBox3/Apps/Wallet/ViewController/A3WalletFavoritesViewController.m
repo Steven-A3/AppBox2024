@@ -7,8 +7,6 @@
 //
 
 #import "A3WalletFavoritesViewController.h"
-#import "WalletItem.h"
-#import "WalletFavorite.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+NumberKeyboard.h"
 #import "UIViewController+A3Addition.h"
@@ -41,7 +39,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     self.tableView.contentInset = UIEdgeInsetsZero;
@@ -53,8 +51,7 @@
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextWillSaveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationMainMenuDidHide object:nil];
@@ -123,7 +120,9 @@
 }
 
 - (void)cloudStoreDidImport {
-	[self refreshItems];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshItems];
+    });
 }
 
 - (void)viewWillLayoutSubviews {
@@ -155,7 +154,7 @@
 - (NSMutableArray *)items
 {
     if (!super.items) {
-		super.items = [NSMutableArray arrayWithArray:[WalletFavorite findAllSortedBy:@"order" ascending:YES]];
+		super.items = [NSMutableArray arrayWithArray:[WalletFavorite_ findAllSortedBy:@"order" ascending:YES]];
     }
     
     return super.items;
@@ -186,7 +185,7 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
     self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_4"];
     self.instructionViewController.delegate = self;
 
-	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+	UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
 	[mainWindow addSubview:self.instructionViewController.view];
 	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
 
@@ -198,10 +197,10 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ([[self.items objectAtIndex:(NSUInteger) indexPath.row] isKindOfClass:[WalletFavorite class]]) {
+	if ([[self.items objectAtIndex:(NSUInteger) indexPath.row] isKindOfClass:[WalletFavorite_ class]]) {
 
-		WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
-		WalletItem *item = [WalletItem findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
+		WalletFavorite_ *favorite = self.items[(NSUInteger) indexPath.row];
+		WalletItem_ *item = [WalletItem_ findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
 
 		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
@@ -210,8 +209,8 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	WalletFavorite *favorite = self.items[indexPath.row];
-	WalletItem *item = [WalletItem findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
+	WalletFavorite_ *favorite = self.items[indexPath.row];
+	WalletItem_ *item = [WalletItem_ findFirstByAttribute:@"uniqueID" withValue:favorite.itemID];
 	[self tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
 }
 
@@ -221,8 +220,8 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         
-        NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-        WalletFavorite *favorite = self.items[(NSUInteger) indexPath.row];
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        WalletFavorite_ *favorite = self.items[(NSUInteger) indexPath.row];
         [self.items removeObject:favorite];
         
         [context deleteObject:favorite];

@@ -7,7 +7,6 @@
 //
 
 #import "A3PedometerCollectionViewCell.h"
-#import "Pedometer.h"
 #import "A3PedometerViewController.h"
 #import "A3BarChartBarView.h"
 #import "A3PedometerHandler.h"
@@ -40,7 +39,7 @@
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
 		make.bottom.equalTo(superview.bottom).with.offset(-35);
-		_barGraphHeightConstraint = make.height.equalTo(@40);
+        self->_barGraphHeightConstraint = make.height.equalTo(@40);
 	}];
 
 	[self addSubview:self.numberOfStepsLabel];
@@ -48,7 +47,7 @@
 	[_numberOfStepsLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.bottom.equalTo(_barGraphView.top).with.offset(-4);
+        make.bottom.equalTo(self->_barGraphView.top).with.offset(-4);
 	}];
 
 	[self addSubview:self.distanceLabel];
@@ -56,20 +55,20 @@
 	[_distanceLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left).with.offset(1);
 		make.right.equalTo(superview.right).with.offset(-1);
-		make.bottom.equalTo(_barGraphView.bottom).with.offset(-4);
+        make.bottom.equalTo(self->_barGraphView.bottom).with.offset(-4);
 	}];
 
 	[self addSubview:self.floorsImageView];
 	[_floorsImageView makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.right).multipliedBy(0.3);
-		make.bottom.equalTo(_distanceLabel.top).with.offset(-5);
+        make.bottom.equalTo(self->_distanceLabel.top).with.offset(-5);
 	}];
 
 	[self addSubview:self.floorsAscendedLabel];
 
 	[_floorsAscendedLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(superview.right).multipliedBy(0.7);
-		make.bottom.equalTo(_distanceLabel.top).with.offset(-5);
+        make.bottom.equalTo(self->_distanceLabel.top).with.offset(-5);
 	}];
 
 	[self addSubview:self.dateLabel];
@@ -142,7 +141,7 @@
 	return _dateLabel;
 }
 
-- (void)setPedometerData:(Pedometer *)pedometerData {
+- (void)setPedometerData:(Pedometer_ *)pedometerData {
 	_pedometerData = pedometerData;
 
 	_numberOfStepsLabel.text = [self.pedometerHandler.integerFormatter stringFromNumber:_pedometerData.numberOfSteps];

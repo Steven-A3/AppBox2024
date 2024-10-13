@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UnitHistory.h"
-
-@interface UnitHistory (extension)
+@interface UnitHistory_ (extension)
 
 - (NSArray *)targets;
+
 @end

@@ -17,7 +17,6 @@
 #import "A3WalletItemPhotoFieldCell.h"
 #import "A3WalletNoteCell.h"
 #import "WalletData.h"
-#import "WalletItem.h"
 #import "WalletItem+Favorite.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
@@ -31,11 +30,8 @@
 #import "WalletItem+initialize.h"
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
-#import "WalletFavorite.h"
 #import "WalletFavorite+initialize.h"
 #import "A3SyncManager.h"
-#import "WalletField.h"
-#import "WalletCategory.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "MWPhotoBrowserPrivate.h"
 #import "NSString+WalletStyle.h"
@@ -53,7 +49,7 @@
 @property (nonatomic, strong) NSMutableDictionary *emptyItem;
 @property (nonatomic, strong) NSMutableArray *albumPhotos;
 @property (nonatomic, weak) id copyingSourceView;
-@property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, strong) WalletCategory_ *category;
 @property (nonatomic, strong) MWPhotoBrowser *photoBrowser;
 @property (nonatomic, strong) NSMutableDictionary *fieldStyleStatus;
 
@@ -106,14 +102,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     self.tableView.backgroundColor = [UIColor whiteColor];
 
     [self registerContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextDidSaveNotification object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 
     _item.lastOpened = [NSDate date];
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
 }
 
@@ -138,7 +134,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	}
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudCoreDataStoreDidImport object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
 
@@ -150,7 +146,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 		FNLOG();
 		NSString *itemID = _item.uniqueID;
-		_item = [WalletItem findFirstByAttribute:ID_KEY withValue:itemID];
+		_item = [WalletItem_ findFirstByAttribute:ID_KEY withValue:itemID];
         
 		_category = nil;
 		_fieldItems = nil;
@@ -192,7 +188,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (WalletCategory *)category {
+- (WalletCategory_ *)category {
 	if (!_category) {
 		_category = [WalletData categoryItemWithID:_item.categoryID];
 	}
@@ -210,8 +206,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         
 		// 데이타 없는 item은 표시하지 않는다.
 		NSMutableArray *deleteTmp = [NSMutableArray new];
-		for (WalletFieldItem *fieldItem in _fieldItems) {
-			WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+		for (WalletFieldItem_ *fieldItem in _fieldItems) {
+            WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
 			if ([field.type isEqualToString:WalletFieldTypeDate]) {
 				if (fieldItem.date == nil) {
 					[deleteTmp addObject:fieldItem];
@@ -285,8 +281,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		_albumPhotos = [[NSMutableArray alloc] init];
         
 		for (int i=0; i<self.fieldItems.count; i++) {
-			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
-				WalletFieldItem *fieldItem = _fieldItems[i];
+			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem_ class]]) {
+				WalletFieldItem_ *fieldItem = _fieldItems[i];
 				if ([fieldItem.hasImage boolValue]) {
 					MWPhoto *photo = [MWPhoto photoWithImage:[fieldItem photoImageInOriginalDirectory:YES]];
 					[_albumPhotos addObject:photo];
@@ -300,14 +296,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)favorButtonAction:(UIButton *)button
 {
-	BOOL isFavorite = ![WalletFavorite isFavoriteForItemID:_item.uniqueID];
+	BOOL isFavorite = ![WalletFavorite_ isFavoriteForItemID:_item.uniqueID];
 	[_item changeFavorite:isFavorite];
 	button.selected = isFavorite;
 }
 
 - (void)photoButtonAction:(UIButton *)sender
 {
-	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	WalletFieldItem_ *fieldItem = _fieldItems[sender.tag];
 
 	if ([fieldItem.hasVideo boolValue]) {
         AVPlayer *player = [[AVPlayer alloc] initWithURL:[fieldItem videoFileURLInOriginal:YES]];
@@ -332,10 +328,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         
 		[self.navigationController presentViewController:nc animated:YES completion:NULL];
 	}
-}
-
-- (void)playerViewControllerDidEndDismissalTransition:(AVPlayerViewController *)playerViewController {
-    
 }
 
 - (void)editButtonAction:(id)sender
@@ -379,9 +371,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	return hasTextAction;
 }
 
-- (BOOL)shouldCheckTextDataOfItem:(WalletFieldItem *) fieldItem
+- (BOOL)shouldCheckTextDataOfItem:(WalletFieldItem_ *) fieldItem
 {
-	WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+	WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
 	if ([field.type isEqualToString:WalletFieldTypeImage] || [field.type isEqualToString:WalletFieldTypeVideo]) {
 		return NO;
 	}
@@ -393,7 +385,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	}
 }
 
-- (void)doActionForTextData:(WalletFieldItem *)fieldItem andActionIndex:(NSUInteger)actionIdx
+- (void)doActionForTextData:(WalletFieldItem_ *)fieldItem andActionIndex:(NSUInteger)actionIdx
 {
 	NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress|NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
 	NSTextCheckingResult *result = [detector firstMatchInString:fieldItem.value options:0 range:NSMakeRange(0, fieldItem.value.length)];
@@ -483,8 +475,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)actionCellContentButtonAction:(UIButton *)sender
 {
-	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
-		WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem_ class]]) {
+		WalletFieldItem_ *fieldItem = _fieldItems[sender.tag];
         
 		if ([self shouldCheckTextDataOfItem:fieldItem]) {
 			// 텍스트 액션 여부 확인
@@ -498,8 +490,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)actionCellRight1ButtonAction:(UIButton *)sender
 {
-	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
-		WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem_ class]]) {
+		WalletFieldItem_ *fieldItem = _fieldItems[sender.tag];
         
 		if ([self shouldCheckTextDataOfItem:fieldItem]) {
 			// 텍스트 액션 여부 확인
@@ -513,8 +505,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)actionCellRight2ButtonAction:(UIButton *)sender
 {
-	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
-		WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem_ class]]) {
+		WalletFieldItem_ *fieldItem = _fieldItems[sender.tag];
         
 		if ([self shouldCheckTextDataOfItem:fieldItem]) {
 			// 텍스트 액션 여부 확인
@@ -569,7 +561,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 #pragma mark - WalletItemEditDelegate
 
--(void)walletItemEdited:(WalletItem *)item
+-(void)walletItemEdited:(WalletItem_ *)item
 {
     _fieldItems = nil;
     [self.tableView reloadData];
@@ -628,7 +620,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		A3WalletItemTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemTitleCellID forIndexPath:indexPath];
 		titleCell.titleTextField.text = [_item.name length] ? _item.name : NSLocalizedString(@"New Item", @"New Item");
 		titleCell.titleTextField.delegate = self;
-		titleCell.favoriteButton.selected = [WalletFavorite isFavoriteForItemID:_item.uniqueID];
+		titleCell.favoriteButton.selected = [WalletFavorite_ isFavoriteForItemID:_item.uniqueID];
 
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
         if (IS_IPAD || [NSDate isFullStyleLocale]) {
@@ -667,14 +659,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         textCell.valueTextField.font = [UIFont systemFontOfSize:17];
         textCell.valueTextField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         textCell.valueTextField.placeholder = NSLocalizedString(@"Category", @"Category");
-		WalletCategory *category = [WalletData categoryItemWithID:_item.categoryID];
+		WalletCategory_ *category = [WalletData categoryItemWithID:_item.categoryID];
 		textCell.valueTextField.text = category.name;
 
         cell = textCell;
     }
-    else if ([_fieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
-        WalletFieldItem *fieldItem = _fieldItems[indexPath.row];
-		WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+    else if ([_fieldItems[indexPath.row] isKindOfClass:[WalletFieldItem_ class]]) {
+        WalletFieldItem_ *fieldItem = _fieldItems[indexPath.row];
+		WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
         if ([fieldItem.hasImage boolValue] || [fieldItem.hasVideo boolValue]) {
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID forIndexPath:indexPath];
             
@@ -828,12 +820,12 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    WalletFieldItem *fieldItem = _fieldItems[indexPath.row];
-    if (!fieldItem || ![fieldItem isKindOfClass:[WalletFieldItem class]]) {
+    WalletFieldItem_ *fieldItem = _fieldItems[indexPath.row];
+    if (!fieldItem || ![fieldItem isKindOfClass:[WalletFieldItem_ class]]) {
         return;
     }
 
-	WalletField *field = [WalletData fieldOfFieldItem:fieldItem];;
+	WalletField_ *field = [WalletData fieldOfFieldItem:fieldItem];;
     if ([field.type isEqualToString:WalletFieldTypeURL]) {
         A3WalletItemFieldActionCell *actionCell = (A3WalletItemFieldActionCell *)[tableView cellForRowAtIndexPath:indexPath];
         [self performSelector:@selector(actionCellContentButtonAction:) withObject:actionCell.contentBtn];

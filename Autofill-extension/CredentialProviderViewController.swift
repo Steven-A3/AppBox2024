@@ -142,7 +142,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     
     func credential(with recordIdentifier: String) -> ASPasswordCredential? {
         setupCoreDataStack()
-        let request = WalletFieldItem.fetchRequest()
+        let request = WalletFieldItem_.fetchRequest()
         request.predicate = NSPredicate(format: "walletItemID == %@", recordIdentifier)
         let result = try! persistentContainer.viewContext.fetch(request)
         if result.count > 0 {
@@ -156,13 +156,13 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     func passwordFor(_ identifier: String) {
         let (IDofName, IDofPassword, IDofURL) = resolveIDs()
         
-        let request: NSFetchRequest = WalletFieldItem.fetchRequest()
+        let request: NSFetchRequest = WalletFieldItem_.fetchRequest()
         request.predicate = NSPredicate(format: "fieldID == %@ AND value CONTAINS %@", IDofURL!, identifier)
         let result = try! persistentContainer.viewContext.fetch(request)
         let walletItems = result.map { $0.walletItemID }
         
         if walletItems.count > 0 {
-            let requestForCredential = WalletFieldItem.fetchRequest()
+            let requestForCredential = WalletFieldItem_.fetchRequest()
             requestForCredential.predicate = NSPredicate(format: "walletItemID IN %@ AND (fieldID == %@ OR fieldID == %@)", walletItems, IDofName!, IDofPassword!)
             let credentialResults = try! persistentContainer.viewContext.fetch(requestForCredential)
             let groupedByItemID = Dictionary(grouping: credentialResults, by: {$0!.walletItemID})
@@ -182,7 +182,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     func loadCredentials() {
         let (IDofName, IDofPassword, IDofURL) = resolveIDs()
 
-        let request = WalletFieldItem.fetchRequest()
+        let request = WalletFieldItem_.fetchRequest()
         request.predicate = NSPredicate(format: "fieldID == %@ OR fieldID == %@ OR fieldID == %@", IDofName!, IDofPassword!, IDofURL!)
         let result = try! persistentContainer.viewContext.fetch(request)
         //            os_log("%@", result)
@@ -252,7 +252,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         return (IDofName, IDofPassword, IDofURL)
     }
     
-    func getValueFromWalletFieldItem(array: [WalletFieldItem], value: String) -> String? {
+    func getValueFromWalletFieldItem(array: [WalletFieldItem_], value: String) -> String? {
         let results = array.filter {
             $0.fieldID == value
         }

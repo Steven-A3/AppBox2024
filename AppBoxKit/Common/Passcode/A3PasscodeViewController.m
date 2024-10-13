@@ -14,6 +14,7 @@
 #import "A3UserDefaultsKeys.h"
 #import "A3UserDefaults.h"
 #import "A3UIDevice.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
 static CGFloat const kPasscodeFontSize = 33.0f;
@@ -427,7 +428,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	if (!_isCurrentlyOnScreen) {
 		// MARK: Window changes. Please read:
 		// Usually, the app's window is the first on the stack. I'm doing this because if an alertView or actionSheet
-		// is open when presenting the lockscreen causes problems, because the av/as has it's own window that replaces the keyWindow
+		// is open when presenting the lockscreen causes problems, because the av/as has it's own window that replaces the myKeyWindow
 		// and due to how Apple handles said window internally.
 		// Currently the lockscreen appears behind the av/as, which is the best compromise for now.
 		// You can read and/or give a hand following one of the links below
@@ -435,7 +436,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		// https://github.com/rolandleth/LTHPasscodeViewController/issues/16
 		// Usually not more than one window is needed, but your needs may vary; modify below.
 
-		UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
+		UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
 		if (!mainWindow) {
 //			UIViewController *rootViewController = IS_IPAD ? [[A3AppDelegate instance] rootViewController_iPad] : [[A3AppDelegate instance] rootViewController_iPhone];
 			[rootViewController presentViewController:self animated:NO completion:NULL];

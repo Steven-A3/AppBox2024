@@ -12,7 +12,6 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "SFKImage.h"
-#import "DaysCounterEvent.h"
 #import "UIImage+JHExtension.h"
 #import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate.h"

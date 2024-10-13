@@ -15,7 +15,6 @@
 #import "A3SyncManager.h"
 #import "A3SyncManager+NSUbiquitousKeyValueStore.h"
 #import "NSMutableArray+A3Sort.h"
-#import "LadyCalendarAccount.h"
 #import "NSString+conversion.h"
 #import "A3NavigationController.h"
 #import "NSManagedObject+extension.h"
@@ -114,10 +113,10 @@
 
 - (NSMutableArray *)ladyCalendarAccounts {
 	if (!_ladyCalendarAccounts) {
-		NSArray *accounts = [LadyCalendarAccount findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+		NSArray *accounts = [LadyCalendarAccount_ findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 		_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
 		BOOL needAssignOrder = NO;
-		for (LadyCalendarAccount *account in _ladyCalendarAccounts) {
+		for (LadyCalendarAccount_ *account in _ladyCalendarAccounts) {
 			if (account.order == nil) {
 				needAssignOrder = YES;
 				break;
@@ -125,14 +124,14 @@
 		}
 		if (needAssignOrder) {
 			NSUInteger order = 1000000;
-			for (LadyCalendarAccount *account in _ladyCalendarAccounts) {
+			for (LadyCalendarAccount_ *account in _ladyCalendarAccounts) {
 				account.order = [NSString orderStringWithOrder:order];
 				order += 1000000;
 			}
-            NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
             [context saveIfNeeded];
 
-			accounts = [LadyCalendarAccount findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+			accounts = [LadyCalendarAccount_ findAllSortedBy:A3CommonPropertyOrder ascending:YES];
 			_ladyCalendarAccounts = [NSMutableArray arrayWithArray:accounts];
 		}
 	}
@@ -163,7 +162,7 @@
 		imageView.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 	}
     
-    LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];
+    LadyCalendarAccount_ *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:12];
@@ -216,7 +215,7 @@
 {
 	[_ladyCalendarAccounts moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	FNLOG(@"%@", _ladyCalendarAccounts);
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
         
 	double delayInSeconds = 0.15;
@@ -234,7 +233,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];
+	LadyCalendarAccount_ *account = [self.ladyCalendarAccounts objectAtIndex:indexPath.row];
 	[_dataManager setCurrentAccount:account];
 
 	[[A3SyncManager sharedSyncManager] setObject:account.uniqueID forKey:A3LadyCalendarCurrentAccountID state:A3DataObjectStateModified];
@@ -246,7 +245,7 @@
 
 - (void)editButtonAction:(UIButton *)button
 {
-	LadyCalendarAccount *account = [self.ladyCalendarAccounts objectAtIndex:button.tag];
+	LadyCalendarAccount_ *account = [self.ladyCalendarAccounts objectAtIndex:button.tag];
 	
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] init];
 	viewCtrl.dataManager = _dataManager;

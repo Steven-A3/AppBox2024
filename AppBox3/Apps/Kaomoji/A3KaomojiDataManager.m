@@ -9,7 +9,6 @@
 #import "A3KaomojiDataManager.h"
 #import "CGColor+Additions.h"
 #import "UIColor+A3Addition.h"
-#import "KaomojiFavorite+CoreDataClass.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "NSMutableArray+A3Sort.h"
@@ -276,7 +275,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 }
 
 - (NSArray *)favoritesArray {
-	NSArray *results = [KaomojiFavorite findAllSortedBy:@"order" ascending:YES];
+	NSArray *results = [KaomojiFavorite_ findAllSortedBy:@"order" ascending:YES];
 	return [results valueForKey:@"uniqueID"];
 }
 
@@ -323,7 +322,7 @@ NSString *const A3KaomojiKeyContents = @"contents";
 #pragma mark - A3SharePopupViewDataSource
 
 - (void)saveCoreData {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     if ([context hasChanges]) {
         NSError *saveError = nil;
         [context save:&saveError];
@@ -335,24 +334,24 @@ NSString *const A3KaomojiKeyContents = @"contents";
 
 - (BOOL)isMemberOfFavorites:(NSString *)titleString {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
-	NSArray *result = [KaomojiFavorite findAllWithPredicate:predicate];
+	NSArray *result = [KaomojiFavorite_ findAllWithPredicate:predicate];
 	return [result count] > 0;
 }
 
 - (void)addToFavorites:(NSString *)titleString {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-    KaomojiFavorite *favorite = [[KaomojiFavorite alloc] initWithContext:context];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    KaomojiFavorite_ *favorite = [[KaomojiFavorite_ alloc] initWithContext:context];
 	favorite.uniqueID = titleString;
 	[favorite assignOrderAsLast];
 	[context saveIfNeeded];
 }
 
 - (void)removeFromFavorites:(NSString *)titleString {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"uniqueID", titleString];
-	NSArray *result = [KaomojiFavorite findAllWithPredicate:predicate];
+	NSArray *result = [KaomojiFavorite_ findAllWithPredicate:predicate];
 	if ([result count]) {
-		for (KaomojiFavorite *favorite in result) {
+		for (KaomojiFavorite_ *favorite in result) {
             [context deleteObject:favorite];
 		}
         [context saveIfNeeded];
@@ -378,10 +377,10 @@ NSString *const A3KaomojiKeyContents = @"contents";
 // Favorites can delete or reorder the items
 
 - (void)deleteItemForContent:(NSString *)content {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	NSArray *results = [KaomojiFavorite findByAttribute:@"uniqueID" withValue:content];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	NSArray *results = [KaomojiFavorite_ findByAttribute:@"uniqueID" withValue:content];
 	if ([results count] > 0) {
-		for (KaomojiFavorite *favorite in results) {
+		for (KaomojiFavorite_ *favorite in results) {
             [context deleteObject:favorite];
 		}
         [context saveIfNeeded];
@@ -389,8 +388,8 @@ NSString *const A3KaomojiKeyContents = @"contents";
 }
 
 - (void)moveItemForContent:(id)content fromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
-	NSMutableArray *favoriteKeys = [[KaomojiFavorite findAllSortedBy:@"order" ascending:YES] mutableCopy];
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+	NSMutableArray *favoriteKeys = [[KaomojiFavorite_ findAllSortedBy:@"order" ascending:YES] mutableCopy];
 	FNLOG(@"%@", favoriteKeys);
 	[favoriteKeys moveItemInSortedArrayFromIndex:fromIndex toIndex:toIndex];
 	FNLOG(@"%@", favoriteKeys);

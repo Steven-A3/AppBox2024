@@ -18,4 +18,5 @@
 
     #import <Ensembles/Ensembles.h>
     #import <AppBoxKit/AppBoxKit.h>
+    #import "AppBox3-Swift.h"
 #endif

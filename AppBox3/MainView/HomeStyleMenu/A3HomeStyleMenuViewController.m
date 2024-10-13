@@ -174,7 +174,7 @@
 	[appTitle makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(targetView.right).with.multipliedBy(position);
 		CGFloat offset = -15;
-        UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+        UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] myKeyWindow].safeAreaInsets;
         if (safeAreaInsets.bottom != 0) {
             offset = -safeAreaInsets.bottom;
         }

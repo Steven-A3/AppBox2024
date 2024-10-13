@@ -62,7 +62,7 @@ NSString *const A3RotateAccordingToDeviceOrientationNotification = @"A3RotateAcc
 }
 
 + (CGFloat)statusBarHeightPortrait {
-    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+    UIEdgeInsets safeAreaInsets = [[UIApplication sharedApplication] myKeyWindow].safeAreaInsets;
     return safeAreaInsets.top;
 }
 

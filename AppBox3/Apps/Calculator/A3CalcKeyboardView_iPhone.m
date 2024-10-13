@@ -350,7 +350,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
     CGFloat x, y, width, height;
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGFloat scale = [self scaleToDesignForCalculator];
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] keyWindow] safeAreaInsets];
+    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
 
 	NSArray *buttonTitle = nil;
     

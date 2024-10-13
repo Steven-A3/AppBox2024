@@ -8,12 +8,11 @@
 
 #import <AppBoxKit/AppBoxKit.h>
 #import "ExpenseListHistory+extension.h"
-#import "ExpenseListBudget.h"
 
-@implementation ExpenseListHistory (extension)
+@implementation ExpenseListHistory_ (extension)
 
-- (ExpenseListBudget *)budgetData {
-	return [ExpenseListBudget findFirstByAttribute:@"uniqueID" withValue:self.budgetID];
+- (ExpenseListBudget_ *)budgetData {
+	return [ExpenseListBudget_ findFirstByAttribute:@"uniqueID" withValue:self.budgetID];
 }
 
 @end

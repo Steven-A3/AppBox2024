@@ -12,7 +12,6 @@
 #import "A3YahooCurrency.h"
 #import "Reachability.h"
 #import "A3UserDefaultsKeys.h"
-#import "CurrencyFavorite.h"
 #import "NSString+conversion.h"
 #import "A3UserDefaults.h"
 #import "A3NumberFormatter.h"
@@ -80,7 +79,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 }
 
 + (void)setupFavorites {
-	if ([CurrencyFavorite countOfEntities] > 0) {
+	if ([CurrencyFavorite_ countOfEntities] > 0) {
 		return;
 	}
 
@@ -111,9 +110,9 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 		}
 	}
 	NSInteger order = 1000000;
-    NSManagedObjectContext *context = A3SyncManager.sharedSyncManager.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	for (NSDictionary *favorite in favorites) {
-        CurrencyFavorite *newFavorite = [[CurrencyFavorite alloc] initWithContext:context];
+        CurrencyFavorite_ *newFavorite = [[CurrencyFavorite_ alloc] initWithContext:context];
 		newFavorite.uniqueID = favorite[ID_KEY];
 		newFavorite.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
@@ -177,7 +176,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
         if (completion) {
             completion(YES);
         }
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [NetworkActivityIndicatorManager.shared hide];
     }
                                      failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
                                          if (completion) {
@@ -211,7 +210,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 					[[A3UserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3CurrencyUpdateDate];
 					[[A3UserDefaults standardUserDefaults] synchronize];
 
-					[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [NetworkActivityIndicatorManager.shared hide];
 
 					NSDictionary *list = JSON[@"list"];
 					NSArray *yahooArray = list[@"resources"];
@@ -249,7 +248,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 			}
 			failure:^(AFHTTPRequestOperation *requestOperation, NSError *error) {
 				dispatch_async(dispatch_get_main_queue(), ^{
-					[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                    [NetworkActivityIndicatorManager.shared hide];
 
 					if (failure) {
 						failure();
@@ -261,7 +260,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 			}
 	 ];
 
-	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [NetworkActivityIndicatorManager.shared show];
 	[operation start];
 }
 
@@ -402,9 +401,9 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 //}
 
 - (void)updateCurrencyRatesFromCurrencyLayerOnCompletion:(void (^)(BOOL))completion {
-    NSArray *targetCurrencies = [CurrencyFavorite findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+    NSArray *targetCurrencies = [CurrencyFavorite_ findAllSortedBy:A3CommonPropertyOrder ascending:YES];
     NSMutableString *currenciesString = [NSMutableString new];
-    for (CurrencyFavorite *favorite in targetCurrencies) {
+    for (CurrencyFavorite_ *favorite in targetCurrencies) {
         [currenciesString appendFormat:@"%@,", favorite.uniqueID];
     }
     [currenciesString deleteCharactersInRange:NSMakeRange([currenciesString length]-1, 1)];
@@ -436,11 +435,11 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
      {
          dispatch_async(dispatch_get_main_queue(), ^{
              completion(NO);
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+             [NetworkActivityIndicatorManager.shared hide];
          });
      }];
     
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [NetworkActivityIndicatorManager.shared show];
     [operation start];
 }
 
