@@ -145,7 +145,16 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSArray *presetCategories = [self categoryPresetData];
 	NSMutableArray *categories = [NSMutableArray new];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletCategory_"];
 	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", category[PRESET_ID_KEY]];
+        NSError *error;
+        NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
+        
+        if (error || count > 0) {
+            return;
+        }
+        
         WalletCategory_ *newCategory = [[WalletCategory_ alloc] initWithContext:context];
 		newCategory.uniqueID = category[PRESET_ID_KEY];
 		newCategory.name = NSLocalizedStringFromTable(category[PRESET_NAME_KEY], @"WalletPreset", nil);
@@ -178,35 +187,50 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createSystemCategory {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    WalletCategory_ *allCategory = [[WalletCategory_ alloc] initWithContext:context];
-	allCategory.uniqueID = A3WalletUUIDAllCategory;
-	allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
-	allCategory.icon = @"wallet_folder";
-	allCategory.isSystem = @YES;
-	allCategory.doNotShow = @NO;
-	[allCategory assignOrderAsFirst];
-
-    WalletCategory_ *favoriteCategory = [[WalletCategory_ alloc] initWithContext:context];
-	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
-	favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
-	favoriteCategory.icon = @"star01";
-	favoriteCategory.isSystem = @YES;
-	favoriteCategory.doNotShow = @NO;
-	[favoriteCategory assignOrderAsFirst];
-
-    [WalletData createRecentsCategory];
+    // Order would be [Recent, Favorite, All]
+    // So, make it from the last
+    [WalletData insertAllCategory];
+    [WalletData insertFavoriteCategory];
+    [WalletData insertRecentsCategory];
 }
 
-+ (void)createRecentsCategory {
++ (void)insertAllCategory {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    WalletCategory_ *recentsCategory = [[WalletCategory_ alloc] initWithContext:context];
-    recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
-    recentsCategory.name = NSLocalizedString(@"Recents", nil);
-    recentsCategory.icon = @"history";
-    recentsCategory.isSystem = @YES;
-    recentsCategory.doNotShow = @NO;
-    [recentsCategory assignOrderAsFirst];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDAllCategory];
+    NSError *error;
+    NSArray *existingEntity = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if ([existingEntity count] == 0) {
+        WalletCategory_ *allCategory = [[WalletCategory_ alloc] initWithContext:context];
+        allCategory.uniqueID = A3WalletUUIDAllCategory;
+        allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
+        allCategory.icon = @"wallet_folder";
+        allCategory.isSystem = @YES;
+        allCategory.doNotShow = @NO;
+        [allCategory assignOrderAsFirst];
+    }
+}
+
++ (void)insertRecentsCategory {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDRecentsCategory];
+    NSError *error;
+    NSArray *existingEntity = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if ([existingEntity count] == 0) {
+        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+        WalletCategory_ *recentsCategory = [[WalletCategory_ alloc] initWithContext:context];
+        recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
+        recentsCategory.name = NSLocalizedString(@"Recents", nil);
+        recentsCategory.icon = @"history";
+        recentsCategory.isSystem = @YES;
+        recentsCategory.doNotShow = @NO;
+        [recentsCategory assignOrderAsFirst];
+    }
 }
 
 + (void)initializeWalletCategories {
@@ -214,6 +238,25 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
     [WalletData createLocalizedPresetCategories];
     [WalletData createSystemCategory];
     [context saveIfNeeded];
+}
+
++ (void)insertFavoriteCategory {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDFavoriteCategory];
+    NSError *error;
+    NSArray *existingEntity = [context executeFetchRequest:fetchRequest error:&error];
+    
+    if ([existingEntity count] == 0) {
+        WalletCategory_ *favoriteCategory = [[WalletCategory_ alloc] initWithContext:context];
+        favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
+        favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
+        favoriteCategory.icon = @"star01";
+        favoriteCategory.isSystem = @YES;
+        favoriteCategory.doNotShow = @NO;
+        [favoriteCategory assignOrderAsFirst];
+    }
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {
@@ -406,7 +449,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
         
         allRows = [WalletData sortedArrayUsingCollation:allRows];
         
-        [contents appendString:[NSString stringWithFormat:@"<h2>%@ (%d)</h2>", category.name, [allRows count]]];
+        [contents appendString:[NSString stringWithFormat:@"<h2>%@ (%lu)</h2>", category.name, (unsigned long)[allRows count]]];
 
         [contents appendString:@"<table>"];
         

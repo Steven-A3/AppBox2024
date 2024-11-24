@@ -48,7 +48,7 @@ extern NSString *const A3WalletUUIDMemoCategory;
 + (void)createDirectories;
 + (void)createLocalizedPresetCategories;
 + (void)createSystemCategory;
-+ (void)createRecentsCategory;
++ (void)insertRecentsCategory;
 + (void)initializeWalletCategories;
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow;
 + (NSUInteger)visibleCategoryCount;

@@ -51,7 +51,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
     // Recents Category가 있는지 확인한다.
     NSArray *recentsCategory = [WalletCategory_ findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
     if ([recentsCategory count] == 0) {
-        [WalletData createRecentsCategory];
+        [WalletData insertRecentsCategory];
         NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
         [context saveIfNeeded];
     }
