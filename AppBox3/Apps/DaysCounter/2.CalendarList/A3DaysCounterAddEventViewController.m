@@ -215,7 +215,7 @@
 	}
 	if (_imagePickerController) {
 		[_imagePickerController dismissViewControllerAnimated:NO completion:^{
-			_imagePickerController = nil;
+            self->_imagePickerController = nil;
 		}];
 	}
 }
@@ -1196,7 +1196,7 @@
     nextVC.eventModel = _eventItem;
     nextVC.sharedManager = _sharedManager;
     nextVC.dismissCompletionBlock = ^{
-        NSNumber *repeatType = _eventItem.repeatType;
+        NSNumber *repeatType = self->_eventItem.repeatType;
         if (!repeatType) {
             return;
         }
@@ -1205,15 +1205,15 @@
         NSIndexPath *repeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_RepeatType atSectionArray:section1_items]
                                                           inSection:AddSection_Section_1];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
-        cell.detailTextLabel.text = [_sharedManager repeatTypeStringFromValue:[repeatType integerValue]];
+        cell.detailTextLabel.text = [self->_sharedManager repeatTypeStringFromValue:[repeatType integerValue]];
         
         if ([repeatType integerValue] == RepeatType_Never) {
             // EffectiveStartDate 갱신.
-            _eventItem.effectiveStartDate =[_eventItem.startDate solarDate];
-            _eventItem.repeatEndDate = nil;
+            self->_eventItem.effectiveStartDate =[self->_eventItem.startDate solarDate];
+            self->_eventItem.repeatEndDate = nil;
             
             // EffectiveStartDate & EffectiveAlertDate 갱신.
-            [_sharedManager recalculateEventDatesForEvent:_eventItem];
+            [self->_sharedManager recalculateEventDatesForEvent:self->_eventItem];
             
             // EndRepeatRow 제거.
             NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
@@ -1229,15 +1229,15 @@
         }
         
         // EffectiveStartDate & EffectiveAlertDate 갱신.
-        [_sharedManager recalculateEventDatesForEvent:_eventItem];
+        [self->_sharedManager recalculateEventDatesForEvent:self->_eventItem];
         // AlertCell 갱신.
         NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
         [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
         cell = [tableView cellForRowAtIndexPath:alertIndexPath];
         UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-        detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
-                                                             alertDate:_eventItem.alertDatetime];
+        detailTextLabel.text = [self->_sharedManager alertDateStringFromDate:self->_eventItem.effectiveStartDate
+                                                                   alertDate:self->_eventItem.alertDatetime];
         // EndRepeatDate 유무 확인.
         __block NSInteger endRepeatRowIndex = -1;
         [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
@@ -1293,7 +1293,7 @@
                                                              inSection:AddSection_Section_1];
         [tableView deselectRowAtIndexPath:endRepeatIndexPath animated:YES];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:endRepeatIndexPath];
-        cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
+        cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[self->_eventItem repeatEndDate] withFormat:[A3DaysCounterModelManager dateFormatForDetailIsAllDays:YES]];
     };
     
     if ( IS_IPHONE ) {
@@ -1322,8 +1322,8 @@
                                                                               object:nil
                                                                                queue:nil
                                                                           usingBlock:^(NSNotification *note) {
-            [[NSNotificationCenter defaultCenter] removeObserver:_settingsObserver];
-            _settingsObserver = nil;
+            [[NSNotificationCenter defaultCenter] removeObserver:self->_settingsObserver];
+            self->_settingsObserver = nil;
             
             UIUserNotificationSettings *userSettings = note.object;
             if (userSettings.types == UIUserNotificationTypeNone) {
@@ -1339,7 +1339,7 @@
                 [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
                                                                     style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction *action) {
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                    [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
                 }]];
                 [self presentViewController:alertController
                                    animated:YES
@@ -1365,8 +1365,8 @@
                                                          inSection:AddSection_Section_1];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:alertIndexPath];
-        cell.detailTextLabel.text = [_sharedManager alertDateStringFromDate:_eventItem.effectiveStartDate
-                                                                  alertDate:_eventItem.alertDatetime];
+        cell.detailTextLabel.text = [self->_sharedManager alertDateStringFromDate:self->_eventItem.effectiveStartDate
+                                                                        alertDate:self->_eventItem.alertDatetime];
     };
     
     if ( IS_IPHONE ) {
@@ -1395,10 +1395,10 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
         UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
         UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-        DaysCounterCalendar_ *calendar = [_sharedManager calendarItemByID:_eventItem.calendarID];
+        DaysCounterCalendar_ *calendar = [self->_sharedManager calendarItemByID:self->_eventItem.calendarID];
         if (calendar) {
             nameLabel.text = calendar.name;
-            colorImageView.tintColor = [_sharedManager colorForCalendar:calendar];
+            colorImageView.tintColor = [self->_sharedManager colorForCalendar:calendar];
 		}
         else {
             nameLabel.text = @"";
@@ -1432,7 +1432,7 @@
         self.isDurationInitialized = YES;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
         UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-        detailTextLabel.text = [_sharedManager durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
+        detailTextLabel.text = [self->_sharedManager durationOptionStringFromValue:[self->_eventItem.durationOption integerValue]];
     };
     
     if ( IS_IPHONE )
@@ -1608,12 +1608,8 @@
         NSDate *endDate = [[_eventItem endDateCreateIfNotExist:NO ] solarDate];
         
         if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Save Event", nil)
-                                                                message:NSLocalizedString(@"The start date must be before the end date.", nil)
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Cannot Save Event", nil)
+                                                          message:NSLocalizedString(@"The start date must be before the end date.", nil)];
             return;
         }
     }
@@ -1624,9 +1620,8 @@
         NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem startDate] toLunar:YES];
         BOOL isLunarStartDate = [NSDate isLunarDateComponents:startComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
         if (!isLunarStartDate) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"Start date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil, nil];
-            [alert show];
+            [[UIApplication sharedApplication] showAlertWithTitle:nil
+                                                          message:NSLocalizedString(@"Start date is not a lunar date.", @"Message in adding event.")];
             return;
         }
         
@@ -1634,9 +1629,7 @@
             NSDateComponents *startComp = [A3DaysCounterModelManager dateComponentsFromDateModelObject:[_eventItem endDateCreateIfNotExist:NO ] toLunar:YES];
             BOOL isLunarEndDate = [NSDate isLunarDateComponents:startComp isKorean:[A3UIDevice useKoreanLunarCalendar]];
             if (!isLunarEndDate) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"End date is not a lunar date.", @"Message in adding event.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                      otherButtonTitles:nil, nil] ;
-                [alert show];
+                [[UIApplication sharedApplication] showAlertWithTitle:nil message:NSLocalizedString(@"End date is not a lunar date.", @"Message in adding event.")];
                 return;
             }
         }
@@ -1651,7 +1644,7 @@
     else {
         if ([_originalPhotoID length] && ![_originalPhotoID isEqualToString:_eventItem.photoID]) {
             // Delete Old Image
-            NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInLibraryDirectory];
+            NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInAppGroupContainer];
             [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
         }
         [_sharedManager modifyEvent:_eventItem];
@@ -2044,8 +2037,7 @@
         [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComp isKorean:[A3UIDevice useKoreanLunarCalendar]]];
 
         if (!isLunarDate) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil, nil] ;
-            [alert show];
+            [[UIApplication sharedApplication] showAlertWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date")];
             if ([self.inputDateKey isEqualToString:EventItem_StartDate]) {
                 datePicker.date = [_eventItem.startDate solarDate];
             }
@@ -2234,8 +2226,8 @@
     void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		self.dateKeyboardViewController = nil;
-		_editingIndexPath = nil;
-		_isDateKeyboardVisible = NO;
+        self->_editingIndexPath = nil;
+        self->_isDateKeyboardVisible = NO;
 		self.editingObject = nil;
 	};
 	if (animated) {
@@ -2506,7 +2498,7 @@
             _imagePickerController.showsCameraControls = YES;
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self presentViewController:_imagePickerController animated:NO completion:NULL];
+                [self presentViewController:self->_imagePickerController animated:NO completion:NULL];
             });
         }
         else {
@@ -2521,7 +2513,7 @@
 
             // 이전 화면을 덮었던 ActionSheet 가 사라진 후에도 영향을 주어서, 현재의 스택을 벗어나서 실행하도록 하였습니다.
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                [self presentViewController:self->_imagePickerController animated:YES completion:NULL];
             });
         }
     } else {
@@ -2608,17 +2600,12 @@
         
         if ( error == nil ) {
             if ( [placemarks count] < 1 ) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																	message:NSLocalizedString(@"Cannot find current location information", @"Can not find current location information")
-																   delegate:nil
-														  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-														  otherButtonTitles:nil];
-                [alertView show];
+                [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                              message:NSLocalizedString(@"Cannot find current location information", nil)];
                 return;
             }
             
             CLPlacemark *placeMark = [placemarks objectAtIndex:0];
-            NSDictionary *addressDict = placeMark.addressDictionary;
 
             DaysCounterEventLocation_ *locItem = [self.eventItem location];
             if (!locItem) {
@@ -2631,13 +2618,14 @@
             locItem.eventID = self.eventItem.uniqueID;
             locItem.latitude = @(location.coordinate.latitude);
             locItem.longitude = @(location.coordinate.longitude);
-            locItem.locationName = [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey];
-            locItem.country = ([[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] : @"");
-            locItem.state = ([[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] : @"");
-            locItem.city = ([[addressDict objectForKey:(NSString*)kABPersonAddressCityKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressCityKey] : @"");
-            locItem.address = ([[addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] length] > 0 ? [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] : @"");
-            locItem.contact = @"";
 
+            // Use new properties instead of the deprecated addressDictionary
+            locItem.locationName = placeMark.thoroughfare ?: @"";
+            locItem.country = placeMark.country ?: @"";
+            locItem.state = placeMark.administrativeArea ?: @"";
+            locItem.city = placeMark.locality ?: @"";
+            locItem.address = placeMark.thoroughfare ?: @"";
+            locItem.contact = @"";
 			[self.tableView reloadData];
         }
     }];

@@ -43,8 +43,8 @@
 	[_textView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(3);
 		make.bottom.equalTo(self.bottom).with.offset(-3);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE || _keepShortInset ? ([[UIScreen mainScreen] scale] > 2 ? 15 : 10) : 23);
-		make.right.equalTo(self.right).with.offset(IS_IPHONE || _keepShortInset ? -10 : -23);
+		make.left.equalTo(self.left).with.offset(IS_IPHONE || self->_keepShortInset ? ([[UIScreen mainScreen] scale] > 2 ? 15 : 10) : 23);
+		make.right.equalTo(self.right).with.offset(IS_IPHONE || self->_keepShortInset ? -10 : -23);
 	}];
 }
 
@@ -75,7 +75,7 @@
 
 		CGFloat leading = [[UIScreen mainScreen] scale] > 2 ? 20 : 15;
 		[_topSeparator makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE || _keepShortInset ? leading : 28);
+			make.left.equalTo(self.left).with.offset(IS_IPHONE || self->_keepShortInset ? leading : 28);
 			make.right.equalTo(self.right);
 			make.top.equalTo(self.top);
 			make.height.equalTo(IS_RETINA ? @0.5 : @1.0);

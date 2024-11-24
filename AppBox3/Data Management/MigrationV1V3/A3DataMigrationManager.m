@@ -91,12 +91,8 @@ NSString *const kKeyForDDayShowCountdown			= @"kKeyForDDayShowCountdown";
 	}
 
 	if (_migrateV1WithDaysCounterPhoto) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Notice", nil)
-															message:NSLocalizedString(@"V1_Notice_for_Photo_Quality", nil)
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Notice", nil)
+                                                      message:NSLocalizedString(@"V1_Notice_for_Photo_Quality", nil)];
 	}
 }
 
@@ -749,12 +745,8 @@ NSString *const WalletFieldIDForMemo		= @"MEMO";					//	Static Key, string
 		if (_canCancelInEncryptionKeyView) {
 			[self deleteV1DataFiles];
 
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
-																message:NSLocalizedString(@"Restore canceled", nil)
-															   delegate:self
-													  cancelButtonTitle:NSLocalizedString(@"OK", nil)
-													  otherButtonTitles:nil];
-			[alertView show];
+            [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", nil)
+                                                          message:NSLocalizedString(@"Restore canceled", nil)];
 		}
 	}
     _passwordViewController = nil;

@@ -372,12 +372,18 @@ UIGestureRecognizerDelegate, A3SharePopupViewControllerDelegate, UIActivityItemS
         if (IS_IPHONE) {
             [self presentViewController:_activityViewController animated:YES completion:NULL];
         } else {
-            UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:_activityViewController];
-            [popoverController presentPopoverFromRect:_sourceRectForPopover
-                                               inView:self.view
-                             permittedArrowDirections:UIPopoverArrowDirectionAny
-                                             animated:YES];
-            _sharePopoverController = popoverController;
+            // Configure the activity view controller
+            UIViewController *activityViewController = _activityViewController;
+            activityViewController.modalPresentationStyle = UIModalPresentationPopover;
+
+            // Configure the popover presentation controller
+            UIPopoverPresentationController *popoverPresentationController = activityViewController.popoverPresentationController;
+            popoverPresentationController.sourceView = self.view; // Set the source view for the popover
+            popoverPresentationController.sourceRect = _sourceRectForPopover; // Set the source rect for the popover
+            popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+
+            // Present the view controller
+            [self presentViewController:activityViewController animated:YES completion:nil];
         }
     }
 }

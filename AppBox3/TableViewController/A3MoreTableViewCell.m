@@ -28,7 +28,7 @@
 		[self addSubview:_cellTitleLabel];
 
 		[_cellTitleLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_cellImageView.right).with.offset(13);
+			make.left.equalTo(self->_cellImageView.right).with.offset(13);
 			make.centerY.equalTo(self.centerY);
 		}];
 

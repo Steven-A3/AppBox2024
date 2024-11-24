@@ -203,29 +203,58 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 }
 
 - (IBAction)scanFromImage:(id)sender {
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-														message:NSLocalizedString(@"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.", @"It will detect 2D Barcodes(QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.")
-													   delegate:self
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-
-	[alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", nil)
+                                                                             message:NSLocalizedString(@"It will detect 2D Barcodes (QR Code, Aztec Code, Data Matrix) from the image. It will not detect 1D barcodes.", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+        [self handlePhotoLibraryAuthorization];
+    }];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-	PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
-	if (authorizationStatus != PHAuthorizationStatusAuthorized) {
-		[self requestAuthorizationForPhotoLibrary:NSLocalizedString(A3AppName_QRCode, nil)
-						afterAuthorizationHandler:^(BOOL granted) {
-							if (granted) {
-								[self presentImagePickerController];
-							}
-						}];
-    } else {
+- (void)handlePhotoLibraryAuthorization {
+    PHAuthorizationStatus authorizationStatus = [PHPhotoLibrary authorizationStatus];
+    
+    if (authorizationStatus == PHAuthorizationStatusNotDetermined) {
+        // Request authorization if not determined
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (status == PHAuthorizationStatusAuthorized) {
+                    [self presentImagePickerController];
+                } else {
+                    [self showAuthorizationDeniedAlert];
+                }
+            });
+        }];
+    } else if (authorizationStatus == PHAuthorizationStatusAuthorized) {
         [self presentImagePickerController];
+    } else {
+        [self showAuthorizationDeniedAlert];
     }
+}
+
+- (void)showAuthorizationDeniedAlert {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Access Denied", @"Access Denied")
+                                                                             message:NSLocalizedString(@"Please enable photo library access in Settings.", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Settings", @"Settings")
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        if ([[UIApplication sharedApplication] canOpenURL:settingsURL]) {
+            [[UIApplication sharedApplication] openURL:settingsURL options:@{} completionHandler:nil];
+        }
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    
+    [alertController addAction:settingsAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)presentImagePickerController {
@@ -377,12 +406,8 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 
 	} else {
 		alertBlock = ^() {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																message:NSLocalizedString(@"QR Code not found.", @"QR Code not found.")
-															   delegate:nil
-													  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													  otherButtonTitles:nil];
-			[alertView show];
+            [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                          message:NSLocalizedString(@"QR Code not found.", @"QR Code not found.")];
 		};
 	}
 	[picker dismissViewControllerAnimated:YES completion:alertBlock];
@@ -462,10 +487,10 @@ NSString *const A3QRCodeImageTorchOff = @"m_flash_off";
 	[UIView animateWithDuration:5.0 animations:^{
 		CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 		CGFloat width = MAX(screenBounds.size.width, screenBounds.size.height);
-		_scanLineView.frame = CGRectMake(0, -60, width, 60);
-		_scanAnimationInProgress = YES;
+        self->_scanLineView.frame = CGRectMake(0, -60, width, 60);
+        self->_scanAnimationInProgress = YES;
 	} completion:^(BOOL finished) {
-		_scanAnimationInProgress = NO;
+        self->_scanAnimationInProgress = NO;
 		if (finished) {
 			[self animateScanLine];
 		}

@@ -108,8 +108,12 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)cloudStoreDidImport {
-	_categories = nil;
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_categories = nil;
+        [self.tableView reloadData];
+    });
 }
 
 - (void)rightBarButtonEditButton {

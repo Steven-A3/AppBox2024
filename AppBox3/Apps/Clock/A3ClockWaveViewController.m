@@ -201,8 +201,8 @@
 		}
 		[self removeClockIconConstraints];
 		[self.clockIcon updateConstraints:^(MASConstraintMaker *make) {
-			_clockIconBottom = make.bottom.equalTo(self.timeCircle.top).with.offset(-22);
-			_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
+            self->_clockIconBottom = make.bottom.equalTo(self.timeCircle.top).with.offset(-22);
+            self->_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
 		}];
 	} else {
 		if (screenBounds.size.height != 480) {
@@ -267,8 +267,8 @@
 		}
 		[self removeClockIconConstraints];
 		[self.clockIcon makeConstraints:^(MASConstraintMaker *make) {
-			_clockIconRight = make.right.equalTo(self.timeCircle.left).with.offset(-22);
-			_clockIconCenterY = make.centerY.equalTo(self.view.centerY);
+            self->_clockIconRight = make.right.equalTo(self.timeCircle.left).with.offset(-22);
+            self->_clockIconCenterY = make.centerY.equalTo(self.view.centerY);
 		}];
 	}
 
@@ -294,13 +294,13 @@
 				[_dateTopLabel setHidden:YES];
 				[_dateBottomLabelY uninstall];
 				[_dateBottomLabel makeConstraints:^(MASConstraintMaker *make) {
-					_dateBottomLabelY = make.bottom.equalTo(self.dateCircle.top).with.offset(-5);
+                    self->_dateBottomLabelY = make.bottom.equalTo(self.dateCircle.top).with.offset(-5);
 				}];
 			} else {
 				[_dateTopLabel setHidden:NO];
 				[_dateBottomLabelY uninstall];
 				[_dateBottomLabel makeConstraints:^(MASConstraintMaker *make) {
-					_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(5);
+                    self->_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(5);
 				}];
 			}
 			[_temperatureBottomLabel setHidden:type == A3ClockWaveCircleTypeWeather];
@@ -313,7 +313,7 @@
 			[_dateTopLabel setHidden:NO];
 			[_dateBottomLabelY uninstall];
 			[_dateBottomLabel makeConstraints:^(MASConstraintMaker *make) {
-				_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(5);
+                self->_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(5);
 			}];
 		}
 	}
@@ -383,8 +383,8 @@
 		}
 		[self removeClockIconConstraints];
 		[self.clockIcon updateConstraints:^(MASConstraintMaker *make) {
-			_clockIconBottom = make.bottom.equalTo(self.timeCircle.top).with.offset(-47);
-			_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
+            self->_clockIconBottom = make.bottom.equalTo(self.timeCircle.top).with.offset(-47);
+            self->_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
 		}];
 	} else {
 		switch (numberOfViews) {
@@ -531,8 +531,8 @@
 		make.bottom.equalTo(self.dateCircle.top).with.offset(IS_IPHONE ? -5 : -10);
 	}];
 	[self.dateBottomLabel makeConstraints:^(MASConstraintMaker *make) {
-		_dateBottomLabelX = make.centerX.equalTo(self.dateCircle.centerX).with.offset(0);
-		_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(IS_IPHONE ? 5 : 10);
+        self->_dateBottomLabelX = make.centerX.equalTo(self.dateCircle.centerX).with.offset(0);
+        self->_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(IS_IPHONE ? 5 : 10);
 	}];
 }
 

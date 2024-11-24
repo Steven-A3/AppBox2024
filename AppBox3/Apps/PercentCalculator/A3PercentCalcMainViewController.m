@@ -140,16 +140,20 @@
 	if (self.editingObject) {
 		return;
 	}
-	[self reloadTableDataSource];
-	[self reloadInputData];
-	[self reloadTableHeaderView];
-	[self.tableView reloadData];
-    [self updateEntryCells];
-	// 배경 설명
-	// 아이패드에서 HistoryViewController가 나와 있는 상태에서 업데이트를 받은 경우,
-	// apps button이 enable되는 것을 막기 위해서 barButton enable 상태를 기억하고
-	// 상태에 따라서 button 의 상태를 결정한다.
-	[self setBarButtonEnable:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        [self reloadTableDataSource];
+        [self reloadInputData];
+        [self reloadTableHeaderView];
+        [self.tableView reloadData];
+        [self updateEntryCells];
+        // 배경 설명
+        // 아이패드에서 HistoryViewController가 나와 있는 상태에서 업데이트를 받은 경우,
+        // apps button이 enable되는 것을 막기 위해서 barButton enable 상태를 기억하고
+        // 상태에 따라서 button 의 상태를 결정한다.
+        [self setBarButtonEnable:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -175,8 +179,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -1025,12 +1030,12 @@
 }
 
 - (void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	self.tableView.contentOffset = CGPointMake(0.0, -self.tableView.contentInset.top);
-	[UIView commitAnimations];
+    [UIView animateWithDuration:0.35
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        self.tableView.contentOffset = CGPointMake(0.0, -self.tableView.contentInset.top);
+    } completion:nil];
 }
 
 - (BOOL)checkNeedToClearDetail {
@@ -1512,23 +1517,23 @@
 //    cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
 //    [cell.textField becomeFirstResponder];
     
-    [UIView beginAnimations:@"scroll" context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:0.25];
-    [self scrollTableViewToIndexPath:_selectedIndexPath];
     cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        [self scrollTableViewToIndexPath:self->_selectedIndexPath];
+    } completion:^(BOOL finished) {
 
-	[self textFieldDidEndEditing:_editingTextField];
+        [self textFieldDidEndEditing:self->_editingTextField];
 
-	_editingTextField = cell.textField;
-	_didPressClearKey = NO;
-	_didPressNumberKey = NO;
-	[self textFieldDidBeginEditing:cell.textField];
-	self.numberKeyboardViewController.textInputTarget = cell.textField;
+        self->_editingTextField = cell.textField;
+        self->_didPressClearKey = NO;
+        self->_didPressNumberKey = NO;
+        [self textFieldDidBeginEditing:cell.textField];
+    }];
+    self.numberKeyboardViewController.textInputTarget = cell.textField;
 
-	[UIView commitAnimations];
-    
     [self.numberKeyboardViewController reloadPrevNextButtons];
 }
 
@@ -1562,23 +1567,27 @@
 
     }
     
-    [UIView beginAnimations:@"scroll" context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:2.5];
-    [self scrollTableViewToIndexPath:_selectedIndexPath];
     cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
-	
-	[self textFieldDidEndEditing:_editingTextField];
-	
-	_editingTextField = cell.textField;
-	_didPressClearKey = NO;
-	_didPressNumberKey = NO;
-	[self textFieldDidBeginEditing:cell.textField];
-	self.numberKeyboardViewController.textInputTarget = cell.textField;
+    [UIView animateWithDuration:2.5
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        // Scroll the table view to the selected index path
+        [self scrollTableViewToIndexPath:self->_selectedIndexPath];
+    } completion:^(BOOL finished) {
+        // Handle text field changes after scrolling animation completes
+        [self textFieldDidEndEditing:self->_editingTextField];
+        
+        // Update editing text field and reset flags
+        self->_editingTextField = cell.textField;
+        self->_didPressClearKey = NO;
+        self->_didPressNumberKey = NO;
+        
+        // Begin editing the new text field
+        [self textFieldDidBeginEditing:cell.textField];
+    }];
+    self.numberKeyboardViewController.textInputTarget = cell.textField;
 
-	[UIView commitAnimations];
-    
     [self.numberKeyboardViewController reloadPrevNextButtons];
 }
 

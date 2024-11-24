@@ -69,13 +69,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 
 - (BOOL)handleSkype:(QRCodeHistory_ *)history {
 	NSURL *skypeURL = [NSURL URLWithString:history.scanData];
-    [[UIApplication sharedApplication] openURL:skypeURL options:@{} completionHandler:^(BOOL success) {
-        if (success) {
-            NSLog(@"Successfully opened Skype URL.");
-        } else {
-            NSLog(@"Failed to open Skype URL.");
-        }
-    }];
+    [[UIApplication sharedApplication] openURL2:skypeURL];
     return YES;
 }
 
@@ -123,12 +117,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 
 - (void)presentMessageViewControllerOn:(UIViewController *)controller receipents:(NSArray *)recipients body:(NSString *)body {
 	if (![MFMessageComposeViewController canSendText]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-															message:NSLocalizedString(@"iMessage is not enabled.", @"iMessage is not enabled.")
-														   delegate:nil
-												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-												  otherButtonTitles:nil];
-		[alertView show];
+        [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"iMessage is not enabled.", nil)];
 
 		if ([_delegate respondsToSelector:@selector(dataHandlerDidFailToPresentViewController)]) {
 			[_delegate dataHandlerDidFailToPresentViewController];
@@ -143,7 +132,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		[controller presentViewController:messageViewController animated:YES completion:nil];
 	} else {
 		NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"sms:%@", recipients[0]]];
-		[[UIApplication sharedApplication] openURL:URL];
+		[[UIApplication sharedApplication] openURL2:URL];
 	}
 }
 
@@ -647,7 +636,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 		
 		if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Call", @"Call")]) {
 			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", self.phoneNumber]];
-			[[UIApplication sharedApplication] openURL:url];
+			[[UIApplication sharedApplication] openURL2:url];
 		} else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Message", @"Message")]) {
 			[self presentMessageViewControllerOn:_targetViewController receipents:@[_phoneNumber] body:@""];
 		} else {
@@ -663,7 +652,7 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 
 		void(^addEvent)(void) = ^() {
 			EKEventStore *eventStore = [EKEventStore new];
-			MXLCalendarEvent *event = _parsedEventCalendar.events[0];
+            MXLCalendarEvent *event = self->_parsedEventCalendar.events[0];
 
 			EKEventEditViewController *eventViewController = [EKEventEditViewController new];
 			eventViewController.eventStore = eventStore;
@@ -676,12 +665,12 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 			
 			eventViewController.editViewDelegate = self;
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-			[_targetViewController presentViewController:eventViewController animated:YES completion:nil];
+            [self->_targetViewController presentViewController:eventViewController animated:YES completion:nil];
 		};
 
 		void(^previewEvent)(void) = ^() {
 			EKEventStore *eventStore = [EKEventStore new];
-			MXLCalendarEvent *event = _parsedEventCalendar.events[0];
+            MXLCalendarEvent *event = self->_parsedEventCalendar.events[0];
 			EKEvent *ekEvent = [EKEvent eventWithEventStore:eventStore];
 			ekEvent.title = event.eventDescription;
 			ekEvent.startDate = event.eventStartDate;
@@ -690,9 +679,9 @@ UIActionSheetDelegate, EKEventEditViewDelegate, ABNewPersonViewControllerDelegat
 
 			EKEventViewController *eventViewController = [EKEventViewController new];
 			eventViewController.event = ekEvent;
-			[_targetViewController.navigationController setNavigationBarHidden:NO];
+            [self->_targetViewController.navigationController setNavigationBarHidden:NO];
 			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-			[_targetViewController.navigationController pushViewController:eventViewController animated:YES];
+            [self->_targetViewController.navigationController pushViewController:eventViewController animated:YES];
 		};
 
 		EKEventStore *eventStore = [EKEventStore new];

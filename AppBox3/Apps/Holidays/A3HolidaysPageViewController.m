@@ -299,9 +299,10 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	UIImage *image = [[UIImage alloc] init];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setValueStatusBarStyle:UIStatusBarStyleLightContent];
+    [self setNeedsStatusBarAppearanceUpdate];
 	[self.navigationController setNavigationBarHidden:YES];
 
 	[self leftBarButtonAppsButton];
@@ -326,8 +327,9 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 }
 
 - (void)setNavigationBarHidden:(BOOL)hidden {
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
+    [self setValuePrefersStatusBarHidden:hidden];
+    [self setValueStatusBarStyle:UIStatusBarStyleLightContent];
+    [self setNeedsStatusBarAppearanceUpdate];
 	[self.navigationController setNavigationBarHidden:hidden];
 	[self setupCoverGradientOnTappedStatus:!hidden];
 }
@@ -525,7 +527,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 	[line makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(-1);
 		make.right.equalTo(self.view.right);
-		make.bottom.equalTo(self.view.bottom).with.offset(-44 + _verticalOffset);
+        make.bottom.equalTo(self.view.bottom).with.offset(-44 + self->_verticalOffset);
 		make.height.equalTo(@1);
 	}];
 
@@ -544,7 +546,7 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
 		make.right.equalTo(self.footerView.right).with.offset(-leading);
-		make.centerY.equalTo(_footerView.centerY).with.offset(_verticalOffset);
+        make.centerY.equalTo(self->_footerView.centerY).with.offset(self->_verticalOffset);
 	}];
 }
 
@@ -562,10 +564,10 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 
 		CGSize size = [_pageControl sizeForNumberOfPages:_pageControl.numberOfPages];
 		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
-			_pageControlWidth = make.width.equalTo(@(size.width));
+            self->_pageControlWidth = make.width.equalTo(@(size.width));
 			make.height.equalTo(@30);
-			make.centerX.equalTo(_footerView.centerX);
-			make.centerY.equalTo(_footerView.centerY).with.offset(_verticalOffset);
+            make.centerX.equalTo(self->_footerView.centerX);
+            make.centerY.equalTo(self->_footerView.centerY).with.offset(self->_verticalOffset);
 		}];
 
 		[_pageControl setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
@@ -584,9 +586,9 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 
 		CGFloat leading = IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28;
 		[_photoLabel1 makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_footerView.left).with.offset(leading);
+            make.left.equalTo(self->_footerView.left).with.offset(leading);
 			make.right.lessThanOrEqualTo(self.pageControl.left).with.offset(-5);
-			make.centerY.equalTo(_footerView.centerY).with.offset(-7 + _verticalOffset);
+            make.centerY.equalTo(self->_footerView.centerY).with.offset(-7 + self->_verticalOffset);
 		}];
 
 		[_photoLabel1 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -602,9 +604,9 @@ static NSString *const A3V3InstructionDidShowForHoliday = @"A3V3InstructionDidSh
 		[_footerView addSubview:_photoLabel2];
 
 		[_photoLabel2 makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_footerView.left).with.offset(leading);
-			make.right.lessThanOrEqualTo(_pageControl.left).with.offset(-5);
-			make.centerY.equalTo(_footerView.centerY).with.offset(7 + _verticalOffset);
+            make.left.equalTo(self->_footerView.left).with.offset(leading);
+            make.right.lessThanOrEqualTo(self->_pageControl.left).with.offset(-5);
+            make.centerY.equalTo(self->_footerView.centerY).with.offset(7 + self->_verticalOffset);
 		}];
 		[_photoLabel2 setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 
@@ -707,7 +709,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 		NSURL *url = [NSURL URLWithString:urlString];
 		UIApplication *application = [UIApplication sharedApplication];
 		if (url && [application canOpenURL:url]) {
-			[application openURL:url];
+			[application openURL2:url];
 		}
 	}
 }
@@ -730,10 +732,10 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 	_pageControl.currentPage = page;
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		NSArray *allKeys = [_viewControllerCache allKeys];
+        NSArray *allKeys = [self->_viewControllerCache allKeys];
 		for (NSString *key in allKeys) {
 			if (![self.countries containsObject:key]) {
-				[_viewControllerCache removeObjectForKey:key];
+                [self->_viewControllerCache removeObjectForKey:key];
 			}
 		}
 	});

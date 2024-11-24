@@ -62,7 +62,11 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 }
 
 - (void)cloudStoreDidImport {
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        [self.tableView reloadData];
+    });
 }
 
 - (void)viewDidAppear:(BOOL)animated {

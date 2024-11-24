@@ -159,7 +159,7 @@
     _focusPoint = focusPoint;
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        _shouldDrawFocusMark = YES;
+        self->_shouldDrawFocusMark = YES;
         [self setNeedsDisplay];
     });
     
@@ -167,7 +167,7 @@
     dispatch_time(DISPATCH_TIME_NOW,
                   (int64_t)(self.focusMarkDisplayingDuration * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-        _shouldDrawFocusMark = NO;
+        self->_shouldDrawFocusMark = NO;
         [self setNeedsDisplay];
     });
 }

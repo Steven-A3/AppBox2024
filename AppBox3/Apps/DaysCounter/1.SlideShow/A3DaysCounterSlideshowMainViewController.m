@@ -256,9 +256,13 @@
 }
 
 - (void)cloudStoreDidImport {
-	self.eventsArray = [_sharedManager allEventsListContainedImage];
-	[self.collectionView reloadData];
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self.eventsArray = [self->_sharedManager allEventsListContainedImage];
+        [self.collectionView reloadData];
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {

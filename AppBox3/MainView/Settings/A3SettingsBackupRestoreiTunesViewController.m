@@ -164,18 +164,10 @@
     
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) { 	// Restore
-			if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-                [self presentAlertWithTitle:NSLocalizedString(@"Info", nil)
-                                    message:NSLocalizedString(@"Please turn iCloud sync off.", nil)];
-			} else {
-                if (@available(iOS 14.0, *)) {
-                    UTType *type = [UTType exportedTypeWithIdentifier:@"net.allaboutapps.appboxbackup"];
-                    UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[type]];
-                    picker.delegate = self;
-                    [self presentViewController:picker animated:YES completion:NULL];
-                }
-//				[self performSegueWithIdentifier:@"iTunesSelectBackup" sender:self];
-			}
+            UTType *type = [UTType exportedTypeWithIdentifier:@"net.allaboutapps.appboxbackup"];
+            UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[type]];
+            picker.delegate = self;
+            [self presentViewController:picker animated:YES completion:NULL];
 		} else {					// Backup
             UIAlertController *alertController =
             [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", @"Info")
@@ -196,13 +188,13 @@
             [self presentViewController:alertController animated:YES completion:NULL];
 		}
 	} else {
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/358"]];
+		[[UIApplication sharedApplication] openURL2:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/358"]];
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/358"]];
+	[[UIApplication sharedApplication] openURL2:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/358"]];
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -367,7 +359,7 @@
 
     if (bResult) {
         self.backupRestoreManager.delegate = self;
-        [self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[fileManager storeURL]];
+        [self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory]];
     } else {
         [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"The restoring process failed to unarchive the backup file.", @"")];
     }

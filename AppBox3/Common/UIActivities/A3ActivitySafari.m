@@ -51,9 +51,16 @@
 
 - (void)performActivity
 {
-    BOOL completed = [[UIApplication sharedApplication] openURL:_URL];
-    
-    [self activityDidFinish:completed];
+    if ([[UIApplication sharedApplication] canOpenURL:_URL]) {
+        [[UIApplication sharedApplication] openURL:_URL options:@{} completionHandler:^(BOOL success) {
+            if (success) {
+                NSLog(@"Opened URL successfully.");
+            } else {
+                NSLog(@"Failed to open URL.");
+            }
+            [self activityDidFinish:success];
+        }];
+    }
 }
 
 @end

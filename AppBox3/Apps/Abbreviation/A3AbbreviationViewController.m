@@ -503,7 +503,7 @@
             _blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
             
             _animator = [[UIViewPropertyAnimator alloc] initWithDuration:0.1 curve:UIViewAnimationCurveLinear animations:^{
-                _blurEffectView.effect = nil;
+                self->_blurEffectView.effect = nil;
             }];
         }
  

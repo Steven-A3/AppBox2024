@@ -128,7 +128,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             fatalError("Failed to create model from file: \(modelURL)")
         }
         persistentContainer = NSPersistentContainer(name: "AppBoxStore", managedObjectModel: model)
-        var containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.allaboutapps.appbox")
+        var containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)
         // Store location: $(App group container)/Library/AppBox/
         containerURL?.appendPathComponent("Library/AppBox/AppBoxStore.sqlite")
         let description = NSPersistentStoreDescription(url: containerURL!)

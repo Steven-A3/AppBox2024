@@ -103,9 +103,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
     [self registerContentSizeCategoryDidChangeNotification];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
-	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextDidSaveNotification object:nil];
-	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 
     _item.lastOpened = [NSDate date];
@@ -122,18 +119,19 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (void)cloudStoreDidImport {
 	if (_itemDeleted) return;
 
-    _fieldItems = nil;
-    [self fieldItems];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_fieldItems = nil;
+        [self fieldItems];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     });
 }
 
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
-	if (![[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
-	}
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[self removeContentSizeCategoryDidChangeNotification];
 }
@@ -449,9 +447,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			{
 				// call
 				NSString *urlString = [NSString stringWithFormat:@"tel://%@", result.phoneNumber];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]
-                                                   options:@{}
-                                         completionHandler:nil];
+                [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:urlString]];
 				break;
 			}
 			case 1: {

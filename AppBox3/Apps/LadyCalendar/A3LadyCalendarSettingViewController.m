@@ -125,8 +125,12 @@
 }
 
 - (void)cloudStoreDidImport {
-	self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings]];
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings]];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)removeObserver {
@@ -404,8 +408,8 @@
                                                                                           object:nil
                                                                                            queue:nil
                                                                                       usingBlock:^(NSNotification *note) {
-                        [[NSNotificationCenter defaultCenter] removeObserver:_settingsObserver];
-                        _settingsObserver = nil;
+                        [[NSNotificationCenter defaultCenter] removeObserver:self->_settingsObserver];
+                        self->_settingsObserver = nil;
                         
                         UIUserNotificationSettings *userSettings = note.object;
                         if (userSettings.types == UIUserNotificationTypeNone) {
@@ -421,7 +425,7 @@
                             [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
                                                                                 style:UIAlertActionStyleDefault
                                                                               handler:^(UIAlertAction *action) {
-                                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
                             }]];
                             [self presentViewController:alertController
                                                animated:YES

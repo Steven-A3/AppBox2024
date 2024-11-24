@@ -22,12 +22,11 @@
 #import "A3AppDelegate.h"
 #import "WalletData.h"
 @import MessageUI;
-#import "AppBox3-swift.h"
+#import "AppBox3-Swift.h"
 #import "UIViewController+extension.h"
 #import "A3BackupRestoreManager.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
-	A3SettingsRowUseiCloud = 1100,
 	A3SettingsRowPasscodeLock = 2100,
 	A3SettingsRowWalletSecurity = 2200,
 	A3SettingsRowStartingApp = 3100,
@@ -260,14 +259,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
     
 	A3SettingsTableViewRow row = (A3SettingsTableViewRow) cell.tag;
 	switch (row) {
-		case A3SettingsRowUseiCloud:
-			if (!_iCloudSwitch) {
-				_iCloudSwitch = [UISwitch new];
-				_iCloudSwitch.on = [[A3SyncManager sharedSyncManager] isCloudEnabled];
-				[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
-			}
-			cell.accessoryView = _iCloudSwitch;
-			break;
 		case A3SettingsRowPasscodeLock:
 			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Passcode_Off", nil);
 			break;
@@ -328,15 +319,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 2) {
-                if (@available(iOS 14.0, *)) {
-                    [self performSegueWithIdentifier:@"backuprestore" sender:nil];
-                } else {
-                    [self alertFilesRequireiOS14];
-                }
-            } else if (indexPath.row == 3) {
+            if (indexPath.row == 1) {
+                [self performSegueWithIdentifier:@"backuprestore" sender:nil];
+            } else if (indexPath.row == 2) {
                 [self exportWalletContents];
-            } else if (indexPath.row == 4) {
+            } else if (indexPath.row == 3) {
                 [self exportPhotosVideos];
             }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -356,8 +343,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 						NSError *error;
 						if ([context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
 							[[A3AppDelegate instance] addSecurityCoverView];
-							[[UIApplication sharedApplication] setStatusBarHidden:YES];
-							[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+                            
+                            [self setValuePrefersStatusBarHidden:YES];
+                            [self setValueStatusBarStyle:UIStatusBarStyleLightContent];
+                            [self setNeedsStatusBarAppearanceUpdate];
 
 							[A3AppDelegate instance].isSettingsEvaluatingTouchID = YES;
 							
@@ -365,10 +354,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 									localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
 											  reply:^(BOOL success, NSError *error) {
 												  dispatch_async(dispatch_get_main_queue(), ^{
-													  FNLOG();
-													  [[UIApplication sharedApplication] setStatusBarHidden:NO];
-													  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-													  
+                                                      [self setValuePrefersStatusBarHidden:NO];
+                                                      [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+                                                      [self setNeedsStatusBarAppearanceUpdate];
+                                                      
 													  [[A3AppDelegate instance] removeSecurityCoverView];
 													  if (success && !error) {
 														  [A3KeychainUtils saveTimerStartTime];
@@ -392,13 +381,34 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 				if ([[A3AppDelegate instance] isMainMenuStyleList]) {
 					[self performSegueWithIdentifier:@"editFavorites" sender:nil];
 				} else {
-					UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"This will reset your home screen layout to defaults.", @"This will reset your home screen layout to defaults.")
-																			 delegate:self
-																	cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-															   destructiveButtonTitle:NSLocalizedString(@"Reset Home Screen", nil)
-																	otherButtonTitles:nil];
-					actionSheet.tag = [[[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle] isEqualToString:A3SettingsMainMenuStyleHexagon] ? 1 : 2;
-					[actionSheet showInView:self.view];
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"This will reset your home screen layout to defaults.", nil)
+                                                                                             message:nil
+                                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+                    
+                    UIAlertAction *resetAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Reset Home Screen", nil)
+                                                                          style:UIAlertActionStyleDestructive
+                                                                        handler:^(UIAlertAction * _Nonnull action) {
+                        NSString *menuStyle = [[NSUserDefaults standardUserDefaults] objectForKey:kA3SettingsMainMenuStyle];
+                        if ([menuStyle isEqualToString:A3SettingsMainMenuStyleHexagon]) {
+                            [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuHexagonMenuItems];
+                        } else {
+                            [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuGridMenuItems];
+                        }
+                        self->_didResetHomeScreenLayout = YES;
+                    }];
+                    
+                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                                           style:UIAlertActionStyleCancel
+                                                                         handler:nil];
+                    
+                    [alertController addAction:resetAction];
+                    [alertController addAction:cancelAction];
+                    
+                    // For iPad: Prevent crash by providing a popover presentation source
+                    alertController.popoverPresentationController.sourceView = self.view;
+                    alertController.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+                    
+                    [self presentViewController:alertController animated:YES completion:nil];
 				}
 				[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 			} else if (indexPath.row == 2) {
@@ -484,11 +494,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
     [self presentViewController:alertController animated:YES completion:NULL];
 }
 
-- (void)alertFilesRequireiOS14 {
-    [self presentAlertWithTitle:NSLocalizedString(@"Info", @"Info")
-                        message:NSLocalizedString(@"Backup using Files app requires iOS 14 or later. Please update iOS to the latest version.", @"")];
-}
-
 - (void)exportWalletContents {
     if (![[A3AppDelegate instance].reachability isReachable]) {
         [self alertInternetConnectionIsNotAvailable];
@@ -544,17 +549,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	UIStoryboard *aboutStoryboard = [UIStoryboard storyboardWithName:@"about" bundle:nil];
 	A3AboutViewController *viewController = [aboutStoryboard instantiateInitialViewController];
 	[self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-		if (actionSheet.tag == 1) {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuHexagonMenuItems];
-		} else {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:A3MainMenuGridMenuItems];
-		}
-		_didResetHomeScreenLayout = YES;
-	}
 }
 
 - (void)toggleCloud:(UISwitch *)switchControl {

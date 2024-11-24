@@ -171,8 +171,6 @@
 
 			self.isTouchIDEvaluationInProgress = YES;
 			self.touchIDEvaluationDidFinish = NO;
-			[[UIApplication sharedApplication] setStatusBarHidden:YES];
-			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 			self.touchIDBackgroundViewController = [UIViewController new];
 			[self.rootViewController_iPad presentViewController:self.touchIDBackgroundViewController animated:NO completion:NULL];
@@ -181,8 +179,7 @@
 					localizedReason:NSLocalizedString(@"Unlock AppBox Pro", @"Unlock AppBox Pro")
 							  reply:^(BOOL success, NSError *error) {
                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                      [[UIApplication sharedApplication] setStatusBarHidden:NO];
-                                      [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
                                       [self.touchIDBackgroundViewController dismissViewControllerAnimated:NO completion:NULL];
                                       if (success && !error) {
                                           [A3KeychainUtils saveTimerStartTime];

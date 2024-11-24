@@ -137,11 +137,15 @@
 }
 
 - (void)cloudStoreDidImport {
-	[self readFromSavedValue];
-	[self reloadTableViewDataWithInitialization:YES];
-	if ([self isAddSubMode]) {
-		[self refreshAddSubModeButtonForResultWithAnimation:YES];
-	}
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        [self readFromSavedValue];
+        [self reloadTableViewDataWithInitialization:YES];
+        if ([self isAddSubMode]) {
+            [self refreshAddSubModeButtonForResultWithAnimation:YES];
+        }
+    });
 }
 
 - (void)readFromSavedValue {
@@ -178,8 +182,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -847,7 +852,7 @@
 	} completion:^(BOOL finished) {
 		[self.dateKeyboardViewController.view removeFromSuperview];
 		[self.dateKeyboardViewController removeFromParentViewController];
-		_isDateKeyboardVisible = NO;
+        self->_isDateKeyboardVisible = NO;
 	}];
 }
 
@@ -1145,7 +1150,7 @@
 		[keyboardViewController.view removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+        self->_isNumberKeyboardVisible = NO;
 	}];
 }
 
@@ -1658,7 +1663,7 @@
             self.tableView.allowsSelection = NO;
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
-                self.sectionTitles = @[kCalculationString, @"", @"", @""];
+                self.sectionTitles = @[self->kCalculationString, @"", @"", @""];
                 [CATransaction begin];
                 [CATransaction setCompletionBlock:^{
                     [self.tableView reloadData];
@@ -1698,7 +1703,7 @@
             [CATransaction setAnimationDuration:0.01];
             [CATransaction setCompletionBlock:^{
                 
-                self.sectionTitles = @[kCalculationString, @"", @"", @""];
+                self.sectionTitles = @[self->kCalculationString, @"", @"", @""];
                 self.sections = @[
                                   @[NSLocalizedString(@"Between two dates", @"Between two dates"), NSLocalizedString(@"Add or Subtract days", @"Add or Subtract days")],
                                   @[NSLocalizedString(@"From", @"From"), NSLocalizedString(@"To", @"To")],
@@ -1828,12 +1833,12 @@
 }
 
 - (void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
-	[UIView commitAnimations];
+    [UIView animateWithDuration:0.35
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+    } completion:nil];
 }
 
 #pragma mark - Option Views Delegate

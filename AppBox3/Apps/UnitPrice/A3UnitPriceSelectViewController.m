@@ -114,9 +114,13 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 }
 
 - (void)cloudStoreDidImport {
-	_favorites = nil;
-
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_favorites = nil;
+        
+        [self.tableView reloadData];
+    });
 }
 
 - (void)removeObserver {

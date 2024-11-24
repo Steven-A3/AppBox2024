@@ -47,11 +47,11 @@
 
 	[CATransaction begin];
 	[CATransaction setCompletionBlock:^{
-		if (_onExpandCompletion) {
-			_onExpandCompletion(self);
+		if (self->_onExpandCompletion) {
+            self->_onExpandCompletion(self);
 		}
 		if (!self.isCollapsed) {
-			[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.indexPath.row + 1 inSection:self.indexPath.section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+			[self->_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.indexPath.row + 1 inSection:self.indexPath.section] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 		}
 	}];
 

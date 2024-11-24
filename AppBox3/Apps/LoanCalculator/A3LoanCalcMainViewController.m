@@ -183,12 +183,16 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		return;
 	}
 
-	[self reloadCurrencyCode];
-
-	[self loadPreviousCalculation];
-	[self selectSegmentChanged:self.selectSegment];
-
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        [self reloadCurrencyCode];
+        
+        [self loadPreviousCalculation];
+        [self selectSegmentChanged:self.selectSegment];
+        
+        [self.tableView reloadData];
+    });
 }
 
 - (void)removeObserver {
@@ -230,9 +234,10 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
+
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
@@ -523,29 +528,43 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 }
 
 - (LoanCalcData *)loanData {
-	if (!super.loanData) {
-		if ([[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey]) {
-			NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey];
-			super.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
-		}
-		else {
-			super.loanData = [[LoanCalcData alloc] init];
-			[self initializeLoanData:super.loanData];
-		}
-	}
-
-	return super.loanData;
+    if (!super.loanData) {
+        NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey];
+        if (loanData) {
+            NSError *error = nil;
+            super.loanData = [NSKeyedUnarchiver unarchivedObjectOfClass:[LoanCalcData class] fromData:loanData error:&error];
+            if (error) {
+                NSLog(@"Failed to unarchive loan data: %@", error.localizedDescription);
+                // Optionally, you can initialize a new instance if unarchiving fails
+                super.loanData = [[LoanCalcData alloc] init];
+                [self initializeLoanData:super.loanData];
+            }
+        } else {
+            // If there is no stored data, initialize a new LoanCalcData object
+            super.loanData = [[LoanCalcData alloc] init];
+            [self initializeLoanData:super.loanData];
+        }
+    }
+    
+    return super.loanData;
 }
 
-- (LoanCalcData *)loanDataA
-{
+- (LoanCalcData *)loanDataA {
     if (!_loanDataA) {
+        NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_A];
         
-        if ([[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_A]) {
-            NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_A];
-            _loanDataA = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
-        }
-        else {
+        if (loanData) {
+            NSError *error = nil;
+            _loanDataA = [NSKeyedUnarchiver unarchivedObjectOfClass:[LoanCalcData class] fromData:loanData error:&error];
+            
+            if (error) {
+                NSLog(@"Failed to unarchive loanDataA: %@", error.localizedDescription);
+                // Optionally, initialize a new instance if unarchiving fails
+                _loanDataA = [[LoanCalcData alloc] init];
+                [self initializeLoanData:_loanDataA];
+            }
+        } else {
+            // If there is no data stored, initialize a new LoanCalcData instance
             _loanDataA = [[LoanCalcData alloc] init];
             [self initializeLoanData:_loanDataA];
         }
@@ -554,15 +573,22 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     return _loanDataA;
 }
 
-- (LoanCalcData *)loanDataB
-{
+- (LoanCalcData *)loanDataB {
     if (!_loanDataB) {
+        NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_B];
         
-        if ([[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_B]) {
-            NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_B];
-            _loanDataB = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
-        }
-        else {
+        if (loanData) {
+            NSError *error = nil;
+            _loanDataB = [NSKeyedUnarchiver unarchivedObjectOfClass:[LoanCalcData class] fromData:loanData error:&error];
+            
+            if (error) {
+                NSLog(@"Failed to unarchive loanDataB: %@", error.localizedDescription);
+                // If unarchiving fails, initialize a new instance
+                _loanDataB = [[LoanCalcData alloc] init];
+                [self initializeLoanData:_loanDataB];
+            }
+        } else {
+            // If no data exists, initialize a new LoanCalcData instance
             _loanDataB = [[LoanCalcData alloc] init];
             [self initializeLoanData:_loanDataB];
         }
@@ -1632,19 +1658,20 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
 		compareCell.leftLabelACenterXConstraint.constant = MAX(-(self.view.bounds.size.width * (1 - percentOfRedBar)), minimumCenterX);
 		[compareCell layoutIfNeeded];
 
-        // 애니메이션 Start
+        // Initialize labels to be fully transparent before animation
         compareCell.left_A_Label.alpha = 0.0;
         compareCell.right_A_Label.alpha = 0.0;
-        
+
         float aniDuration = 0.3;
-        [UIView beginAnimations:@"GraphUpdateA" context:NULL];
-        [UIView setAnimationDuration:aniDuration];
-        
-        // 애니메이션 End
-        compareCell.left_A_Label.alpha = 1.0;
-        compareCell.right_A_Label.alpha = 1.0;
-        
-        [UIView commitAnimations];
+
+        [UIView animateWithDuration:aniDuration
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+            // Fade in both labels within the animation block
+            compareCell.left_A_Label.alpha = 1.0;
+            compareCell.right_A_Label.alpha = 1.0;
+        } completion:nil];
     }
     else {
         [self makeClearGraphLoanA:compareCell];
@@ -1694,20 +1721,21 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         float totalFloat = [_loanDataB totalAmount].floatValue;
         percentOfMarkB = totalFloat/maxAmount;
 
-        // 애니메이션 Start
+        // Set initial alpha values for a fade-in effect
         compareCell.left_B_Label.alpha = 0.0;
         compareCell.right_B_Label.alpha = 0.0;
-        
+
         float aniDuration = 0.3;
-        [UIView beginAnimations:@"GraphUpdateB" context:NULL];
-        [UIView setAnimationDuration:aniDuration];
-        
-        // 애니메이션 End
-        compareCell.left_B_Label.alpha = 1.0;
-        compareCell.right_B_Label.alpha = 1.0;
-        
-        [UIView commitAnimations];
-        
+
+        [UIView animateWithDuration:aniDuration
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+            // Fade in both labels within the animation block
+            compareCell.left_B_Label.alpha = 1.0;
+            compareCell.right_B_Label.alpha = 1.0;
+        } completion:nil];
+
     }
     else {
         [self makeClearGraphLoanB:compareCell];
@@ -1842,12 +1870,12 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
                                    currentCell.frame.size.width,
                                    newSize.height);
     
-    [UIView beginAnimations:@"cellExpand" context:nil];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationCurve:7];
-    [UIView setAnimationDuration:0.25];
-    self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
-    [UIView commitAnimations];
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
+    } completion:nil];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView

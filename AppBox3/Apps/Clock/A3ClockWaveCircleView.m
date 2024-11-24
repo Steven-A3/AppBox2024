@@ -50,7 +50,7 @@
 
 		[_textLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.centerX);
-			_textLabelCenterY = make.centerY.equalTo(self.top).with.offset(frame.size.height / 2);
+            self->_textLabelCenterY = make.centerY.equalTo(self.top).with.offset(frame.size.height / 2);
 		}];
 	}
     

@@ -7,6 +7,7 @@
 //
 
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+extension.h"
 #import <CoreLocation/CoreLocation.h>
 #import "NSDate+formatting.h"
 #import "NSDateFormatter+A3Addition.h"
@@ -55,6 +56,8 @@ NSString *const AdMobAdUnitIDLevel = @"ca-app-pub-0532362805885914/6920738140";
 NSString *const AdMobAdUnitIDQRCode = @"ca-app-pub-0532362805885914/7248371747";
 
 static char const *const key_firstActionSheet = "key_firstActionSheet";
+static char const *const key_prefersStatusBarHidden = "key_prefersStatusBarHidden";
+static char const *const key_statusBarStyle = "key_statusBarStyle";
 
 @implementation UIViewController (A3Addition)
 
@@ -74,6 +77,31 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 
 }
 
+- (void)setValuePrefersStatusBarHidden:(BOOL)value {
+    objc_setAssociatedObject(self, &key_prefersStatusBarHidden, @(value), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (void)setValueStatusBarStyle:(UIStatusBarStyle)style {
+    objc_setAssociatedObject(self, &key_statusBarStyle, @(style), OBJC_ASSOCIATION_RETAIN);
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    id value = objc_getAssociatedObject(self, &key_statusBarStyle);
+    if (value) {
+        return [value integerValue];
+    }
+    return UIStatusBarStyleDefault;
+}
+
+// override prefersStatusBarHidden
+- (BOOL)prefersStatusBarHidden {
+    id value = objc_getAssociatedObject(self, &key_prefersStatusBarHidden);
+    if (value) {
+        return [value boolValue];
+    }
+    return NO;
+}
+
 - (CGRect)screenBoundsAdjustedWithOrientation {
     CGRect bounds = [[UIScreen mainScreen] bounds];
 	return bounds;
@@ -81,9 +109,10 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 
 - (void)showNavigationBarOn:(UINavigationController *)targetController {
 	FNLOG();
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
+    
 	[targetController setNavigationBarHidden:NO animated:YES];
 	[targetController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
 	[targetController.navigationBar setShadowImage:nil];
@@ -580,8 +609,7 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 - (void)alertLocationDisabled {
 	NSString *message = ![CLLocationManager locationServicesEnabled] ? NSLocalizedString(@"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather.", nil) :
 			NSLocalizedString(@"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.", nil);
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info") message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-	[alertView show];
+    [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info") message:message];
 }
 
 - (UIActionSheet *)firstActionSheet {
@@ -619,9 +647,7 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
 	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
 														style:UIAlertActionStyleDefault
 													  handler:^(UIAlertAction *action) {
-														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]
-                                                                                             options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
-                                                                                   completionHandler:NULL];
+        [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 													  }]];
 	[self presentViewController:alertController
 					   animated:YES
@@ -651,9 +677,7 @@ static char const *const key_firstActionSheet = "key_firstActionSheet";
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {
-                                                              [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]
-                                                                                                 options:@{UIApplicationOpenURLOptionUniversalLinksOnly:@NO}
-                                                                                       completionHandler:NULL];
+            [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
                                                           }]];
         [self presentViewController:alertController
                            animated:YES

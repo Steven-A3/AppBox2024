@@ -29,8 +29,8 @@
 		[self addSubview:_editButton];
 
 		[_editButton makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_titleLabel.right).with.offset(8);
-			make.baseline.equalTo(_titleLabel.baseline);
+            make.left.equalTo(self->_titleLabel.right).with.offset(8);
+            make.baseline.equalTo(self->_titleLabel.baseline);
 		}];
 
 		[self setupFont];

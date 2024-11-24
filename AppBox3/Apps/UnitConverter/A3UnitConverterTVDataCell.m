@@ -266,10 +266,10 @@
 	[_value2Label setFont:font];
 
 	[_valueField makeConstraints:^(MASConstraintMaker *make) {
-		_valueFieldWidthConstraint = make.width.equalTo(@(valueFieldWidth));
+        self->_valueFieldWidthConstraint = make.width.equalTo(@(valueFieldWidth));
 	}];
 	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
-		_value2FieldWidthConstraint = make.width.equalTo(@(value2FieldWidth));
+        self->_value2FieldWidthConstraint = make.width.equalTo(@(value2FieldWidth));
 	}];
 
 	[self layoutIfNeeded];
@@ -291,8 +291,8 @@
 	[_valueField remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.centerY.equalTo(self.contentView.centerY);
-		make.right.equalTo(_codeLabel.left);
-		make.height.equalTo(@(_textFieldHeight));
+		make.right.equalTo(self->_codeLabel.left);
+		make.height.equalTo(@(self->_textFieldHeight));
 	}];
 }
 
@@ -300,20 +300,20 @@
 	[_valueField remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.centerY.equalTo(self.contentView.centerY);
-		_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
-		make.height.equalTo(@(_textFieldHeight));
+        self->_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+		make.height.equalTo(@(self->_textFieldHeight));
 	}];
 
 	[_valueLabel remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_valueField.right);
+		make.left.equalTo(self->_valueField.right);
 		make.centerY.equalTo(self.contentView.centerY);
 	}];
 
 	[_value2Field remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_valueLabel.right);
+		make.left.equalTo(self->_valueLabel.right);
 		make.centerY.equalTo(self.contentView.centerY);
-		_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
-		make.height.equalTo(@(_textFieldHeight));
+        self->_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+		make.height.equalTo(@(self->_textFieldHeight));
 	}];
 }
 
@@ -321,29 +321,29 @@
 	[_valueField remakeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.centerY.equalTo(self.contentView.centerY).with.offset(-4);
-		_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(0.17);
-		make.height.equalTo(@(_textFieldHeight));
+        self->_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(0.17);
+		make.height.equalTo(@(self->_textFieldHeight));
 	}];
 	[_valueLabel remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_valueField.right);
-		make.centerY.equalTo(_valueField.centerY);
+		make.left.equalTo(self->_valueField.right);
+		make.centerY.equalTo(self->_valueField.centerY);
 	}];
 	[_value2Field remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_valueLabel.right).with.offset(15);
-		make.centerY.equalTo(_valueField.centerY);
-		_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
-		make.height.equalTo(@(_textFieldHeight));
+		make.left.equalTo(self->_valueLabel.right).with.offset(15);
+		make.centerY.equalTo(self->_valueField.centerY);
+        self->_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+		make.height.equalTo(@(self->_textFieldHeight));
 	}];
 	[_value2Label remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_value2Field.right);
-		make.centerY.equalTo(_valueField.centerY);
+		make.left.equalTo(self->_value2Field.right);
+		make.centerY.equalTo(self->_valueField.centerY);
 	}];
 }
 
 - (void)setupConstraintsForRightSideViews {
 	[_flagImageView makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.equalTo(self.contentView.centerY);
-		make.right.equalTo(_codeLabel.left).with.offset(IS_IPHONE ? 2.0 : 10.0);
+		make.right.equalTo(self->_codeLabel.left).with.offset(IS_IPHONE ? 2.0 : 10.0);
 	}];
 
 	[_codeLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -352,7 +352,7 @@
 	}];
 
 	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.right.equalTo(_codeLabel.right);
+		make.right.equalTo(self->_codeLabel.right);
 		make.bottom.equalTo(self.contentView.bottom).with.offset(-8);
 	}];
 

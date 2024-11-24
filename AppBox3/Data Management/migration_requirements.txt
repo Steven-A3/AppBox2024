@@ -1,65 +1,149 @@
-Language: Swift
+Language: Swift, SwiftUI
 Using Core Data
 
+Implement the migration from old store to new store.
+Create the code as a class named MigrationManager.swift
+Implement the Migration View with presenting migration progress.
+
 OLD STORE with OLD MODEL
-AppGroupContainerURL/Library/AppBox/AppBoxStore.sqlite with Model name AppBox3.xcdatamodeld
+{AppGroupContainerURL}/Library/AppBox/AppBoxStore.sqlite with Model name AppBox3.xcdatamodeld
 
-NEW STORE with NEW MODEL
-AppGroupContainerURL/Library/AppBox/AppBoxStore2024.sqlite with model name AppBox2024.xcdatamodeld
+NEW STORE with NEW MODEL, ClouldKit backed CloudKitContainerID:iCloud.net.allaboutapps.AppBox
+Make the persistent history tracking enabled
+Check iCloud login status and if user didn't login to iCloud, then use NSPersistentContainer.
+If user login to iCloud, then use NSPersistentCloudKitContainer.
+{AppGroupContainerURL}/Library/AppBox/AppBoxStore2024.sqlite with model name AppBox2024.xcdatamodeld
 
-OLD and new model has the same entities and little different on one entity WalletFieldItem
-Here are the entity names extracted from the provided XML Core Data model:
+OLD and new model has the same entities 
 
-1. **AbbreviationFavorite**
-2. **Calculation**
-3. **CurrencyFavorite**
-4. **CurrencyHistory**
-5. **CurrencyHistoryItem**
-6. **DaysCounterCalendar**
-7. **DaysCounterDate**
-8. **DaysCounterEvent**
-9. **DaysCounterEventLocation**
-10. **DaysCounterFavorite**
-11. **DaysCounterReminder**
-12. **ExpenseListBudget**
-13. **ExpenseListBudgetLocation**
-14. **ExpenseListHistory**
-15. **ExpenseListItem**
-16. **KaomojiFavorite**
-17. **LadyCalendarAccount**
-18. **LadyCalendarPeriod**
-19. **LoanCalcComparisonHistory**
-20. **LoanCalcHistory**
-21. **Pedometer**
-22. **PercentCalcHistory**
-23. **QRCodeHistory**
-24. **SalesCalcHistory**
-25. **TipCalcHistory**
-26. **TipCalcRecent**
-27. **TranslatorFavorite**
-28. **TranslatorGroup**
-29. **TranslatorHistory**
-30. **UnitHistory**
-31. **UnitHistoryItem**
-32. **UnitPriceHistory**
-33. **UnitPriceInfo**
-34. **WalletCategory**
-35. **WalletFavorite**
-36. **WalletField**
-37. **WalletFieldItem**
-38. **WalletItem**
+1. AbbreviationFavorite  
+2. Calculation  
+3. CurrencyFavorite  
+4. CurrencyHistory  
+5. CurrencyHistoryItem  
+6. DaysCounterCalendar  
+7. DaysCounterDate  
+8. DaysCounterEvent  
+9. DaysCounterEventLocation  
+10. DaysCounterFavorite  
+11. DaysCounterReminder  
+12. ExpenseListBudget  
+13. ExpenseListBudgetLocation  
+14. ExpenseListHistory  
+15. ExpenseListItem  
+16. KaomojiFavorite  
+17. LadyCalendarAccount  
+18. LadyCalendarPeriod  
+19. LoanCalcComparisonHistory  
+20. LoanCalcHistory  
+21. Pedometer  
+22. PercentCalcHistory  
+23. QRCodeHistory  
+24. SalesCalcHistory  
+25. TipCalcHistory  
+26. TipCalcRecent  
+27. TranslatorFavorite  
+28. TranslatorGroup  
+29. TranslatorHistory  
+30. UnitHistory  
+31. UnitHistoryItem  
+32. UnitPriceHistory  
+33. UnitPriceInfo  
+34. WalletCategory  
+35. WalletFavorite  
+36. WalletField  
+37. WalletFieldItem  
+38. WalletItem
 
-These are the entity names defined in your Core Data model.
+The entity names in new store has underscore at the end of the name like WalletItem_.
+New store is CloudKit backed, so the data will be saved to iCloud.
+Make sure the new store download all the data from cloudkit before doing the migration.
 
 Fetch every data for all entities from old store and insert it to new store.
+Like fetch from WalletItem entity, then insert to new WalletItem_ entity
+Check the uniqueID is exist in new store.
+If the uniqueID is exist, then do not insert the data, otherwise insert the data.
+Do it for all entities.
 
-When insert the DaysCounterEvent entity, it has photoID as a attribute.
-generate the photoID with UUID() and rename the file libraryDirectory/DaysCounterImages/{old photoID} with generateid ID
+Below is the differences between old model and new model. It is all about the default value of the attribute.
 
-When insert the WalletFieldItem entity, if the hasImage attribute equals true then 
-assign the imageID of the WalletFieldItem entity in new model with new UUID()
-rename the file in libraryDirectory/WalletImages/{WalletFieldItem.uniqueID of old model} with the new imageID
-
-When insert the WalletFieldItem entity, if the hasVideo attribute equals true then 
-assign the videoID of the WalletFieldItem entity in new model with new UUID()
-rename the file in libraryDirectory/WalletVideos/{WalletFieldItem.uniqueID of old model} with the new imageID
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="AbbreviationFavorite_" representedClassName="AbbreviationFavorite_" syncable="YES">
+    <entity name="Calculation_" representedClassName="Calculation_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="CurrencyFavorite_" representedClassName="CurrencyFavorite_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="CurrencyHistory_" representedClassName="CurrencyHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="CurrencyHistoryItem_" representedClassName="CurrencyHistoryItem_" syncable="YES">
+    <entity name="DaysCounterCalendar_" representedClassName="DaysCounterCalendar_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="DaysCounterDate_" representedClassName="DaysCounterDate_" syncable="YES">
+    <entity name="DaysCounterEvent_" representedClassName="DaysCounterEvent_" syncable="YES">
+        <attribute name="calendarID" attributeType="String" defaultValueString=""/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="DaysCounterEventLocation_" representedClassName="DaysCounterEventLocation_" syncable="YES">
+    <entity name="DaysCounterFavorite_" representedClassName="DaysCounterFavorite_" syncable="YES">
+    <entity name="DaysCounterReminder_" representedClassName="DaysCounterReminder_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="ExpenseListBudget_" representedClassName="ExpenseListBudget_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="ExpenseListBudgetLocation_" representedClassName="ExpenseListBudgetLocation_" syncable="YES">
+    <entity name="ExpenseListHistory_" representedClassName="ExpenseListHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="ExpenseListItem_" representedClassName="ExpenseListItem_" syncable="YES">
+    <entity name="KaomojiFavorite_" representedClassName="KaomojiFavorite_" syncable="YES">
+    <entity name="LadyCalendarAccount_" representedClassName="LadyCalendarAccount_" syncable="YES">
+    <entity name="LadyCalendarPeriod_" representedClassName="LadyCalendarPeriod_" syncable="YES">
+        <attribute name="accountID" attributeType="String" defaultValueString=""/>
+        <attribute name="endDate" attributeType="Date" defaultDateTimeInterval="749545980" usesScalarValueType="NO"/>
+        <attribute name="startDate" attributeType="Date" defaultDateTimeInterval="749545980" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="LoanCalcComparisonHistory_" representedClassName="LoanCalcComparisonHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="LoanCalcHistory_" representedClassName="LoanCalcHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="Pedometer_" representedClassName="Pedometer_" syncable="YES">
+    <entity name="PercentCalcHistory_" representedClassName="PercentCalcHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="QRCodeHistory_" representedClassName="QRCodeHistory_" syncable="YES">
+        <attribute name="created" attributeType="Date" defaultDateTimeInterval="749546040" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="SalesCalcHistory_" representedClassName="SalesCalcHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="TipCalcHistory_" representedClassName="TipCalcHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="TipCalcRecent_" representedClassName="TipCalcRecent_" syncable="YES">
+    <entity name="TranslatorFavorite_" representedClassName="TranslatorFavorite_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="TranslatorGroup_" representedClassName="TranslatorGroup_" syncable="YES">
+        <attribute name="order" attributeType="String" defaultValueString=""/>
+        <attribute name="sourceLanguage" attributeType="String" defaultValueString=""/>
+        <attribute name="targetLanguage" attributeType="String" defaultValueString=""/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="TranslatorHistory_" representedClassName="TranslatorHistory_" syncable="YES">
+        <attribute name="originalText" attributeType="String" defaultValueString=""/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+        <attribute name="updateDate" attributeType="Date" defaultDateTimeInterval="749546040" usesScalarValueType="NO"/>
+    <entity name="UnitHistory_" representedClassName="UnitHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="UnitHistoryItem_" representedClassName="UnitHistoryItem_" syncable="YES">
+        <attribute name="order" attributeType="String" defaultValueString=""/>
+    <entity name="UnitPriceHistory_" representedClassName="UnitPriceHistory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="UnitPriceInfo_" representedClassName="UnitPriceInfo_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="WalletCategory_" representedClassName="WalletCategory_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="WalletFavorite_" representedClassName="WalletFavorite_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="WalletField_" representedClassName="WalletField_" syncable="YES">
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="WalletFieldItem_" representedClassName="WalletFieldItem_" syncable="YES">
+        <attribute name="fieldID" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="hasImage" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="hasVideo" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO"/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>
+    <entity name="WalletItem_" representedClassName="WalletItem_" syncable="YES">
+        <attribute name="categoryID" attributeType="String" defaultValueString=""/>
+        <attribute name="uniqueID" attributeType="String" defaultValueString=""/>

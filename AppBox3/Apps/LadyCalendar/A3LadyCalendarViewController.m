@@ -208,7 +208,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[self.dataManager currentAccount].uniqueID] > 0);
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		if (_isBeingClose) return;
+        if (self->_isBeingClose) return;
 		
 		[self setupNavigationTitle];
 		[self.collectionView reloadData];
@@ -220,19 +220,24 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	static NSString *const A3DisclaimerSigned = @"kDefaultPCalendarWarningMessageSigned";
 	if (![[A3UserDefaults standardUserDefaults] boolForKey:A3DisclaimerSigned]) {
 		[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3DisclaimerSigned];
 
-		UIAlertView *disclaimer = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Disclaimer", @"Disclaimer")
-															 message:NSLocalizedString(@"LadyCalendarDisclaimerMsg", nil)
-															delegate:nil
-												   cancelButtonTitle:NSLocalizedString(@"I Agree", @"I Agree")
-												   otherButtonTitles:nil];
-		[disclaimer show];
+        UIAlertController *disclaimer = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Disclaimer", @"Disclaimer")
+                                                                             message:NSLocalizedString(@"LadyCalendarDisclaimerMsg", nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction *agreeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"I Agree", @"I Agree")
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:nil];
+
+        [disclaimer addAction:agreeAction];
+        [self presentViewController:disclaimer animated:YES completion:nil];
 	}
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -249,7 +254,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 	}
 	[self setupInstructionView];
 	dispatch_async(dispatch_get_main_queue(), ^{
-		if (_isBeingClose) return;
+        if (self->_isBeingClose) return;
 		
 		[self setupNavigationTitle];
 		[self.collectionView reloadData];
@@ -798,7 +803,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 							 [self.moreMenuView removeFromSuperview];
 							 self.moreMenuView = nil;
 
-							 [self.view removeGestureRecognizer:_tapGestureRecognizer];
+            [self.view removeGestureRecognizer:self->_tapGestureRecognizer];
 							 [self rightButtonMoreButton];
 							 [self.navigationItem.leftBarButtonItem setEnabled:YES];
 						 }];

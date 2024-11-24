@@ -7,8 +7,7 @@
 //
 
 #import "NSFileManager+A3Addition.h"
-
-NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 @implementation NSFileManager (A3Addition)
 
@@ -62,13 +61,13 @@ NSString *const A3AppGroupIdentifier = @"group.allaboutapps.appbox";
  * NSURL *storeFileURL = [self storeURL];
  *
  * Note:
- * - The method assumes that A3AppGroupIdentifier is a valid app group identifier.
+ * - The method assumes that iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER is a valid app group identifier.
  * - The method `[self storeFileName]` should return the appropriate file name for the store file.
  */
 - (NSURL *)storeURL
 {
     // Retrieve the URL for the app group's shared container
-    NSURL *appGroupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:A3AppGroupIdentifier];
+    NSURL *appGroupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
     
     // Append the "Library/AppBox" path component to the container URL
     NSURL *storeURL = [appGroupContainerURL URLByAppendingPathComponent:@"Library/AppBox"];

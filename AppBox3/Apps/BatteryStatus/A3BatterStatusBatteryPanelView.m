@@ -93,12 +93,12 @@
     [_remainPercentLabel makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.centerX);
         if (IS_IPHONE) {
-            _remainPercentTopConst = make.top.equalTo(@12);
+            self->_remainPercentTopConst = make.top.equalTo(@12);
         } else {
             if ([UIWindow interfaceOrientationIsPortrait]) {
-                _remainPercentTopConst = make.top.equalTo(@22);
+                self->_remainPercentTopConst = make.top.equalTo(@22);
             } else {
-                _remainPercentTopConst = make.top.equalTo(@42);
+                self->_remainPercentTopConst = make.top.equalTo(@42);
             }
         }
         
@@ -109,13 +109,13 @@
             make.width.equalTo(@48);
             make.height.equalTo(@62);
             make.centerX.equalTo(self.centerX).with.offset(135);
-            _chargingImageTopConst = make.centerY.equalTo(self.top);
+            self->_chargingImageTopConst = make.centerY.equalTo(self.top);
             
         } else {
             make.width.equalTo(@58);
             make.height.equalTo(@76);
             make.centerX.equalTo(self.centerX).with.offset(176);
-            _chargingImageTopConst = make.centerY.equalTo(self.top);
+            self->_chargingImageTopConst = make.centerY.equalTo(self.top);
         }
     }];
     

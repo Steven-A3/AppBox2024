@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, A3RightBarButtonTag) {
 
 @interface UIViewController (A3Addition)
 
+- (void)setValuePrefersStatusBarHidden:(BOOL)value;
+- (void)setValueStatusBarStyle:(UIStatusBarStyle)style;
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)showNavigationBarOn:(UINavigationController *)targetController;
 - (void)leftBarButtonAppsButton;

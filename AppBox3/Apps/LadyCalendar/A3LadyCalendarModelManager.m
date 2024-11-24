@@ -450,13 +450,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 + (void)resetLocalNotifications {
-	UIApplication *application = [UIApplication sharedApplication];
-	NSArray *notifications = [application scheduledLocalNotifications];
-	for (UILocalNotification *notification in notifications) {
-		if ([notification.userInfo[A3LocalNotificationOwner] isEqualToString:A3LocalNotificationFromLadyCalendar]) {
-			[application cancelLocalNotification:notification];
-		}
-	}
+    [NotificationManager cancelPendingNotificationMatchingUserInfo:A3LocalNotificationOwner value:A3LocalNotificationFromLadyCalendar];
 }
 
 + (void)setupLocalNotification {
@@ -472,12 +466,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 	if (alertType == AlertType_None) return;
 
-    UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-    if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
-        
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    }
+    [NotificationManager checkAndRequestNotificationPermissions];
 
 	NSInteger beforeDay = 0;
 	switch (alertType) {
@@ -517,16 +506,14 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 			if ([fireDate isEarlierThanDate:today]) continue;
 
-			NSString *alertBody = NSLocalizedString(@"Your period is coming.", @"Your period is coming.");
-			UILocalNotification *notification = [UILocalNotification new];
-			notification.fireDate = fireDate;
-			notification.alertBody = alertBody;
-			notification.soundName = UILocalNotificationDefaultSoundName;
-			notification.userInfo = @{A3LocalNotificationOwner:A3LocalNotificationFromLadyCalendar, A3LocalNotificationDataID:period.uniqueID};
-			[application scheduleLocalNotification:notification];
+            NSString *alertBody = NSLocalizedString(@"Your period is coming.", @"Your period is coming.");
+            [NotificationManager scheduleNotificationWithTitle:NSLocalizedString(@"Ladies Calendar", @"")
+                                                       message:alertBody
+                                                     soundName:nil
+                                                          date:fireDate
+                                                      userInfo:@{A3LocalNotificationOwner:A3LocalNotificationFromLadyCalendar, A3LocalNotificationDataID:period.uniqueID}];
 		}
 	}
-	FNLOG(@"%@", [application scheduledLocalNotifications]);
 }
 
 @end

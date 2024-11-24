@@ -100,22 +100,22 @@
     CGFloat sep4_Subtotal = leftInset + sep1_Item + sep2_Price + sep3_Quantity;
     
     [_itemLabel makeConstraints:^(MASConstraintMaker *make) {
-        _itemLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + ceilf(sep1_Item / 2));
+        self->_itemLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + ceilf(sep1_Item / 2));
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
     [_priceLabel makeConstraints:^(MASConstraintMaker *make) {
-        _priceLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + sep1_Item + ceilf(sep2_Price / 2));
+        self->_priceLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + sep1_Item + ceilf(sep2_Price / 2));
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
     [_qtyLabel makeConstraints:^(MASConstraintMaker *make) {
-        _qtyLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + sep1_Item + sep2_Price + ceilf(sep3_Quantity / 2));
+        self->_qtyLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + sep1_Item + sep2_Price + ceilf(sep3_Quantity / 2));
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
     [_subTotalLabel makeConstraints:^(MASConstraintMaker *make) {
-        _subTotalLabelConst = make.centerX.equalTo(self.left).with.offset(sep4_Subtotal + (ceilf((CGRectGetWidth(self.frame) - sep4_Subtotal) / 2)) );
+        self->_subTotalLabelConst = make.centerX.equalTo(self.left).with.offset(sep4_Subtotal + (ceilf((CGRectGetWidth(self.frame) - sep4_Subtotal) / 2)) );
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     

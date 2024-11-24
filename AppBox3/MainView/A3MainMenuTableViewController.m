@@ -127,8 +127,9 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 	if ([self.navigationController.navigationBar isHidden]) {
 		[self.navigationController setNavigationBarHidden:NO animated:NO];
 	}
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

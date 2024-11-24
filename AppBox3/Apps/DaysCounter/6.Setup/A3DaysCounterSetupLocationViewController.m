@@ -65,16 +65,16 @@
     // Do any additional setup after loading the view from its nib.
     self.title = NSLocalizedString(@"Location", @"Location");
     self.navigationItem.titleView = self.searchBarBaseView;
-    [self setAutomaticallyAdjustsScrollViewInsets:NO];
+
     [self makeBackButtonEmptyArrow];
     [self.infoTableView setTableFooterView:_tableFooterView];
     UIView *footerSeparator = [UIView new];
     footerSeparator.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     [_tableFooterView addSubview:footerSeparator];
     [footerSeparator makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_tableFooterView.left);
-        make.right.equalTo(_tableFooterView.right);
-        make.bottom.equalTo(_tableFooterView.top);
+        make.left.equalTo(self->_tableFooterView.left);
+        make.right.equalTo(self->_tableFooterView.right);
+        make.bottom.equalTo(self->_tableFooterView.top);
         make.height.equalTo(IS_RETINA ? @(0.5) : @(1.0));
     }];
     
@@ -252,9 +252,9 @@
     if ( [_searchResultBaseView isDescendantOfView:self.view] ) {
         [_searchBar resignFirstResponder];
         [UIView animateWithDuration:0.35 animations:^{
-            _searchResultBaseView.frame = CGRectMake(_searchResultBaseView.frame.origin.x, -_searchResultBaseView.frame.size.height, _searchResultBaseView.frame.size.width, _searchResultBaseView.frame.size.height);
+            self->_searchResultBaseView.frame = CGRectMake(self->_searchResultBaseView.frame.origin.x, -self->_searchResultBaseView.frame.size.height, self->_searchResultBaseView.frame.size.width, self->_searchResultBaseView.frame.size.height);
         } completion:^(BOOL finished) {
-            [_searchResultBaseView removeFromSuperview];
+            [self->_searchResultBaseView removeFromSuperview];
         }];
     }
 }
@@ -318,30 +318,30 @@
                                       [self.progressHud hideAnimated:YES];
                                       
                                       if (success) {
-                                          isLoading = NO;
+                                          self->isLoading = NO;
                                           NSDictionary *dic = result;
                                           NSArray *venues = [dic valueForKeyPath:@"response.venues"];
                                           FSConverter *converter = [[FSConverter alloc] init];
                                           
                                           // 맵 annotation 추가.
-                                          if (tableView == _infoTableView) {
+                                          if (tableView == self->_infoTableView) {
                                               self.nearbyVenues = [converter convertToObjects:venues];
                                               [self reloadMapAnnotations:self.nearbyVenues];
-                                              [_infoTableView setContentOffset:CGPointMake(0, -(CGRectGetHeight(self.view.frame) - 229)) animated:YES];
+                                              [self->_infoTableView setContentOffset:CGPointMake(0, -(CGRectGetHeight(self.view.frame) - 229)) animated:YES];
                                           }
-                                          else if (tableView == _searchResultsTableView) {
+                                          else if (tableView == self->_searchResultsTableView) {
                                               self.nearbyVenuesOfSearchResults = [converter convertToObjects:venues];
                                           }
                                           
 
                                           // 결과 목록 갱신.
                                           [tableView reloadData];
-                                          if (tableView == _infoTableView) {
+                                          if (tableView == self->_infoTableView) {
                                               if ( [self.nearbyVenues count] > 2 ) {
-                                                  _tableViewHeightConstraint.constant = 229.0;
+                                                  self->_tableViewHeightConstraint.constant = 229.0;
                                               }
                                               else {
-                                                  _tableViewHeightConstraint.constant = 88.0;
+                                                  self->_tableViewHeightConstraint.constant = 88.0;
                                               }
                                           }
                                           
@@ -354,12 +354,8 @@
                                           }];
                                       }
                                       else {
-                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																						  message:NSLocalizedString(@"Places are not available.", nil)
-																						 delegate:nil
-																				cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-																				otherButtonTitles:nil];
-                                          [alert show];
+                                          [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                                                        message:NSLocalizedString(@"Places are not available.", nil)];
                                           FNLOG(@"장소 검색 실패.");
                                       }
                                   }];
@@ -375,7 +371,7 @@
         _searchResultBaseView.frame = CGRectMake(_infoTableView.frame.origin.x,-(contentHeight+64.0), _mapView.frame.size.width, contentHeight);
         [self.view addSubview:_searchResultBaseView];
         [UIView animateWithDuration:0.35 animations:^{
-            _searchResultBaseView.frame = CGRectMake(_searchResultBaseView.frame.origin.x, 64.0, _searchResultBaseView.frame.size.width, contentHeight);
+            self->_searchResultBaseView.frame = CGRectMake(self->_searchResultBaseView.frame.origin.x, 64.0, self->_searchResultBaseView.frame.size.width, contentHeight);
         } completion:^(BOOL finished) {
         }];
     }
@@ -683,21 +679,38 @@
 
 - (void)registerVenueForPlacemark:(NSArray*)placemarks
 {
-    CLPlacemark *mark = [placemarks objectAtIndex:0];
-    NSDictionary *addressDict = mark.addressDictionary;
-    // 포스퀘어에 해당 지점을 등록하고,
-    [Foursquare2 venueAddWithName:self.searchText address:[addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] crossStreet:nil city:[addressDict objectForKey:(NSString*)kABPersonAddressCityKey] state:[addressDict objectForKey:(NSString*)kABPersonAddressStateKey] zip:nil phone:nil twitter:nil description:nil latitude:@(_mapView.userLocation.coordinate.latitude) longitude:@(_mapView.userLocation.coordinate.longitude) primaryCategoryId:nil callback:^(BOOL success, id result) {
-        // 등록화면으로 이동
-        //        FNLOG(@"%s %@",__FUNCTION__,result);
-        if ( success ) {
+    CLPlacemark *mark = [placemarks firstObject];
+
+    // Use new properties instead of the deprecated addressDictionary
+    NSString *street = mark.thoroughfare ?: @"";
+    NSString *city = mark.locality ?: @"";
+    NSString *state = mark.administrativeArea ?: @"";
+    NSString *country = mark.country ?: @"";
+
+    // Register the venue with Foursquare
+    [Foursquare2 venueAddWithName:self.searchText
+                          address:street
+                      crossStreet:nil
+                             city:city
+                            state:state
+                              zip:nil
+                           phone:nil
+                         twitter:nil
+                      description:nil
+                         latitude:@(_mapView.userLocation.coordinate.latitude)
+                        longitude:@(_mapView.userLocation.coordinate.longitude)
+                primaryCategoryId:nil
+                         callback:^(BOOL success, id result) {
+        // Move to the detail screen upon successful registration
+        if (success) {
             FSVenue *venue = [[FSVenue alloc] init];
             venue.name = self.searchText;
             venue.contact = @"";
-            venue.location.coordinate = _mapView.userLocation.coordinate;
-            venue.location.address = [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey];
-            venue.location.city = [addressDict objectForKey:(NSString*)kABPersonAddressCityKey];
-            venue.location.state = [addressDict objectForKey:(NSString*)kABPersonAddressStateKey];
-            venue.location.country = [addressDict objectForKey:(NSString*)kABPersonAddressCountryKey];
+            venue.location.coordinate = self->_mapView.userLocation.coordinate;
+            venue.location.address = street;
+            venue.location.city = city;
+            venue.location.state = state;
+            venue.location.country = country;
             [self moveToLocationDetailWithItem:venue];
         }
     }];
@@ -728,12 +741,8 @@
         [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
             if ( error == nil ) {
                 if ( [placemarks count] < 1 ) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																		message:NSLocalizedString(@"Location information is not available.", nil)
-																	   delegate:nil
-															  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-															  otherButtonTitles:nil];
-                    [alertView show];
+                    [[UIApplication sharedApplication] showAlertWithTitle:nil
+                                                                  message:NSLocalizedString(@"Location information is not available.", nil)];
                     return;
                     
                 }
@@ -886,7 +895,7 @@
             make.left.equalTo(self.navigationController.view.left).with.offset(0.0);
             make.top.equalTo(self.navigationController.navigationBar.bottom).with.offset(0.0);
             make.right.equalTo(self.navigationController.view.right).with.offset(0.0);
-            make.height.equalTo(@(_currentLocationView.frame.size.height));
+            make.height.equalTo(@(self->_currentLocationView.frame.size.height));
         }];
     }
 }

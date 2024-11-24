@@ -46,7 +46,7 @@
 	[_valueTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.left).with.offset(leading);
 		make.centerY.equalTo(self.centerY);
-		make.right.equalTo(_photoButton.left);
+		make.right.equalTo(self->_photoButton.left);
 		make.height.equalTo(@50);
 	}];
 }

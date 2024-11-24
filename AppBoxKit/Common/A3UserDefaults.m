@@ -200,16 +200,29 @@ NSString *const A3UserDefaultsChangedKey = @"A3UserDefaultsChangedKey";
 }
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key {
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents];
-	[self setObject:data forKey:key];
+    NSError *error = nil;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents
+                                         requiringSecureCoding:YES
+                                                         error:&error];
+    if (error) {
+        NSLog(@"Failed to archive data: %@", error);
+    } else {
+        [self setObject:data forKey:key];
+    }
 }
 
 - (NSDateComponents *)dateComponentsForKey:(NSString *)key {
-	NSData *data = [self objectForKey:key];
-	if (data) {
-		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	}
-	return nil;
+    NSData *data = [self objectForKey:key];
+    if (data) {
+        NSError *error = nil;
+        id object = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSDateComponents class] fromData:data error:&error];
+        if (error) {
+            NSLog(@"Failed to unarchive data: %@", error);
+            return nil;
+        }
+        return object;
+    }
+    return nil;
 }
 
 - (void)removeObjectForKey:(id)key {

@@ -304,50 +304,39 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	switch (indexPath.section) {
 		case 1:
 			switch (indexPath.row) {
-				case 0:
-					if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-																			message:NSLocalizedString(@"Please turn iCloud sync off.", @"Please turn iCloud sync off.")
-																		   delegate:nil
-																  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-																  otherButtonTitles:nil];
-						[alertView show];
-					}
-					else
-					{
-						_selectBackupInProgress = YES;
-						
-						self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-						[self.navigationController.view addSubview:_HUD];
-						
-						_HUD.mode = MBProgressHUDModeIndeterminate;
-						_HUD.removeFromSuperViewOnHide = YES;
-						
-						_HUD.label.text = NSLocalizedString(@"Loading", nil);
-						
-						[_HUD showAnimated:YES];
-						
-						[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
-                            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K endsWith[cd] '.backup'", @"name"];
-                            NSArray *backupFiles = [entries filteredArrayUsingPredicate:predicate];
-                            NSSortDescriptor *modifiedDescriptor = [[NSSortDescriptor alloc] initWithKey:@"client_modified" ascending:NO];
-                            backupFiles = [backupFiles sortedArrayUsingDescriptors:@[modifiedDescriptor]];
-							dispatch_async(dispatch_get_main_queue(), ^{
-                                [self->_HUD hideAnimated:YES];
-                                self->_HUD = nil;
-								
-								if (error == nil && [backupFiles count]) {
-									self.dropboxFolderList = backupFiles;
-									[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
-								} else {
-									UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox") message:NSLocalizedString(@"You have no backup files stored in Dropbox.", @"You have no backup files stored in Dropbox.") delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
-									[alertView show];
-								}
-								FNLOG(@"%@", entries);
-							});
-						}];
-					}
-					break;
+				case 0: {
+                    _selectBackupInProgress = YES;
+                    
+                    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+                    [self.navigationController.view addSubview:_HUD];
+                    
+                    _HUD.mode = MBProgressHUDModeIndeterminate;
+                    _HUD.removeFromSuperViewOnHide = YES;
+                    
+                    _HUD.label.text = NSLocalizedString(@"Loading", nil);
+                    
+                    [_HUD showAnimated:YES];
+                    
+                    [TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
+                        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K endsWith[cd] '.backup'", @"name"];
+                        NSArray *backupFiles = [entries filteredArrayUsingPredicate:predicate];
+                        NSSortDescriptor *modifiedDescriptor = [[NSSortDescriptor alloc] initWithKey:@"client_modified" ascending:NO];
+                        backupFiles = [backupFiles sortedArrayUsingDescriptors:@[modifiedDescriptor]];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self->_HUD hideAnimated:YES];
+                            self->_HUD = nil;
+                            
+                            if (error == nil && [backupFiles count]) {
+                                self.dropboxFolderList = backupFiles;
+                                [self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
+                            } else {
+                                [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Dropbox", @"Dropbox") message:NSLocalizedString(@"You have no backup files stored in Dropbox.", @"You have no backup files stored in Dropbox.")];
+                            }
+                            FNLOG(@"%@", entries);
+                        });
+                    }];
+                    break;
+                }
 				case 1: {
 					[self.backupRestoreManager backupData];
 					break;
@@ -380,7 +369,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		_restoreInProgress = NO;
 
 		self.backupRestoreManager.delegate = self;
-		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory] toURL:[fileManager storeURL]];
+		[self.backupRestoreManager restoreDataAt:[@"restore" pathInCachesDirectory]];
 	}
 }
 

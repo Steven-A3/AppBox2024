@@ -43,8 +43,9 @@ extern NSString *const A3CurrencyActionCellID;
 
 	self.title = NSLocalizedString(@"Holidays", nil);
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	[self leftBarButtonAppsButton];
 	

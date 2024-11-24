@@ -28,7 +28,7 @@ extern NSString *const A3BackupInfoFilename;
 
 - (void)backupData;
 - (void)backupToDocumentDirectory;
-- (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL;
+- (void)restoreDataAt:(NSString *)backupFilePath;
 - (void)exportPhotosVideos;
 
 @end

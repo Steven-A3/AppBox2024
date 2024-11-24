@@ -145,19 +145,13 @@
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!placemarks || [error code] == kCLErrorGeocodeFoundNoResult) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
-                                                                message:NSLocalizedString(@"No Results Found", @"No Results Found")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                      otherButtonTitles:nil, nil];
-            [alertView show];
+            [[UIApplication sharedApplication] showAlertWithTitle:@"" message:NSLocalizedString(@"No Results Found", @"No Results Found")];
             return;
         }
 
         NSMutableArray *resultArray = [NSMutableArray new];
 		[resultArray addObject:NSLocalizedString(@"Current Location", @"Current Location")];
         for (CLPlacemark *placemark in placemarks) {
-            FNLOG(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
             [resultArray addObject:placemark];
         }
         

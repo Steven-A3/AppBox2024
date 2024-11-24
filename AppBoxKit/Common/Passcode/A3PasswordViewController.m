@@ -19,7 +19,7 @@
 #import "AppBoxKit/AppBoxKit-swift.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
-#define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
+#define kLabelFont ([[UIDevice currentDevice] userInterfaceIdiom] ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
 
 @interface A3PasswordViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -114,7 +114,7 @@
 	[_headerLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(15);
         make.right.equalTo(self.view.right).with.offset(-15);
-		_headerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight * 0.6 + offset);
+        self->_headerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight * 0.6 + offset);
 	}];
 
 	offset += 44.0 * [self tableView:self.tableView numberOfRowsInSection:0];
@@ -129,7 +129,7 @@
 
 	[_failedAttemptLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		_footerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight + headerHeight/2.0 + offset);
+        self->_footerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight + headerHeight/2.0 + offset);
 	}];
 }
 
@@ -150,9 +150,8 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
+    [self setNeedsStatusBarAppearanceUpdate];
+    
 	if (_isUserEnablingPasscode) {
         if (_lastEditingTextField) {
             [_lastEditingTextField becomeFirstResponder];
@@ -177,6 +176,16 @@
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
+}
+
+// Control the visibility of the status bar
+- (BOOL)prefersStatusBarHidden {
+    return NO; // Set to YES if you want the status bar hidden
+}
+
+// Set the status bar style
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault; // Choose the style you need
 }
 
 #pragma mark - Preparing
@@ -610,7 +619,7 @@
 		[self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-				[self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
+				[self.delegate passcodeViewDidDisappearWithSuccess:self->_passcodeValid ];
 			}
 		});
 
@@ -807,7 +816,7 @@
 	double delayInSeconds = 3.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		_failedAttemptLabel.hidden = YES;
+        self->_failedAttemptLabel.hidden = YES;
 	});
 }
 

@@ -77,7 +77,7 @@
 - (void)applicationWillResignActive {
 	if (_activityViewController) {
 		[self dismissViewControllerAnimated:NO completion:^{
-			_activityViewController = nil;
+            self->_activityViewController = nil;
 		}];
 	}
 	if (_popoverVC) {

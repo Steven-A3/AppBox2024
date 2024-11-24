@@ -212,9 +212,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[_rightMessageView addSubview:_rightMessageLabel];
 
 		[_rightMessageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(_rightMessageView.centerX).with.offset(-3);
-			make.centerY.equalTo(_rightMessageView.centerY).with.offset(0);
-			make.width.equalTo(_rightMessageView.width).with.offset(-27);
+			make.centerX.equalTo(self->_rightMessageView.centerX).with.offset(-3);
+			make.centerY.equalTo(self->_rightMessageView.centerY).with.offset(0);
+			make.width.equalTo(self->_rightMessageView.width).with.offset(-27);
 		}];
 
 		// Finally add gesture recognizer for copy paste.
@@ -268,9 +268,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[_leftMessageView addSubview:_leftMessageLabel];
 
 		[_leftMessageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(_leftMessageView.centerX).with.offset(3);
-			make.centerY.equalTo(_leftMessageView.centerY).with.offset(0);
-			make.width.equalTo(_leftMessageView.width).with.offset(-27);
+			make.centerX.equalTo(self->_leftMessageView.centerX).with.offset(3);
+			make.centerY.equalTo(self->_leftMessageView.centerY).with.offset(0);
+			make.width.equalTo(self->_leftMessageView.width).with.offset(-27);
 		}];
 
 		// Finally add gesture recognizer for copy paste.
@@ -313,8 +313,8 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[self addSubview:_favoriteButton];
 
 		[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_rightMessageView.centerY);
-			make.right.equalTo(_rightMessageView.left).with.offset(-15);
+			make.centerY.equalTo(self->_rightMessageView.centerY);
+			make.right.equalTo(self->_rightMessageView.left).with.offset(-15);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}];
@@ -341,8 +341,8 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[self addSubview:_speakButton];
 
 		[_speakButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_leftMessageView.centerY);
-			make.left.equalTo(_leftMessageView.right);
+			make.centerY.equalTo(self->_leftMessageView.centerY);
+			make.left.equalTo(self->_leftMessageView.right);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}];
@@ -412,7 +412,6 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 			return;
 		}
 
-        NSArray *languages = [self.languageListManager translationLanguageAddingDetectLanguage:NO];
 		TranslatorGroup_ *group = [TranslatorGroup_ findFirstByAttribute:@"uniqueID" withValue:_messageEntity.groupID];
         __block NSString *targetLanguage = group.targetLanguage;
 		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:targetLanguage]];

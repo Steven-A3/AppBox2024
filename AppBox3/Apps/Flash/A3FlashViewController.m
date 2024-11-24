@@ -305,9 +305,7 @@ NSString *const cellID = @"flashEffectID";
 	[alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(A3AppName_Settings, nil)
 														style:UIAlertActionStyleDefault
 													  handler:^(UIAlertAction *action) {
-														  [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]
-                                                                                             options:@{}
-                                                                                   completionHandler:nil];
+        [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 													  }]];
 	[self presentViewController:alertController
 					   animated:YES
@@ -719,22 +717,22 @@ static NSString *const A3V3InstructionDidShowForFlash = @"A3V3InstructionDidShow
     }
     else {
         _statusToolbar.hidden = YES;
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.25];
-        
-        _topToolBarTopConst.constant = -65;
-        _bottomToolBarBottomConst.constant = -(kBottomToolBarHeight + 5);
-        _pickerViewBottomConst.constant = -(CGRectGetHeight(_pickerPanelView.bounds) + 88);
-        _colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
-        
-        [_topToolBar layoutIfNeeded];
-        [_bottomToolBar layoutIfNeeded];
-        [_pickerPanelView layoutIfNeeded];
-        [_colorPickerView layoutIfNeeded];
-        
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.25
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+            // Update constraints
+            self->_topToolBarTopConst.constant = -65;
+            self->_bottomToolBarBottomConst.constant = -(kBottomToolBarHeight + 5);
+            self->_pickerViewBottomConst.constant = -(CGRectGetHeight(self->_pickerPanelView.bounds) + 88);
+            self->_colorPickerTopConst.constant = CGRectGetHeight(self.view.bounds);
+            
+            // Apply the layout changes with animation
+            [self->_topToolBar layoutIfNeeded];
+            [self->_bottomToolBar layoutIfNeeded];
+            [self->_pickerPanelView layoutIfNeeded];
+            [self->_colorPickerView layoutIfNeeded];
+        } completion:nil];
     }
 }
 

@@ -215,8 +215,9 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -240,11 +241,15 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 - (void)cloudStoreDidImport {
 	if (self.editingObject) return;
 
-	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
-	[self.currencyFormatter setCurrencyCode:currencyCode];
-
-	[self reloadBudgetDataWithAnimation:YES saveData:NO];
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3ExpenseListUserDefaultsCurrencyCode];
+        [self.currencyFormatter setCurrencyCode:currencyCode];
+        
+        [self reloadBudgetDataWithAnimation:YES saveData:NO];
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -1074,12 +1079,13 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 }
 
 - (void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight] ) );
-	[UIView commitAnimations];
+    [UIView animateWithDuration:0.35
+                          delay:0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        // Set content offset for tableView within the animation block
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+    } completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -1777,7 +1783,7 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 //		contentInset.bottom = keyboardHeight + accessoryView.frame.size.height;
 //		self.tableView.contentInset = contentInset;
 
-		[self.tableView scrollToRowAtIndexPath:_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tableView scrollToRowAtIndexPath:self->_editingIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 		FNLOG(@"%@", keyboardView.superview);
 		FNLOG(@"%@", accessoryView.superview);
 
@@ -1976,9 +1982,9 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	else if (_editingTextField == _editingCell.priceField) {
 		_isSwitchingTextField = YES;
 		[self dismissNumberKeyboardWithAnimation:YES completion:^{
-			_editingCell.nameField.userInteractionEnabled = YES;
-			[_editingCell.nameField becomeFirstResponder];
-			_isSwitchingTextField = NO;
+            self->_editingCell.nameField.userInteractionEnabled = YES;
+            [self->_editingCell.nameField becomeFirstResponder];
+            self->_isSwitchingTextField = NO;
 		}];
 	} else if (_editingTextField == _editingCell.nameField) {
 		_isSwitchingTextField = YES;
@@ -2006,8 +2012,8 @@ static NSString *const A3V3InstructionDidShowForExpenseList = @"A3V3InstructionD
 	else if (_editingTextField == _editingCell.quantityField) {
 		_isSwitchingTextField = YES;
 		[self dismissNumberKeyboardWithAnimation:YES completion:^{
-			[self moveDownRowFor:_editingIndexPath textField:_editingTextField];
-			_isSwitchingTextField = NO;
+            [self moveDownRowFor:self->_editingIndexPath textField:self->_editingTextField];
+            self->_isSwitchingTextField = NO;
 		}];
 	}
 }

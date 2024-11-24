@@ -290,7 +290,7 @@
             _blurEffectView.effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
             
             _animator = [[UIViewPropertyAnimator alloc] initWithDuration:1.0 curve:UIViewAnimationCurveLinear animations:^{
-                _blurEffectView.effect = nil;
+                self->_blurEffectView.effect = nil;
             }];
             
             cell.contentView.backgroundColor = [UIColor whiteColor];

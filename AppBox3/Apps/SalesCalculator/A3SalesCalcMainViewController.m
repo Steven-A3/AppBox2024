@@ -159,17 +159,21 @@ enum A3TableElementCellType {
 		return;
 	}
 
-	[self setCurrencyFormatter:nil];
-	_preferences = nil;
-
-	self.headerView.currencyFormatter = self.currencyFormatter;
-
-	[self configureTableData];
-	[self.tableView reloadData];
-	[self.headerView setResultData:self.preferences.calcData withAnimation:NO];
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
-
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        [self setCurrencyFormatter:nil];
+        self->_preferences = nil;
+        
+        self.headerView.currencyFormatter = self.currencyFormatter;
+        
+        [self configureTableData];
+        [self.tableView reloadData];
+        [self.headerView setResultData:self.preferences.calcData withAnimation:NO];
+        [self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top)];
+        
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -218,8 +222,9 @@ enum A3TableElementCellType {
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -1216,12 +1221,12 @@ enum A3TableElementCellType {
 }
 
 - (void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
-	[UIView commitAnimations];
+    [UIView animateWithDuration:0.35
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+    } completion:nil];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -1415,15 +1420,15 @@ enum A3TableElementCellType {
 				[placemark.administrativeArea length]) {
 			NSNumber *knownTax = self.knownUSTaxes[placemark.administrativeArea];
 			if (knownTax) {
-				_locationTax = knownTax;
-				_locationCode = @"US";
+                self->_locationTax = knownTax;
+                self->_locationCode = @"US";
 				[self reloadLocationTax];
 				[self.tableView reloadData];
 			}   
 		}
 
-		_locationManager.delegate = nil;
-		_locationManager = nil;
+        self->_locationManager.delegate = nil;
+        self->_locationManager = nil;
 	}];
 }
 

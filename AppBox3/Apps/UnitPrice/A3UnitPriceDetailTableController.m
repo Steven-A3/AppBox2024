@@ -126,11 +126,15 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 		return;
 	}
 
-	self.currencyFormatter = nil;
-	self.currencyFormatter.maximumFractionDigits = 2;
-
-	_price = [UnitPriceInfo_ findFirstByAttribute:ID_KEY withValue:_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self.currencyFormatter = nil;
+        self.currencyFormatter.maximumFractionDigits = 2;
+        
+        self->_price = [UnitPriceInfo_ findFirstByAttribute:ID_KEY withValue:self->_isPriceA ? A3UnitPricePrice1DefaultID : A3UnitPricePrice2DefaultID];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)removeObserver {

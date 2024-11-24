@@ -9,6 +9,7 @@
 #import "NSString+conversion.h"
 #import "common.h"
 #import "A3NumberFormatter.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 @implementation NSString (conversion)
 
@@ -190,9 +191,10 @@
 	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
 }
 
-- (NSString *)pathInLibraryDirectory {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
+- (NSString *)pathInAppGroupContainer {
+    NSURL *appGroupURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
+    appGroupURL = [appGroupURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
+    return [[appGroupURL path] stringByAppendingPathComponent:self];
 }
 
 - (NSString *)pathInCachesDirectory {

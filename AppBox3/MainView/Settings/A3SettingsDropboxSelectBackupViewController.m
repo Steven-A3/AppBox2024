@@ -237,8 +237,8 @@ extern NSString *const kDropboxDir;
 			dispatch_async(dispatch_get_main_queue(), ^{
 				[TJDropbox listFolderWithPath:kDropboxDir accessToken:self.dropboxAccessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
 					dispatch_async(dispatch_get_main_queue(), ^{
-						[_hud hideAnimated:YES];
-						_hud = nil;
+						[self->_hud hideAnimated:YES];
+                        self->_hud = nil;
 						
 						self.dropboxFolderList = entries;
 						[self.tableView reloadData];

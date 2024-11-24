@@ -101,10 +101,12 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 }
 
 - (void)cloudStoreDidImport {
-	[self refreshItems];
-	[self itemCountCheck];
-    [self setupSearchBar];
-	[self updateTopViewInfo:_topViewRef];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshItems];
+        [self itemCountCheck];
+        [self setupSearchBar];
+        [self updateTopViewInfo:self->_topViewRef];
+    });
 }
 
 - (void)removeObserver {

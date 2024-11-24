@@ -67,7 +67,7 @@
 	[coordinator animateAlongsideTransition:^(id <UIViewControllerTransitionCoordinatorContext> context) {
 
 	} completion:^(id <UIViewControllerTransitionCoordinatorContext> context) {
-		_borderLayer.borderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0].CGColor;
+        self->_borderLayer.borderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0].CGColor;
 	}];
 }
 

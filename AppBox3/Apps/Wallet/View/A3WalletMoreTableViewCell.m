@@ -56,19 +56,19 @@
 	}];
 
 	[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
-		_imageViewLeftConstraint = make.left.equalTo(_checkImageView.right);
+        self->_imageViewLeftConstraint = make.left.equalTo(self->_checkImageView.right);
 		make.width.equalTo(@30);
 		make.centerY.equalTo(self.centerY);
 	}];
 
 	[_cellTitleLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_cellImageView.right).with.offset(13);
+		make.left.equalTo(self->_cellImageView.right).with.offset(13);
 		make.right.equalTo(self.contentView.right).with.offset(-20);
 		make.centerY.equalTo(self.centerY);
 	}];
 
 	[_rightSideLabel makeConstraints:^(MASConstraintMaker *make) {
-		_rightSideLabelConstraint = make.right.equalTo(self.contentView.right).with.offset(self.editing ? -leading : 0);
+        self->_rightSideLabelConstraint = make.right.equalTo(self.contentView.right).with.offset(self.editing ? -leading : 0);
 		make.centerY.equalTo(self.centerY);
 	}];
 }
@@ -92,9 +92,9 @@
 
 	[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
 		if (show) {
-			_imageViewLeftConstraint = make.left.equalTo(_checkImageView.right).with.offset(10);
+            self->_imageViewLeftConstraint = make.left.equalTo(self->_checkImageView.right).with.offset(10);
 		} else {
-			_imageViewLeftConstraint = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+            self->_imageViewLeftConstraint = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 		}
 	}];
 

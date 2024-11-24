@@ -496,7 +496,7 @@ didOutputMetadataObjects:(NSArray *)metadataObjects
             [self.torchButton.layer setBorderWidth:0.f];
         }
         
-        switch (UI_USER_INTERFACE_IDIOM()) {
+        switch ([[UIDevice currentDevice] userInterfaceIdiom]) {
             case UIUserInterfaceIdiomPad: {
                 sidebarRect = CGRectMake(self.view.frame.size.width - 110, 0, 110,
                                          self.view.frame.size.height);

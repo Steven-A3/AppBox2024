@@ -218,7 +218,7 @@
           initialSpringVelocity:0.0f
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
-                         [_fromToRangeLineView setFrame:rect];
+        [self->_fromToRangeLineView setFrame:rect];
                      } completion:^(BOOL finished) {
                          
                      }];
@@ -493,7 +493,7 @@
           initialSpringVelocity:0.0f
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
-                         _fromThumbView.center = point;
+        self->_fromThumbView.center = point;
                      } completion:^(BOOL finished) {
 
                      }];
@@ -526,7 +526,7 @@
           initialSpringVelocity:0.0f
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
-                         _toThumbView.center = point;
+        self->_toThumbView.center = point;
                      } completion:^(BOOL finished) {
 
                      }];
@@ -865,13 +865,13 @@
                             options:UIViewAnimationOptionCurveLinear
                          animations:^{
                              [self adjustFromToBetweenLineWidth];
-                             [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
-                             self.resultLabel.arrowDirection = _fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
+            [self setupResultLabelPositionForThumbView:self->_fromLagerThanTo==NO ? self->_toThumbView : self->_fromThumbView];
+            self.resultLabel.arrowDirection = self->_fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
                              [self setupSliderThumbShadeByCalcType];
                          }
                          completion:^(BOOL finished) {
-                             _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
-                             _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_toDate];
+            self->_fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:self->_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self->_fromDate];
+            self->_toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:self->_toDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self->_toDate];
                              [self adjustFromToLabelPosition];
                          }];
     }
@@ -909,25 +909,25 @@
                             options:UIViewAnimationOptionCurveLinear
                          animations:^{
                              [self adjustFromToBetweenLineWidth];
-                             [self setupResultLabelPositionForThumbView:_toThumbView];
+            [self setupResultLabelPositionForThumbView:self->_toThumbView];
                              [self setupSliderThumbShadeByCalcType];
                              
-                             _fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
-                             _toLabel.text = rDateString;
+            self->_fromLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:self->_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self->_fromDate];
+            self->_toLabel.text = rDateString;
                              
                              if (comp.year==0 && comp.month==0 && comp.day==0) {
-                                 _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                                 _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                                 _freezeToDragLeftCircle = YES;
-                                 _freezeToDragRightCircle = YES;
+                                 self->_fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+                                 self->_toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+                                 self->_freezeToDragLeftCircle = YES;
+                                 self->_freezeToDragRightCircle = YES;
                              }
                          }
          
                          completion:^(BOOL finished) {
                              [self adjustFromToLabelPosition];
                              
-                             if ([_delegate respondsToSelector:@selector(dateCalcHeaderAddSubResult:)]) {
-                                 [_delegate dateCalcHeaderAddSubResult:comp];
+            if ([self->_delegate respondsToSelector:@selector(dateCalcHeaderAddSubResult:)]) {
+                [self->_delegate dateCalcHeaderAddSubResult:comp];
                              }
                          }];
     }
@@ -977,28 +977,28 @@
                             options:UIViewAnimationOptionCurveLinear
                          animations:^{
                              [self adjustFromToBetweenLineWidth];
-                             [self setupResultLabelPositionForThumbView:_fromThumbView];
+            [self setupResultLabelPositionForThumbView:self->_fromThumbView];
                              [self setupSliderThumbShadeByCalcType];
                              
                              // Sub 모드는 from/to 반대
-                             _fromLabel.text = rDateString;
-                             _toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:_fromDate];
-                             [_fromLabel sizeToFit];
-                             [_toLabel sizeToFit];
+            self->_fromLabel.text = rDateString;
+            self->_toLabel.text = IS_IPAD ? [A3DateCalcStateManager fullStyleDateStringFromDate:self->_fromDate] : [A3DateCalcStateManager fullCustomStyleDateStringFromDate:self->_fromDate];
+            [self->_fromLabel sizeToFit];
+            [self->_toLabel sizeToFit];
                              
                              if (comp.year==0 && comp.month==0 && comp.day==0) {
-                                 _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                                 _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                                 _freezeToDragLeftCircle = YES;
-                                 _freezeToDragRightCircle = YES;
+                                 self->_fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+                                 self->_toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+                                 self->_freezeToDragLeftCircle = YES;
+                                 self->_freezeToDragRightCircle = YES;
                              }
                          }
          
                          completion:^(BOOL finished) {
                              [self adjustFromToLabelPosition];
                              
-                             if ([_delegate respondsToSelector:@selector(dateCalcHeaderAddSubResult:)]) {
-                                 [_delegate dateCalcHeaderAddSubResult:comp];
+            if ([self->_delegate respondsToSelector:@selector(dateCalcHeaderAddSubResult:)]) {
+                [self->_delegate dateCalcHeaderAddSubResult:comp];
                              }
                          }];
     }

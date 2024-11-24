@@ -451,20 +451,20 @@ static NSString *CellIdentifier = @"Cell";
             double delayInSeconds = 0.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self presentViewController:_imagePickerController animated:YES completion:NULL];
+                [self presentViewController:self->_imagePickerController animated:YES completion:NULL];
             });
         }
         else {
             double delayInSeconds = 0.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
+                self.imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:self->_imagePickerController];
                 self.imagePickerPopoverController.delegate = self;
-                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_currentIndexPath];
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self->_currentIndexPath];
                 if (!cell) {
                     return;
                 }
-                [_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                [self->_imagePickerPopoverController presentPopoverFromRect:[cell.accessoryView bounds] inView:[cell accessoryView] permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             });
         }
     }

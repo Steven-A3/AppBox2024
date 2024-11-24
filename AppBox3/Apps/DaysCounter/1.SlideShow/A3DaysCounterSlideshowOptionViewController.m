@@ -264,8 +264,7 @@
     }
     else if ( cellType == SlideshowOptionType_Startshow ) {
         if ( [_sharedManager numberOfAllEvents] < 1 ) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"There is no events.", @"There is no events.") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-            [alertView show];
+            [[UIApplication sharedApplication] showAlertWithTitle:nil message:NSLocalizedString(@"There is no events.", nil)];
             return;
         }
         
@@ -273,8 +272,8 @@
 
         if (IS_IPHONE) {
             [self dismissViewControllerAnimated:YES completion:^{
-                if (_completionBlock) {
-                    _completionBlock(self.optionDict, self.activity);
+                if (self->_completionBlock) {
+                    self->_completionBlock(self.optionDict, self.activity);
                 }
             }];
         }

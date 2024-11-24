@@ -885,7 +885,8 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	self.topBar.hidden = hidden;
 	self.bottomBar.hidden = hidden;
 	self.statusToolbar.hidden = hidden;
-	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
+    [self setValuePrefersStatusBarHidden:hidden];
+    [self setNeedsStatusBarAppearanceUpdate];
 
     CGFloat verticalOffset = 0;
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
@@ -1126,7 +1127,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 	UIViewAnimationOptions option = UIViewAnimationOptionTransitionFlipFromLeft;
 	[UIView transitionWithView:self.currentFilterView duration:0.7 options:option
 					animations:^{
-						_isFlip = !_isFlip;
+        self->_isFlip = !self->_isFlip;
 						[self setViewRotation:[self currentFilterView]];
 					}completion:^(BOOL finished) {
 			}];
@@ -1167,13 +1168,13 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 		// Flash set to Auto for Still Capture
 		// [self setFlashMode:AVCaptureFlashModeAuto forDevice:_videoDevice];
 
-		if (!_isLosslessZoom) {
-			AVCaptureConnection *stillImageConnection = [_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-			CGFloat scale = MIN(_effectiveScale, stillImageConnection.videoMaxScaleAndCropFactor);
+        if (!self->_isLosslessZoom) {
+            AVCaptureConnection *stillImageConnection = [self->_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+            CGFloat scale = MIN(self->_effectiveScale, stillImageConnection.videoMaxScaleAndCropFactor);
 			[stillImageConnection setVideoScaleAndCropFactor:scale];
 		}
         
-		[_stillImageOutput captureStillImageAsynchronouslyFromConnection:[_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+        [self->_stillImageOutput captureStillImageAsynchronouslyFromConnection:[self->_stillImageOutput connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
 			if (imageDataSampleBuffer) {
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
@@ -1182,7 +1183,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 					orientation = (UIInterfaceOrientation) [[UIDevice currentDevice] orientation];
 				}
 
-				if (_isFlip == YES) {
+                if (self->_isFlip == YES) {
 					if ([UIWindow interfaceOrientationIsLandscape] ||
 							orientation == UIDeviceOrientationLandscapeRight ||
 							orientation == UIDeviceOrientationLandscapeLeft) {
@@ -1196,27 +1197,27 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 
 				CGAffineTransform t = [self getRotationTransformWithOption:NO];
 
-				if (_filterIndex == A3MirrorMonoFilter) {
+                if (self->_filterIndex == A3MirrorMonoFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorTonalFilter) {
+                } else if (self->_filterIndex == A3MirrorTonalFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectTonal" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorNoirFilter) {
+                } else if (self->_filterIndex == A3MirrorNoirFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectNoir" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorFadeFilter) {
+                } else if (self->_filterIndex == A3MirrorFadeFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectFade" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorChromeFilter) {
+                } else if (self->_filterIndex == A3MirrorChromeFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectChrome" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorProcessFilter) {
+                } else if (self->_filterIndex == A3MirrorProcessFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectProcess" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorTransferFilter) {
+                } else if (self->_filterIndex == A3MirrorTransferFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectTransfer" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
-				} else if (_filterIndex == A3MirrorInstantFilter) {
+                } else if (self->_filterIndex == A3MirrorInstantFilter) {
 					ciSaveImg = [CIFilter filterWithName:@"CIPhotoEffectInstant" keysAndValues:kCIInputImageKey, ciSaveImg, nil].outputImage;
 				}
 
 				ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
-				CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
-				[self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
+                CGImageRef cgimg = [self->_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
+                [self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[self->_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
 					self.capturedPhotoURL = assetURL;
 					[self setImageOnCameraRollButton:[UIImage imageWithCGImage:cgimg]];
 #if !TARGET_IPHONE_SIMULATOR
@@ -1256,23 +1257,23 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseOut
 					 animations:^{
-						 [_videoPreviewViewMonoFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorMonoFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorMonoFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewMonoFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorMonoFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorMonoFilter][1]).intValue, width, height)];
 						 //FNLOG("Mono = %f, %f",_videoPreviewViewMonoFilter.frame.origin.x, _videoPreviewViewMonoFilter.frame.origin.y);
-						 [_videoPreviewViewTonalFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorTonalFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorTonalFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewTonalFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorTonalFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorTonalFilter][1]).intValue, width, height)];
 						 //FNLOG("Tonal = %f, %f",_videoPreviewViewTonalFilter.frame.origin.x, _videoPreviewViewTonalFilter.frame.origin.y);
-						 [_videoPreviewViewNoirFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorNoirFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorNoirFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewNoirFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorNoirFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorNoirFilter][1]).intValue, width, height)];
 						 //FNLOG("Noir = %f, %f",_videoPreviewViewNoirFilter.bounds.origin.x, _videoPreviewViewNoirFilter.bounds.origin.y);
-						 [_videoPreviewViewFadeFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorFadeFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorFadeFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewFadeFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorFadeFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorFadeFilter][1]).intValue, width, height)];
 						 //FNLOG("Fade = %f, %f",_videoPreviewViewFadeFilter.bounds.origin.x, _videoPreviewViewFadeFilter.bounds.origin.y);
-						 [_videoPreviewViewNoFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorNoFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorNoFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewNoFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorNoFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorNoFilter][1]).intValue, width, height)];
 						 //FNLOG("No = %f, %f",_videoPreviewViewNoFilter.bounds.origin.x, _videoPreviewViewNoFilter.bounds.origin.y);
-						 [_videoPreviewViewChromeFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorChromeFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorChromeFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewChromeFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorChromeFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorChromeFilter][1]).intValue, width, height)];
 						 //FNLOG("Chrome = %f, %f",_videoPreviewViewChromeFilter.bounds.origin.x, _videoPreviewViewChromeFilter.bounds.origin.y);
-						 [_videoPreviewViewProcessFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorProcessFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorProcessFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewProcessFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorProcessFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorProcessFilter][1]).intValue, width, height)];
 						 //FNLOG("Process = %f, %f",_videoPreviewViewProcessFilter.bounds.origin.x, _videoPreviewViewProcessFilter.bounds.origin.y);
-						 [_videoPreviewViewTransferFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorTransferFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorTransferFilter][1]).intValue, width, height)];
+        [self->_videoPreviewViewTransferFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorTransferFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorTransferFilter][1]).intValue, width, height)];
 						 //FNLOG("Transfer = %f, %f",_videoPreviewViewTransferFilter.bounds.origin.x, _videoPreviewViewTransferFilter.bounds.origin.y);
-						 [_videoPreviewViewInstantFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorInstantFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorInstantFilter][1]).intValue , width, height)];
+        [self->_videoPreviewViewInstantFilter setFrame:CGRectMake(x*((NSNumber*)coordinate[A3MirrorInstantFilter][0]).intValue, y*((NSNumber*)coordinate[A3MirrorInstantFilter][1]).intValue , width, height)];
 						 //FNLOG("Instant = %f, %f",_videoPreviewViewInstantFilter.bounds.origin.x, _videoPreviewViewInstantFilter.bounds.origin.y);
 					 }
 					 completion:^(BOOL finished) {

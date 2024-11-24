@@ -161,11 +161,15 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
         return;
     }
     
-	_dataManager = nil;
-	_headerView.dataManager = self.dataManager;
-	[self outputAllResultWithAnimation:YES];
-
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_dataManager = nil;
+        self->_headerView.dataManager = self.dataManager;
+        [self outputAllResultWithAnimation:YES];
+        
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -202,8 +206,9 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -888,12 +893,13 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 }
 
 - (void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
-	[UIView commitAnimations];
+    [UIView animateWithDuration:0.35
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        // Adjust the content offset of the table view
+        self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+    } completion:nil];
 }
 
 - (void)presentNumberKeyboard:(A3NumberKeyboardViewController *)keyboardVC accessoryView:(UIView *)accessoryView forTextField:(UITextField *)textField animated:(BOOL)animated {
@@ -964,7 +970,7 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 
     void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
-		[_keyboardAccessoryView removeFromSuperview];
+		[self->_keyboardAccessoryView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
 		self.keyboardAccessoryView = nil;
 
@@ -979,10 +985,10 @@ A3SearchViewControllerDelegate, A3CalculatorViewControllerDelegate, A3ViewContro
 			frame.origin.y += keyboardHeight;
 			keyboardView.frame = frame;
 
-			if (_keyboardAccessoryView) {
-				frame = _keyboardAccessoryView.frame;
-				frame.origin.y += keyboardHeight + _keyboardAccessoryView.bounds.size.height;
-				_keyboardAccessoryView.frame = frame;
+			if (self->_keyboardAccessoryView) {
+				frame = self->_keyboardAccessoryView.frame;
+				frame.origin.y += keyboardHeight + self->_keyboardAccessoryView.bounds.size.height;
+                self->_keyboardAccessoryView.frame = frame;
 			}
 		} completion:^(BOOL finished) {
 			completion();

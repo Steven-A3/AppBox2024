@@ -24,6 +24,7 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "A3UserDefaults+A3Addition.h"
+#import "AppBOxKit/AppBoxKit-Swift.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -87,7 +88,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         NSString *photoPath = [[event photoURLInOriginalDirectory:YES] path];
         if (![fileManager fileExistsAtPath:photoPath]) return;
         NSString *filename = forBackup ?
-        [NSString stringWithFormat:@"%@/%@", A3DaysCounterImageDirectory, event.photoID]
+        [NSString stringWithFormat:@"%@/%@/%@", iCloudConstants.MEDIA_FILES_PATH, A3DaysCounterImageDirectory, event.photoID]
         : [NSString stringWithFormat:@"%@/DaysCounterPhoto-%ld.jpg", A3DaysCounterImageDirectory, (long)idx + 1]
         ;
         [fileList addObject:
@@ -104,7 +105,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         NSString *photoPath = [[item photoImageURLInOriginalDirectory:YES] path];
         if (![fileManager fileExistsAtPath:photoPath]) return;
         NSString *filename = forBackup ?
-            [NSString stringWithFormat:@"%@/%@", A3WalletImageDirectory, item.uniqueID] :
+        [NSString stringWithFormat:@"%@/%@/%@", iCloudConstants.MEDIA_FILES_PATH, A3WalletImageDirectory, item.uniqueID] :
             [NSString stringWithFormat:@"%@/WalletPhoto-%ld.jpg", A3WalletImageDirectory, (long)idx + 1];
         [fileList addObject:
          @{
@@ -121,7 +122,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         NSString *videoFilePath = [[video videoFileURLInOriginal:YES] path];
         if (![fileManager fileExistsAtPath:videoFilePath]) return;
         NSString *filename = forBackup ?
-            [NSString stringWithFormat:@"%@/%@-video.%@", A3WalletVideoDirectory, video.uniqueID, video.videoExtension] :
+        [NSString stringWithFormat:@"%@/%@/%@-video.%@", iCloudConstants.MEDIA_FILES_PATH, A3WalletVideoDirectory, video.uniqueID, video.videoExtension] :
             [NSString stringWithFormat:@"%@/WalletVideo-%ld.%@", A3WalletVideoDirectory, (long)idx + 1, video.videoExtension];
         [fileList addObject:
          @{
@@ -165,7 +166,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     [self removeFileIfexists:fileManager tempCoreDataPath:tempCoreDataPath];
     [self removeFileIfexists:fileManager tempCoreDataPath:[NSString stringWithFormat:@"%@%@", tempCoreDataPath, @"-shm"]];
     [self removeFileIfexists:fileManager tempCoreDataPath:[NSString stringWithFormat:@"%@%@", tempCoreDataPath, @"-wal"]];
-}
+}\
 
 - (NSString *)migrateCoreDataStoreToTemp {
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -442,12 +443,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
             documentPickerViewController.delegate = self;
             [self.hostingViewController presentViewController:documentPickerViewController animated:YES completion:NULL];
         } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                            message:NSLocalizedString(@"Backup file is ready.", nil)
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                  otherButtonTitles:nil];
-            [alert show];
+            [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                          message:NSLocalizedString(@"Backup file is ready.", nil)];
         }
 	} else {
 		_HUD.label.text = NSLocalizedString(@"Uploading", @"Uploading");
@@ -481,12 +478,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                     if (error == nil) {
                         [strongSelf.HUD hideAnimated:YES];
                         strongSelf.HUD = nil;
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info")
-                                                                        message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")
-                                                                       delegate:nil
-                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                                              otherButtonTitles:nil];
-                        [alert show];
+                        [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info")
+                                                                      message:NSLocalizedString(@"Backup file has been uploaded to Dropbox successfully.", @"Backup file has been uploaded to Dropbox successfully.")];
                         
                         [strongSelf deleteBackupFile];
                         
@@ -497,8 +490,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                         [strongSelf.HUD hideAnimated:YES];
                         strongSelf.HUD = nil;
                         
-                        UIAlertView *alertFail = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error") message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", @"Backup process failed to upload backup file to Dropbox.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        [alertFail show];
+                        [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Error", nil)
+                                                                      message:NSLocalizedString(@"Backup process failed to upload backup file to Dropbox.", nil)];
                         
                         [strongSelf deleteBackupFile];
                         FNLOG(@"%@", error.description);
@@ -576,130 +569,142 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 #pragma mark - Restore data
 
-- (void)restoreDataAt:(NSString *)backupFilePath toURL:(NSURL *)toURL {
+- (void)restoreV1BackupFile:(NSString *)backupFilePath {
+    [self extractV1DataFilesAt:backupFilePath];
+    
+    A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
+    migrationManager.migrationDirectory = backupFilePath;
+    migrationManager.canCancelInEncryptionKeyView = YES;
+    migrationManager.hostingViewController = self.hostingViewController;
+    if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
+        migrationManager.delegate = self;
+        self.migrationManager = migrationManager;
+        [self.migrationManager askWalletPassword];
+    } else {
+        [migrationManager migrateV1DataWithPassword:nil];
+        if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
+                [_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
+            }
+        }
+}
+
+- (void)moveMediaFiles:(NSFileManager *)fileManager sourceBaseURL:(NSURL *)sourceBaseURL targetBaseURL:(NSURL *)targetBaseURL {
+    [fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+    [fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+    [fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
+    
+    [self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory]
+                     toURL:[targetBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory]];
+    [self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]
+                     toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]];
+    [self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
+                     toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
+}
+
+- (void)migrateUserDefaults:(NSDictionary *)backupInfo version:(float)version {
+    NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
+    A3UserDefaults *standardUserDefaults = [A3UserDefaults standardUserDefaults];
+    for (NSString *key in [self userDefaultsKeys]) {
+        id object = [userDefaults objectForKey:key];
+        if (object) {
+            [standardUserDefaults setObject:object forKey:key];
+        } else {
+            [standardUserDefaults removeObjectForKey:key];
+        }
+    }
+    [standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
+    [standardUserDefaults synchronize];
+    
+    NSDictionary *deviceUserDefaultsBackup = backupInfo[A3BackupFileDeviceUserDefaultsKey];
+    NSUserDefaults *deviceUserDefaults = [NSUserDefaults standardUserDefaults];
+    for (id key in [deviceUserDefaultsBackup allKeys]) {
+        [deviceUserDefaults setObject:deviceUserDefaultsBackup[key] forKey:key];
+    }
+    if (version == 4.0) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
+    }
+    // Hexagon, Grid 스타일 메뉴는 4.0에 추가 되었다.
+    // 백업 파일이 4.0 이전에 만들어 졌다면, Hexagon, Grid 메뉴가 아예 없기 때문에 별도 메뉴 추가를 고려할 필요가 없다.
+    if (version >= 4.0 && version < 4.2) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
+    }
+    if (version >= 4.0 && version <= 4.2) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
+    }
+}
+
+- (void)taskAfterDBMigration:(NSString *)backupFilePath backupInfo:(NSDictionary *)backupInfo backupInfoFilePath:(NSString *)backupInfoFilePath fileManager:(NSFileManager *)fileManager sourceBaseURL:(NSURL *)sourceBaseURL version:(float)version {
+    // version >= 4.8
+    MediaFileMover *mover = [[MediaFileMover alloc] init];
+    NSURL *appGroupContainerURL = [fileManager containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
+    NSURL *mediaFilesURL = [appGroupContainerURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
+    NSError *error;
+    if (version >= 4.8) {
+        NSURL *mediaSourceURL = [sourceBaseURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
+        [mover moveFilesRecursivelyFrom:mediaSourceURL to:mediaFilesURL error:&error];
+    } else {
+        [mover moveMediaFilesFrom:sourceBaseURL error:&error];
+    }
+    [self migrateUserDefaults:backupInfo version:version];
+    
+    NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
+    if (selectedColor) {
+        [A3AppDelegate instance].window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
+    }
+    [fileManager removeItemAtPath:backupInfoFilePath error:NULL];
+    
+    // Cleanup restore source directory
+    [fileManager removeItemAtPath:backupFilePath error:NULL];
+    
+    if ([self->_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
+        [self->_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
+    }
+}
+
+- (void)restoreDataAt:(NSString *)backupFilePath {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    NSPersistentContainer *persistentContainer = CoreDataStack.shared.persistentContainer;
-    NSManagedObjectContext *context = persistentContainer.viewContext;
-    [context reset];
-    
-    NSError *error = nil;
-    NSPersistentStoreCoordinator *psc = persistentContainer.persistentStoreCoordinator;
-	for (NSPersistentStore *store in [psc persistentStores]) {
-		BOOL removed = [psc removePersistentStore:store error:&error];
-		
-		if (!removed) {
-			NSLog(@"Couldn't remove persistent store: %@", error);
-		}
-        NSError *destroyError = nil;
-        [psc destroyPersistentStoreAtURL:store.URL
-                                withType:store.type
-                                 options:store.options
-                                   error:&destroyError];
-        if (destroyError) {
-            FNLOG(@"%@", destroyError);
-        }
-	}
-    
-    [CoreDataStack.shared unloadPersistentContainer];
-    [CoreDataStack.shared deleteStoreFiles];
-    
-	[self removeMediaFiles];
+    NSString *backupInfoFilePath = [backupFilePath stringByAppendingPathComponent:A3BackupInfoFilename];
+    if (![fileManager fileExistsAtPath:backupInfoFilePath]) {
+        // A3BackupInfoFilename이 없다는 것은 3.0 이전의 백업 데이터라는 의미
+        [self restoreV1BackupFile:backupFilePath];
+        return;
+    }
 
-	NSString *backupInfoFilePath = [backupFilePath stringByAppendingPathComponent:A3BackupInfoFilename];
-	if ([fileManager fileExistsAtPath:backupInfoFilePath]) {
-		// Backup file is made with Version 3.0 or above
-		NSURL *sourceBaseURL = [NSURL fileURLWithPath:backupFilePath];
-		NSURL *targetBaseURL = [toURL URLByDeletingLastPathComponent];
+    NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
+    float version = [backupInfo[A3BackupFileVersionKey] floatValue];
+    NSURL *sourceBaseURL = [NSURL fileURLWithPath:backupFilePath];
 
-		NSString *filename = [fileManager storeFileName];
-		[self moveComponent:filename fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-wal"] fromURL:sourceBaseURL toURL:targetBaseURL];
-		[self moveComponent:[NSString stringWithFormat:@"%@%@", filename, @"-shm"] fromURL:sourceBaseURL toURL:targetBaseURL];
-
-		targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
-
-		[fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
-		[fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
-		[fileManager createDirectoryAtURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
-
-		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory]
-						 toURL:[targetBaseURL URLByAppendingPathComponent:A3DaysCounterImageDirectory]];
-		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]
-						 toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]];
-		[self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
-						 toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
-
-		NSDictionary *backupInfo = [[NSDictionary alloc] initWithContentsOfFile:backupInfoFilePath];
-		NSDictionary *userDefaults = backupInfo[A3BackupFileUserDefaultsKey];
-		A3UserDefaults *standardUserDefaults = [A3UserDefaults standardUserDefaults];
-		for (NSString *key in [self userDefaultsKeys]) {
-			id object = [userDefaults objectForKey:key];
-			if (object) {
-				[standardUserDefaults setObject:object forKey:key];
-			} else {
-				[standardUserDefaults removeObjectForKey:key];
-			}
-		}
-		[standardUserDefaults removeObjectForKey:A3SyncManagerCloudEnabled];
-		[standardUserDefaults synchronize];
-
-		NSDictionary *deviceUserDefaultsBackup = backupInfo[A3BackupFileDeviceUserDefaultsKey];
-		NSUserDefaults *deviceUserDefaults = [NSUserDefaults standardUserDefaults];
-		for (id key in [deviceUserDefaultsBackup allKeys]) {
-			[deviceUserDefaults setObject:deviceUserDefaultsBackup[key] forKey:key];
-		}
-		float version = [backupInfo[A3BackupFileVersionKey] floatValue];
-		if (version == 4.0) {
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
-		}
-		// Hexagon, Grid 스타일 메뉴는 4.0에 추가 되었다.
-		// 백업 파일이 4.0 이전에 만들어 졌다면, Hexagon, Grid 메뉴가 아예 없기 때문에 별도 메뉴 추가를 고려할 필요가 없다.
-		if (version >= 4.0 && version < 4.2) {
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
-		}
-		if (version >= 4.0 && version <= 4.2) {
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
-		}
-
-		NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
-		if (selectedColor) {
-            [A3AppDelegate instance].window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
-		}
-		[fileManager removeItemAtPath:backupInfoFilePath error:NULL];
-		[self moveFilesFromURL:sourceBaseURL toURL:targetBaseURL];
-
-        // Cleanup restore source directory
-        [fileManager removeItemAtPath:backupFilePath error:NULL];
+    // Delete all records and data files
+    CoreDataStack *coreDataStack = [CoreDataStack shared];
+    [coreDataStack deleteAllRecords:^(BOOL success, NSError * _Nullable error) {
+        if (!success) return;
         
-		[[A3AppDelegate instance] setupContext];
+        [self removeMediaFiles];
 
-		if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
-			[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
-		}
-	} else {
-		[self extractV1DataFilesAt:backupFilePath];
-
-		[[A3AppDelegate instance] setupContext];
-
-		A3DataMigrationManager *migrationManager = [[A3DataMigrationManager alloc] init];
-		migrationManager.migrationDirectory = backupFilePath;
-		migrationManager.canCancelInEncryptionKeyView = YES;
-		migrationManager.hostingViewController = self.hostingViewController;
-		if ([migrationManager walletDataFileExists] && ![migrationManager walletDataWithPassword:nil]) {
-			migrationManager.delegate = self;
-			self.migrationManager = migrationManager;
-			[self.migrationManager askWalletPassword];
-		} else {
-			[migrationManager migrateV1DataWithPassword:nil];
-			if ([_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
-				[_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
-			}
-		}
-	}
+        NSString *modelName = nil;
+        if (version < 4.8) {
+            modelName = @"AppBox3";
+        }
+        NSPersistentContainer *sourceContainer = [coreDataStack loadPersistentContainerWithModelName:modelName storeURL:sourceBaseURL];
+        DataMigrationManager *manager = [[DataMigrationManager alloc] initWithOldPersistentContainer:sourceContainer newPersistentContainer:coreDataStack.persistentContainer];
+        [manager migrateDataFromV3:version < 4.8
+                        completion:^{
+            // Delete Store file
+            [coreDataStack unloadPersistentContainerWithContainer:sourceContainer];
+            [coreDataStack deleteStoreFilesWithStoreURL:sourceBaseURL];
+            
+            [self taskAfterDBMigration:backupFilePath
+                            backupInfo:backupInfo
+                    backupInfoFilePath:backupInfoFilePath
+                           fileManager:fileManager
+                         sourceBaseURL:sourceBaseURL
+                               version:version];
+        }];
+    }];
 }
 
 /*! toURL 에 있는 파일을 지우고, 원본이 있으면 옮긴다.
@@ -758,12 +763,12 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)removeMediaFiles {
-	[self removeFilesAtDirectory:[A3DaysCounterImageDirectory pathInLibraryDirectory]];
-	[self removeFilesAtDirectory:[A3DaysCounterImageThumbnailDirectory pathInLibraryDirectory]];
-	[self removeFilesAtDirectory:[A3WalletImageDirectory pathInLibraryDirectory]];
-	[self removeFilesAtDirectory:[A3WalletImageThumbnailDirectory pathInLibraryDirectory]];
-	[self removeFilesAtDirectory:[A3WalletVideoDirectory pathInLibraryDirectory]];
-	[self removeFilesAtDirectory:[A3WalletVideoThumbnailDirectory pathInLibraryDirectory]];
+	[self removeFilesAtDirectory:[A3DaysCounterImageDirectory pathInAppGroupContainer]];
+	[self removeFilesAtDirectory:[A3DaysCounterImageThumbnailDirectory pathInAppGroupContainer]];
+	[self removeFilesAtDirectory:[A3WalletImageDirectory pathInAppGroupContainer]];
+	[self removeFilesAtDirectory:[A3WalletImageThumbnailDirectory pathInAppGroupContainer]];
+	[self removeFilesAtDirectory:[A3WalletVideoDirectory pathInAppGroupContainer]];
+	[self removeFilesAtDirectory:[A3WalletVideoThumbnailDirectory pathInAppGroupContainer]];
 }
 
 - (void)removeFilesAtDirectory:(NSString *)path {

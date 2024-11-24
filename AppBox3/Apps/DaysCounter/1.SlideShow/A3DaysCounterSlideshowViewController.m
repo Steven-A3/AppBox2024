@@ -68,8 +68,8 @@
     self.currentView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
     
     [_sharedManager setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
-    
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
     
     self.currentView.userInteractionEnabled = NO;
     [self addView:self.currentView];
@@ -88,8 +88,9 @@
 {
     [super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	[self startTimer];
 	
@@ -242,13 +243,13 @@
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         _nextView.layer.frame = _currentView.bounds;
-                         _currentView.layer.frame = CGRectMake(-_currentView.bounds.size.width, _currentView.bounds.origin.y, _currentView.bounds.size.width, _currentView.bounds.size.height);
+        self->_nextView.layer.frame = self->_currentView.bounds;
+        self->_currentView.layer.frame = CGRectMake(-self->_currentView.bounds.size.width, self->_currentView.bounds.origin.y, self->_currentView.bounds.size.width, self->_currentView.bounds.size.height);
                      }
                      completion:^(BOOL finished) {
-                         [_currentView removeFromSuperview];
-                         _currentView = nil;
-                         _currentView = _nextView;
+        [self->_currentView removeFromSuperview];
+        self->_currentView = nil;
+        self->_currentView = self->_nextView;
                          [self startTimer];
                      }];
 }
@@ -324,7 +325,8 @@
     if ( slideTimer )
         [slideTimer invalidate];
     slideTimer = nil;
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)addView:(UIView*)addView
@@ -373,8 +375,8 @@
     
     if (IS_IPHONE) {
         [self dismissViewControllerAnimated:NO completion:^{
-            if (_completionBlock) {
-                _completionBlock();
+            if (self->_completionBlock) {
+                self->_completionBlock();
             }
         }];
     }

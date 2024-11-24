@@ -242,8 +242,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 }
 
 - (BOOL)isCloudEnabled {
-	return [[NSFileManager defaultManager] ubiquityIdentityToken] &&
-			[[A3UserDefaults standardUserDefaults] boolForKey:A3SyncManagerCloudEnabled];
+    return [[NSFileManager defaultManager] ubiquityIdentityToken];
 }
 
 - (void)synchronizeWithCompletion:(nullable CDECompletionBlock)completion
@@ -320,8 +319,8 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	[_cloudFileSystem connect:^(NSError *error) {
 		[self->_cloudFileSystem fileExistsAtPath:directory completion:^(BOOL exists, BOOL isDirectory, NSError *error_) {
 			void (^fileCopyBlock)(NSError *) = ^(NSError *error__){
-				NSArray *files = [self->_fileManager contentsOfDirectoryAtPath:[directory pathInLibraryDirectory] error:NULL];
-				NSString *localBasePath = [directory pathInLibraryDirectory];
+				NSArray *files = [self->_fileManager contentsOfDirectoryAtPath:[directory pathInAppGroupContainer] error:NULL];
+				NSString *localBasePath = [directory pathInAppGroupContainer];
 				for (NSString *filename in files) {
 					NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
 					NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
@@ -354,7 +353,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
         [self->_cloudFileSystem contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error_) {
 			for (CDECloudFile *file in contents) {
 				NSString *filename = file.name;
-				NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInLibraryDirectory];
+				NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInAppGroupContainer];
 
 				if (![self->_fileManager fileExistsAtPath:localFile]) {
 					FNLOG(@"%@, %@", file.name, file.path);

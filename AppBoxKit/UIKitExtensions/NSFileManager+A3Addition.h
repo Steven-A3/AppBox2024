@@ -8,8 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const A3AppGroupIdentifier;
-
 @interface NSFileManager (A3Addition)
 
 - (NSString *)applicationSupportPath;

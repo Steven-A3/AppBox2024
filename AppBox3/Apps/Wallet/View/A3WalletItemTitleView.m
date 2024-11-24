@@ -56,13 +56,13 @@
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.baseline.equalTo(self.bottom).with.offset(-39);
 		make.left.equalTo(self.left).with.offset(leading);
-		make.right.equalTo(_favoriteButton.left).with.offset(5);
+		make.right.equalTo(self->_favoriteButton.left).with.offset(5);
 	}];
 	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
 		self.favoriteButtonWidth = make.width.equalTo(@40);
 		make.height.equalTo(@40);
 		make.right.equalTo(self.right).with.offset(-5);
-		make.centerY.equalTo(_titleTextField.centerY);
+		make.centerY.equalTo(self->_titleTextField.centerY);
 	}];
 }
 

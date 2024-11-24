@@ -138,14 +138,18 @@
 }
 
 - (void)cloudStoreDidImport {
-	BOOL oldIsLunarInput = _isLunarInput;
-	[self reloadDataFromStore];
-
-	if (oldIsLunarInput != _isLunarInput) {
-		_isLunarInput = oldIsLunarInput;
-		[self swapAction:nil];
-	}
-	[self calculateDate];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        BOOL oldIsLunarInput = self->_isLunarInput;
+        [self reloadDataFromStore];
+        
+        if (oldIsLunarInput != self->_isLunarInput) {
+            self->_isLunarInput = oldIsLunarInput;
+            [self swapAction:nil];
+        }
+        [self calculateDate];
+    });
 }
 
 - (void)reloadDataFromStore {
@@ -469,7 +473,7 @@
 	[_keyboardTopConstraint uninstall];
 	[_keyboardHeightConstraint uninstall];
 	[self.dateKeyboardVC.view updateConstraints:^(MASConstraintMaker *make) {
-		self.keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(_isShowKeyboard ? -keyboardHeight : 0);;
+        self.keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(self->_isShowKeyboard ? -keyboardHeight : 0);;
 		self.keyboardHeightConstraint = make.height.equalTo(@(keyboardHeight));
 	}];
 	[self.dateKeyboardVC.view.superview layoutIfNeeded];
@@ -605,7 +609,7 @@
 
 			UIView *middleCell = [pageView viewWithTag:102];
 			[middleCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@(middleHeight))];
+                [self->_cellHeightConstraints addObject:make.height.equalTo(@(middleHeight))];
 			}];
 		}
 		if (_pageControl.currentPage != 0) duration = 0;
@@ -1108,24 +1112,24 @@
 		[topLabel removeFromSuperview];
 		[bottomLabel removeFromSuperview];
 
-		if (_isLunarInput) {
+        if (self->_isLunarInput) {
 			BOOL isKorean = [A3UIDevice useKoreanLunarCalendarForConversion];
-			NSInteger maxDay = [NSDate lastMonthDayForLunarYear:_inputDateComponents.year month:_inputDateComponents.month isKorean:isKorean];
-			if (_inputDateComponents.day > maxDay) {
-				_inputDateComponents.day = maxDay;
+            NSInteger maxDay = [NSDate lastMonthDayForLunarYear:self->_inputDateComponents.year month:self->_inputDateComponents.month isKorean:isKorean];
+            if (self->_inputDateComponents.day > maxDay) {
+                self->_inputDateComponents.day = maxDay;
 			}
 		} else {
-			NSDateComponents *verifyingComponents = [_inputDateComponents copy];
+            NSDateComponents *verifyingComponents = [self->_inputDateComponents copy];
 			verifyingComponents.day = 1;
 			NSDate *verifyingDate = [self.calendar dateFromComponents:verifyingComponents];
 			NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:verifyingDate];
-			if (_inputDateComponents.day > range.length) {
-				_inputDateComponents.day = range.length;
+            if (self->_inputDateComponents.day > range.length) {
+                self->_inputDateComponents.day = range.length;
 			}
 		}
 
 		[self calculateDate];
-		self.dateKeyboardVC.isLunarDate = _isLunarInput;
+        self.dateKeyboardVC.isLunarDate = self->_isLunarInput;
 	}];
 }
 

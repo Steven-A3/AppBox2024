@@ -52,18 +52,18 @@
 		[_blurView addSubview:_darkFilterView];
 	}
 	[self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-		_blurView.alpha = 1.0;
+        self->_blurView.alpha = 1.0;
 	} completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
 	}];
 }
 
 - (void)dismissalTransitionWillBegin {
 	[self.presentingViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-		_blurView.alpha = 0;
+        self->_blurView.alpha = 0;
 	} completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-		[_blurView removeFromSuperview];
-		_blurView = nil;
-		_darkFilterView = nil;
+        [self->_blurView removeFromSuperview];
+        self->_blurView = nil;
+        self->_darkFilterView = nil;
 	}];
 }
 

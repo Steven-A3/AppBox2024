@@ -12,7 +12,6 @@
 @implementation NSDateFormatter (A3Addition)
 
 /*! Generate string from updateDate with NSDateFormatterLongStyle omitting Day part
- * \param NSDate
  * \returns string like February, 2014, 2014년 2월
  */
 - (NSString *)localizedLongStyleYearMonthFromDate:(NSDate *)date {
@@ -23,7 +22,6 @@
 }
 
 /*! Generate string from updateDate with NSDateFormatterMediumStyle omitting Day part
- * \param NSDate
  * \returns string like Feb, 2014, 2014년 2월
  */
 - (NSString *)localizedMediumStyleYearMonthFromDate:(NSDate *)date {

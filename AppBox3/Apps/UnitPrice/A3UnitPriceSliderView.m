@@ -313,33 +313,38 @@
     }
 
     if (animated) {
-        // 애니메이션
+        // Initial setup: setting alphas to 0 for fade-in effect
         _priceLabel.alpha = 0.0;
         _unitPriceLabel.alpha = 0.0;
         _priceNumLabel.alpha = 0.0;
         _unitPriceNumLabel.alpha = 0.0;
-        
+
         float aniDuration = 0.3;
-        [UIView beginAnimations:@"SliderUpdate" context:NULL];
-        [UIView setAnimationDuration:aniDuration];
-        CGPoint center = _thumbView.center;
-        center = CGPointMake(thumbX, center.y);
-        _thumbView.center = center;
-        
-        center = _markLabel.center;
-        center = CGPointMake(markX, center.y);
-        _markLabel.center = center;
-        
-        CGRect frame = _progressLineView.frame;
-        frame.size.width = _thumbView.center.x;
-        _progressLineView.frame = frame;
-        
-        _priceLabel.alpha = 1.0;
-        _unitPriceLabel.alpha = 1.0;
-        _priceNumLabel.alpha = 1.0;
-        _unitPriceNumLabel.alpha = 1.0;
-        
-        [UIView commitAnimations];
+
+        [UIView animateWithDuration:aniDuration
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+            // Animate thumbView and markLabel center positions
+            CGPoint center = self->_thumbView.center;
+            center = CGPointMake(thumbX, center.y);
+            self->_thumbView.center = center;
+
+            center = self->_markLabel.center;
+            center = CGPointMake(markX, center.y);
+            self->_markLabel.center = center;
+
+            // Animate progressLineView width
+            CGRect frame = self->_progressLineView.frame;
+            frame.size.width = self->_thumbView.center.x;
+            self->_progressLineView.frame = frame;
+
+            // Fade-in effect
+            self->_priceLabel.alpha = 1.0;
+            self->_unitPriceLabel.alpha = 1.0;
+            self->_priceNumLabel.alpha = 1.0;
+            self->_unitPriceNumLabel.alpha = 1.0;
+        } completion:nil];
     }
     else {
         // 애니메이션

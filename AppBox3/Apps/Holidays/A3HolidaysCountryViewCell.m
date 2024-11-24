@@ -53,7 +53,7 @@
 		_coverOnImageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 		[_backgroundImageView addSubview:_coverOnImageView];
 		[_coverOnImageView makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_backgroundImageView);
+            make.edges.equalTo(self->_backgroundImageView);
 		}];
 
 		_numberOfHolidays = [FXLabel new];
@@ -81,7 +81,7 @@
 
 		[_countryName makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.contentView.left).with.offset(leading);
-			make.right.lessThanOrEqualTo(_numberOfHolidays.left);
+            make.right.lessThanOrEqualTo(self->_numberOfHolidays.left);
 			make.centerY.equalTo(self.contentView.centerY).with.offset(-12);
 		}];
 		[_countryName setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -91,9 +91,9 @@
 		[self.contentView addSubview:_upcomingHoliday];
 
 		[_upcomingHoliday makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(_countryName.bottom);
-			make.left.equalTo(_countryName.left);
-            make.right.equalTo(_numberOfHolidays.left);
+            make.top.equalTo(self->_countryName.bottom);
+            make.left.equalTo(self->_countryName.left);
+            make.right.equalTo(self->_numberOfHolidays.left);
 		}];
 
 		[self layoutIfNeeded];
@@ -185,8 +185,8 @@
 		[self.contentView addSubview:_locationImageView];
 
 		[_locationImageView makeConstraints:^(MASConstraintMaker *make) {
-			make.baseline.equalTo(_countryName.baseline);
-			make.left.equalTo(_countryName.right).with.offset(8);
+            make.baseline.equalTo(self->_countryName.baseline);
+            make.left.equalTo(self->_countryName.right).with.offset(8);
 		}];
 	}
 	return _locationImageView;

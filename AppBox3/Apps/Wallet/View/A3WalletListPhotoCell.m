@@ -62,7 +62,6 @@
         CGFloat width = thumbImgView.bounds.size.width;
         thumbImgView.center = CGPointMake(leading + idx * (width + 10) + width/2.0, centerY);
     }
-	FNLOG(@"%f", self.contentView.center.y);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

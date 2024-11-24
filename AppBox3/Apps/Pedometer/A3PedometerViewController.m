@@ -232,12 +232,12 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	
 	CGPoint originalOffset = _collectionView.contentOffset;
 	[UIView animateWithDuration:0.4 animations:^{
-		[_collectionView setContentOffset:CGPointMake(originalOffset.x - 35, originalOffset.y)];
+        [self->_collectionView setContentOffset:CGPointMake(originalOffset.x - 35, originalOffset.y)];
 	} completion:^(BOOL finished) {
 		double delayInSeconds = 0.3;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[_collectionView setContentOffset:originalOffset animated:YES];
+            [self->_collectionView setContentOffset:originalOffset animated:YES];
 		});
 	}];
 	_remainingNumbersScrollAnimation--;
@@ -467,7 +467,7 @@ typedef NS_ENUM(NSInteger, A3PedometerQueryType) {
 	if (alertView.tag == 3000) {
 		if (buttonIndex == alertView.cancelButtonIndex) {
 			NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-			[[UIApplication sharedApplication] openURL:url];
+			[[UIApplication sharedApplication] openURL2:url];
 			_userLeftToVisitSettings = YES;
 		}
 	}

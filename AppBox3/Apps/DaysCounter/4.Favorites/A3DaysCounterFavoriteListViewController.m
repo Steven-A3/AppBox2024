@@ -96,9 +96,13 @@
 }
 
 - (void)cloudStoreDidImport {
-	self.itemArray = [NSMutableArray arrayWithArray:[_sharedManager favoriteEventsList]];
-	[self.tableView reloadData];
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self.itemArray = [NSMutableArray arrayWithArray:[self->_sharedManager favoriteEventsList]];
+        [self.tableView reloadData];
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -141,8 +145,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];

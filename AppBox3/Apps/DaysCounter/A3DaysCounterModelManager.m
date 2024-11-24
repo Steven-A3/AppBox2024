@@ -368,18 +368,23 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSString*)addressFromPlacemark:(CLPlacemark*)placemark
 {
-    NSDictionary *addressDict = placemark.addressDictionary;
     NSString *address = @"";
-    if ( [[addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] length] > 0 )
-       address = [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey];
-    if ( [placemark.subLocality length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),placemark.subLocality];
-    if ( [[addressDict objectForKey:(NSString*)kABPersonAddressCityKey] length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressCityKey]];
-    if ( [[addressDict objectForKey:(NSString*)kABPersonAddressStateKey] length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressStateKey]];
-    if ( [[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey]];
+
+    if (placemark.thoroughfare.length > 0) {
+        address = placemark.thoroughfare;
+    }
+    if (placemark.subLocality.length > 0) {
+        address = [address stringByAppendingFormat:@"%@%@", (address.length > 0 ? @" " : @""), placemark.subLocality];
+    }
+    if (placemark.locality.length > 0) {
+        address = [address stringByAppendingFormat:@"%@%@", (address.length > 0 ? @" " : @""), placemark.locality];
+    }
+    if (placemark.administrativeArea.length > 0) {
+        address = [address stringByAppendingFormat:@"%@%@", (address.length > 0 ? @" " : @""), placemark.administrativeArea];
+    }
+    if (placemark.country.length > 0) {
+        address = [address stringByAppendingFormat:@"%@%@", (address.length > 0 ? @" " : @""), placemark.country];
+    }
     return address;
 }
 
@@ -1292,31 +1297,20 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 
     // 기존 등록 얼럿 제거.
-    [[[UIApplication sharedApplication] scheduledLocalNotifications] enumerateObjectsUsingBlock:^(UILocalNotification *notification, NSUInteger idx, BOOL *stop) {
-        NSString *notificationType = [notification.userInfo objectForKey:A3LocalNotificationOwner];
-        if ([notificationType isEqualToString:A3LocalNotificationFromDaysCounter]) {
-            [[UIApplication sharedApplication] cancelLocalNotification:notification];
-        }
-    }];
+    [NotificationManager cancelPendingNotificationMatchingUserInfo:A3LocalNotificationOwner value:A3LocalNotificationFromDaysCounter];
 
 	NSArray *alertItems = [DaysCounterEvent_ findByAttribute:@"hasReminder" withValue:@YES];
 	
 	if (![alertItems count])
         return;
 
-    UIUserNotificationSettings *currentNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-    if (currentNotificationSettings.types == UIUserNotificationTypeNone) {
-        
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    }
+    [NotificationManager checkAndRequestNotificationPermissions];
 
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
     // 얼럿 생성 & 등록.
     NSDateComponents *nowDateComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[NSDate date]];
     nowDateComp.second = 0;
     __block NSDate *now = [calendar dateFromComponents:nowDateComp];
-    NSMutableArray *localNotifications = [NSMutableArray new];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent_ *event, NSUInteger idx, BOOL *stop) {
 		DaysCounterReminder_ *reminder = [event reminderItem];
         if ([event.hasReminder isEqualToNumber:@(NO)] && reminder) {
@@ -1382,16 +1376,14 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         }
         
         if ([event.alertDatetime timeIntervalSince1970] > [now timeIntervalSince1970]) {
-            // 현재 이후의 시간에 대하여 등록.
-            UILocalNotification *notification = [UILocalNotification new];
-            notification.fireDate = [event alertDatetime];
-            notification.alertBody = [event eventName];
-            notification.userInfo = @{
-                                       A3LocalNotificationOwner : A3LocalNotificationFromDaysCounter,
-                                       A3LocalNotificationDataID : [event uniqueID]};
-
-            [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-            [localNotifications addObject:notification];
+            [NotificationManager scheduleNotificationWithTitle:NSLocalizedString(@"DaysCounter", @"")
+                                                       message:[event eventName]
+                                                     soundName:nil
+                                                          date:[event alertDatetime]
+                                                      userInfo:@{
+                A3LocalNotificationOwner : A3LocalNotificationFromDaysCounter,
+                A3LocalNotificationDataID : [event uniqueID]
+            }];
         }
     }];
     

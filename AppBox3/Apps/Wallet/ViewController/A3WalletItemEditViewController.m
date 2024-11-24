@@ -437,58 +437,40 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     @autoreleasepool {
         if ([fieldItem.hasVideo boolValue]) {
             NSFileManager *fileManager = [NSFileManager defaultManager];
+            
+            // Define URLs for the original and temp video and thumbnail paths
             NSURL *videoFileURL = [fieldItem videoFileURLInOriginal:YES];
             NSURL *videoFileURLInTemp = [fieldItem videoFileURLInOriginal:NO];
             NSURL *thumbnailImagePath = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:YES]];
             NSURL *thumbnailImageInTemp = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:NO]];
+
+            NSError *error = nil;
             
-            NSError *error;
-            __block BOOL result;
-            NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-            [coordinator coordinateReadingItemAtURL:videoFileURLInTemp
-                                            options:NSFileCoordinatorReadingWithoutChanges
-                                   writingItemAtURL:videoFileURL
-                                            options:NSFileCoordinatorWritingForReplacing
-                                              error:&error
-                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                NSError *error2;
-                if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-                    result = [fileManager removeItemAtURL:newWritingURL error:NULL];
-                    NSAssert(result, @"[fileManager removeItemAtURL:newWritingURL error:NULL]");
-                }
-                if (![fileManager fileExistsAtPath:[newReadingURL path]]) {
-                    FNLOG(@"\n  if (![fileManager fileExistsAtPath:[newReadingURL path]]) ");
-                }
-                
-                if ([[A3SyncManager sharedSyncManager] isCloudEnabled]) {
-                    result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
-                } else {
-                    result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:&error2];
-                }
-                if (error2) {
-                    FNLOG(@"\n%@", [error2 localizedDescription]);
-                }
-                NSAssert(result, @"[fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL]");
-            }];
-            NSAssert([fileManager fileExistsAtPath:[videoFileURL path]], @"[fileManager fileExistsAtPath:[videoFileURL path]]");
-            NSAssert(![fileManager fileExistsAtPath:[videoFileURLInTemp path]], @"[fileManager fileExistsAtPath:[videoFileURLInTemp path]]");
+            // Remove existing files at destination if they exist
+            if ([fileManager fileExistsAtPath:videoFileURL.path]) {
+                [fileManager removeItemAtURL:videoFileURL error:nil];
+            }
+            if ([fileManager fileExistsAtPath:thumbnailImagePath.path]) {
+                [fileManager removeItemAtURL:thumbnailImagePath error:nil];
+            }
+
+            // Move the video file from temp to original
+            BOOL videoMoveSuccess = [fileManager moveItemAtURL:videoFileURLInTemp toURL:videoFileURL error:&error];
+            if (!videoMoveSuccess || error) {
+                NSLog(@"Failed to move video file: %@", error.localizedDescription);
+            }
+
+            // Move the thumbnail file from temp to original
+            BOOL thumbnailMoveSuccess = [fileManager moveItemAtURL:thumbnailImageInTemp toURL:thumbnailImagePath error:&error];
+            if (!thumbnailMoveSuccess || error) {
+                NSLog(@"Failed to move thumbnail image: %@", error.localizedDescription);
+            }
             
-            [coordinator coordinateReadingItemAtURL:thumbnailImageInTemp
-                                            options:NSFileCoordinatorReadingWithoutChanges
-                                   writingItemAtURL:thumbnailImagePath
-                                            options:NSFileCoordinatorWritingForReplacing
-                                              error:&error
-                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-                    result = [fileManager removeItemAtURL:newWritingURL error:NULL];
-                    NSAssert(result, @"result");
-                }
-                
-                result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-                NSAssert(result, @"[fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL]");
-            }];
-            NSAssert([fileManager fileExistsAtPath:[thumbnailImagePath path]], @"[fileManager fileExistsAtPath:[thumbnailImagePath path]]");
-            NSAssert(![fileManager fileExistsAtPath:[thumbnailImageInTemp path]], @"[fileManager fileExistsAtPath:[thumbnailImageInTemp path]]");
+            // Assertions for validation
+            NSAssert([fileManager fileExistsAtPath:videoFileURL.path], @"Video file should exist in original directory.");
+            NSAssert(![fileManager fileExistsAtPath:videoFileURLInTemp.path], @"Video file should no longer exist in temp directory.");
+            NSAssert([fileManager fileExistsAtPath:thumbnailImagePath.path], @"Thumbnail should exist in original directory.");
+            NSAssert(![fileManager fileExistsAtPath:thumbnailImageInTemp.path], @"Thumbnail should no longer exist in temp directory.");
         }
     }
 }
@@ -1100,7 +1082,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 			ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 			[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
                 NSDate *mediaCreationDate = [asset valueForProperty:ALAssetPropertyDate];
-                _currentFieldItem.videoCreationDate = mediaCreationDate;
+                self->_currentFieldItem.videoCreationDate = mediaCreationDate;
 			} failureBlock:^(NSError *error) {
 				// error handling
 			}];
@@ -1130,8 +1112,8 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 			ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 			[library assetForURL:referenceURL resultBlock:^(ALAsset *asset) {
 				ALAssetRepresentation *rep = [asset defaultRepresentation];
-				_imageMetadata = rep.metadata;
-				[self saveMetadata:_imageMetadata addLocation:NO];
+                self->_imageMetadata = rep.metadata;
+				[self saveMetadata:self->_imageMetadata addLocation:NO];
 			} failureBlock:^(NSError *error) {
 				// error handling
 			}];

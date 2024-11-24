@@ -36,7 +36,7 @@
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left).with.offset(leading);
 			make.width.equalTo(self.width).with.offset(IS_IPHONE ? -30 : -56);
-			_titleCenterY = make.centerY.equalTo(self.centerY).with.offset(0);
+            self->_titleCenterY = make.centerY.equalTo(self.centerY).with.offset(0);
 		}];
 
 		_lunarDateLabel = [UILabel new];
@@ -48,7 +48,7 @@
 
 		[_lunarDateLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.right.equalTo(self.right).with.offset(-leading);
-			make.top.equalTo(_titleLabel.bottom).offset(10);
+            make.top.equalTo(self->_titleLabel.bottom).offset(10);
 		}];
 
 		_lunarImageView = [UIImageView new];
@@ -58,8 +58,8 @@
 		[self addSubview:_lunarImageView];
 
 		[_lunarImageView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_lunarDateLabel.centerY);
-			make.right.equalTo(_lunarDateLabel.left).with.offset(6);
+            make.centerY.equalTo(self->_lunarDateLabel.centerY);
+            make.right.equalTo(self->_lunarDateLabel.left).with.offset(6);
 		}];
 
 		[self dateLabel];
@@ -104,14 +104,14 @@
 			_publicLabel = _publicMarkView.subviews[0];
 
 			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
-				make.centerY.equalTo(_dateLabel.centerY);
+                make.centerY.equalTo(self->_dateLabel.centerY);
 				make.width.equalTo(@18);
 				make.height.equalTo(@18);
 			}];
 		} else {
 			// IPAD의 경우, 항상 같은 위치에 표시
 			[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-				make.baseline.equalTo(_titleLabel.baseline);
+                make.baseline.equalTo(self->_titleLabel.baseline);
 				make.right.equalTo(self.right).with.offset(-28);
 			}];
 
@@ -127,7 +127,7 @@
 				make.width.equalTo(@(size.width + 2));
 				make.height.equalTo(@(size.height));
 				make.centerX.equalTo(self.centerX);
-				make.centerY.equalTo(_titleLabel.centerY);
+                make.centerY.equalTo(self->_titleLabel.centerY);
 			}];
 			[_publicLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
@@ -140,8 +140,8 @@
 			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
 				make.width.equalTo(@(size.width + 9));
 				make.height.equalTo(@(size.height + 4));
-				make.centerX.equalTo(_publicLabel.centerX);
-				make.centerY.equalTo(_publicLabel.centerY);
+                make.centerX.equalTo(self->_publicLabel.centerX);
+                make.centerY.equalTo(self->_publicLabel.centerY);
 			}];
 		}
 	}
@@ -186,33 +186,33 @@
 	if (IS_IPHONE) {
 		[_dateLabel sizeToFit];
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-			switch (_cellType) {
+            switch (self->_cellType) {
 				case A3HolidayCellTypeSingleLine:
 				case A3HolidayCellTypeLunar1:
-					[self.mutableConstraints addObject:make.baseline.equalTo(_titleLabel.baseline)];
+                    [self.mutableConstraints addObject:make.baseline.equalTo(self->_titleLabel.baseline)];
 					[self.mutableConstraints addObject:make.right.equalTo(self.right).offset(-leading)];
 					[self.mutableConstraints addObject:make.width.equalTo(@(78))];
-					_dateLabel.textAlignment = NSTextAlignmentRight;
+                    self->_dateLabel.textAlignment = NSTextAlignmentRight;
 					break;
 				case A3HolidayCellTypeDoubleLine:
 				case A3HolidayCellTypeLunar2:
-					if (_showPublic) {
-						[self.mutableConstraints addObject:make.left.equalTo(_publicMarkView.right).with.offset(5)];
+                    if (self->_showPublic) {
+                        [self.mutableConstraints addObject:make.left.equalTo(self->_publicMarkView.right).with.offset(5)];
 					} else {
 						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(leading)];
 					}
 					[self.mutableConstraints addObject:make.right.equalTo(self.right)];
 					[self.mutableConstraints addObject:make.centerY.equalTo(self.centerY).with.offset(leading)];
-					_dateLabel.textAlignment = NSTextAlignmentLeft;
+                    self->_dateLabel.textAlignment = NSTextAlignmentLeft;
 					break;
 			}
 		}];
 		if (_showPublic) {
 			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
-				switch (_cellType) {
+                switch (self->_cellType) {
 					case A3HolidayCellTypeSingleLine:
 					case A3HolidayCellTypeLunar1:
-						[self.mutableConstraints addObject:make.right.equalTo(_dateLabel.left).with.offset(-5)];
+                        [self.mutableConstraints addObject:make.right.equalTo(self->_dateLabel.left).with.offset(-5)];
 						break;
 					case A3HolidayCellTypeDoubleLine:
 					case A3HolidayCellTypeLunar2:

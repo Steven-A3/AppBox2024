@@ -1043,7 +1043,7 @@
         make.height.equalTo(@44);
         make.centerY.equalTo(self.sliderLine1View.centerY);
         //_sliderThumb1LeadingCenter = make.leading.equalTo(@0);
-        _sliderThumb1LeadingCenter = make.left.equalTo(self.left);
+        self->_sliderThumb1LeadingCenter = make.left.equalTo(self.left);
     }];
     [_sliderLine1GaugeView makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.left);

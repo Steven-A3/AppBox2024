@@ -279,25 +279,25 @@
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, .01 * NSEC_PER_SEC); // WTF!
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [CATransaction begin];
-        [CATransaction setAnimationDuration:_duration];
+        [CATransaction setAnimationDuration:self->_duration];
         
         [CATransaction setCompletionBlock:^{
-            [_flipLayer removeFromSuperlayer]; _flipLayer = nil;
-            [_topFaceLayer removeFromSuperlayer]; _topFaceLayer = nil;
-            [_bottomFaceLayer removeFromSuperlayer]; _bottomFaceLayer = nil;
-            [_tickLayer removeFromSuperlayer]; _tickLayer = nil;
+            [self->_flipLayer removeFromSuperlayer]; self->_flipLayer = nil;
+            [self->_topFaceLayer removeFromSuperlayer]; self->_topFaceLayer = nil;
+            [self->_bottomFaceLayer removeFromSuperlayer]; self->_bottomFaceLayer = nil;
+            [self->_tickLayer removeFromSuperlayer]; self->_tickLayer = nil;
 
             [self _finalizeTick:completion];
         }];
         
         CGFloat angle = (M_PI) * (1-direction);
-        _tickLayer.transform = CATransform3DMakeRotation(angle, 1., 0., 0.);
+        self->_tickLayer.transform = CATransform3DMakeRotation(angle, 1., 0., 0.);
         
-        _topFaceLayer.gradientOpacity = direction;
-        _bottomFaceLayer.gradientOpacity = 1. - direction;
+        self->_topFaceLayer.gradientOpacity = direction;
+        self->_bottomFaceLayer.gradientOpacity = 1. - direction;
         
-        ((SBGradientOverlayLayer*)_tickLayer.frontLayer).gradientOpacity = 1. - direction;
-        ((SBGradientOverlayLayer*)_tickLayer.backLayer).gradientOpacity = direction;
+        ((SBGradientOverlayLayer*)self->_tickLayer.frontLayer).gradientOpacity = 1. - direction;
+        ((SBGradientOverlayLayer*)self->_tickLayer.backLayer).gradientOpacity = direction;
         
         [CATransaction commit];
     });

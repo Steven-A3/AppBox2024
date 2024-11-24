@@ -87,7 +87,7 @@
     }
     
 	if (inOriginalDirectory) {
-		NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInLibraryDirectory];
+		NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInAppGroupContainer];
 		FNLOG(@"\nphotoOriginalPath: %@", path);
 		return [NSURL fileURLWithPath:path];
 	} else {

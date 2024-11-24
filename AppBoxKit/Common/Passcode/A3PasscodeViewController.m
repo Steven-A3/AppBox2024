@@ -29,19 +29,19 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 // Gaps
 // To have a properly centered Passcode, the horizontal gap difference between iPhone and iPad
 // must have the same ratio as the font size difference between them.
-#define kHorizontalGap (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? kiPhoneHorizontalGap * kFontSizeModifier : kiPhoneHorizontalGap)
-#define kVerticalGap (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 60.0f : 25.0f)
-#define kModifierForBottomVerticalGap (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 2.6f : 3.0f)
+#define kHorizontalGap ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? kiPhoneHorizontalGap * kFontSizeModifier : kiPhoneHorizontalGap)
+#define kVerticalGap ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 60.0f : 25.0f)
+#define kModifierForBottomVerticalGap ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? 2.6f : 3.0f)
 // Text Sizes
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
 #define kPasscodeCharWidth [kPasscodeCharacter sizeWithAttributes: @{NSFontAttributeName : kPasscodeFont}].width
-#define kFailedAttemptLabelWidth (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [_failedAttemptLabel.text sizeWithAttributes: @{NSFontAttributeName : kLabelFont}].width + 60.0f : [_failedAttemptLabel.text sizeWithAttributes: @{NSFontAttributeName : kLabelFont}].width + 30.0f)
+#define kFailedAttemptLabelWidth ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? [_failedAttemptLabel.text sizeWithAttributes: @{NSFontAttributeName : kLabelFont}].width + 60.0f : [_failedAttemptLabel.text sizeWithAttributes: @{NSFontAttributeName : kLabelFont}].width + 30.0f)
 #define kFailedAttemptLabelHeight [_failedAttemptLabel.text sizeWithAttributes: @{NSFontAttributeName : kLabelFont}].height
 #define kEnterPasscodeLabelWidth [_enterPasscodeLabel.text sizeWithAttributes: @{NSFontAttributeName : kLabelFont}].width
 #else
 // Thanks to Kent Nguyen - https://github.com/kentnguyen
 	#define kPasscodeCharWidth [kPasscodeCharacter sizeWithFont:kPasscodeFont].width
-	#define kFailedAttemptLabelWidth (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [_failedAttemptLabel.text sizeWithFont:kLabelFont].width + 60.0f : [_failedAttemptLabel.text sizeWithFont:kLabelFont].width + 30.0f)
+	#define kFailedAttemptLabelWidth ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? [_failedAttemptLabel.text sizeWithFont:kLabelFont].width + 60.0f : [_failedAttemptLabel.text sizeWithFont:kLabelFont].width + 30.0f)
 	#define kFailedAttemptLabelHeight [_failedAttemptLabel.text sizeWithFont:kLabelFont].height
 	#define kEnterPasscodeLabelWidth [_enterPasscodeLabel.text sizeWithFont:kLabelFont].width
 #endif
@@ -53,7 +53,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
 // Fonts
 #define kLabelFont [UIFont systemFontOfSize:17]
-#define kPasscodeFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kPasscodeFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kPasscodeFontSize])
+#define kPasscodeFont ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kPasscodeFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kPasscodeFontSize])
 // Text Colors
 #define kLabelTextColor [UIColor colorWithWhite:0.31f alpha:1.0f]
 #define kPasscodeTextColor [UIColor colorWithWhite:0.31f alpha:1.0f]
@@ -345,8 +345,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 /*! dismissMe 는 암호가 확인이 되면 호출이 됨. 만약 암호가 틀리면 denyAccess 가 수행이 된다.
  * Cancel 을 눌렀을때는 cancelAndDismissMe 로 분기가 되는 것
- * \param
- * \returns
  */
 - (void)dismissMe {
 	_isCurrentlyOnScreen = NO;
@@ -609,7 +607,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	} completion:^(BOOL finished) {
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+        self->_isNumberKeyboardVisible = NO;
 	}];
 }
 
@@ -626,11 +624,11 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	else _fourthDigitTextField.secureTextEntry = NO;
 
     void(^deleteLastCharacter)(void) = ^{
-		if ([_editingTextField.text length] > 2) {
-			_editingTextField.text = [_editingTextField.text substringToIndex:[_editingTextField.text length] - 2];
-			FNLOG(@"%@", _editingTextField.text);
+		if ([self->_editingTextField.text length] > 2) {
+            self->_editingTextField.text = [self->_editingTextField.text substringToIndex:[self->_editingTextField.text length] - 2];
+			FNLOG(@"%@", self->_editingTextField.text);
 		} else {
-			_editingTextField.text = @"";
+            self->_editingTextField.text = @"";
 		}
 	};
 

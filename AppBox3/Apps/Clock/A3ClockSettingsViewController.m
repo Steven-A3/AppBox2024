@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "UIViewController+A3Addition.h"
 
 typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchWithSecond = 1000,
@@ -100,8 +101,9 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 
     [self.myTableView reloadData];
 }
@@ -115,7 +117,8 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 }
 
 - (void)doneButtonAction:(id)button {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	if (IS_IPAD) {
 		[[[A3AppDelegate instance] rootViewController_iPad] dismissRightSideViewController];

@@ -191,9 +191,13 @@ NSString *const A3UnitConverterAdCellID = @"A3UnitConverterAdCell";
         return;
     }
 
-	_convertItems = nil;
-    [self.fmMoveTableView reloadData];
-    [self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_convertItems = nil;
+        [self.fmMoveTableView reloadData];
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -1266,15 +1270,15 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 	[_dataManager replaceConvertItems:[_convertItems copy] forCategory:_categoryID];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[_convertItems removeObject:_equalItem];
-		[_convertItems removeObject:_adItem];
+        [self->_convertItems removeObject:self->_equalItem];
+		[self->_convertItems removeObject:self->_adItem];
 		
-		[_convertItems insertObject:_equalItem atIndex:1];
-		if (_adItem) {
-            NSInteger position = [_convertItems count] > 3 ? 4 : [_convertItems count];
-			[_convertItems insertObject:_adItem atIndex:position];
+		[self->_convertItems insertObject:self->_equalItem atIndex:1];
+		if (self->_adItem) {
+            NSInteger position = [self->_convertItems count] > 3 ? 4 : [self->_convertItems count];
+			[self->_convertItems insertObject:self->_adItem atIndex:position];
 		}
-		[_fmMoveTableView reloadData];
+		[self->_fmMoveTableView reloadData];
 	});
 }
 
@@ -1316,7 +1320,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 		double delayInSeconds = 0.3;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[_fmMoveTableView reloadData];
+			[self->_fmMoveTableView reloadData];
 		});
 	}
 	else {
@@ -1367,7 +1371,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			double delayInSeconds = 0.3;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[_fmMoveTableView reloadData];
+				[self->_fmMoveTableView reloadData];
 			});
 		}
 	}
@@ -1818,7 +1822,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [_fmMoveTableView reloadData];
+        [self->_fmMoveTableView reloadData];
     });
 }
 
@@ -1895,7 +1899,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 			double delayInSeconds = 0.3;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[_fmMoveTableView reloadRowsAtIndexPaths:[_fmMoveTableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
+				[self->_fmMoveTableView reloadRowsAtIndexPaths:[self->_fmMoveTableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
 			});
 		}
 	}

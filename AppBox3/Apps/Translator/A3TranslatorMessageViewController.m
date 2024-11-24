@@ -133,8 +133,12 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)cloudStoreDidImport {
 	if (![_translatedTextLanguage length]) return;
 
-	_messages = nil;
-	[_messageTableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_messages = nil;
+        [self->_messageTableView reloadData];
+    });
 }
 
 - (void)removeObserver {
@@ -324,7 +328,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		double delayInSeconds = 0.4;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[_textEntryBarView setHidden:NO];
+			[self->_textEntryBarView setHidden:NO];
 		});
 	}
 	[self resignFirstResponder];
@@ -784,7 +788,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[_sameLanguagePrompter makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.view.left);
 			make.right.equalTo(self.view.right);
-			make.top.equalTo(_languageSelectView ? _languageSelectView.bottom : self.view.bottom);
+			make.top.equalTo(self->_languageSelectView ? self->_languageSelectView.bottom : self.view.bottom);
 			make.height.equalTo(@30);
 		}];
 
@@ -801,7 +805,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[_sameLanguagePrompter addSubview:messageLabel];
 
 		[messageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_networkPrompter);
+			make.edges.equalTo(self->_networkPrompter);
 		}];
 
 		[[messageLabel layer] addAnimation:[self blinkAnimation] forKey:A3AnimationKeyOpacity];
@@ -1466,7 +1470,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
 			[self presentActivityViewControllerWithActivityItems:@[self]
 											   fromBarButtonItem:barButtonItem
 											   completionHandler:^() {
-												   _sharePopoverController = nil;
+                self->_sharePopoverController = nil;
 											   }];
 	_sharePopoverController.delegate = self;
 }

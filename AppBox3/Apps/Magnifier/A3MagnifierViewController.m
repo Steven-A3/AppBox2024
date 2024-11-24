@@ -449,7 +449,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     FNLOGRECT(_brightnessToolBar.frame);
     FNLOGRECT(_magnifierToolBar.frame);
 	_statusToolbar.hidden = hidden;
-	[[UIApplication sharedApplication] setStatusBarHidden:hidden];
+    [self setValuePrefersStatusBarHidden:hidden];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)didReceiveMemoryWarning
@@ -620,8 +621,8 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 
 														   CGAffineTransform t = [self getRotationTransformWithOption:NO];
 														   ciSaveImg = [ciSaveImg imageByApplyingTransform:t];
-														   CGImageRef cgimg = [_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
-														   [self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
+                                                           CGImageRef cgimg = [self->_ciContext createCGImage:ciSaveImg fromRect:[ciSaveImg extent]];
+                                                           [self.assetLibrary writeImageToSavedPhotosAlbum:cgimg metadata:[self->_ciImage properties] completionBlock:^(NSURL *assetURL, NSError *error) {
 															   if (error) {
 																   [self displayErrorOnMainQueue:error withMessage:NSLocalizedString(@"Save to camera roll failed.", @"Save to camera roll failed.")];
 															   } else {

@@ -98,8 +98,9 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 		[self leftBarButtonAppsButton];
 	}
 	[self.navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

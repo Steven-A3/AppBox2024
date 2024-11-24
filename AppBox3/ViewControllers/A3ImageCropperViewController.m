@@ -89,7 +89,8 @@
 
 	self.title = NSLocalizedString(@"Move and Scale", @"Move and Scale");
 
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
 
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelCropping)];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finishCropping)];

@@ -200,7 +200,7 @@
 - (void)animateBarCompletion:(void (^)(BOOL finished))completion {
 	[UIView animateWithDuration:0.8
 					 animations:^{
-						 [self setPedometerData:_pedometerData];
+        [self setPedometerData:self->_pedometerData];
 					 } completion:completion];
 }
 

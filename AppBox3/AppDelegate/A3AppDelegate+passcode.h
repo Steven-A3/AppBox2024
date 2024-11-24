@@ -34,6 +34,7 @@
 - (BOOL)shouldAskPasscodeForLadyCalendar;
 - (BOOL)shouldAskPasscodeForWallet;
 - (double)timerDuration;
+- (void)handleRemoveSecurityCoverView;
 
 @end
 

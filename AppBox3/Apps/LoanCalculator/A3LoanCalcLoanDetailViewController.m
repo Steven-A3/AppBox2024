@@ -89,16 +89,20 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	if (self.editingObject) {
 		return;
 	}
-	self.calcItems = nil;
-
-	NSString *key = _isLoanData_A ? A3LoanCalcUserDefaultsLoanDataKey_A : A3LoanCalcUserDefaultsLoanDataKey_B;
-	NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:key];
-	if (loanData) {
-		self.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
-	}
-
-	[self.tableView reloadData];
-	[self enableControls:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self.calcItems = nil;
+        
+        NSString *key = _isLoanData_A ? A3LoanCalcUserDefaultsLoanDataKey_A : A3LoanCalcUserDefaultsLoanDataKey_B;
+        NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:key];
+        if (loanData) {
+            self.loanData = [NSKeyedUnarchiver unarchiveObjectWithData:loanData];
+        }
+        
+        [self.tableView reloadData];
+        [self enableControls:YES];
+    });
 }
 
 - (void)removeObserver {
@@ -690,7 +694,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 		[keyboardView removeFromSuperview];
 		[keyboardViewController removeFromParentViewController];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+        self->_isNumberKeyboardVisible = NO;
 	}];
 }
 
@@ -953,17 +957,16 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (void)scrollToTopOfTableView {
-	[UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	if (self.tableView.contentInset.top == 0) {
-		self.tableView.contentOffset = CGPointMake(0.0, 0.0);
-	}
-	else {
-		self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
-	}
-	[UIView commitAnimations];
+    [UIView animateWithDuration:0.35
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        if (self.tableView.contentInset.top == 0) {
+            self.tableView.contentOffset = CGPointMake(0.0, 0.0);
+        } else {
+            self.tableView.contentOffset = CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [A3UIDevice statusBarHeight]));
+        }
+    } completion:nil];
 }
 
 @end

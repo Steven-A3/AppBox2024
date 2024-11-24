@@ -203,37 +203,41 @@
 //
 //    });
 
-    // 애니메이션 Start
+    // Initialize labels to be fully transparent before animation
     graphCell.upLabel.alpha = 0.0;
     graphCell.lowLabel.alpha = 0.0;
 
     float aniDuration = 0.3;
-    [UIView beginAnimations:@"GraphUpdate" context:NULL];
-    [UIView setAnimationDuration:aniDuration];
-
     float percentOfRedBar = 0;
 
+    // Calculate `percentOfRedBar` based on `_totalMode`
     if (_totalMode) {
         float valueUp = [_loanData totalInterest].floatValue;
         float valueDown = [_loanData totalAmount].floatValue;
-        percentOfRedBar = valueUp/valueDown;
-    }
-    else {
+        percentOfRedBar = valueUp / valueDown;
+    } else {
         float valueUp = [_loanData monthlyAverageInterest].floatValue;
         float valueDown = [_loanData repayment].floatValue;
-        percentOfRedBar = valueUp/valueDown;
+        percentOfRedBar = valueUp / valueDown;
     }
 
+    // Calculate the target frame for `redLineView`
     CGRect redRect = graphCell.redLineView.frame;
     redRect.size.width = self.view.bounds.size.width * percentOfRedBar;
     redRect.size.height = 4;
-    graphCell.redLineView.frame = redRect;
 
-    // 애니메이션 End
-    graphCell.upLabel.alpha = 1.0;
-    graphCell.lowLabel.alpha = 1.0;
-
-    [UIView commitAnimations];
+    // Animate using block-based animation
+    [UIView animateWithDuration:aniDuration
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+        // Update redLineView's frame within the animation block
+        graphCell.redLineView.frame = redRect;
+        
+        // Fade in upLabel and lowLabel during the animation
+        graphCell.upLabel.alpha = 1.0;
+        graphCell.lowLabel.alpha = 1.0;
+    } completion:nil];
 
     // text info
     NSString *interestText = _totalMode ? NSLocalizedString(@"Total Interest", nil) : NSLocalizedString(@"Avg.Interest", @"Avg.Interest");

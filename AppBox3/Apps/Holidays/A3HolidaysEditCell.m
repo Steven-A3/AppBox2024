@@ -47,8 +47,8 @@
 
 		CGSize size = [_publicLabel.text sizeWithAttributes:@{NSFontAttributeName : _publicLabel.font}];
 		[_publicLabel makeConstraints:^(MASConstraintMaker *make) {
-			_publicMarkWidth = make.width.equalTo(@(size.width + 2));
-			_publicMarkHeight = make.height.equalTo(@(size.height));
+            self->_publicMarkWidth = make.width.equalTo(@(size.width + 2));
+            self->_publicMarkHeight = make.height.equalTo(@(size.height));
 			make.centerY.equalTo(self.centerY);
 			if (IS_IPAD) {
 				make.centerX.equalTo(self.centerX);

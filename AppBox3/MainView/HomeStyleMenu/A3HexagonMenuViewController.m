@@ -275,7 +275,7 @@ A3InstructionViewControllerDelegate>
 	_availableMenuItems = nil;
 
 	[collectionViewLayout removeCellFakeView:^{
-		[self.collectionView reloadItemsAtIndexPaths:@[_movingCellOriginalIndexPath]];
+		[self.collectionView reloadItemsAtIndexPaths:@[self->_movingCellOriginalIndexPath]];
 	}];
 
 	[[NSUserDefaults standardUserDefaults] setObject:_menuItems forKey:A3MainMenuHexagonMenuItems];
@@ -306,7 +306,7 @@ A3InstructionViewControllerDelegate>
 		[_appTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(superview.centerX);
 			CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-			_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * ([UIWindow interfaceOrientationIsPortrait] ? 0.15 : 0.11));
+            self->_appTitleTopConstraint =  make.top.equalTo(superview.top).with.offset(screenBounds.size.height * ([UIWindow interfaceOrientationIsPortrait] ? 0.15 : 0.11));
 		}];
 	}
 	return _appTitleLabel;

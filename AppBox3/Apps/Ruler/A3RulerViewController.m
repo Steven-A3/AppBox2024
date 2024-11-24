@@ -91,7 +91,8 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
 	[self.navigationController setNavigationBarHidden:YES];
 
 	self.view.backgroundColor = [UIColor whiteColor];
@@ -104,11 +105,13 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 }
 
 - (void)mainMenuDidHide {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)drawerStateChanged {
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)removeObserver {

@@ -78,10 +78,9 @@ NSString *const A3AppStoreReceiptBackupFilename = @"AppStoreReceiptBackup";
 NSString *const A3AppStoreCloudDirectoryName = @"AppStore";
 NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstall";
 
-@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate>
+@interface A3AppDelegate () <UIAlertViewDelegate, NSURLSessionDownloadDelegate, CLLocationManagerDelegate, GADFullScreenContentDelegate, UNUserNotificationCenterDelegate>
 
 @property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
-@property (nonatomic, strong) UILocalNotification *storedLocalNotification;
 @property (nonatomic, strong) NSMutableArray *downloadList;
 @property (nonatomic, strong) NSURLSession *backgroundDownloadSession;
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -108,13 +107,100 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+#ifdef  DEBUG
+    [self experiments];
+#endif
+
+    [FIRApp configure];
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+    
+    BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
+
+    _shouldPresentAd = YES;
+    _expirationDate = [NSDate distantPast];
+    _passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
+    _appIsNotActiveYet = YES;
+
+    _previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
+    NSString *activeVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
+
+    CoreDataStack *stack = [CoreDataStack shared];
+    [stack setupStackWithCompletion:^{
+        if (!self->_previousVersion) {
+            // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
+            // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
+            self->_firstRunAfterInstall = YES;
+            [A3KeychainUtils removePassword];
+            [self initializePasscodeUserDefaults];
+            
+            [self prepareDirectories];
+            [self favoriteMenuDictionary];
+            
+            [self setDefaultValues];
+            
+            [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
+            [[A3UserDefaults standardUserDefaults] synchronize];
+            
+            iCloudFileManager *fileManager = [[iCloudFileManager alloc] init];
+            [fileManager downloadMediaFilesToAppGroupWithProgressHandler:^(NSNumber * _Nonnull progress) {
+                
+            } completion:^(NSError * _Nullable error) {
+                
+            }];
+            
+            [self setupMainMenuViewController];
+            [self handleNotification:launchOptions];
+            [self addNotificationObservers];
+        } else if (![self->_previousVersion isEqualToString:activeVersion]) {
+            // First run after update.
+            
+            if ([self->_previousVersion compare:@"4.7.7" options:NSNumericSearch] == NSOrderedAscending) {
+                [self migrateV47StoreFilesToAfterV48];
+                [self migratePre2024MediaFiles];
+            }
+
+            CoreDataStack *stack = [CoreDataStack shared];
+            NSURL *storeURL = [stack V47StoreURL];
+            NSPersistentContainer *container = [stack loadPersistentContainerWithModelName:@"AppBox3" storeURL:storeURL];
+            MigrationHostingViewController *vc =
+            [[MigrationHostingViewController alloc] initWithOldPersistentContainer:container
+                                                                        completion:^{
+                [self setupMainMenuViewController];
+                // Set the UNUserNotificationCenter delegate
+                
+                [self handleNotification:launchOptions];
+                [self addNotificationObservers];
+                
+                [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
+                [[A3UserDefaults standardUserDefaults] synchronize];
+            }];
+            self.window.rootViewController = vc;
+        } else {
+            [self setupMainMenuViewController];
+            [self handleNotification:launchOptions];
+            [self addNotificationObservers];
+        }
+        
+        [self.window makeKeyAndVisible];
+    }];
+
+    return shouldPerformAdditionalDelegateHandling;
+}
+
 - (void)updateStartOption {
     _startOptionOpenClockOnce = [[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsStartOptionOpenClockOnce];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:A3UserDefaultsStartOptionOpenClockOnce];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-// TODO: 3D Touch 장비 입수후 테스트 필요
 - (BOOL)shouldPerformAdditionalDelegateHandling:(NSDictionary *)launchOptions {
     if (launchOptions) {
         _shortcutItem = launchOptions[UIApplicationLaunchOptionsShortcutItemKey];
@@ -131,7 +217,10 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
 
 - (void)setDefaultValues {
-    if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
+    if (!_previousVersion) {
+        return;
+    }
+    if ([_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.3) {
         FNLOG(@"%@", @([[_previousVersion substringToIndex:3] doubleValue]));
         // 3.3 이전버전에서 업데이트 한 경우
         // V3.3 부터 Touch ID가 추가되고 Touch ID 활성화가 기본
@@ -140,21 +229,20 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         [[A3UserDefaults standardUserDefaults] removeObjectForKey:kUserDefaultsKeyForPasscodeTimerDuration];
         [[A3UserDefaults standardUserDefaults] synchronize];
     }
-    if (_previousVersion && [_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
+    if ([_previousVersion length] > 4 && [[_previousVersion substringToIndex:3] doubleValue] < 3.4) {
         if (!_shouldMigrateV1Data) {
             [self migrateToV3_4_Holidays];
         }
     }
-    if (_previousVersion && [_previousVersion doubleValue] == 4.0) {
+    if ([_previousVersion doubleValue] == 4.0) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddQRCodeMenu];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddQRCodeMenu];
     }
-    if (_previousVersion && [_previousVersion doubleValue] <= 4.1) {
+    if ([_previousVersion doubleValue] <= 4.1) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddPedometerMenu];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddPedometerMenu];
     }
-    // TODO: Abbreviation
-    if (_previousVersion && [_previousVersion doubleValue] < 4.5) {
+    if ([_previousVersion doubleValue] < 4.5) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuHexagonShouldAddAbbreviationMenu];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsMainMenuGridShouldAddAbbreviationMenu];
     }
@@ -174,88 +262,22 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
                                                  name:A3RotateAccordingToDeviceOrientationNotification object:nil];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [FIRApp configure];
-    [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+- (void)handleNotification:(NSDictionary * _Nullable)launchOptions {
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = self;
     
-    #ifdef DEBUG
-    FNLOG(@"%@", [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]);
-    FNLOG(@"%@", [NSLocale preferredLanguages]);
-    FNLOG(@"%@", [[NSLocale currentLocale] currencyCode]);
-    #endif
-   
-    BOOL shouldPerformAdditionalDelegateHandling = [self shouldPerformAdditionalDelegateHandling:launchOptions];
-    
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
-
-    _shouldPresentAd = YES;
-    _expirationDate = [NSDate distantPast];
-    
-    _passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
-
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
-
-    _appIsNotActiveYet = YES;
-
-    [self prepareDirectories];
-    [A3SyncManager sharedSyncManager];
-
-    [[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityAllMenu];
-    [[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:A3MainMenuDataEntityFavorites];
-    [[NSUbiquitousKeyValueStore defaultStore] synchronize];
-
-    [self setupContext];
-    [self favoriteMenuDictionary];
-
-    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotification) {
-        _localNotificationUserInfo = [localNotification.userInfo copy];
-        [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
+    // Check if the app was launched due to a notification
+    if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
+        // Process the notification data if the app was launched by tapping the notification
+        UNNotificationResponse *response = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        NSDictionary *userInfo = response.notification.request.content.userInfo;
+        _localNotificationUserInfo = [userInfo copy];
+        
+        // Optionally handle the notification (e.g., cancel any pending actions)
+        [self showReceivedLocalNotifications];
     }
-
-    // Check if it is running first time after update from 1.x.x
-    // 아래 값은 마이그레이션이 끝나면 지운다.
-    NSString *activeVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    _previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
-    if (!_previousVersion) {
-        // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
-        // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
-        _firstRunAfterInstall = YES;
-        [A3KeychainUtils removePassword];
-        [self initializePasscodeUserDefaults];
-    }
-    if ([_previousVersion isEqualToString:activeVersion]) {
-        _previousVersion = nil;
-    }
-    [self setDefaultValues];
-    [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
-    [[A3UserDefaults standardUserDefaults] synchronize];
-
-    // AppBox Pro V1.8.4까지는 Days Until 기능의 옵션에 의해서 남은 일자에 대한 배지 기능이 있었습니다.
-    // AppBox Pro V3.0 이후로는 배지 기능을 제공하지 않습니다.
-    // 이 값은 초기화 합니다.
-    [self clearScheduledOldVersionLocalNotifications];
-
-    // toolsconf.db가 library directory에 남아 있으면 마이그레이션이 끝나지 않았으므로 확실히 점검한다.
-    NSString *oldFilePath = [@"toolsconf.db" pathInLibraryDirectory];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:oldFilePath]) {
-        _shouldMigrateV1Data = YES;
-    }
-
-    [self addNotificationObservers];
-
-    FNLOGRECT([[UIScreen mainScreen] nativeBounds]);
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self setupMainMenuViewController];
-    self.window.backgroundColor = [UIColor whiteColor];
-
-    self.window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
-
-    [self.window makeKeyAndVisible];
-
-    return shouldPerformAdditionalDelegateHandling;
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -275,11 +297,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
     [self applicationDidEnterBackground_passcode];
 
-    __block UIBackgroundTaskIdentifier identifier;
-    identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        [[UIApplication sharedApplication] endBackgroundTask:identifier];
-        identifier = UIBackgroundTaskInvalid;
-    }];
+//    __block UIBackgroundTaskIdentifier identifier;
+//    identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+//        [[UIApplication sharedApplication] endBackgroundTask:identifier];
+//        identifier = UIBackgroundTaskInvalid;
+//    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -314,8 +336,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
     
-    [self fetchPushNotification];
-
     if (_appIsNotActiveYet) {
         _appIsNotActiveYet = NO;
     }
@@ -345,10 +365,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 #pragma mark - Handle Open URL
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-    return [self handleOpenURL:url];
-}
-
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [self handleOpenURL:url];
 }
 
@@ -424,18 +440,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     [[A3UserDefaults standardUserDefaults] setObject:startingAppName forKey:kA3AppsStartingAppName];
     _shortcutItem = nil;
     
-//    if ([self shouldAskPasscodeForStarting] || [self requirePasscodeForStartingApp]) {
-//        [self presentLockScreen:self];
-//    } else {
-//        [self removeSecurityCoverView];
-//        if ([self isMainMenuStyleList]) {
-//            [self.mainMenuViewController openRecentlyUsedMenu:YES];
-//        } else {
-//            [self launchAppNamed:startingAppName verifyPasscode:NO delegate:nil animated:NO];
-//            self.homeStyleMainMenuViewController.activeAppName = [startingAppName copy];
-//        }
-//    }
-    
     return YES;
 }
 
@@ -467,43 +471,16 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 #pragma mark - Notification
 
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    FNLOG();
-    [self handleActionForLocalNotification:notification application:application];
+// Handle notification while app is in the foreground
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    completionHandler(UNNotificationPresentationOptionBanner|UNNotificationPresentationOptionSound);
 }
 
-#ifdef __IPHONE_8_0
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
-    [self handleActionForLocalNotification:notification application:application];
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+    _localNotificationUserInfo = [response.notification.request.content.userInfo copy];
+    [self showReceivedLocalNotifications];
     
     completionHandler();
-}
-#endif
-
-- (void)handleActionForLocalNotification:(UILocalNotification *)notification application:(UIApplication *)application {
-    _localNotificationUserInfo = [notification.userInfo copy];
-    self.storedLocalNotification = notification;
-    
-    if ([application applicationState] == UIApplicationStateInactive) {
-        [self showReceivedLocalNotifications];
-        [[UIApplication sharedApplication] cancelLocalNotification:notification];
-    }
-    else {
-        NSString *notificationOwner = [notification.userInfo objectForKey:A3LocalNotificationOwner];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notificationOwner
-                                                        message:notification.alertBody
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-                                              otherButtonTitles:NSLocalizedString(@"Details", @"Details"), nil];
-        if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
-            alert.tag = 11;
-        } else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
-            alert.tag = 21;
-        }
-        [alert show];
-    }
 }
 
 - (void)showReceivedLocalNotifications {
@@ -523,48 +500,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     _localNotificationUserInfo = nil;
 }
 
-- (void)clearScheduledOldVersionLocalNotifications {
-    UIApplication *application = [UIApplication sharedApplication];
-    application.applicationIconBadgeNumber = 0;
-    NSArray *scheduledNotifications = [application scheduledLocalNotifications];
-    [scheduledNotifications enumerateObjectsUsingBlock:^(UILocalNotification *localNotification, NSUInteger idx, BOOL *stop) {
-        if (localNotification.userInfo[@"kABPLocalNotificationTypeDaysUntil"] || localNotification.applicationIconBadgeNumber) {
-            [application cancelLocalNotification:localNotification];
-        }
-    }];
-}
-
 #pragma mark - UIAlertViewDelegate
-
-#define    ABAD_ALERT_PUSH_ALERT        1000
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.cancelButtonIndex) {
-        _localNotificationUserInfo = nil;
-        return;
-    }
-    switch (alertView.tag) {
-        case 11:
-            [self showDaysCounterDetail];
-            break;
-        case 21:
-            [self showLadyCalendarDetailView];
-            break;
-        case 31:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.allaboutapps.net/wordpress/archives/274"]];
-            break;
-        case ABAD_ALERT_PUSH_ALERT:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.alertURLString]];
-            self.alertURLString = nil;
-            break;
-    }
-    
-    _localNotificationUserInfo = nil;
-    if (_storedLocalNotification) {
-        [[UIApplication sharedApplication] cancelLocalNotification:_storedLocalNotification];
-    }
-}
 
 - (void)showDaysCounterDetail {
     if (!_localNotificationUserInfo[A3LocalNotificationDataID]) {
@@ -631,6 +567,13 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (void)prepareDirectories {
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // Prepairing app group container and iCloud container.
+    NSURL *appGroupContainerURL = [fileManager containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
+    NSLog(@"App Group Container URL: %@", appGroupContainerURL);
+    NSURL *iCloudContainerURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
+    NSLog(@"iCloud container URL: %@", iCloudContainerURL);
+    
     NSString *applicationSupportPath = [fileManager applicationSupportPath];
     if (![fileManager fileExistsAtPath:applicationSupportPath]) {
         [fileManager createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
@@ -638,7 +581,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     if ( ![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
         [fileManager createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
     }
-    NSString *imageDirectory = [A3DaysCounterImageDirectory pathInLibraryDirectory];
+    NSString *imageDirectory = [A3DaysCounterImageDirectory pathInAppGroupContainer];
     if (![fileManager fileExistsAtPath:imageDirectory]) {
         [fileManager createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
     }
@@ -716,8 +659,8 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     double delayInSeconds = 2.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-        if ([_downloadList count]) {
-            NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:_downloadList[0]];
+        if ([self->_downloadList count]) {
+            NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:self->_downloadList[0]];
             NSURLSessionDownloadTask *downloadTask = [self.backgroundDownloadSession downloadTaskWithRequest:downloadRequest];
             [downloadTask resume];
         }
@@ -726,7 +669,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)location {
     void (^completionBlock)(void) = ^() {
-        _backgroundDownloadIsInProgress = NO;
+        self->_backgroundDownloadIsInProgress = NO;
         if ([self.reachability isReachableViaWiFi]) {
             [self startDownloadDataFiles];
         }
@@ -814,37 +757,14 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 - (void)updateHolidayNations {
     dispatch_async(dispatch_get_main_queue(), ^{
-//        if ([CLLocationManager locationServicesEnabled]) {
-//            if (!self->_locationManager) {
-//                self->_locationManager = [[CLLocationManager alloc] init];
-//                self->_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-//                self->_locationManager.delegate = self;
-//            }
-//
-//            if ([CLLocationManager authorizationStatus] < kCLAuthorizationStatusAuthorizedAlways) {
-//                [HolidayData resetFirstCountryWithLocale];
-//
-//                [self->_locationManager requestWhenInUseAuthorization];
-//            }
-//
-//            [self->_locationManager startUpdatingLocation];
-//
-//            if (self->_locationUpdateTimer) {
-//                [self->_locationUpdateTimer invalidate];
-//                self->_locationUpdateTimer = nil;
-//            }
-//            self->_locationUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(locationDidNotRespond) userInfo:nil repeats:NO];
-//        } else 
-        {
-            // 위치 정보 접근이 제한되어 있는 경우에는 autoupdatingCurrentLocale에서 정보를 읽어 휴일 국가 목록을 업데이트 한다.
-            [HolidayData resetFirstCountryWithLocale];
-
-            double delayInSeconds = 2.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self addDownloadTasksForHolidayImages];
-            });
-        }
+        // 위치 정보 접근이 제한되어 있는 경우에는 autoupdatingCurrentLocale에서 정보를 읽어 휴일 국가 목록을 업데이트 한다.
+        [HolidayData resetFirstCountryWithLocale];
+        
+        double delayInSeconds = 2.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self addDownloadTasksForHolidayImages];
+        });
     });
 }
 
@@ -860,31 +780,30 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     NSMutableArray *countries = [[HolidayData userSelectedCountries] mutableCopy];
     [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placeMarks, NSError *error) {
-        NSString *_countryCodeOfCurrentLocation;
-        for (CLPlacemark *placeMark in placeMarks) {
-            _countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
-        }
+        NSString *countryCodeOfCurrentLocation;
+        CLPlacemark *placeMark = [placeMarks lastObject];
+        countryCodeOfCurrentLocation = [placeMark.ISOcountryCode lowercaseString];
 
-        if ([_countryCodeOfCurrentLocation length]) {
+        if ([countryCodeOfCurrentLocation length]) {
             NSArray *supportedCountries = [HolidayData supportedCountries];
             NSInteger indexOfCountry = [supportedCountries indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-                return [_countryCodeOfCurrentLocation isEqualToString:obj[kHolidayCountryCode]];
+                return [countryCodeOfCurrentLocation isEqualToString:obj[kHolidayCountryCode]];
             }];
 
             if (indexOfCountry == NSNotFound)
                 return;
 
-            if (![countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
+            if (![countries[0] isEqualToString:countryCodeOfCurrentLocation]) {
                 
-                [countries removeObject:_countryCodeOfCurrentLocation];
-                [countries insertObject:_countryCodeOfCurrentLocation atIndex:0];
+                [countries removeObject:countryCodeOfCurrentLocation];
+                [countries insertObject:countryCodeOfCurrentLocation atIndex:0];
 
                 [HolidayData setUserSelectedCountries:countries];
 
                 [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationHolidaysCountryListChanged object:nil];
             }
         }
-        double delayInSeconds = 20.0;
+        double delayInSeconds = 10.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [self addDownloadTasksForHolidayImages];
@@ -954,26 +873,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         FNLOG("Duplicated data has been detected and managed.");
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-        
     [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
     [A3LadyCalendarModelManager setupLocalNotification];
     
     CredentialIdentityStoreManager *manager = [CredentialIdentityStoreManager new];
     [manager updateCredentialIdentityStore];
-}
-
-- (void)setupContext
-{
-    [self migrateV47StoreFilesToAfterV48];
-
-    // Access the shared instance
-    CoreDataStack *coreDataStack = [CoreDataStack shared];
-    
-    // Setup the Core Data stack
-    [coreDataStack setupStackWithCompletion:^{
-        NSLog(@"Core Data stack setup is complete.");
-    }];
 }
 
 - (void)migrateV47StoreFilesToAfterV48 {
@@ -1053,136 +957,22 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     }
 }
 
-- (void)managedObjectContextDidSave:(NSNotification *)notification {
-}
-
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-        [self registerDeviceTokenToAPNServerWithToken:devToken
-                                         userSettings:
-             @[settings.badgeSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
-               settings.alertSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
-               settings.soundSetting == UNNotificationSettingEnabled ? @"enabled" : @"disabled",
-             ]
-        ];
-    }];
-}
-
-- (void)registerDeviceTokenToAPNServerWithToken:(NSData *)deviceTokenData userSettings:(NSArray<NSString *> *)userSettings {
-    // Get Bundle Info for Remote Registration (handy if you have more than one app)
-    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    
-    NSString *urlString;
-    
-    // Prepare the Device Token for Registration (remove spaces and < >)
-    NSString *deviceToken = [[[[deviceTokenData description]
-                               stringByReplacingOccurrencesOfString:@"<"withString:@""]
-                              stringByReplacingOccurrencesOfString:@">" withString:@""]
-                             stringByReplacingOccurrencesOfString: @" " withString: @""];
-    _deviceToken = deviceToken;
-    
-    // Get the users Device Model, Display Name, Unique ID, Token & Version Number
-    UIDevice *device = [UIDevice currentDevice];
-    NSString *identifierForVendor = [[device identifierForVendor] UUIDString];
-    
-    NSString *deviceName = [device name];
-    NSString *deviceModel = [A3UIDevice platformString];
-    NSString *deviceSystemVersion = device.systemVersion;
-    NSString *localeIdentifier = [[NSLocale currentLocale] localeIdentifier];
-    NSString *timezone = [[NSTimeZone systemTimeZone] description];
-    
-    urlString = [[NSString stringWithFormat:
-                  @"https://apns.allaboutapps.net/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&localeIdentifier=%@&timezone=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register",
-                  appName,
-                  appVersion,
-                  identifierForVendor,
-                  deviceToken,
-                  deviceName,
-                  deviceModel,
-                  deviceSystemVersion,
-                  localeIdentifier,
-                  timezone,
-                  userSettings[0],  // Badge
-                  userSettings[1],  // Alert
-                  userSettings[2]   // Sound
-                  ]
-                 stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    FNLOG(@"%@", urlString);
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    AFHTTPRequestOperation *registerOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [registerOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self fetchPushNotification];
-    } failure:NULL];
-    
-    [registerOperation start];
-    
-    /*
-     // !!! CHANGE "/apns.php?" TO THE PATH TO WHERE apns.php IS INSTALLED
-     // !!! ( MUST START WITH / AND END WITH ? ).
-     // !!! SAMPLE: "/path/to/apns.php?"
-     NSString *urlString = [NSString stringWithFormat:@"/apns/apns.php?task=%@&appname=%@&appversion=%@&deviceuid=%@&devicetoken=%@&devicename=%@&devicemodel=%@&deviceversion=%@&pushbadge=%@&pushalert=%@&pushsound=%@", @"register", appName,appVersion, deviceUuid, deviceToken, deviceName, deviceModel, deviceSystemVersion, pushBadge, pushAlert, pushSound];
-     
-     // Build URL String for Registration
-     // !!! CHANGE "www.mywebsite.com" TO YOUR WEBSITE. Leave out the http://
-     // !!! SAMPLE: "secure.awesomeapp.com"
-     NSString *host = @"apns.allaboutapps.net";
-     
-     // Register the Device Data
-     // !!! CHANGE "http" TO "https" IF YOU ARE USING HTTPS PROTOCOL
-     NSURL *url = [[NSURL alloc] initWithScheme:@"http" host:host path:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-     NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-     NSLog(@"Register URL: %@", url);
-     NSLog(@"Return Data: %@", returnData);
-     */
-}
-
-- (void)fetchPushNotification {
-    NSString *urlString = [NSString stringWithFormat:@"https://apns.allaboutapps.net/apns/apns.php?task=message&devicetoken=%@", _deviceToken];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    AFHTTPRequestOperation *fetchOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    fetchOperation.responseSerializer = [AFJSONResponseSerializer serializer];
-    [fetchOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id message) {
-        if (message) {
-            [self application:[UIApplication sharedApplication] didReceiveRemoteNotification:message];
+- (void)migratePre2024MediaFiles {
+    @try {
+        MediaFileMover *mover = [[MediaFileMover alloc] init];
+        
+        NSError *error = nil;
+        NSURL *libraryURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
+        [mover moveMediaFilesFrom:libraryURL error:&error];
+        
+        if (error) {
+            NSLog(@"Failed to move media files: %@", error.localizedDescription);
+        } else {
+            NSLog(@"Media files moved successfully.");
         }
-    } failure:NULL];
-    [fetchOperation start];
-}
-
-- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    FNLOG(@"Error in registration. Error: %@", error);
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-
-    FNLOG(@"remote notification: %@",[userInfo description]);
-    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
-
-#ifdef DEBUG
-    NSString *alert = [apsInfo objectForKey:@"alert"];
-    FNLOG(@"Received Push Alert: %@", alert);
-
-    NSString *sound = [apsInfo objectForKey:@"sound"];
-    FNLOG(@"Received Push Sound: %@", sound);
-
-    NSString *badge = [apsInfo objectForKey:@"badge"];
-    FNLOG(@"Received Push Badge: %@", badge);
-#endif
-    
-    application.applicationIconBadgeNumber = 0;
-}
-
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
-{
-    if (notificationSettings.types != UIUserNotificationTypeNone) {
-        [application registerForRemoteNotifications];
+    } @catch (NSException *exception) {
+        NSLog(@"Exception occurred: %@, %@", exception.name, exception.reason);
     }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsUserNotificationSettingsRegistered object:notificationSettings];
 }
 
 - (void)applicationProtectedDataWillBecomeUnavailable:(UIApplication *)application {
@@ -1284,15 +1074,16 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 /// Tells the delegate that the ad will present full screen content.
 - (void)adWillPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-    _statusBarHiddenBeforeAdsAppear = [[UIApplication sharedApplication] isStatusBarHidden];
-    _statusBarStyleBeforeAdsAppear = [[UIApplication sharedApplication] statusBarStyle];
+    // Get the active window scene from the connected scenes
+    UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.allObjects.firstObject;
     
-    double delayInSeconds = 0.3;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    });
-
+    // Check if we have a valid window scene and status bar manager
+    if (windowScene.statusBarManager != nil) {
+        // Set the status bar style to light content
+        _statusBarHiddenBeforeAdsAppear = windowScene.statusBarManager.statusBarHidden;
+        _statusBarStyleBeforeAdsAppear = windowScene.statusBarManager.statusBarStyle;
+    }
+    
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3AdsDisplayTime];
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:A3NumberOfTimesOpeningSubApp];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -1302,9 +1093,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 
 /// Tells the delegate that the ad will dismiss full screen content.
 - (void)adWillDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-    [[UIApplication sharedApplication] setStatusBarHidden:_statusBarHiddenBeforeAdsAppear];
-    [[UIApplication sharedApplication] setStatusBarStyle:_statusBarStyleBeforeAdsAppear];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationsAdsWillDismissScreen object:nil];
 }
 
@@ -1369,5 +1157,12 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     }
     return _hudView;
 }
+
+#ifdef  DEBUG
+- (void)experiments {
+    NSURL *targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
+    NSLog(@"%@", targetBaseURL);
+}
+#endif
 
 @end

@@ -175,9 +175,7 @@
 		case 1: {
 			NSURL *url;
             url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
-            [[UIApplication sharedApplication] openURL:url
-                                               options:@{}
-                                     completionHandler:NULL];
+            [[UIApplication sharedApplication] openURL2:url];
 			break;
 		}
 		case 2: {

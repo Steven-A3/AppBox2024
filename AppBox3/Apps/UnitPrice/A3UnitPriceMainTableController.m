@@ -125,15 +125,19 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
 - (void)cloudStoreDidImport {
-	_price1 = nil;
-	_price2 = nil;
-
-	NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
-	[self.currencyFormatter setCurrencyCode:currencyCode];
-	[self.currencyFormatter setMaximumFractionDigits:2];
-
-	[self.tableView reloadData];
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_price1 = nil;
+        self->_price2 = nil;
+        
+        NSString *currencyCode = [[A3SyncManager sharedSyncManager] objectForKey:A3UnitPriceUserDefaultsCurrencyCode];
+        [self.currencyFormatter setCurrencyCode:currencyCode];
+        [self.currencyFormatter setMaximumFractionDigits:2];
+        
+        [self.tableView reloadData];
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -238,8 +242,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -258,9 +263,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 		[_footerView addSubview:[self resultLB]];
 
 		[_resultLB makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(_footerView.left).with.offset(10);
-			make.right.equalTo(_footerView.right).with.offset(-10);
-			make.top.equalTo(_footerView.top).with.offset(8);
+			make.left.equalTo(self->_footerView.left).with.offset(10);
+			make.right.equalTo(self->_footerView.right).with.offset(-10);
+			make.top.equalTo(self->_footerView.top).with.offset(8);
 		}];
 	}
 	return _footerView;

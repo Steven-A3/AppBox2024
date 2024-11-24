@@ -140,21 +140,21 @@
 								 usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 									 if (group != nil) {
 										 [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-										 _assetrollGroup = group;
+                                         self->_assetrollGroup = group;
 
                                          if (![_assetrollGroup numberOfAssets]) {
                                              return;
                                          }
-										 _availablePhotos = [NSMutableArray new];
+                                         self->_availablePhotos = [NSMutableArray new];
 										 if (self.capturedPhotoURL) {
-											 [_availablePhotos addObject:@0];
+                                             [self->_availablePhotos addObject:@0];
 										 }
 
-										 [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_assetrollGroup numberOfAssets] - 1)]
+                                         [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self->_assetrollGroup numberOfAssets] - 1)]
 																 options:NSEnumerationReverse
 															  usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
 																  if (result) {
-																	  [_availablePhotos addObject:@(index)];
+                                                                      [self->_availablePhotos addObject:@(index)];
 																  }
 
 															  }];
@@ -166,7 +166,7 @@
 												 [self setImageOnCameraRollButton:image];
 											 } failureBlock:NULL];
 										 } else {
-											 if (![_availablePhotos count]) return;
+                                             if (![self->_availablePhotos count]) return;
 											 [_assetrollGroup enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:[_availablePhotos[0] integerValue]]
 																			   options:NSEnumerationConcurrent
 																			usingBlock:^(ALAsset *result, NSUInteger i, BOOL *stop) {

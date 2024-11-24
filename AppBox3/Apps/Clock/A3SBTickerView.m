@@ -25,8 +25,8 @@
 	[super setFrontView:frontView];
 
 	[frontView makeConstraints:^(MASConstraintMaker *make) {
-		_constraint1 = make.centerX.equalTo(self.centerX);
-		_constraint2 = make.centerY.equalTo(self.centerY);
+        self->_constraint1 = make.centerX.equalTo(self.centerX);
+        self->_constraint2 = make.centerY.equalTo(self.centerY);
 	}];
 }
 

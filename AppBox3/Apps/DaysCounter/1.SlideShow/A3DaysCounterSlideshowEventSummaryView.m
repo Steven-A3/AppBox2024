@@ -52,10 +52,10 @@
 
         [_photoImageView addSubview:_shadowGradientView];
         [_shadowGradientView makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_photoImageView.left);
-            make.right.equalTo(_photoImageView.right);
-            make.top.equalTo(_photoImageView.top);
-            make.bottom.equalTo(_photoImageView.bottom);
+            make.left.equalTo(self->_photoImageView.left);
+            make.right.equalTo(self->_photoImageView.right);
+            make.top.equalTo(self->_photoImageView.top);
+            make.bottom.equalTo(self->_photoImageView.bottom);
         }];
     }
 

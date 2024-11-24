@@ -186,9 +186,10 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-	
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
+
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
 	}
@@ -276,23 +277,23 @@ NSString *const A3RandomRangeMaximumKey = @"A3RandomRangeMaximumKey";
         z;
         
         //Use a basic high-pass filter to remove the influence of the gravity
-        myAccelerometer[0] = accelerometerData.acceleration.x * kFilteringFactorForErase + myAccelerometer[0] * (1.0 - kFilteringFactorForErase);
-        myAccelerometer[1] = accelerometerData.acceleration.y * kFilteringFactorForErase + myAccelerometer[1] * (1.0 - kFilteringFactorForErase);
-        myAccelerometer[2] = accelerometerData.acceleration.z * kFilteringFactorForErase + myAccelerometer[2] * (1.0 - kFilteringFactorForErase);
+        self->myAccelerometer[0] = accelerometerData.acceleration.x * kFilteringFactorForErase + self->myAccelerometer[0] * (1.0 - kFilteringFactorForErase);
+        self->myAccelerometer[1] = accelerometerData.acceleration.y * kFilteringFactorForErase + self->myAccelerometer[1] * (1.0 - kFilteringFactorForErase);
+        self->myAccelerometer[2] = accelerometerData.acceleration.z * kFilteringFactorForErase + self->myAccelerometer[2] * (1.0 - kFilteringFactorForErase);
         // Compute values for the three axes of the acceleromater
-        x = accelerometerData.acceleration.x - myAccelerometer[0];
-        y = accelerometerData.acceleration.y - myAccelerometer[0];
-        z = accelerometerData.acceleration.z - myAccelerometer[0];
+        x = accelerometerData.acceleration.x - self->myAccelerometer[0];
+        y = accelerometerData.acceleration.y - self->myAccelerometer[0];
+        z = accelerometerData.acceleration.z - self->myAccelerometer[0];
         
         //Compute the intensity of the current acceleration
         length = sqrt(x * x + y * y + z * z);
         // If above a given threshold, play the erase sounds and erase the drawing view
-        if((length >= kEraseAccelerationThreshold) && (CFAbsoluteTimeGetCurrent() > lastTime + kMinEraseInterval)) {
+        if((length >= kEraseAccelerationThreshold) && (CFAbsoluteTimeGetCurrent() > self->lastTime + kMinEraseInterval)) {
             
             // Reset Value to zero
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self randomButtonTouchUp:nil];
-                lastTime = CFAbsoluteTimeGetCurrent();
+                self->lastTime = CFAbsoluteTimeGetCurrent();
             });
         }
     }];

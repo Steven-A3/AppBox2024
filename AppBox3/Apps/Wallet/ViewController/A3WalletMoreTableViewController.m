@@ -130,8 +130,9 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		}
 	}
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	[self.navigationController setNavigationBarHidden:NO];
 	
 	if (_isEditing) {

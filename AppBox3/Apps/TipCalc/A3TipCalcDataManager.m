@@ -787,8 +787,8 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
         }
         
         if (knownTax) {
-            _defaultTax = knownTax;  // US 지역 기본 Tax 지정. - KJH
-            [self setTipCalcDataTax:_defaultTax isPercentType:YES];
+            self->_defaultTax = knownTax;  // US 지역 기본 Tax 지정. - KJH
+            [self setTipCalcDataTax:self->_defaultTax isPercentType:YES];
             
             id <A3TipCalcDataManagerDelegate> o = self.delegate;
             if ([o respondsToSelector:@selector(dataManager:taxValueUpdated:)]) {
@@ -796,8 +796,8 @@ NSString * const A3TipCalcRecentCurrentDataID = @"CurrentTipCalcRectnID";
             }
         }
         
-        _locationManager.delegate = nil;
-        _locationManager = nil;
+        self->_locationManager.delegate = nil;
+        self->_locationManager = nil;
     }];
 }
 

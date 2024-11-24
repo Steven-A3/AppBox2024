@@ -185,12 +185,7 @@
 			_backupFiles = nil;
 			[self.tableView reloadData];
 		} else {
-			UIAlertView *alertError = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"Error")
-																 message:error.localizedDescription
-																delegate:nil
-													   cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-													   otherButtonTitles:nil];
-			[alertError show];
+            [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Error", @"Error") message:error.localizedDescription];
 		}
 	}
 }

@@ -114,8 +114,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 - (void)dismissViewController {
 	[self dismissViewControllerAnimated:YES completion:^{
-		if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
-			[_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:NO];
+        if ([self->_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
+            [self->_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:NO];
 		}
 	}];
 }
@@ -142,29 +142,29 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 - (IBAction)touchesDownShareButton:(id)sender {
 	[UIView animateWithDuration:0.3 animations:^{
-		_shareTitleLabel.alpha = 0.2;
-		_shareImageView.alpha = 0.2;
+        self->_shareTitleLabel.alpha = 0.2;
+        self->_shareImageView.alpha = 0.2;
 	}];
 }
 
 - (IBAction)touchesUpShareButton:(id)sender {
 	[UIView animateWithDuration:0.3 animations:^{
-		_shareTitleLabel.alpha = 1.0;
-		_shareImageView.alpha = 1.0;
+        self->_shareTitleLabel.alpha = 1.0;
+        self->_shareImageView.alpha = 1.0;
 	}];
 }
 
 - (IBAction)touchesDownFavoriteButton:(id)sender {
 	[UIView animateWithDuration:0.3 animations:^{
-		_favoriteTitleLabel.alpha = 0.2;
-		_favoriteImageView.alpha = 0.2;
+        self->_favoriteTitleLabel.alpha = 0.2;
+        self->_favoriteImageView.alpha = 0.2;
 	}];
 }
 
 - (IBAction)touchesUpFavoriteButton:(id)sender {
 	[UIView animateWithDuration:0.3 animations:^{
-		_favoriteTitleLabel.alpha = 1.0;
-		_favoriteImageView.alpha = 1.0;
+        self->_favoriteTitleLabel.alpha = 1.0;
+        self->_favoriteImageView.alpha = 1.0;
 	}];
 }
 
@@ -173,8 +173,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
         [_delegate sharePopupViewControllerWillDismiss:self didTapShareButton:YES];
     }
 	[self dismissViewControllerAnimated:YES completion:^{
-		if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
-            [_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:YES];
+        if ([self->_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
+            [self->_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:YES];
 		}
 	}];
 	return;
@@ -182,8 +182,8 @@ extern NSString *const A3AbbreviationKeyMeaning;
 
 - (IBAction)favoriteButtonAction:(id)sender {
     [self dismissViewControllerAnimated:NO completion:^{
-        if ([_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
-            [_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:NO];
+        if ([self->_delegate respondsToSelector:@selector(sharePopupViewControllerDidDismiss:didTapShareButton:)]) {
+            [self->_delegate sharePopupViewControllerDidDismiss:self didTapShareButton:NO];
         }
     }];
     

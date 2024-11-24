@@ -51,28 +51,28 @@
     }];
     
     [_ALabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_dateLabel.bottom).with.offset(8.0);
+        make.top.equalTo(self->_dateLabel.bottom).with.offset(8.0);
         make.leading.equalTo(leftInset);
         make.width.equalTo(@20);
         make.height.equalTo(@20);
     }];
     
     [_BLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_ALabel.bottom).with.offset(2.0);
+        make.top.equalTo(self->_ALabel.bottom).with.offset(2.0);
         make.leading.equalTo(leftInset);
         make.width.equalTo(@20);
         make.height.equalTo(@20);
     }];
     
     [_factorALabel makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_ALabel.centerY);
-        make.left.equalTo(_ALabel.right).with.offset(10.0);
+        make.centerY.equalTo(self->_ALabel.centerY);
+        make.left.equalTo(self->_ALabel.right).with.offset(10.0);
         make.right.equalTo(self.right);
     }];
     
     [_factorBLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_BLabel.centerY);
-        make.left.equalTo(_BLabel.right).with.offset(10.0);
+        make.centerY.equalTo(self->_BLabel.centerY);
+        make.left.equalTo(self->_BLabel.right).with.offset(10.0);
         make.right.equalTo(self.right);
     }];
 

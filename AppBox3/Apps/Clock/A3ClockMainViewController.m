@@ -82,7 +82,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[self.navigationController.navigationBar setShadowImage:image];
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor clearColor]}];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [self setValuePrefersStatusBarHidden:YES];
+    [self setNeedsStatusBarAppearanceUpdate];
 	[self.navigationController setNavigationBarHidden:YES];
 
     [self.view addSubview:self.scrollView];
@@ -210,8 +211,9 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	[super viewWillAppear:animated];
 
 	if (_isClosing) {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        [self setValuePrefersStatusBarHidden:NO];
+        [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+        [self setNeedsStatusBarAppearanceUpdate];
 		return;
 	}
 	
@@ -369,9 +371,7 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 }
 
 - (void)yahooButtonAction {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://weather.yahoo.com"]
-                                       options:@{}
-                             completionHandler:nil];
+    [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:@"https://weather.yahoo.com"]];
 }
 
 - (void)settingsChanged {
@@ -665,45 +665,48 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 #pragma mark - A3ChooseColorDelegate
 
 - (void)chooseColorDidSelect:(UIColor *)aColor selectedIndex:(NSUInteger)selectedIndex {
-	switch (self.pageControl.currentPage) {
-		case 0:{
-			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
-			[userDefaults setObject:colorData forKey:A3ClockWaveClockColor];
-			[userDefaults setObject:@(selectedIndex) forKey:A3ClockWaveClockColorIndex];
-			[userDefaults synchronize];
-			break;
-		}
-		case 1: {
-			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
-			[userDefaults setObject:colorData forKey:A3ClockFlipDarkColor];
-			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipDarkColorIndex];
-			[userDefaults synchronize];
-			break;
-		}
-		case 2: {
-			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
-			[userDefaults setObject:colorData forKey:A3ClockFlipLightColor];
-			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipLightColorIndex];
-			[userDefaults synchronize];
-			break;
-		}
-		case 3: {
-			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
-			[userDefaults setObject:colorData forKey:A3ClockLEDColor];
-			[userDefaults setObject:@(selectedIndex) forKey:A3ClockLEDColorIndex];
-			[userDefaults synchronize];
-			break;
-		}
-	}
+    NSString *colorKey;
+    NSString *indexKey;
+    
+    switch (self.pageControl.currentPage) {
+        case 0:
+            colorKey = A3ClockWaveClockColor;
+            indexKey = A3ClockWaveClockColorIndex;
+            break;
+        case 1:
+            colorKey = A3ClockFlipDarkColor;
+            indexKey = A3ClockFlipDarkColorIndex;
+            break;
+        case 2:
+            colorKey = A3ClockFlipLightColor;
+            indexKey = A3ClockFlipLightColorIndex;
+            break;
+        case 3:
+            colorKey = A3ClockLEDColor;
+            indexKey = A3ClockLEDColorIndex;
+            break;
+        default:
+            return; // Exit if an unexpected page index is found
+    }
+    
+    // Save color and index to user defaults
+    [self saveColor:aColor andIndex:selectedIndex forColorKey:colorKey indexKey:indexKey];
+    
+    // Update UI
+    [_currentClockViewController changeColor:aColor];
+    [self setButtonTintColor];
+    [self hideChooseColorView];
+}
 
-	[_currentClockViewController changeColor:aColor];
-	[self setButtonTintColor];
-
-	[self hideChooseColorView];
+- (void)saveColor:(UIColor *)color andIndex:(NSUInteger)index forColorKey:(NSString *)colorKey indexKey:(NSString *)indexKey {
+    // Convert UIColor to data using secure coding
+    NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:color requiringSecureCoding:YES error:nil];
+    
+    // Access user defaults and save data
+    A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
+    [userDefaults setObject:colorData forKey:colorKey];
+    [userDefaults setObject:@(index) forKey:indexKey];
+    [userDefaults synchronize];
 }
 
 - (void)chooseColorDidCancel {
@@ -713,8 +716,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 - (void)hideChooseColorView {
 	[UIView animateWithDuration:0.3
 					 animations:^{
-						 CGFloat height = _chooseColorView.bounds.size.height;
-						 [_chooseColorView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        CGFloat height = self->_chooseColorView.bounds.size.height;
+        [self->_chooseColorView mas_remakeConstraints:^(MASConstraintMaker *make) {
 							 make.left.equalTo(self.view.left);
 							 make.right.equalTo(self.view.right);
 							 make.top.equalTo(self.view.bottom);
@@ -723,8 +726,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 						[self.view layoutIfNeeded];
 					 }
 					 completion:^(BOOL finished) {
-						 [_chooseColorView removeFromSuperview];
-						 _chooseColorView = nil;
+        [self->_chooseColorView removeFromSuperview];
+        self->_chooseColorView = nil;
 
                          [self resetAndStartAutoDimTimer];
 					 }];
@@ -812,8 +815,8 @@ NSString *const A3V3InstructionDidShowForClock2 = @"A3V3InstructionDidShowForClo
 	double delayInSeconds = 0.4;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		for (id <A3ClockDataManagerDelegate> viewController in _viewControllers) {
-			if (viewController != _currentClockViewController && [viewController respondsToSelector:@selector(refreshWholeClock:)]) {
+        for (id <A3ClockDataManagerDelegate> viewController in self->_viewControllers) {
+            if (viewController != self->_currentClockViewController && [viewController respondsToSelector:@selector(refreshWholeClock:)]) {
 				[viewController refreshWholeClock:clockInfo];
 			}
 		}

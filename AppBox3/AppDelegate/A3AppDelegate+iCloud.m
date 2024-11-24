@@ -14,9 +14,10 @@
 #import "A3UserDefaults.h"
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
-#import "AppBox3-swift.h"
+#import "AppBox3-Swift.h"
 #import "NSFileManager+A3Addition.h"
 #import <Ensembles/Ensembles.h>
+#import <BackgroundTasks/BackgroundTasks.h>
 
 @implementation A3AppDelegate (iCloud)
 
@@ -53,31 +54,57 @@
 }
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	// required or the app defaults to no background fetching
-	[[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-	return YES;
+    // Register background refresh task
+    [[BGTaskScheduler sharedScheduler] registerForTaskWithIdentifier:@"com.yourapp.refresh" usingQueue:nil launchHandler:^(__kindof BGTask *task) {
+        [self handleAppRefreshTask:(BGAppRefreshTask *)task];
+    }];
+    
+    // Schedule the first background refresh task
+    [self scheduleAppRefresh];
+    
+    return YES;
 }
 
-- (void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	// set the time of wake up to use for returning if we updated
-	self.wakeUpTime = [NSDate date];
-	FNLOG(@"%@", self.wakeUpTime);
+- (void)scheduleAppRefresh {
+    BGAppRefreshTaskRequest *request = [[BGAppRefreshTaskRequest alloc] initWithIdentifier:@"net.allaboutapps.AppBox.refresh"];
+    request.earliestBeginDate = [NSDate dateWithTimeIntervalSinceNow:15 * 60]; // Schedule for 15 minutes from now (adjust as needed)
+    
+    NSError *error = nil;
+    if (![[BGTaskScheduler sharedScheduler] submitTaskRequest:request error:&error]) {
+        NSLog(@"Failed to schedule app refresh: %@", error);
+    }
+}
 
-	if (!self.isCoreDataReady) {
-		completionHandler(UIBackgroundFetchResultNoData);
-		return;
-	}
-	if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
-		FNLOG(@"Protected Data is Available.");
-		
-		[A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
-		[A3LadyCalendarModelManager setupLocalNotification];
-		
-		completionHandler(UIBackgroundFetchResultNewData);
-	} else {
-		FNLOG(@"Protected Data is NOT Available.");
-		completionHandler(UIBackgroundFetchResultNoData);
-	}
+- (void)handleAppRefreshTask:(BGAppRefreshTask *)task {
+    // Set the time of wake up to use for returning if we updated
+    self.wakeUpTime = [NSDate date];
+    FNLOG(@"%@", self.wakeUpTime);
+
+    __weak BGAppRefreshTask *weakTask = task; // Capture task weakly
+    task.expirationHandler = ^{
+        // Use weakTask to avoid a retain cycle
+        [weakTask setTaskCompletedWithSuccess:NO];
+    };
+    
+    if (!self.isCoreDataReady) {
+        [task setTaskCompletedWithSuccess:NO];
+        return;
+    }
+    
+    if ([[UIApplication sharedApplication] isProtectedDataAvailable]) {
+        FNLOG(@"Protected Data is Available.");
+        
+        [A3DaysCounterModelManager reloadAlertDateListForLocalNotification];
+        [A3LadyCalendarModelManager setupLocalNotification];
+        
+        [task setTaskCompletedWithSuccess:YES];
+    } else {
+        FNLOG(@"Protected Data is NOT Available.");
+        [task setTaskCompletedWithSuccess:NO];
+    }
+    
+    // Reschedule the background task
+    [self scheduleAppRefresh];
 }
 
 #pragma mark - Image and Video files

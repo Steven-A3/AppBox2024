@@ -92,7 +92,7 @@
 - (void)applicationWillResignActive {
 	if (_activityViewController) {
 		[self dismissViewControllerAnimated:NO completion:^{
-			_activityViewController = nil;
+            self->_activityViewController = nil;
 		}];
 	}
 	if (_popoverVC) {
@@ -1698,7 +1698,7 @@ EXIT_FUCTION:
 {
     _activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
     _activityViewController.completionWithItemsHandler = ^(UIActivityType  _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
-        _activityViewController = nil;
+        self->_activityViewController = nil;
     };
     if (IS_IPHONE) {
 		[self presentViewController:_activityViewController animated:YES completion:NULL];

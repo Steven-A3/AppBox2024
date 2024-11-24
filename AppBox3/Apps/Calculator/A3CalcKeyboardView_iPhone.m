@@ -36,8 +36,6 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 - (CGFloat)scaleToDesignForCalculator {
     CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     
-    CGRect bounds = self.bounds;
-
     // Height가 Width보다 큽니까?
     if ([UIWindow interfaceOrientationIsPortrait]) {
         return scale;
@@ -283,9 +281,6 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 	CGFloat scale = [self scaleToDesignForCalculator];
 	FNLOG(@"%f", scale);
 
-    CGRect bounds = self.bounds;
-    BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
-    
 	// Dimension 320 X 2 / 348, 80 x 54 cell, 8 column, 6 row
 	NSArray *buttonTitle = nil;
 

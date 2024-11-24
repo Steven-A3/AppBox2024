@@ -95,12 +95,16 @@
 }
 
 - (void)cloudStoreDidImport {
-	if (self.segmentedControl.selectedSegmentIndex == 0) {
-		_fetchedResultsController = nil;
-	} else {
-		[_favoriteDataSource resetData];
-	}
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        if (self.segmentedControl.selectedSegmentIndex == 0) {
+            self->_fetchedResultsController = nil;
+        } else {
+            [self->_favoriteDataSource resetData];
+        }
+        [self.tableView reloadData];
+    });
 }
 
 - (void)prepareClose {

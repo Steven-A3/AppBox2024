@@ -17,7 +17,7 @@
 
 - (NSString *)pathInDocumentDirectory;
 
-- (NSString *)pathInLibraryDirectory;
+- (NSString *)pathInAppGroupContainer;
 - (NSString *)pathInCachesDirectory;
 - (NSString *)pathInTemporaryDirectory;
 

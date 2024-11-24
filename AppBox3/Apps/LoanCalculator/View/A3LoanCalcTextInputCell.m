@@ -57,7 +57,7 @@
     [super awakeFromNib];
 
 	[_titleLabel remakeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.contentView.left).with.offset(_textLabelOffset);
+        make.left.equalTo(self.contentView.left).with.offset(self->_textLabelOffset);
 		make.centerY.equalTo(self.centerY);
 	}];
 
@@ -78,7 +78,7 @@
 
 - (void)updateConstraints {
 	[_titleLabel updateConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.contentView.left).with.offset(_textLabelOffset);
+        make.left.equalTo(self.contentView.left).with.offset(self->_textLabelOffset);
 	}];
 	[super updateConstraints];
 }

@@ -434,12 +434,12 @@
 		weakSelf.locationManager = nil;
 		
 		weakSelf.weatherOperation = nil;
-		_weatherUpdateInProgress = NO;
+        self->_weatherUpdateInProgress = NO;
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[weakSelf.locationManager startUpdatingLocation];
 		weakSelf.weatherOperation = nil;
-		_weatherUpdateInProgress = NO;
+        self->_weatherUpdateInProgress = NO;
 	}];
 	
 	[_weatherOperation start];
@@ -456,13 +456,13 @@
 	NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error) {
-				_weatherUpdateInProgress = NO;
+                self->_weatherUpdateInProgress = NO;
 				return;
 			}
 			NSError *parseError;
 			NSDictionary *woeidData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&parseError];
 			if (parseError) {
-				_weatherUpdateInProgress = NO;
+                self->_weatherUpdateInProgress = NO;
 				return;
 			}
 			FNLOG(@"%@", woeidData);

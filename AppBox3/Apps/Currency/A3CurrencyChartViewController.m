@@ -136,9 +136,7 @@
 
 - (void)didTapOnWebView {
     NSString *url = [NSString stringWithFormat:@"https://www.tradingview.com/symbols/%@%@/?offer_id=10&aff_id=4413", _sourceCurrencyCode, _targetCurrencyCode];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]
-                                       options:@{}
-                             completionHandler:nil];
+    [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:url]];
 }
 
 - (void)applicationDidEnterBackground {
@@ -719,8 +717,10 @@
 	}
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 		if (!_landscapeView) {
-			[[UIApplication sharedApplication] setStatusBarHidden:YES];
-			[self.navigationController setNavigationBarHidden:YES animated:YES];
+            [self setValuePrefersStatusBarHidden:YES];
+            [self setNeedsStatusBarAppearanceUpdate];
+
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
 			CGRect frame = [A3UIDevice screenBoundsAdjustedWithOrientation];
 			CGFloat width = frame.size.width;
 			frame.size.width = frame.size.height;
@@ -739,7 +739,7 @@
             [_landscapeView addSubview:_activityIndicatorView];
             
             [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
-                make.center.equalTo(_landscapeView);
+                make.center.equalTo(self->_landscapeView);
             }];
             
             [_activityIndicatorView startAnimating];
@@ -754,7 +754,8 @@
 			[_landscapeChartWebView loadHTMLString:[self chartContentHTMLForView:_landscapeChartWebView] baseURL:nil];
 		}
 	} else {
-		[[UIApplication sharedApplication] setStatusBarHidden:NO];
+        [self setValuePrefersStatusBarHidden:NO];
+        [self setNeedsStatusBarAppearanceUpdate];
 		[self.navigationController setNavigationBarHidden:NO animated:YES];
 		[_landscapeChartWebView removeFromSuperview];
 		[_landscapeView removeFromSuperview];

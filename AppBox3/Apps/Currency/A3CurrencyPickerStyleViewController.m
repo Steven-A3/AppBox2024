@@ -153,9 +153,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)didTapChartCoverView {
     NSString *url = [NSString stringWithFormat:@"https://www.tradingview.com/symbols/%@%@/?offer_id=10&aff_id=4413", _sourceCurrencyCode, _targetCurrencyCode];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]
-                                       options:@{}
-                             completionHandler:nil];
+    [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:url]];
 }
 
 - (void)dealloc {
@@ -988,9 +986,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (IBAction)yahooButtonAction:(UIButton *)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://finance.yahoo.com"]
-                                       options:@{}
-                             completionHandler:nil];
+    [[UIApplication sharedApplication] openURL2:[NSURL URLWithString:@"https://finance.yahoo.com"]];
 }
 
 #pragma mark - Admob Advertisement

@@ -52,15 +52,10 @@
     });
 }
 
-- (NSURL *)baseURL {
-	return [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
-}
-
 - (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (inOriginalDirectory) {
-		NSURL *baseURL;
-		baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletImageDirectory];
-		return [baseURL URLByAppendingPathComponent:self.uniqueID];
+        NSString *path = [A3WalletImageDirectory pathInAppGroupContainer];
+        return [NSURL URLWithString:[path stringByAppendingPathComponent:self.uniqueID]];
 	} else {
 		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory]];
 	}
@@ -114,6 +109,9 @@
 		return [UIImage imageWithContentsOfFile:thumbnailImagePath];
 	}
 	NSURL *videoURL = [self videoFileURLInOriginal:YES];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[videoURL path]]) {
+        return nil;
+    }
 	UIImage *originalImage = [WalletData videoPreviewImageOfURL:videoURL];
 	[self makeVideoThumbnailWithImage:originalImage inOriginalDirectory:YES];
 	return [UIImage imageWithContentsOfFile:thumbnailImagePath];
@@ -132,8 +130,8 @@
 - (NSURL *)videoFileURLInOriginal:(BOOL)inOriginal {
 	NSString *filename = [NSString stringWithFormat:@"%@-video.%@", self.uniqueID, self.videoExtension];
 	if (inOriginal) {
-		NSURL *baseURL = [[self baseURL] URLByAppendingPathComponent:A3WalletVideoDirectory];
-		return [baseURL URLByAppendingPathComponent:filename];
+        NSString *path = [A3WalletVideoDirectory pathInAppGroupContainer];
+        return [NSURL URLWithString:[path stringByAppendingPathComponent:filename]];
 	} else {
 		return [NSURL fileURLWithPath:[filename pathInTemporaryDirectory]];
 	}

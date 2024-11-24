@@ -90,16 +90,16 @@
 
 	[_flagImageView makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.equalTo(self.centerY);
-		make.right.equalTo(_codeLabel.left).with.offset(IS_IPHONE ? -2.0 : -10.0);
+        make.right.equalTo(self->_codeLabel.left).with.offset(IS_IPHONE ? -2.0 : -10.0);
 	}];
 
 	[_codeLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.equalTo(self.centerY);
-		_rightMargin = make.right.equalTo(self.contentView.right);
+        self->_rightMargin = make.right.equalTo(self.contentView.right);
 	}];
 
 	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.right.equalTo(_codeLabel.right);
+        make.right.equalTo(self->_codeLabel.right);
 		make.baseline.equalTo(self.bottom).with.offset(IS_IPHONE ? -6 : -10);
 	}];
 }

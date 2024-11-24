@@ -20,7 +20,7 @@
 #import <objc/runtime.h>
 #import "A3SyncManager.h"
 #import "A3UserDefaults+A3Addition.h"
-#import "AppBox3-swift.h"
+#import "AppBox3-Swift.h"
 
 static char const *const key_adBannerView = "key_adBannerView";
 static char const *const key_adNativeExpressView = "key_adNativeExpressView";
@@ -111,8 +111,9 @@ static char const *const key_adNativeExpressView = "key_adNativeExpressView";
     }
     if (hidesNavigationBar) {
         [navigationController setNavigationBarHidden:YES animated:NO];
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+        [self setValuePrefersStatusBarHidden:YES];
+        [self setValueStatusBarStyle:UIStatusBarStyleLightContent];
+        [self setNeedsStatusBarAppearanceUpdate];
 
         UIImage *image = [UIImage new];
         [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];

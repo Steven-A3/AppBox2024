@@ -42,7 +42,7 @@
 }
 
 - (void)yahooButtonAction:(id)yahooButtonAction {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://finance.yahoo.com"]];
+	[[UIApplication sharedApplication] openURL2:[NSURL URLWithString:@"https://finance.yahoo.com"]];
 }
 
 @end

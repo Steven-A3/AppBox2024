@@ -103,12 +103,14 @@ NSString *const A3CalculatorModeScientific = @"scientific";
 }
 
 - (void)cloudStoreDidImport {
-	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
-	if (mathExpression){
-		[self.calculator setMathExpression:mathExpression];
-		[self.calculator evaluateAndSet];
-	}
-	[self checkRightButtonDisable];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
+        if (mathExpression){
+            [self.calculator setMathExpression:mathExpression];
+            [self.calculator evaluateAndSet];
+        }
+        [self checkRightButtonDisable];
+    });
 }
 
 - (UISegmentedControl *)calculatorTypeSegment

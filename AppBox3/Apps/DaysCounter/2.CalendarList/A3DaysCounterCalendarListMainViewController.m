@@ -254,8 +254,9 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [self setValuePrefersStatusBarHidden:NO];
+    [self setValueStatusBarStyle:UIStatusBarStyleDefault];
+    [self setNeedsStatusBarAppearanceUpdate];
 	
 	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
 		[self leftBarButtonAppsButton];
@@ -430,7 +431,7 @@
 - (void)reloadTableView
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.itemArray = [_sharedManager visibleCalendarList];
+        self.itemArray = [self->_sharedManager visibleCalendarList];
         [self.tableView reloadData];
         self.addEventButton.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
         [self setupHeaderInfo];
@@ -951,14 +952,14 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Calendar", @"Delete Calendar") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             [alertController dismissViewControllerAnimated:YES completion:NULL];
             
-            DaysCounterCalendar_ *calendar = _itemArray[indexPath.row];
+            DaysCounterCalendar_ *calendar = self->_itemArray[indexPath.row];
             if ( [calendar.type integerValue] == CalendarCellType_System ) {
                 return;
             }
             
-            [_sharedManager removeCalendar:calendar];
+            [self->_sharedManager removeCalendar:calendar];
             
-            self.itemArray = [_sharedManager visibleCalendarList];
+            self.itemArray = [self->_sharedManager visibleCalendarList];
             [self setupHeaderInfo];
             [self.tableView reloadData];
         }]];

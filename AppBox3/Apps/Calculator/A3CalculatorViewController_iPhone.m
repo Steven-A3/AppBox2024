@@ -124,12 +124,16 @@
 }
 
 - (void)cloudStoreDidImport {
-	NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
-	if (mathExpression){
-		[self.calculator setMathExpression:mathExpression];
-		[self.calculator evaluateAndSet];
-	}
-	[self checkRightButtonDisable];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        NSString *mathExpression = [[A3SyncManager sharedSyncManager] objectForKey:A3CalculatorUserDefaultsSavedLastExpression];
+        if (mathExpression){
+            [self.calculator setMathExpression:mathExpression];
+            [self.calculator evaluateAndSet];
+        }
+        [self checkRightButtonDisable];
+    });
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {
@@ -255,23 +259,32 @@
 }
 
 - (CGFloat)getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
-
+    // Access safe area insets directly from the view or window
+    UIEdgeInsets safeAreaInsets = self.view.safeAreaInsets;
+    
+    // Retrieve the scaling factor
     CGFloat scaleToDesign = [A3UIDevice scaleToOriginalDesignDimension];
-    if (![UIWindow interfaceOrientationIsPortrait] && safeAreaInsets.bottom > 0) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+    
+    // Check if the device is in landscape orientation
+    BOOL isPortrait = UIDevice.currentDevice.orientation == UIDeviceOrientationPortrait || UIDevice.currentDevice.orientation == UIDeviceOrientationPortraitUpsideDown;
+    
+    // Adjust based on orientation and safe area
+    if (!isPortrait && safeAreaInsets.bottom > 0) {
+        if (UIDevice.currentDevice.orientation == UIDeviceOrientationLandscapeRight) {
             return -10;
         } else {
             return -30;
         }
     }
-    return [UIWindow interfaceOrientationIsPortrait] ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scaleToDesign) : 0.5 * scaleToDesign;
+    
+    // Return offset based on design scale and screen height for portrait
+    return isPortrait ? (screenBounds.size.height == 480 ? -6.5 : -6.5 * scaleToDesign) : 0.5 * scaleToDesign;
 }
 
 - (CGFloat)getResultLabelRightOffSet:(CGRect) screenBounds {
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
     if (![UIWindow interfaceOrientationIsPortrait] && safeAreaInsets.bottom > 0) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+        if (UIDevice.currentDevice.orientation == UIDeviceOrientationLandscapeRight) {
             return -10;
         } else {
             return -30;

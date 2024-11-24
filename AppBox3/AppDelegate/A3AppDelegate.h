@@ -147,7 +147,6 @@ extern NSString *const A3AppGroupNameNone;
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
 - (void)downloadDataFiles;
-- (void)setupContext;
 - (void)presentInterstitialAds;
 - (void)updateHolidayNations;
 

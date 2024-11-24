@@ -175,10 +175,14 @@ enum A3ExpenseListAddBudgetCellType {
 		return;
 	}
 	// reload data
-	_currentBudget = [ExpenseListBudget_ findFirstByAttribute:@"uniqueID" withValue:_currentBudget.uniqueID];
-	[self.tableView reloadData];
-
-	[self enableControls:_barButtonEnabled];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_currentBudget = [ExpenseListBudget_ findFirstByAttribute:@"uniqueID" withValue:self->_currentBudget.uniqueID];
+        [self.tableView reloadData];
+        
+        [self enableControls:self->_barButtonEnabled];
+    });
 }
 
 - (void)removeObserver {
@@ -898,7 +902,7 @@ static NSString *CellIdentifier = @"Cell";
 					textField.textColor = weakSelf.textColorBeforeEditing;
 					weakSelf.textColorBeforeEditing = nil;
 				}
-				if (!_didPressClearKey && !_didPressNumberKey && weakSelf.textBeforeEditing) {
+                if (!self->_didPressClearKey && !self->_didPressNumberKey && weakSelf.textBeforeEditing) {
 					NSNumber *number = [weakSelf.currencyFormatter numberFromString:weakSelf.textBeforeEditing];
 					textField.text = [weakSelf.decimalFormatter stringFromNumber:number];
 					weakSelf.textBeforeEditing = nil;
@@ -1031,7 +1035,7 @@ static NSString *CellIdentifier = @"Cell";
     void(^completion)(void) = ^{
 		[keyboardView removeFromSuperview];
 		self.numberKeyboardViewController = nil;
-		_isNumberKeyboardVisible = NO;
+        self->_isNumberKeyboardVisible = NO;
 	};
 	if (animated) {
 		[UIView animateWithDuration:0.3 animations:^{

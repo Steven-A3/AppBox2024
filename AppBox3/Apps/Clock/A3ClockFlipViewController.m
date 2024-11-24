@@ -224,24 +224,24 @@
 	if(showSeconds)
 	{
 		[_minuteView makeConstraints:^(MASConstraintMaker *make) {
-			[_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX)];
-			[_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
-			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
-			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX)];
+            [self->_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
+            [self->_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 
 		[_hourView makeConstraints:^(MASConstraintMaker *make) {
-			[_timeViewConstraints addObject:make.centerY.equalTo(_minuteView.centerY)];
-			[_timeViewConstraints addObject:make.right.equalTo(_minuteView.left).with.offset(-1 * interimSpace)];
-			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
-			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.centerY.equalTo(self->_minuteView.centerY)];
+            [self->_timeViewConstraints addObject:make.right.equalTo(self->_minuteView.left).with.offset(-1 * interimSpace)];
+            [self->_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 
 		[_secondView makeConstraints:^(MASConstraintMaker *make) {
-			[_timeViewConstraints addObject:make.centerY.equalTo(_minuteView.centerY)];
-			[_timeViewConstraints addObject:make.left.equalTo(_minuteView.right).with.offset(interimSpace)];
-			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
-			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.centerY.equalTo(self->_minuteView.centerY)];
+            [self->_timeViewConstraints addObject:make.left.equalTo(self->_minuteView.right).with.offset(interimSpace)];
+            [self->_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 		[self setTimeFont:_hourView isForSecond:NO];
 		[self setTimeFont:_minuteView isForSecond:NO];
@@ -250,25 +250,25 @@
 	else
 	{
 		[_hourView makeConstraints:^(MASConstraintMaker *make) {
-			[_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
-			[_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-1 * (boxSize/2 + interimSpace / 2))];
-			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
-			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
+            [self->_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-1 * (boxSize/2 + interimSpace / 2))];
+            [self->_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 
 		[_minuteView makeConstraints:^(MASConstraintMaker *make) {
-			[_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
-			[_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(boxSize/2 + interimSpace / 2)];
-			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
-			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
+            [self->_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(boxSize/2 + interimSpace / 2)];
+            [self->_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+            [self->_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 		[self setTimeFont:_hourView isForSecond:NO];
 		[self setTimeFont:_minuteView isForSecond:NO];
 	}
 
 	[_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
-		[_timeViewConstraints addObject:make.left.equalTo(_hourView.left).with.offset(10 * scale)];
-		[_timeViewConstraints addObject:make.bottom.equalTo(_hourView.top).with.offset(-8 * scale)];
+        [self->_timeViewConstraints addObject:make.left.equalTo(self->_hourView.left).with.offset(10 * scale)];
+        [self->_timeViewConstraints addObject:make.bottom.equalTo(self->_hourView.top).with.offset(-8 * scale)];
 	}];
 
 	[_lbAMPM setHidden:![[A3UserDefaults standardUserDefaults] clockShowAMPM]];

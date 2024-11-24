@@ -43,21 +43,21 @@
 		make.left.equalTo(self.left).with.offset(leading);
 	}];
 	[_timeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_titleTextField.bottom);
+		make.top.equalTo(self->_titleTextField.bottom);
 		make.left.equalTo(self.left).with.offset(leading);
 	}];
 	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@44);
 		make.height.equalTo(@44);
-		make.left.equalTo(_titleTextField.right).with.offset(-7);
-		make.centerY.equalTo(_titleTextField.centerY).with.offset(-3);
+		make.left.equalTo(self->_titleTextField.right).with.offset(-7);
+		make.centerY.equalTo(self->_titleTextField.centerY).with.offset(-3);
 	}];
 	[_mediaSizeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_timeLabel.bottom).with.offset(11);
+        make.top.equalTo(self->_timeLabel.bottom).with.offset(11);
 		make.left.equalTo(self.left).with.offset(leading);
 	}];
 	[_takenDateLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_mediaSizeLabel.bottom);
+		make.top.equalTo(self->_mediaSizeLabel.bottom);
 		make.left.equalTo(self.left).with.offset(leading);
 	}];
 

@@ -82,7 +82,7 @@
 
 		[_subTitle makeConstraints:^(MASConstraintMaker *make) {
 			[self.constraints addObject:make.centerX.equalTo(self.centerX)];
-			[self.constraints addObject:make.top.equalTo(_mainTitle.bottom).with.offset(-4)];
+			[self.constraints addObject:make.top.equalTo(self->_mainTitle.bottom).with.offset(-4)];
 		}];
 	}
 	return _subTitle;

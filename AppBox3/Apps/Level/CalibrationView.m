@@ -40,22 +40,46 @@
 
 - (UIButton *)buttonWithTitle:(NSString *)title target:(id)target selector:(SEL)inSelector frame:(CGRect)frame image:(UIImage*)image {
 	UIButton *button = [[UIButton alloc] initWithFrame:frame];
-	button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	[button setTitle:title forState:UIControlStateNormal & UIControlStateHighlighted & UIControlStateSelected];
-	[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-	[button setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
-	button.titleLabel.shadowOffset = CGSizeMake(2.0, 0.0);
-
-	UIImage *newImage = [image stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-	[button setBackgroundImage:newImage forState:UIControlStateNormal];
+	
+	UIButtonConfiguration *config = [UIButtonConfiguration plainButtonConfiguration];
+	config.contentInsets = NSDirectionalEdgeInsetsMake(0, 10, 0, 10);
+	config.background.image = [image stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+	
+	// 타이틀 설정
+	config.title = title;
+	config.baseForegroundColor = [UIColor whiteColor];
+	config.titleTextAttributesTransformer = ^NSDictionary<NSAttributedStringKey, id> *(NSDictionary<NSAttributedStringKey, id> *textAttributes) {
+		NSMutableDictionary *attributes = [textAttributes mutableCopy];
+		attributes[NSFontAttributeName] = SMALL_FONT;
+		attributes[NSShadowAttributeName] = ({
+			NSShadow *shadow = [[NSShadow alloc] init];
+			shadow.shadowOffset = CGSizeMake(2.0, 0.0);
+			shadow.shadowColor = [UIColor blackColor];
+			shadow;
+		});
+		return attributes;
+	};
+	
+	button.configuration = config;
+	
+	// 상태에 따른 설정
+	button.configurationUpdateHandler = ^(UIButton *btn) {
+		UIButtonConfiguration *updatedConfig = btn.configuration;
+		if (btn.state == UIControlStateDisabled) {
+			updatedConfig.baseForegroundColor = [UIColor grayColor];
+			updatedConfig.background.backgroundColorTransformer = ^UIColor *(UIColor *color) {
+				return [color colorWithAlphaComponent:0.5];
+			};
+		} else {
+			updatedConfig.baseForegroundColor = [UIColor whiteColor];
+			updatedConfig.background.backgroundColorTransformer = nil;
+		}
+		btn.configuration = updatedConfig;
+	};
+	
 	[button addTarget:target action:inSelector forControlEvents:UIControlEventTouchUpInside];
-    button.adjustsImageWhenDisabled = YES;
-    button.adjustsImageWhenHighlighted = YES;
-	button.titleLabel.font = SMALL_FONT;
-	[button setBackgroundColor:[UIColor clearColor]];	// in case the parent view draws with a custom color or gradient, use a transparent color
-    return button;
+	
+	return button;
 }
 
 - (void)setupSubviews {
@@ -158,34 +182,36 @@
 	[self addSubview:label2];
 }
 
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-#ifdef TRACE_LOG
-	NSLog(@"button Index : %d", buttonIndex);
-#endif
-	if (buttonIndex == 0) // Recalibrate
-	{
-		[self resetToInitialState:nil];
-	}
-	else 
-	{
-		[_viewController calibrateDoneAction:nil];
-	}
-}
-
 #pragma mark - UIAlertViewDelegate end
 
 - (void)promptRestart {
-	[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft animated:NO];
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", nil)
-													message:NSLocalizedString(@"CalibrationDone", nil)
-												   delegate:self 
-										  cancelButtonTitle:NSLocalizedString(@"Restart", nil)
-										  otherButtonTitles:NSLocalizedString(@"Done", nil), nil];
-	[alert show];
-	[[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Info", nil)
+                                                                   message:NSLocalizedString(@"CalibrationDone", nil)
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+
+    // Add "Restart" action
+    UIAlertAction *restartAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Restart", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+        // Handle Restart action here
+        [self resetToInitialState:nil];
+    }];
+
+    // Add "Done" action
+    UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", nil)
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+        // Handle Done action here
+        [self->_viewController calibrateDoneAction:nil];
+    }];
+
+    // Add actions to the alert
+    [alert addAction:restartAction];
+    [alert addAction:doneAction];
+
+    // Present the alert controller
+    UIViewController *rootViewController = [[UIApplication sharedApplication] getRootViewController];
+    [rootViewController presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)resetToInitialState:(id)sender {

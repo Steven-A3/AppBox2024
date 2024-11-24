@@ -150,7 +150,7 @@
     
     [_detailInfoButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.right).with.offset(-4);
-        make.centerY.equalTo(_totalLabel.centerY);
+        make.centerY.equalTo(self->_totalLabel.centerY);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
@@ -165,7 +165,7 @@
     
     [_sliderGaugeLineView makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.left);
-        make.right.equalTo(_sliderThumbView.centerX);
+        make.right.equalTo(self->_sliderThumbView.centerX);
         make.top.equalTo(IS_IPHONE ? @40 : @65);
         make.height.equalTo(@5);
     }];
@@ -184,7 +184,7 @@
                 [conts addObject:make.leading.equalTo( @(self.frame.size.width / 5.0 * (idx+1)) )];
                 make.width.equalTo(IS_RETINA? @0.5 : @1);
                 make.height.equalTo(@18);
-                make.top.equalTo(_sliderBaseLineView.bottom);
+                make.top.equalTo(self->_sliderBaseLineView.bottom);
             }];
         }];
         _meterViewLeadingConstArray = conts;
@@ -192,7 +192,7 @@
         NSMutableArray *baselineConsts = [NSMutableArray new];
         [_sliderMeterLabelViews enumerateObjectsUsingBlock:^(UILabel *aLabel, NSUInteger idx, BOOL *stop) {
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5);
+                make.right.equalTo(((UIView *)self->_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5);
                 [baselineConsts addObject: make.baseline.equalTo(self.top).with.offset(83) ];
             }];
         }];
@@ -202,8 +202,8 @@
     [_sliderThumbView makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@44);
         make.height.equalTo(@44);
-        make.centerY.equalTo(_sliderBaseLineView.centerY);
-        _sliderThumbLeadingConst = make.left.equalTo(self.left).with.offset(-22);
+        make.centerY.equalTo(self->_sliderBaseLineView.centerY);
+        self->_sliderThumbLeadingConst = make.left.equalTo(self.left).with.offset(-22);
     }];
     
     // Labels
@@ -218,7 +218,7 @@
         } else {
 			make.baseline.equalTo(self.top).with.offset(IS_RETINA? 110.5 : 111);
         }
-        _totalLabelTrailingConst = make.right.equalTo(self.right);
+        self->_totalLabelTrailingConst = make.right.equalTo(self.right);
     }];
 }
 

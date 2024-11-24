@@ -107,10 +107,14 @@ NSString *const A3UnitConverterSegmentIndex = @"A3UnitConverterSegmentIndex";
 }
 
 - (void)cloudStoreDidImport {
-	_favorites = nil;
-	_convertItems = nil;
-
-	[self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        self->_favorites = nil;
+        self->_convertItems = nil;
+        
+        [self.tableView reloadData];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {

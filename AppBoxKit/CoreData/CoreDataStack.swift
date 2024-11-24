@@ -19,8 +19,6 @@ public class CoreDataStack: NSObject {
     public var persistentContainer: NSPersistentContainer?
     
     private let modelName = "AppBox2024"
-    private let appGroupID = "group.allaboutapps.appbox"
-    private let cloudKitContainerID = "iCloud.net.allaboutapps.AppBox"
     private let storeFileName = "AppBoxStore2024.sqlite"
     
     private var isICloudAccountAvailable: Bool = false
@@ -39,7 +37,7 @@ public class CoreDataStack: NSObject {
     }
     
     private func checkICloudAccountStatus(completion: @escaping (Bool) -> Void) {
-        let container = CKContainer(identifier: cloudKitContainerID)
+        let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
         container.accountStatus { status, error in
             DispatchQueue.main.async {
                 completion(status == .available)
@@ -64,7 +62,7 @@ public class CoreDataStack: NSObject {
             guard let storeDescription = container.persistentStoreDescriptions.first else {
                 fatalError("Failed to get store description.")
             }
-            let cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: cloudKitContainerID)
+            let cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
             storeDescription.cloudKitContainerOptions = cloudKitOptions
         } else {
             // Use NSPersistentContainer
@@ -99,7 +97,7 @@ public class CoreDataStack: NSObject {
     }
     
     private func persistentStoreURL() -> URL? {
-        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
             fatalError("Unable to access app group container.")
         }
         let storeURL = containerURL.appendingPathComponent("Library/AppBox/\(storeFileName)")
@@ -108,23 +106,19 @@ public class CoreDataStack: NSObject {
     
     /// Unloads the persistent container.
     @objc
-    public func unloadPersistentContainer() {
-        if let container = persistentContainer {
-            for store in container.persistentStoreCoordinator.persistentStores {
-                do {
-                    try container.persistentStoreCoordinator.remove(store)
-                } catch {
-                    print("Failed to remove persistent store: \(error)")
-                }
+    public func unloadPersistentContainer(container: NSPersistentContainer) {
+        for store in container.persistentStoreCoordinator.persistentStores {
+            do {
+                try container.persistentStoreCoordinator.remove(store)
+            } catch {
+                print("Failed to remove persistent store: \(error)")
             }
-            persistentContainer = nil
         }
     }
     
     /// Deletes the Core Data store files.
     @objc
-    public func deleteStoreFiles() {
-        guard let storeURL = persistentStoreURL() else { return }
+    public func deleteStoreFiles(storeURL: URL) {
         let fileManager = FileManager.default
         
         let shmURL = storeURL.deletingPathExtension().appendingPathExtension("sqlite-shm")
@@ -155,5 +149,148 @@ public class CoreDataStack: NSObject {
         } catch {
             print("Failed to initialize CloudKit schema: \(error)")
         }
+    }
+    
+    public func deleteAllRecords(_ completion: @escaping @convention(block) (Bool, Error?) -> Void) {
+        guard let context = persistentContainer?.newBackgroundContext() else {
+            return
+        }
+        
+        let entitiesToDelete = [
+            "AbbreviationFavorite_", "Calculation_", "CurrencyFavorite_", "CurrencyHistory_",
+            "CurrencyHistoryItem_", "DaysCounterCalendar_", "DaysCounterDate_", "DaysCounterEvent_",
+            "DaysCounterEventLocation_", "DaysCounterFavorite_", "DaysCounterReminder_", "ExpenseListBudget_",
+            "ExpenseListBudgetLocation_", "ExpenseListHistory_", "ExpenseListItem_", "KaomojiFavorite_",
+            "LadyCalendarAccount_", "LadyCalendarPeriod_", "LoanCalcComparisonHistory_", "LoanCalcHistory_",
+            "Pedometer_", "PercentCalcHistory_", "QRCodeHistory_", "SalesCalcHistory_", "TipCalcHistory_",
+            "TipCalcRecent_", "TranslatorFavorite_", "TranslatorGroup_", "TranslatorHistory_", "UnitHistory_",
+            "UnitHistoryItem_", "UnitPriceHistory_", "UnitPriceInfo_", "WalletCategory_", "WalletFavorite_",
+            "WalletField_", "WalletFieldItem_", "WalletItem_"
+        ]
+        
+        context.perform {
+            do {
+                for entityName in entitiesToDelete {
+                    // Create a fetch request for the entity
+                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+                    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                    
+                    // Execute the delete request
+                    try context.execute(deleteRequest)
+                    print("Deleted all records for entity: \(entityName)")
+                }
+                // Save changes to persist the deletions
+                try context.save()
+                print("All records deleted successfully for all entities.")
+                
+                // Call completion on success
+                DispatchQueue.main.async {
+                    completion(true, nil)
+                }
+            } catch let error as NSError {
+                // Call completion with error on failure
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+            }
+        }
+    }
+
+    public func deleteAllFilesInUbiquityContainerInBackground(
+        containerID: String,
+        completion: @escaping (Bool, NSError?) -> Void
+    ) {
+        DispatchQueue.global(qos: .background).async {
+            let fileManager = FileManager.default
+            
+            // Check if iCloud is available with the provided container ID
+            if let ubiquityURL = fileManager.url(forUbiquityContainerIdentifier: containerID) {
+                // Check if the directory exists
+                if fileManager.fileExists(atPath: ubiquityURL.path) {
+                    do {
+                        // Get contents of the directory
+                        let files = try fileManager.contentsOfDirectory(at: ubiquityURL, includingPropertiesForKeys: nil, options: [])
+                        
+                        // Iterate and delete each item
+                        for file in files {
+                            try fileManager.removeItem(at: file)
+                            print("Deleted file: \(file.path)")
+                        }
+                        // Call completion handler with success
+                        DispatchQueue.main.async {
+                            completion(true, nil)
+                        }
+                    } catch let error as NSError {
+                        // Call completion handler with error
+                        DispatchQueue.main.async {
+                            completion(false, error)
+                        }
+                    }
+                } else {
+                    let error = NSError(domain: "iCloudContainerError", code: 404, userInfo: [NSLocalizedDescriptionKey: "The directory does not exist at path: \(ubiquityURL.path)"])
+                    DispatchQueue.main.async {
+                        completion(false, error)
+                    }
+                }
+            } else {
+                let error = NSError(domain: "iCloudContainerError", code: 401, userInfo: [NSLocalizedDescriptionKey: "iCloud is not available for container ID: \(containerID)."])
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+            }
+        }
+    }
+
+    public func migrateEntity(_ context: NSManagedObjectContext, _ fetchRequest: NSFetchRequest<NSManagedObject>, _ entityName: String, _ newContext: NSManagedObjectContext, _ newEntityName: String) {
+        do {
+            let oldEntities = try context.fetch(fetchRequest)
+            for oldEntity in oldEntities {
+                if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String {
+                    let checkRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
+                    checkRequest.predicate = NSPredicate(format: "uniqueID == %@", uniqueID)
+                    
+                    let existingEntities = try newContext.fetch(checkRequest)
+                    if existingEntities.isEmpty {
+                        let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
+                        for attribute in oldEntity.entity.attributesByName {
+                            newEntity.setValue(oldEntity.value(forKey: attribute.key), forKey: attribute.key)
+                        }
+                    }
+                }
+            }
+            
+            if newContext.hasChanges {
+                try newContext.save()
+            }
+            context.reset()
+            newContext.reset()
+        } catch {
+            print("Error migrating \(entityName): \(error)")
+        }
+    }
+
+    public func appGroupContainerURL() -> URL {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!
+    }
+    
+    public func V47StoreURL() -> URL {
+        appGroupContainerURL().appendingPathComponent("Library/AppBox/AppBoxStore.sqlite")
+    }
+    
+    public func loadPersistentContainer(modelName: String?, storeURL: URL) -> NSPersistentContainer {
+        let modelName = modelName ?? self.modelName
+        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
+        let oldModel = NSManagedObjectModel(contentsOf: modelURL)
+        let container = NSPersistentContainer(name: modelName, managedObjectModel: oldModel!)
+        
+        let storeDescription = NSPersistentStoreDescription(url: storeURL)
+        container.persistentStoreDescriptions = [storeDescription]
+        
+        container.loadPersistentStores { (description, error) in
+            if let error = error {
+                print("Error loading old persistent store: \(error)")
+            }
+        }
+        return container
     }
 }

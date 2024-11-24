@@ -113,14 +113,14 @@
 	CGFloat screenWidth = [A3UIDevice screenBoundsAdjustedWithOrientation].size.width;
 	if (self.collectionView.contentOffset.x != 0 && coordinateInPage < -30) {
 		[UIView animateWithDuration:0.3 animations:^{
-			_scrollInProgress = YES;
+            self->_scrollInProgress = YES;
 			[self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x - screenWidth, self.collectionView.contentOffset.y) animated:YES];
-			_fakeCellCenter.x -= screenWidth;
-			CGPoint center = _cellFakeView.center;
+            self->_fakeCellCenter.x -= screenWidth;
+			CGPoint center = self->_cellFakeView.center;
 			center.x -= screenWidth;
-			_cellFakeView.center = center;
+            self->_cellFakeView.center = center;
 		} completion:^(BOOL finished) {
-			_scrollInProgress = NO;
+            self->_scrollInProgress = NO;
 			[self moveItemIfNeeded];
 		}];
 		return;
@@ -132,14 +132,14 @@
 	}
 	if ((screenWidth - coordinateInPage) < -30) {
 		[UIView animateWithDuration:0.3 animations:^{
-			_scrollInProgress = YES;
+            self->_scrollInProgress = YES;
 			[self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x + screenWidth, self.collectionView.contentOffset.y) animated:YES];
-			_fakeCellCenter.x += screenWidth;
-			CGPoint center = _cellFakeView.center;
+            self->_fakeCellCenter.x += screenWidth;
+			CGPoint center = self->_cellFakeView.center;
 			center.x += screenWidth;
-			_cellFakeView.center = center;
+            self->_cellFakeView.center = center;
 		} completion:^(BOOL finished) {
-			_scrollInProgress = NO;
+            self->_scrollInProgress = NO;
 			[self moveItemIfNeeded];
 		}];
 		return;
@@ -220,11 +220,11 @@
 
 	if (pushBackCellFakeView) {
 		[_cellFakeView pushBackView:^{
-			[_cellFakeView removeFromSuperview];
-			_cellFakeView = nil;
+			[self->_cellFakeView removeFromSuperview];
+            self->_cellFakeView = nil;
 			[self invalidateLayout];
-			if ([_delegate respondsToSelector:@selector(collectionView:layout:didEndDraggingItemAtIndexPath:)]) {
-				[_delegate collectionView:self.collectionView layout:self didEndDraggingItemAtIndexPath:toIndexPath];
+			if ([self->_delegate respondsToSelector:@selector(collectionView:layout:didEndDraggingItemAtIndexPath:)]) {
+				[self->_delegate collectionView:self.collectionView layout:self didEndDraggingItemAtIndexPath:toIndexPath];
 			}
 		}];
 	} else {
@@ -236,11 +236,11 @@
 
 - (void)removeCellFakeView:(void(^)(void))completion {
 	[UIView animateWithDuration:0.3 animations:^{
-		[_cellFakeView setAlpha:0.0];
+		[self->_cellFakeView setAlpha:0.0];
 	} completion:^(BOOL finished) {
-		[_cellFakeView removeFromSuperview];
-		[_cellFakeView setAlpha:1.0];
-		_cellFakeView = nil;
+		[self->_cellFakeView removeFromSuperview];
+		[self->_cellFakeView setAlpha:1.0];
+        self->_cellFakeView = nil;
 		[self.collectionView reloadData];
 		if (completion) {
 			completion();

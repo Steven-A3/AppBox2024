@@ -127,15 +127,15 @@
     [_sliderThumbView makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@44);
         make.height.equalTo(@44);
-        make.centerY.equalTo(_sliderBaseLineView.centerY);
-        _sliderThumbLeadingConst = make.left.equalTo(self.left);
+        make.centerY.equalTo(self->_sliderBaseLineView.centerY);
+        self->_sliderThumbLeadingConst = make.left.equalTo(self.left);
     }];
     
     [_sliderRedLineView makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(_sliderThumbView.centerX);
+        make.right.equalTo(self->_sliderThumbView.centerX);
         make.height.equalTo(@5.0);
         make.left.equalTo(self.left);
-        make.centerY.equalTo(_sliderBaseLineView.centerY);
+        make.centerY.equalTo(self->_sliderBaseLineView.centerY);
     }];
     
     [_usedAmountLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -152,12 +152,12 @@
     
     [_resultLabel makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPAD) {
-            _savedPriceLabelTrailingConst = make.right.equalTo(_detailInfoButton.left).with.offset(2);
+            self->_savedPriceLabelTrailingConst = make.right.equalTo(self->_detailInfoButton.left).with.offset(2);
             make.left.greaterThanOrEqualTo(@10);
             make.baseline.equalTo(self.bottom).with.offset(IS_RETINA? -46.5 : -46);
             
         } else {
-            _savedPriceLabelTrailingConst = make.right.equalTo(_detailInfoButton.left).with.offset(2);
+            self->_savedPriceLabelTrailingConst = make.right.equalTo(self->_detailInfoButton.left).with.offset(2);
             make.leading.greaterThanOrEqualTo(@10);
             make.baseline.equalTo(self.bottom).with.offset(-27.5);
         }
@@ -165,7 +165,7 @@
     
     [_detailInfoButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.right).with.offset(-4);
-        make.centerY.equalTo(_resultLabel.centerY);
+        make.centerY.equalTo(self->_resultLabel.centerY);
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
@@ -177,10 +177,10 @@
             [aView removeConstraints:aView.constraints];
             [aView makeConstraints:^(MASConstraintMaker *make) {
                 MASConstraint *leading = make.leading.equalTo( @( self.frame.size.width / 5.0 * (idx+1) ) );
-                [_sliderMeterViewsConst addObject:leading];
+                [self->_sliderMeterViewsConst addObject:leading];
                 make.width.equalTo(IS_RETINA? @0.5 : @1);
                 make.height.equalTo(@18);
-                make.top.equalTo(_sliderBaseLineView.bottom);
+                make.top.equalTo(self->_sliderBaseLineView.bottom);
             }];
         }];
         
@@ -191,7 +191,7 @@
             [aLabel sizeToFit];
             [aLabel removeConstraints:aLabel.constraints];
             [aLabel makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(((UIView *)_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5.0);
+                make.right.equalTo(((UIView *)self->_sliderMeterViews[idx]).left).with.offset(IS_RETINA ? -4.5 : -5.0);
                 make.baseline.equalTo(self.bottom).with.offset(IS_RETINA ? -74.5 : -74);
             }];
         }];
@@ -340,22 +340,26 @@
     if (animation) {
         [self setNeedsUpdateConstraints];
         
-        [UIView beginAnimations:A3AnimationIDKeyboardWillShow context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.25];
-        [UIView setAnimationDidStopSelector:@selector(setNeedsLayout)];
-        
-        [self adjustConstraintLayout];
-        
-        [_sliderBaseLineView layoutIfNeeded];
-        [_sliderRedLineView layoutIfNeeded];
-        [_usedAmountLabel layoutIfNeeded];
-        [_resultLabel layoutIfNeeded];
-        [_sliderThumbView layoutIfNeeded];
-        
-        [UIView commitAnimations];
-        
+        [UIView animateWithDuration:0.25
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+            // Adjust layout constraints within the animation block
+            [self adjustConstraintLayout];
+            
+            // Update layout for views
+            [self->_sliderBaseLineView layoutIfNeeded];
+            [self->_sliderRedLineView layoutIfNeeded];
+            [self->_usedAmountLabel layoutIfNeeded];
+            [self->_resultLabel layoutIfNeeded];
+            [self->_sliderThumbView layoutIfNeeded];
+        } completion:^(BOOL finished) {
+            // Call setNeedsLayout after animation ends if necessary
+            if (finished) {
+                [self setNeedsLayout];
+            }
+        }];
+
     }
     else {
         [self adjustConstraintLayout];

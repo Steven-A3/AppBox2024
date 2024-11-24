@@ -124,11 +124,11 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 + (void)createDirectories {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-	NSString *imagePath = [A3WalletImageDirectory pathInLibraryDirectory];
+	NSString *imagePath = [A3WalletImageDirectory pathInAppGroupContainer];
 	if (![fileManager fileExistsAtPath:imagePath])
 		[fileManager createDirectoryAtPath:imagePath withIntermediateDirectories:YES attributes:nil error:NULL];
 
-	NSString *videoPath = [A3WalletVideoDirectory pathInLibraryDirectory];
+	NSString *videoPath = [A3WalletVideoDirectory pathInAppGroupContainer];
 	if (![fileManager fileExistsAtPath:videoPath])
 		[fileManager createDirectoryAtPath:videoPath withIntermediateDirectories:YES attributes:nil error:NULL];
 
