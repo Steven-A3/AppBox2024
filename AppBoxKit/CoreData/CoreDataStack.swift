@@ -20,6 +20,7 @@ public class CoreDataStack: NSObject {
     
     private let modelName = "AppBox2024"
     private let storeFileName = "AppBoxStore2024.sqlite"
+    private let localStoreFileName = "AppBoxStore2024Local.sqlite"
     
     private var isICloudAccountAvailable: Bool = false
     
@@ -53,32 +54,39 @@ public class CoreDataStack: NSObject {
         }
         
         let container: NSPersistentContainer
+        var cloudKitOptions: NSPersistentCloudKitContainerOptions? = nil
         
         if isICloudAccountAvailable {
             // Use NSPersistentCloudKitContainer
             container = NSPersistentCloudKitContainer(name: modelName, managedObjectModel: managedObjectModel)
             
-            // Configure CloudKit options
-            guard let storeDescription = container.persistentStoreDescriptions.first else {
-                fatalError("Failed to get store description.")
-            }
-            let cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
-            storeDescription.cloudKitContainerOptions = cloudKitOptions
+            cloudKitOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
         } else {
             // Use NSPersistentContainer
             container = NSPersistentContainer(name: modelName, managedObjectModel: managedObjectModel)
         }
         
-        // Set up the persistent store URL
-        guard let storeDescription = container.persistentStoreDescriptions.first else {
-            fatalError("Failed to get store description.")
+        // Set up the cloud persistent store URL
+        guard let cloudStoreURL = cloudStoreURL() else {
+            fatalError("Failed to get persistent store URL.")
         }
-        storeDescription.url = persistentStoreURL()
-        
+        let cloudStoreDescription = NSPersistentStoreDescription(url: cloudStoreURL)
+        if let options = cloudKitOptions {
+            cloudStoreDescription.cloudKitContainerOptions = options
+        }
+
         // Enable persistent history tracking
-        storeDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        storeDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-        storeDescription.configuration = "Cloud"
+        cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        cloudStoreDescription.configuration = "Cloud"
+        
+        guard let localStoreURL = localStoreURL() else {
+            fatalError("Failed to get persistent store URL.")
+        }
+        let localStoreStoreDescription = NSPersistentStoreDescription(url: localStoreURL)
+        localStoreStoreDescription.configuration = "Local"
+        
+        container.persistentStoreDescriptions = [cloudStoreDescription, localStoreStoreDescription]
         
         container.loadPersistentStores { [weak self] (_, error) in
             if let error = error {
@@ -96,11 +104,19 @@ public class CoreDataStack: NSObject {
         }
     }
     
-    private func persistentStoreURL() -> URL? {
+    private func cloudStoreURL() -> URL? {
         guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
             fatalError("Unable to access app group container.")
         }
         let storeURL = containerURL.appendingPathComponent("Library/AppBox/\(storeFileName)")
+        return storeURL
+    }
+    
+    private func localStoreURL() -> URL? {
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
+            fatalError("Unable to access app group container.")
+        }
+        let storeURL = containerURL.appendingPathComponent("Library/AppBox/\(localStoreFileName)")
         return storeURL
     }
     
