@@ -23,12 +23,15 @@ class DataMigrationManager: NSObject, ObservableObject {
 #if DEBUG
     @Published var isPreviewMode: Bool = false
 #endif
+
+    private let migrationQueue = OperationQueue()
     
     @objc public
     init(oldPersistentContainer: NSPersistentContainer, newPersistentContainer: NSPersistentContainer) {
         self.oldPersistentContainer = oldPersistentContainer
         self.newPersistentContainer = newPersistentContainer
 
+        migrationQueue.maxConcurrentOperationCount = 1 // Adjust concurrency as needed
 #if DEBUG
         // Check if we are running in a preview environment in DEBUG mode
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
@@ -40,81 +43,59 @@ class DataMigrationManager: NSObject, ObservableObject {
     }
     
     @objc public
-    func migrateData(fromV3:Bool ,completion: @escaping () -> Void) {
+    func migrateData(fromV3: Bool, completion: @escaping () -> Void) {
         isMigrating = true
         progress = 0.0
         
         let startTime = Date()
+        let entitiesToMigrate = [
+            "AbbreviationFavorite", "Calculation", "CurrencyFavorite", "CurrencyHistory",
+            "CurrencyHistoryItem", "DaysCounterCalendar", "DaysCounterDate", "DaysCounterEvent",
+            "DaysCounterEventLocation", "DaysCounterFavorite", "DaysCounterReminder", "ExpenseListBudget",
+            "ExpenseListBudgetLocation", "ExpenseListHistory", "ExpenseListItem", "KaomojiFavorite",
+            "LadyCalendarAccount", "LadyCalendarPeriod", "LoanCalcComparisonHistory", "LoanCalcHistory",
+            "Pedometer", "PercentCalcHistory", "QRCodeHistory", "SalesCalcHistory", "TipCalcHistory",
+            "TipCalcRecent", "TranslatorFavorite", "TranslatorGroup", "TranslatorHistory", "UnitHistory",
+            "UnitHistoryItem", "UnitPriceHistory", "UnitPriceInfo", "WalletCategory", "WalletFavorite",
+            "WalletField", "WalletFieldItem", "WalletItem"
+        ]
         
-#if DEBUG
-        guard !isPreviewMode else {
-            print("Skipping migration in preview mode")
-            return
+        let totalEntities = entitiesToMigrate.count
+        newPersistentContainer.viewContext.automaticallyMergesChangesFromParent = false
+        
+        for (index, entityName) in entitiesToMigrate.enumerated() {
+            let operation = MigrationOperation(
+                context: oldPersistentContainer.viewContext,
+                newContext: newPersistentContainer.viewContext,
+                entityName: entityName,
+                batchSize: 3000,
+                isFromV3: fromV3
+            )
+            
+            operation.completionBlock = { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.progress = Double(index + 1) / Double(totalEntities)
+                }
+            }
+            
+            migrationQueue.addOperation(operation)
         }
-#endif
-        func finalize() {
+        
+        migrationQueue.addBarrierBlock { [weak self] in
+            guard let self = self else { return }
+
+            newPersistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+
             let timeElapsed = Date().timeIntervalSince(startTime)
             let delayTime = max(5.0 - timeElapsed, 0)
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
                 self.isMigrating = false
                 self.cleanupMemory()
                 self.isMigrationComplete = true
-                print("Migration complete")
-                
                 completion()
             }
-        }
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            let context = self.oldPersistentContainer.viewContext
-            let newContext = self.newPersistentContainer.viewContext
-            
-            // List of entity names to be migrated
-            let entitiesToMigrate = [
-                "AbbreviationFavorite", "Calculation", "CurrencyFavorite", "CurrencyHistory",
-                "CurrencyHistoryItem", "DaysCounterCalendar", "DaysCounterDate", "DaysCounterEvent",
-                "DaysCounterEventLocation", "DaysCounterFavorite", "DaysCounterReminder", "ExpenseListBudget",
-                "ExpenseListBudgetLocation", "ExpenseListHistory", "ExpenseListItem", "KaomojiFavorite",
-                "LadyCalendarAccount", "LadyCalendarPeriod", "LoanCalcComparisonHistory", "LoanCalcHistory",
-                "Pedometer", "PercentCalcHistory", "QRCodeHistory", "SalesCalcHistory", "TipCalcHistory",
-                "TipCalcRecent", "TranslatorFavorite", "TranslatorGroup", "TranslatorHistory", "UnitHistory",
-                "UnitHistoryItem", "UnitPriceHistory", "UnitPriceInfo", "WalletCategory", "WalletFavorite",
-                "WalletField", "WalletFieldItem", "WalletItem"
-            ]
-            
-            let totalEntities = entitiesToMigrate.count
-            let coreDataStack = CoreDataStack.shared
-            var currentEntityIndex = 0
-            
-            for entityName in entitiesToMigrate {
-                let batchSize: Int = 3000
-                let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
-                fetchRequest.fetchBatchSize = batchSize
-                
-                do {
-                    let totalEntityCount = try context.count(for: fetchRequest)
-                    print("Migrating \(entityName): \(totalEntityCount) entities")
-                    
-                    var currentBatchIndex = 0
-                    while currentBatchIndex * batchSize < totalEntityCount {
-                        fetchRequest.fetchOffset = currentBatchIndex * batchSize
-                        let newEntityName = fromV3 ? entityName + "_" : entityName
-                        coreDataStack.migrateEntity(context, fetchRequest, entityName, newContext, newEntityName)
-                        
-                        currentBatchIndex += 1
-                    }
-                } catch {
-                    print("Error counting entities for \(entityName): \(error)")
-                }
-                
-                currentEntityIndex += 1
-                DispatchQueue.main.async {
-                    self.progress = Double(currentEntityIndex) / Double(totalEntities)
-                }
-                print("Migrated \(entityName)")
-            }
-            
-            finalize()
         }
     }
     
@@ -170,6 +151,47 @@ class DataMigrationManager: NSObject, ObservableObject {
             self.migrateData(fromV3: true) {
                 completion()
             }
+        }
+    }
+}
+
+// MARK: - Migration Operation
+class MigrationOperation: Operation, @unchecked Sendable {
+    private let context: NSManagedObjectContext
+    private let newContext: NSManagedObjectContext
+    private let entityName: String
+    private let batchSize: Int
+    private let isFromV3: Bool
+    
+    init(context: NSManagedObjectContext, newContext: NSManagedObjectContext, entityName: String, batchSize: Int, isFromV3: Bool) {
+        self.context = context
+        self.newContext = newContext
+        self.entityName = entityName
+        self.batchSize = batchSize
+        self.isFromV3 = isFromV3
+    }
+    
+    override func main() {
+        if isCancelled { return }
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
+        fetchRequest.fetchBatchSize = batchSize
+        
+        do {
+            let totalEntityCount = try context.count(for: fetchRequest)
+            var currentBatchIndex = 0
+            
+            while currentBatchIndex * batchSize < totalEntityCount {
+                if isCancelled { return }
+                
+                fetchRequest.fetchOffset = currentBatchIndex * batchSize
+                let newEntityName = isFromV3 ? entityName + "_" : entityName
+                
+                CoreDataStack.shared.migrateEntity(context, fetchRequest, entityName, newContext, newEntityName)
+                currentBatchIndex += 1
+            }
+        } catch {
+            print("Error migrating operation \(entityName): \(error)")
         }
     }
 }

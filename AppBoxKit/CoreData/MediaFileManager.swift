@@ -26,7 +26,7 @@ public class MediaFileMover: NSObject {
         ].map { baseURL.appendingPathComponent($0) }
 
         // Define target directories
-        let targetBaseURL = appGroupURL.appendingPathComponent("Library/AppBox/MediaFiles")
+        let targetBaseURL = appGroupURL.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
         let targetDirectories = [
             "DaysCounterImages",
             "WalletImages",

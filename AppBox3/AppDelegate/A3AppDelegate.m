@@ -164,18 +164,17 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
             
             if ([self->_previousVersion compare:@"4.7.7" options:NSNumericSearch] == NSOrderedAscending) {
                 [self migrateV47StoreFilesToAfterV48];
+            }
+            if ([self->_previousVersion compare:@"4.8" options:NSNumericSearch] == NSOrderedAscending) {
                 [self migratePre2024MediaFiles];
             }
 
-            CoreDataStack *stack = [CoreDataStack shared];
             NSURL *storeURL = [stack V47StoreURL];
             NSPersistentContainer *container = [stack loadPersistentContainerWithModelName:@"AppBox3" storeURL:storeURL];
             MigrationHostingViewController *vc =
             [[MigrationHostingViewController alloc] initWithOldPersistentContainer:container
                                                                         completion:^{
                 [self setupMainMenuViewController];
-                // Set the UNUserNotificationCenter delegate
-                
                 [self handleNotification:launchOptions];
                 [self addNotificationObservers];
                 

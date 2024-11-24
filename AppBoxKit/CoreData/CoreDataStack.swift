@@ -270,32 +270,34 @@ public class CoreDataStack: NSObject {
 
     public func migrateEntity(_ context: NSManagedObjectContext, _ fetchRequest: NSFetchRequest<NSManagedObject>, _ entityName: String, _ newContext: NSManagedObjectContext, _ newEntityName: String) {
         do {
+            // Fetch all old entities
             let oldEntities = try context.fetch(fetchRequest)
+            let entityAttributes = oldEntities.first?.entity.attributesByName.keys.map { $0 } ?? []
+
+            // Pre-fetch existing entities in the new context
+            let existingFetchRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
+            let existingEntities = try newContext.fetch(existingFetchRequest)
+            let existingIDs = Set(existingEntities.compactMap { $0.value(forKey: "uniqueID") as? String })
+
+            // Migrate entities
             for oldEntity in oldEntities {
-                if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String {
-                    let checkRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
-                    checkRequest.predicate = NSPredicate(format: "uniqueID == %@", uniqueID)
-                    
-                    let existingEntities = try newContext.fetch(checkRequest)
-                    if existingEntities.isEmpty {
-                        let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
-                        for attribute in oldEntity.entity.attributesByName {
-                            newEntity.setValue(oldEntity.value(forKey: attribute.key), forKey: attribute.key)
-                        }
+                if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String, !existingIDs.contains(uniqueID) {
+                    let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
+                    for attribute in entityAttributes {
+                        newEntity.setValue(oldEntity.value(forKey: attribute), forKey: attribute)
                     }
                 }
             }
-            
+
+            // Save changes in the new context
             if newContext.hasChanges {
                 try newContext.save()
             }
-            context.reset()
-            newContext.reset()
         } catch {
             print("Error migrating \(entityName): \(error)")
         }
     }
-
+    
     public func appGroupContainerURL() -> URL {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!
     }
