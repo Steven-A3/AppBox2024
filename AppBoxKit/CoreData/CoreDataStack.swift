@@ -19,7 +19,7 @@ public class CoreDataStack: NSObject {
     public var persistentContainer: NSPersistentContainer?
     
     private let modelName = "AppBox2024"
-    private let storeFileName = "AppBoxStore2024.sqlite"
+    private let cloudStoreFileName = "AppBoxStore2024.sqlite"
     private let localStoreFileName = "AppBoxStore2024Local.sqlite"
     
     private var isICloudAccountAvailable: Bool = false
@@ -65,34 +65,29 @@ public class CoreDataStack: NSObject {
             // Use NSPersistentContainer
             container = NSPersistentContainer(name: modelName, managedObjectModel: managedObjectModel)
         }
-        
-        // Set up the cloud persistent store URL
+
         guard let cloudStoreURL = cloudStoreURL() else {
             fatalError("Failed to get persistent store URL.")
         }
-        let cloudStoreDescription = NSPersistentStoreDescription(url: cloudStoreURL)
-        if let options = cloudKitOptions {
-            cloudStoreDescription.cloudKitContainerOptions = options
+        guard let localStoreURL = localStoreURL() else {
+            fatalError("Failed to get persistent store URL.")
         }
+        let cloudStoreDescription = createStoreDescription(for: cloudStoreURL, configuration: "Cloud", options: cloudKitOptions)
+        let localStoreDescription = createStoreDescription(for: localStoreURL, configuration: "Local")
+        container.persistentStoreDescriptions = [cloudStoreDescription, localStoreDescription]
 
         // Enable persistent history tracking
         cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-        cloudStoreDescription.configuration = "Cloud"
         
-        guard let localStoreURL = localStoreURL() else {
-            fatalError("Failed to get persistent store URL.")
-        }
-        let localStoreStoreDescription = NSPersistentStoreDescription(url: localStoreURL)
-        localStoreStoreDescription.configuration = "Local"
-        
-        container.persistentStoreDescriptions = [cloudStoreDescription, localStoreStoreDescription]
+        container.persistentStoreDescriptions = [cloudStoreDescription, localStoreDescription]
         
         container.loadPersistentStores { [weak self] (_, error) in
             if let error = error {
                 fatalError("Unresolved error \(error)")
             }
             self?.persistentContainer = container
+            self?.persistentContainer?.viewContext.automaticallyMergesChangesFromParent = true
             
             #if DEBUG
             if let cloudContainer = container as? NSPersistentCloudKitContainer {
@@ -104,20 +99,41 @@ public class CoreDataStack: NSObject {
         }
     }
     
-    private func cloudStoreURL() -> URL? {
-        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
-            fatalError("Unable to access app group container.")
+    private func createStoreDescription(for url: URL, configuration: String, options: NSPersistentCloudKitContainerOptions? = nil) -> NSPersistentStoreDescription {
+        let description = NSPersistentStoreDescription(url: url)
+        description.configuration = configuration
+        if let options = options {
+            description.cloudKitContainerOptions = options
         }
-        let storeURL = containerURL.appendingPathComponent("Library/AppBox/\(storeFileName)")
-        return storeURL
+        return description
+    }
+
+    private func cloudStoreURL() -> URL? {
+        guard let containerURL = appGroudContainerURL() else {
+            assertionFailure("Unable to access app group container.")
+            return nil
+        }
+        return containerURL.appendingPathComponent(cloudStoreFileName)
     }
     
     private func localStoreURL() -> URL? {
-        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
-            fatalError("Unable to access app group container.")
+        guard let containerURL = appGroudContainerURL() else {
+            assertionFailure("Unable to access app group container.")
+            return nil
         }
-        let storeURL = containerURL.appendingPathComponent("Library/AppBox/\(localStoreFileName)")
-        return storeURL
+        return containerURL.appendingPathComponent(localStoreFileName)
+    }
+    
+    private func appGroudContainerURL() -> URL? {
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
+            assertionFailure("Unable to access app group container.")
+            return nil
+        }
+        let containerURLWithDirectory = containerURL.appendingPathComponent("Library/AppBox")
+        if !FileManager.default.fileExists(atPath: containerURLWithDirectory.path) {
+            try? FileManager.default.createDirectory(at: containerURLWithDirectory, withIntermediateDirectories: true, attributes: nil)
+        }
+        return containerURLWithDirectory
     }
     
     /// Unloads the persistent container.
@@ -135,23 +151,22 @@ public class CoreDataStack: NSObject {
     /// Deletes the Core Data store files.
     @objc
     public func deleteStoreFiles(storeURL: URL) {
+        let additionalFiles = [
+            storeURL.deletingPathExtension().appendingPathExtension("sqlite-shm"),
+            storeURL.deletingPathExtension().appendingPathExtension("sqlite-wal")
+        ]
+        deleteFiles(at: [storeURL] + additionalFiles)
+    }
+    
+    private func deleteFiles(at urls: [URL], completion: ((Error?) -> Void)? = nil) {
         let fileManager = FileManager.default
-        
-        let shmURL = storeURL.deletingPathExtension().appendingPathExtension("sqlite-shm")
-        let walURL = storeURL.deletingPathExtension().appendingPathExtension("sqlite-wal")
-        
         do {
-            if fileManager.fileExists(atPath: storeURL.path) {
-                try fileManager.removeItem(at: storeURL)
+            for url in urls where fileManager.fileExists(atPath: url.path) {
+                try fileManager.removeItem(at: url)
             }
-            if fileManager.fileExists(atPath: shmURL.path) {
-                try fileManager.removeItem(at: shmURL)
-            }
-            if fileManager.fileExists(atPath: walURL.path) {
-                try fileManager.removeItem(at: walURL)
-            }
+            completion?(nil)
         } catch {
-            print("Failed to delete store files: \(error)")
+            completion?(error)
         }
     }
     
@@ -187,24 +202,20 @@ public class CoreDataStack: NSObject {
         context.perform {
             do {
                 for entityName in entitiesToDelete {
-                    // Create a fetch request for the entity
                     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
                     let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                    
-                    // Execute the delete request
-                    try context.execute(deleteRequest)
-                    print("Deleted all records for entity: \(entityName)")
+                    deleteRequest.resultType = .resultTypeObjectIDs
+                    let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
+                    if let objectIDs = result?.result as? [NSManagedObjectID] {
+                        let changes = [NSDeletedObjectsKey: objectIDs]
+                        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+                    }
                 }
-                // Save changes to persist the deletions
                 try context.save()
-                print("All records deleted successfully for all entities.")
-                
-                // Call completion on success
                 DispatchQueue.main.async {
                     completion(true, nil)
                 }
-            } catch let error as NSError {
-                // Call completion with error on failure
+            } catch {
                 DispatchQueue.main.async {
                     completion(false, error)
                 }
