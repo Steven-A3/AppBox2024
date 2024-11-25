@@ -272,6 +272,7 @@ public class CoreDataStack: NSObject {
         do {
             // Fetch all old entities
             let oldEntities = try context.fetch(fetchRequest)
+            let staticOldEntities = oldEntities.map { $0 }
             let entityAttributes = oldEntities.first?.entity.attributesByName.keys.map { $0 } ?? []
 
             // Pre-fetch existing entities in the new context

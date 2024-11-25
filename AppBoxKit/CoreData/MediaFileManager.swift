@@ -80,7 +80,8 @@ public class MediaFileMover: NSObject {
         let items = try fileManager.contentsOfDirectory(at: sourceDirectory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
         for item in items {
             let targetURL = targetDirectory.appendingPathComponent(item.lastPathComponent)
-            if fileManager.fileExists(atPath: item.path, isDirectory: nil) {
+            var isDirectory: ObjCBool = false
+            if fileManager.fileExists(atPath: item.path, isDirectory: &isDirectory) && isDirectory.boolValue {
                 // If item is a directory, move recursively
                 try moveFilesRecursively(from: item, to: targetURL)
             } else {
