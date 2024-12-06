@@ -30,23 +30,23 @@ public class CoreDataStack: NSObject {
     
     /// Sets up the Core Data stack.
     /// - Parameter completion: Completion handler called when setup is complete.
-    public func setupStackWithCompletion(_ completion: @escaping @convention(block) () -> Void) {
+    public func setupStackWithCompletion(_ completionB: @escaping () -> Void) {
         checkICloudAccountStatus { [weak self] available in
             self?.isICloudAccountAvailable = available
-            self?.setupPersistentContainer(completion: completion)
+            self?.setupPersistentContainer(completionB)
         }
     }
     
-    private func checkICloudAccountStatus(completion: @escaping (Bool) -> Void) {
+    private func checkICloudAccountStatus(_ completionA: @escaping (Bool) -> Void) {
         let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
         container.accountStatus { status, error in
-            DispatchQueue.main.async {
-                completion(status == .available)
-            }
+            completionA(status == .available)
         }
     }
     
-    private func setupPersistentContainer(completion: @escaping () -> Void) {
+    private func setupPersistentContainer(_ completionC: @escaping () -> Void) {
+        print("completion of setupPersistentContainer")
+        
         // Load the model
         guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd"),
               let managedObjectModel = NSManagedObjectModel(contentsOf: modelURL) else {
@@ -82,7 +82,9 @@ public class CoreDataStack: NSObject {
         
         container.persistentStoreDescriptions = [cloudStoreDescription, localStoreDescription]
         
-        container.loadPersistentStores { [weak self] (_, error) in
+        container.loadPersistentStores { [weak self] (storeDescription, error) in
+            print("Completion of loadPersistentStores: \(String(describing: storeDescription.configuration))")
+            
             if let error = error {
                 fatalError("Unresolved error \(error)")
             }
@@ -90,12 +92,16 @@ public class CoreDataStack: NSObject {
             self?.persistentContainer?.viewContext.automaticallyMergesChangesFromParent = true
             
             #if DEBUG
-            if let cloudContainer = container as? NSPersistentCloudKitContainer {
-                self?.initializeCloudKitSchema(container: cloudContainer)
-            }
+//            if let cloudContainer = container as? NSPersistentCloudKitContainer {
+//                self?.initializeCloudKitSchema(container: cloudContainer)
+//            }
             #endif
-            
-            completion()
+
+            if storeDescription.configuration == "Cloud" {
+                DispatchQueue.main.async {
+                    completionC()
+                }
+            }
         }
     }
     
@@ -281,7 +287,7 @@ public class CoreDataStack: NSObject {
             let existingIDs = Set(existingEntities.compactMap { $0.value(forKey: "uniqueID") as? String })
 
             // Migrate entities
-            for oldEntity in oldEntities {
+            for oldEntity in staticOldEntities {
                 if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String, !existingIDs.contains(uniqueID) {
                     let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
                     for attribute in entityAttributes {

@@ -103,6 +103,7 @@ Data collected from HealthKit will not be used for marketing and advertising pur
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
+		<string>audio</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>

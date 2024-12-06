@@ -96,7 +96,7 @@
     [context saveIfNeeded];
 }
 
-- (void)deleteWalletItem_ {
+- (void)deleteWalletItem {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItemID == %@", self.uniqueID];
 	NSArray *fieldItems = [WalletFieldItem_ findAllWithPredicate:predicate];

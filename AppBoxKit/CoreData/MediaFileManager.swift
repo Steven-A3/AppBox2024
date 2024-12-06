@@ -39,33 +39,6 @@ public class MediaFileMover: NSObject {
         }
     }
 
-    private func moveFiles(from sourceDirectory: URL, to targetDirectory: URL) throws {
-        // Ensure the target directory exists
-        try createDirectoryIfNotExists(targetDirectory)
-
-        // Skip if the source directory doesn't exist
-        guard fileManager.fileExists(atPath: sourceDirectory.path) else {
-            print("Source directory does not exist: \(sourceDirectory.path)")
-            return
-        }
-
-        // Get files in the source directory
-        let files = try fileManager.contentsOfDirectory(at: sourceDirectory, includingPropertiesForKeys: nil)
-        for file in files {
-            let targetURL = targetDirectory.appendingPathComponent(file.lastPathComponent)
-            do {
-                // Move the file
-                try fileManager.moveItem(at: file, to: targetURL)
-                print("Moved file: \(file.lastPathComponent) to \(targetURL.path)")
-            } catch {
-                print("Failed to move file: \(file.lastPathComponent), error: \(error)")
-            }
-        }
-
-        // Remove the now-empty source directory
-        try? fileManager.removeItem(at: sourceDirectory)
-    }
-
     public func moveFilesRecursively(from sourceDirectory: URL, to targetDirectory: URL) throws {
         // Ensure the target directory exists
         try createDirectoryIfNotExists(targetDirectory)

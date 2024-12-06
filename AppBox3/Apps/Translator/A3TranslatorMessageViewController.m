@@ -1056,7 +1056,7 @@ static NSString *const AZURE_TRANSLATE_API_V3_URL = @"https://api.cognitive.micr
         }
         NSDictionary *result = jsonData[0];
         
-        NSString *detectedLanguage = _originalTextLanguage;
+        NSString *detectedLanguage = self->_originalTextLanguage;
         if (result[@"detectedLanguage"]) {
             detectedLanguage = result[@"detectedLanguage"][@"language"];
         }

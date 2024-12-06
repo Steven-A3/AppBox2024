@@ -55,7 +55,7 @@
 - (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory {
 	if (inOriginalDirectory) {
         NSString *path = [A3WalletImageDirectory pathInAppGroupContainer];
-        return [NSURL URLWithString:[path stringByAppendingPathComponent:self.uniqueID]];
+        return [NSURL fileURLWithPath:[path stringByAppendingPathComponent:self.uniqueID]];
 	} else {
 		return [NSURL fileURLWithPath:[self.uniqueID pathInTemporaryDirectory]];
 	}
@@ -131,7 +131,7 @@
 	NSString *filename = [NSString stringWithFormat:@"%@-video.%@", self.uniqueID, self.videoExtension];
 	if (inOriginal) {
         NSString *path = [A3WalletVideoDirectory pathInAppGroupContainer];
-        return [NSURL URLWithString:[path stringByAppendingPathComponent:filename]];
+        return [NSURL fileURLWithPath:[path stringByAppendingPathComponent:filename]];
 	} else {
 		return [NSURL fileURLWithPath:[filename pathInTemporaryDirectory]];
 	}

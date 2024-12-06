@@ -122,31 +122,52 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createDirectories {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-
-	NSString *imagePath = [A3WalletImageDirectory pathInAppGroupContainer];
-	if (![fileManager fileExistsAtPath:imagePath])
-		[fileManager createDirectoryAtPath:imagePath withIntermediateDirectories:YES attributes:nil error:NULL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSString *imagePath = [A3WalletImageDirectory pathInAppGroupContainer];
+    if (![fileManager fileExistsAtPath:imagePath]) {
+        NSError *error;
+        [fileManager createDirectoryAtPath:imagePath withIntermediateDirectories:YES attributes:nil error:&error];
+        if (error) {
+            FNLOG(@"%@", error.localizedFailureReason);
+        }
+    }
 
 	NSString *videoPath = [A3WalletVideoDirectory pathInAppGroupContainer];
-	if (![fileManager fileExistsAtPath:videoPath])
-		[fileManager createDirectoryAtPath:videoPath withIntermediateDirectories:YES attributes:nil error:NULL];
+    if (![fileManager fileExistsAtPath:videoPath]) {
+        NSError *error;
+        [fileManager createDirectoryAtPath:videoPath withIntermediateDirectories:YES attributes:nil error:&error];
+        if (error) {
+            FNLOG(@"%@", error.localizedFailureReason);
+        }
+    }
 
 	NSString *imageThumbnailDirectory = [A3WalletImageThumbnailDirectory pathInCachesDirectory];
-	if (![fileManager fileExistsAtPath:imageThumbnailDirectory])
-		[fileManager createDirectoryAtPath:imageThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+    if (![fileManager fileExistsAtPath:imageThumbnailDirectory]) {
+        NSError *error;
+        [fileManager createDirectoryAtPath:imageThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        if (error) {
+            FNLOG(@"%@", error.localizedFailureReason);
+        }
+    }
 
 	NSString *videoThumbnailDirectory = [A3WalletVideoThumbnailDirectory pathInCachesDirectory];
-	if (![fileManager fileExistsAtPath:videoThumbnailDirectory])
-		[fileManager createDirectoryAtPath:videoThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
+    if (![fileManager fileExistsAtPath:videoThumbnailDirectory]) {
+        NSError *error;
+        [fileManager createDirectoryAtPath:videoThumbnailDirectory withIntermediateDirectories:YES attributes:nil error:&error];
+        if (error) {
+            FNLOG(@"%@", error.localizedFailureReason);
+        }
+    }
+    return;
 }
 
 + (void)createLocalizedPresetCategories {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
 	NSArray *presetCategories = [self categoryPresetData];
 	NSMutableArray *categories = [NSMutableArray new];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletCategory_"];
 	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletCategory_"];
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", category[PRESET_ID_KEY]];
         NSError *error;
         NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];

@@ -489,6 +489,7 @@
 		6874847819780DCE00EA8F74 /* UnitPriceHistory+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874847719780DCE00EA8F74 /* UnitPriceHistory+extension.m */; };
 		6874847B19780EFC00EA8F74 /* UnitPriceInfo+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 6874847A19780EFC00EA8F74 /* UnitPriceInfo+extension.m */; };
 		6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6874892E1854430C008972CC /* NationalFlags.xcassets */; };
+		68754A962CFD971E006DBC1F /* WalletFieldItem_+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68754A952CFD971E006DBC1F /* WalletFieldItem_+extension.swift */; };
 		687671531F7FC7B300182BA1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 687671521F7FC7B300182BA1 /* GoogleService-Info.plist */; };
 		6876D6FB17A75DAE00E16991 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 687C193B1783DF0F00415FCE /* XCTest.framework */; };
 		6876D6FC17A75DAE00E16991 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
@@ -905,6 +906,7 @@
 		68EF403E1EAAF2020009D88A /* Kaomoji.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EF40401EAAF2020009D88A /* Kaomoji.storyboard */; };
 		68F09CAB2766F24A002518FA /* UITabBarController+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F09CAA2766F24A002518FA /* UITabBarController+extension.m */; };
 		68F0AEF82224FFA6004A354E /* azureLanguageList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */; };
+		68F13FE02CFC8B87006E861B /* A3AppDelegate+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F13FDF2CFC8B87006E861B /* A3AppDelegate+CloudKit.swift */; };
 		68F14FAC19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F14F1619485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m */; };
 		68F14FAD19485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F14F1719485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib */; };
 		68F14FAE19485E8500159EAD /* A3DaysCounterSlideshowMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F14F1919485E8500159EAD /* A3DaysCounterSlideshowMainViewController.m */; };
@@ -1927,6 +1929,7 @@
 		6874847919780EFC00EA8F74 /* UnitPriceInfo+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UnitPriceInfo+extension.h"; sourceTree = "<group>"; };
 		6874847A19780EFC00EA8F74 /* UnitPriceInfo+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UnitPriceInfo+extension.m"; sourceTree = "<group>"; };
 		6874892E1854430C008972CC /* NationalFlags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NationalFlags.xcassets; path = "AppBox3/Asset Catalogs/NationalFlags.xcassets"; sourceTree = "<group>"; };
+		68754A952CFD971E006DBC1F /* WalletFieldItem_+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletFieldItem_+extension.swift"; sourceTree = "<group>"; };
 		687617EF29B76EB800C3EE3A /* GoogleAppMeasurementIdentitySupport.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurementIdentitySupport.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleAppMeasurementIdentitySupport.xcframework"; sourceTree = "<group>"; };
 		687617F029B76EB800C3EE3A /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleAppMeasurement.xcframework"; sourceTree = "<group>"; };
 		687617F129B76EB800C3EE3A /* GoogleUtilities.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleUtilities.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleUtilities.xcframework"; sourceTree = "<group>"; };
@@ -2758,6 +2761,7 @@
 		68F09CA92766F24A002518FA /* UITabBarController+extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITabBarController+extension.h"; sourceTree = "<group>"; };
 		68F09CAA2766F24A002518FA /* UITabBarController+extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITabBarController+extension.m"; sourceTree = "<group>"; };
 		68F0AEEF2224FFA6004A354E /* azureLanguageList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = azureLanguageList.plist; path = Translator/azureLanguageList.plist; sourceTree = "<group>"; };
+		68F13FDF2CFC8B87006E861B /* A3AppDelegate+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "A3AppDelegate+CloudKit.swift"; path = "AppDelegate/A3AppDelegate+CloudKit.swift"; sourceTree = "<group>"; };
 		68F14F1519485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		68F14F1619485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
 		68F14F1719485E8500159EAD /* A3DaysCounterSlideshowEventSummaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterSlideshowEventSummaryView.xib; sourceTree = "<group>"; };
@@ -3938,6 +3942,7 @@
 				68A6BA7B1E7FC29500889051 /* A3WhatsNewFirstPageViewController.h */,
 				68A6BA7C1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m */,
 				68351E261EA8E6200076B11B /* WhatsNew4_5.storyboard */,
+				68F13FDF2CFC8B87006E861B /* A3AppDelegate+CloudKit.swift */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -5018,6 +5023,7 @@
 			children = (
 				688EF65C2CB18BE200996A71 /* WalletFieldItem_+CoreDataClass.swift */,
 				688EF65D2CB18BE200996A71 /* WalletFieldItem_+CoreDataProperties.swift */,
+				68754A952CFD971E006DBC1F /* WalletFieldItem_+extension.swift */,
 				687AD8582CAD83670074CBBD /* WalletCategory_+CoreDataClass.swift */,
 				687AD8592CAD83670074CBBD /* WalletCategory_+CoreDataProperties.swift */,
 				687AD85A2CAD83670074CBBD /* WalletFavorite_+CoreDataClass.swift */,
@@ -6713,6 +6719,7 @@
 				687AD8162CAD3EDC0074CBBD /* AbbreviationFavorite_+CoreDataClass.swift in Sources */,
 				687AD8172CAD3EDC0074CBBD /* AbbreviationFavorite_+CoreDataProperties.swift in Sources */,
 				68B6A2C818CEC76D004084EF /* A3LoanCalcPaymentInfoCell.m in Sources */,
+				68754A962CFD971E006DBC1F /* WalletFieldItem_+extension.swift in Sources */,
 				680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */,
 				68E2A6A018D0B22800E834D9 /* A3SalesCalcCalculator.m in Sources */,
 				684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */,
@@ -7139,6 +7146,7 @@
 				17D42FF85AA97A33A049141B /* A3MainMenuTableViewController.m in Sources */,
 				6895E9E62B1C0BBF00007546 /* ExportWalletContents.swift in Sources */,
 				17D4246891B35EE879B90A3E /* A3FractionInputView.m in Sources */,
+				68F13FE02CFC8B87006E861B /* A3AppDelegate+CloudKit.swift in Sources */,
 				17D427781AE9532AE6E09C7E /* A3UnitConverterAddViewController.m in Sources */,
 				17D42A9F13ACE076BAF14D08 /* A3UnitConverterConvertTableViewController.m in Sources */,
 				17D426B04A102E4DE14D07AC /* A3UnitConverterHistory3RowCell.m in Sources */,

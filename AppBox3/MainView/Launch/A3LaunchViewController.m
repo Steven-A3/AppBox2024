@@ -19,7 +19,7 @@
 #import "MMDrawerController.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate+appearance.h"
-#import "AppBox3-swift.h"
+#import "AppBox3-Swift.h"
 
 NSString *const A3UserDefaultsDidShowLeftViewOnceiPad = @"A3UserDefaultsDidShowLeftViewOnceiPad";
 

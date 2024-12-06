@@ -6,8 +6,6 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "AppBox3-Swift.h"
-
 @interface WalletFieldItem_ (initialize)
 
 - (NSURL *)photoImageURLInOriginalDirectory:(BOOL)inOriginalDirectory;

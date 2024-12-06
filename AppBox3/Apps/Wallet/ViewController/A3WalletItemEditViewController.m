@@ -32,7 +32,6 @@
 #import "A3SyncManager.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3NavigationController.h"
-
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -40,9 +39,10 @@
 @import Photos;
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
-#import "AppBox3-swift.h"
+#import "AppBox3-Swift.h"
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -344,13 +344,13 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     fileManager.delegate = self;
     
 	for (WalletFieldItem_ *fieldItem in [_item fieldItems]) {
-		if (fieldItem.hasImage) {
+        if ([fieldItem isImageField]) {
 			if ([fieldItem.hasImage boolValue]) {
 				[self movePhotoFilesToOriginalDirectoryForFieldItem:fieldItem];
 			} else {
 				[self deletePhotoFilesForFieldItem:fieldItem];
 			}
-		} else if (fieldItem.hasVideo) {
+        } else if ([fieldItem isVideoField]) {
 			if ([fieldItem.hasVideo boolValue]) {
 				[self moveVideoFilesToOriginalDirectoryForFieldItem:fieldItem];
 			} else {
@@ -434,44 +434,42 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 }
 
 - (void)moveVideoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem_ *)fieldItem {
-    @autoreleasepool {
-        if ([fieldItem.hasVideo boolValue]) {
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            
-            // Define URLs for the original and temp video and thumbnail paths
-            NSURL *videoFileURL = [fieldItem videoFileURLInOriginal:YES];
-            NSURL *videoFileURLInTemp = [fieldItem videoFileURLInOriginal:NO];
-            NSURL *thumbnailImagePath = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:YES]];
-            NSURL *thumbnailImageInTemp = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:NO]];
-
-            NSError *error = nil;
-            
-            // Remove existing files at destination if they exist
-            if ([fileManager fileExistsAtPath:videoFileURL.path]) {
-                [fileManager removeItemAtURL:videoFileURL error:nil];
-            }
-            if ([fileManager fileExistsAtPath:thumbnailImagePath.path]) {
-                [fileManager removeItemAtURL:thumbnailImagePath error:nil];
-            }
-
-            // Move the video file from temp to original
-            BOOL videoMoveSuccess = [fileManager moveItemAtURL:videoFileURLInTemp toURL:videoFileURL error:&error];
-            if (!videoMoveSuccess || error) {
-                NSLog(@"Failed to move video file: %@", error.localizedDescription);
-            }
-
-            // Move the thumbnail file from temp to original
-            BOOL thumbnailMoveSuccess = [fileManager moveItemAtURL:thumbnailImageInTemp toURL:thumbnailImagePath error:&error];
-            if (!thumbnailMoveSuccess || error) {
-                NSLog(@"Failed to move thumbnail image: %@", error.localizedDescription);
-            }
-            
-            // Assertions for validation
-            NSAssert([fileManager fileExistsAtPath:videoFileURL.path], @"Video file should exist in original directory.");
-            NSAssert(![fileManager fileExistsAtPath:videoFileURLInTemp.path], @"Video file should no longer exist in temp directory.");
-            NSAssert([fileManager fileExistsAtPath:thumbnailImagePath.path], @"Thumbnail should exist in original directory.");
-            NSAssert(![fileManager fileExistsAtPath:thumbnailImageInTemp.path], @"Thumbnail should no longer exist in temp directory.");
+    if ([fieldItem.hasVideo boolValue]) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        
+        // Define URLs for the original and temp video and thumbnail paths
+        NSURL *videoFileURL = [fieldItem videoFileURLInOriginal:YES];
+        NSURL *videoFileURLInTemp = [fieldItem videoFileURLInOriginal:NO];
+        NSURL *thumbnailImagePath = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:YES]];
+        NSURL *thumbnailImageInTemp = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:NO]];
+        
+        NSError *error = nil;
+        
+        // Remove existing files at destination if they exist
+        if ([fileManager fileExistsAtPath:videoFileURL.path]) {
+            [fileManager removeItemAtURL:videoFileURL error:nil];
         }
+        if ([fileManager fileExistsAtPath:thumbnailImagePath.path]) {
+            [fileManager removeItemAtURL:thumbnailImagePath error:nil];
+        }
+        
+        // Move the video file from temp to original
+        BOOL videoMoveSuccess = [fileManager moveItemAtURL:videoFileURLInTemp toURL:videoFileURL error:&error];
+        if (!videoMoveSuccess || error) {
+            NSLog(@"Failed to move video file: %@", error.localizedDescription);
+        }
+        
+        // Move the thumbnail file from temp to original
+        BOOL thumbnailMoveSuccess = [fileManager moveItemAtURL:thumbnailImageInTemp toURL:thumbnailImagePath error:&error];
+        if (!thumbnailMoveSuccess || error) {
+            NSLog(@"Failed to move thumbnail image: %@", error.localizedDescription);
+        }
+        
+        // Assertions for validation
+        NSAssert([fileManager fileExistsAtPath:videoFileURL.path], @"Video file should exist in original directory.");
+        NSAssert(![fileManager fileExistsAtPath:videoFileURLInTemp.path], @"Video file should no longer exist in temp directory.");
+        NSAssert([fileManager fileExistsAtPath:thumbnailImagePath.path], @"Thumbnail should exist in original directory.");
+        NSAssert(![fileManager fileExistsAtPath:thumbnailImageInTemp.path], @"Thumbnail should no longer exist in temp directory.");
     }
 }
 
@@ -817,10 +815,6 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 
 - (void)askVideoPickupWithDelete:(BOOL)deleteEnable withSender:(UITableViewCell *)cell
 {
-    CGRect fromRect = [self.tableView convertRect:cell.bounds fromView:cell];
-    fromRect.origin.x = self.view.center.x;
-    fromRect.size = CGSizeZero;
-
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                                  message:nil
@@ -849,16 +843,17 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
             [self presentImagePickerControllerWithOption:ActionTag_PhotoLibrary actionSheetTag:ActionTag_PhotoLibraryEdit];
         }]];
 
-        UIPopoverPresentationController *presentationController = [alertController popoverPresentationController];
+        UIPopoverPresentationController *popover = [alertController popoverPresentationController];
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
         if ([cell isKindOfClass:[A3WalletItemRightIconCell class]]) {
             A3WalletItemRightIconCell *typedCell = (A3WalletItemRightIconCell *)cell;
-            presentationController.sourceView = typedCell.iconImgView;
-            presentationController.sourceRect = typedCell.iconImgView.frame;
+            popover.sourceView = typedCell.iconImgView;
+            popover.sourceRect = CGRectMake(-10, typedCell.iconImgView.bounds.size.height/2, 0, 0);
         }
         else if ([cell isKindOfClass:[A3WalletItemPhotoFieldCell class]]) {
             A3WalletItemPhotoFieldCell *typedCell = (A3WalletItemPhotoFieldCell *)cell;
-            presentationController.sourceView = typedCell.photoButton;
-            presentationController.sourceRect = typedCell.photoButton.frame;
+            popover.sourceView = typedCell.photoButton;
+            popover.sourceRect = typedCell.photoButton.frame;
         }
 
         [self presentViewController:alertController animated:YES completion:^{
@@ -1057,7 +1052,7 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     
     BOOL result;
 	NSString *mediaType = imageEditInfo[UIImagePickerControllerMediaType];
-	if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
+    if ([mediaType isEqualToString:UTTypeMovie.identifier]) {
 		//get the videoURL
 		NSURL *movieURL = imageEditInfo[UIImagePickerControllerMediaURL];
         

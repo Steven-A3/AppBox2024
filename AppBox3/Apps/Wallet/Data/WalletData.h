@@ -50,14 +50,14 @@ extern NSString *const A3WalletUUIDMemoCategory;
 + (void)createSystemCategory;
 + (void)insertRecentsCategory;
 + (void)initializeWalletCategories;
-+ (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow;
++ (NSArray *_Nonnull)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow;
 + (NSUInteger)visibleCategoryCount;
-+ (WalletCategory_ *)firstEditableWalletCategory;
-+ (NSArray *)categoriesExcludingSystemCategories;
-+ (NSArray *)iconList;
-+ (WalletCategory_ *)categoryItemWithID:(NSString *)categoryID;
-+ (WalletField_ *)fieldOfFieldItem:(WalletFieldItem_ *)fieldItem;
-+ (NSString *)stringRepresentationOfContents;
-+ (NSString *)htmlRepresentationOfContents;
++ (WalletCategory_ *_Nonnull)firstEditableWalletCategory;
++ (NSArray *_Nonnull)categoriesExcludingSystemCategories;
++ (NSArray *_Nonnull)iconList;
++ (WalletCategory_ *_Nonnull)categoryItemWithID:(NSString *_Nullable)categoryID;
++ (WalletField_ *_Nonnull)fieldOfFieldItem:(WalletFieldItem_ *_Nonnull)fieldItem;
++ (NSString *_Nonnull)stringRepresentationOfContents;
++ (NSString *_Nonnull)htmlRepresentationOfContents;
 
 @end

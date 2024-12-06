@@ -127,13 +127,23 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     _previousVersion = [[A3UserDefaults standardUserDefaults] objectForKey:kA3ApplicationLastRunVersion];
     NSString *activeVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
+    [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
 
+    [self prepareDirectories];
+    
     CoreDataStack *stack = [CoreDataStack shared];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteChange:) name:NSPersistentStoreRemoteChangeNotification object:nil];
+    
     [stack setupStackWithCompletion:^{
+        FNLOG(@"Completion of setupStackWithCompletion");
+        
         if (!self->_previousVersion) {
             // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
             // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
@@ -141,7 +151,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
             [A3KeychainUtils removePassword];
             [self initializePasscodeUserDefaults];
             
-            [self prepareDirectories];
             [self favoriteMenuDictionary];
             
             [self setDefaultValues];
