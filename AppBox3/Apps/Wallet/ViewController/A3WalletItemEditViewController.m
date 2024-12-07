@@ -361,76 +361,82 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
 }
 
 - (void)movePhotoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem_ *)fieldItem {
-    @autoreleasepool {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        
-        NSURL *photoImageURLInOriginalDirectory = [fieldItem photoImageURLInOriginalDirectory:YES];
-        NSURL *photoImageURLInTempDirectory = [fieldItem photoImageURLInOriginalDirectory:NO];
-        NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
-        NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
-        
-        NSError *error;
-        
-        __block BOOL result;
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        [coordinator coordinateReadingItemAtURL:photoImageURLInTempDirectory
-                                        options:NSFileCoordinatorReadingWithoutChanges
-                               writingItemAtURL:photoImageURLInOriginalDirectory
-                                        options:NSFileCoordinatorWritingForReplacing
-                                          error:&error
-                                     byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-            if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-                result = [fileManager removeItemAtURL:newWritingURL error:NULL];
-                NSAssert(result, @"result");
-            }
-            
-            result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSURL *photoImageURLInOriginalDirectory = [fieldItem photoImageURLInOriginalDirectory:YES];
+    NSURL *photoImageURLInTempDirectory = [fieldItem photoImageURLInOriginalDirectory:NO];
+    NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
+    NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
+    
+    NSError *error;
+    
+    __block BOOL result;
+    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+    [coordinator coordinateReadingItemAtURL:photoImageURLInTempDirectory
+                                    options:NSFileCoordinatorReadingWithoutChanges
+                           writingItemAtURL:photoImageURLInOriginalDirectory
+                                    options:NSFileCoordinatorWritingForReplacing
+                                      error:&error
+                                 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+        if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
+            result = [fileManager removeItemAtURL:newWritingURL error:NULL];
             NSAssert(result, @"result");
-        }];
-        NSAssert([fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]], @"[fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]");
-        NSAssert(![fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]], @"[fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]]");
+        }
         
-        
-        [coordinator coordinateReadingItemAtURL:thumbnailImageInTempURL
-                                        options:NSFileCoordinatorReadingWithoutChanges
-                               writingItemAtURL:thumbnailImageURL
-                                        options:NSFileCoordinatorWritingForReplacing
-                                          error:&error
-                                     byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-            if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-                result = [fileManager removeItemAtURL:newWritingURL error:NULL];
-                NSAssert(result, @"result");
-            }
-            
-            result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+        result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+        NSAssert(result, @"result");
+    }];
+    NSAssert([fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]], @"[fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]");
+    NSAssert(![fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]], @"[fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]]");
+    
+    
+    [coordinator coordinateReadingItemAtURL:thumbnailImageInTempURL
+                                    options:NSFileCoordinatorReadingWithoutChanges
+                           writingItemAtURL:thumbnailImageURL
+                                    options:NSFileCoordinatorWritingForReplacing
+                                      error:&error
+                                 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+        if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
+            result = [fileManager removeItemAtURL:newWritingURL error:NULL];
             NSAssert(result, @"result");
-        }];
-        NSAssert([fileManager fileExistsAtPath:[thumbnailImageURL path]], @"[fileManager fileExistsAtPath:[thumbnailImageURL path]");
-        NSAssert(![fileManager fileExistsAtPath:[thumbnailImageInTempURL path]], @"[fileManager fileExistsAtPath:[thumbnailImageInTempURL path]]");
-    }
+        }
+        
+        result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
+        NSAssert(result, @"result");
+    }];
+    NSAssert([fileManager fileExistsAtPath:[thumbnailImageURL path]], @"[fileManager fileExistsAtPath:[thumbnailImageURL path]");
+    NSAssert(![fileManager fileExistsAtPath:[thumbnailImageInTempURL path]], @"[fileManager fileExistsAtPath:[thumbnailImageInTempURL path]]");
+    
+    iCloudFileManager *iCloudManager = [iCloudFileManager new];
+    [iCloudManager uploadMediaWithFile:photoImageURLInOriginalDirectory completion:^(NSError * _Nullable error) {
+        
+    }];
 }
 
 - (void)deletePhotoFilesForFieldItem:(WalletFieldItem_ *)fieldItem {
-    @autoreleasepool {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSURL *photoImageURLInOriginalDirectory = [fieldItem photoImageURLInOriginalDirectory:YES];
+    NSURL *photoImageURLInTempDirectory = [fieldItem photoImageURLInOriginalDirectory:NO];
+    NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
+    NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
+    
+    NSError *error;
+    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+    [coordinator coordinateWritingItemAtURL:photoImageURLInOriginalDirectory
+                                    options:NSFileCoordinatorWritingForDeleting
+                                      error:&error
+                                 byAccessor:^(NSURL *newURL) {
+        [fileManager removeItemAtURL:newURL error:NULL];
+    }];
+    [fileManager removeItemAtURL:photoImageURLInTempDirectory error:NULL];
+    [fileManager removeItemAtPath:[thumbnailImageURL path] error:NULL];
+    [fileManager removeItemAtPath:[thumbnailImageInTempURL path] error:NULL];
+    
+    iCloudFileManager *iCloudManager = [iCloudFileManager new];
+    [iCloudManager deleteMediaWithFile:photoImageURLInOriginalDirectory completion:^(NSError * _Nullable error) {
         
-        NSURL *photoImageURLInOriginalDirectory = [fieldItem photoImageURLInOriginalDirectory:YES];
-        NSURL *photoImageURLInTempDirectory = [fieldItem photoImageURLInOriginalDirectory:NO];
-        NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
-        NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
-        
-        NSError *error;
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        [coordinator coordinateWritingItemAtURL:photoImageURLInOriginalDirectory
-                                        options:NSFileCoordinatorWritingForDeleting
-                                          error:&error
-                                     byAccessor:^(NSURL *newURL) {
-            [fileManager removeItemAtURL:newURL error:NULL];
-        }];
-        [fileManager removeItemAtURL:photoImageURLInTempDirectory error:NULL];
-        [fileManager removeItemAtPath:[thumbnailImageURL path] error:NULL];
-        [fileManager removeItemAtPath:[thumbnailImageInTempURL path] error:NULL];
-    }
+    }];
 }
 
 - (void)moveVideoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem_ *)fieldItem {
@@ -470,6 +476,11 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         NSAssert(![fileManager fileExistsAtPath:videoFileURLInTemp.path], @"Video file should no longer exist in temp directory.");
         NSAssert([fileManager fileExistsAtPath:thumbnailImagePath.path], @"Thumbnail should exist in original directory.");
         NSAssert(![fileManager fileExistsAtPath:thumbnailImageInTemp.path], @"Thumbnail should no longer exist in temp directory.");
+        
+        iCloudFileManager *iCloudManager = [iCloudFileManager new];
+        [iCloudManager uploadMediaWithFile:videoFileURL completion:^(NSError * _Nullable error) {
+            
+        }];
     }
 }
 

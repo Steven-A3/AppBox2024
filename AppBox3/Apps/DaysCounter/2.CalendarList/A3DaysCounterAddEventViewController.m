@@ -1593,7 +1593,7 @@
 
 - (void)registerEvent
 {
-    // 디비추가 처리
+    // Database 추가 처리
     // 입력값이 있어야 하는것들에 대한 체크
     if ( [_eventItem.eventName length] < 1 ) {
         _eventItem.eventName = NSLocalizedString(@"Untitled", @"Untitled");

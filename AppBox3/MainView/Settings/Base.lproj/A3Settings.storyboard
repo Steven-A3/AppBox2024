@@ -769,7 +769,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bUg-dd-zte" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="808" y="1139.7301349325339"/>
+            <point key="canvasLocation" x="828" y="1345"/>
         </scene>
         <!--Require Passcode-->
         <scene sceneID="nKi-gm-Rnp">
@@ -897,7 +897,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c88-Zr-Hf2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1672" y="1139.7301349325339"/>
+            <point key="canvasLocation" x="1671" y="1339"/>
         </scene>
         <!--Edit Favorites-->
         <scene sceneID="JoA-kY-rVI">
@@ -983,7 +983,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yH0-wz-cW5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2416" y="1736.1319340329837"/>
+            <point key="canvasLocation" x="2700" y="2024"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xWH-uz-M9i">
@@ -999,7 +999,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUp-f5-qDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1672" y="1736.1319340329837"/>
+            <point key="canvasLocation" x="1945" y="2024"/>
         </scene>
         <!--Recent To Keep-->
         <scene sceneID="vpw-Gw-8gr">
@@ -1243,7 +1243,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kry-mx-M4b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1672" y="107.0464767616192"/>
+            <point key="canvasLocation" x="1671" y="8"/>
         </scene>
         <!--Default App-->
         <scene sceneID="lu0-G7-0sG">
@@ -1344,7 +1344,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="68r-a2-zJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="828" y="499"/>
+            <point key="canvasLocation" x="828" y="676"/>
         </scene>
         <!--Select Backup-->
         <scene sceneID="3Tu-ua-wMK">
@@ -1395,7 +1395,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lgz-jh-WgY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2513.5999999999999" y="610.79460269865069"/>
+            <point key="canvasLocation" x="2513" y="788"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2sl-ga-jiv">
@@ -1412,7 +1412,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VQJ-HH-exK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1672" y="610.79460269865069"/>
+            <point key="canvasLocation" x="1670" y="675"/>
         </scene>
     </scenes>
     <resources>
@@ -1420,7 +1420,7 @@
         <image name="HomeScreenStyle_hexagon" width="52" height="109"/>
         <image name="HomeScreenStyle_list" width="52" height="109"/>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

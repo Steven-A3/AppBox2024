@@ -55,6 +55,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 @property (nonatomic, copy) NSString *backupCoreDataStorePath;
 @property (nonatomic, strong) A3DataMigrationManager *migrationManager;
 @property (nonatomic, strong) NSMutableArray *deleteFilesAfterZip;
+@property (nonatomic, strong) DataMigrationManager *dataMigrationManager;
 
 @end
 
@@ -599,6 +600,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                      toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]];
     [self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
                      toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
+    
+    iCloudFileManager *iCloudManager = [iCloudFileManager new];
+    [iCloudManager uploadMediaFilesFromAppGroupWithProgressHandler:NULL completion:^(NSError * _Nullable error) {
+        
+    }];
 }
 
 - (void)migrateUserDefaults:(NSDictionary *)backupInfo version:(float)version {
@@ -662,6 +668,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     if ([self->_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
         [self->_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
     }
+    self.dataMigrationManager = nil;
 }
 
 - (void)restoreDataAt:(NSString *)backupFilePath {
@@ -686,16 +693,20 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         [self removeMediaFiles];
 
         NSString *modelName = nil;
+        NSURL *storeURL = nil;
         if (version < 4.8) {
             modelName = @"AppBox3";
+            storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore.sqlite"];
+        } else {
+            storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore2024.sqlite"];
         }
-        NSPersistentContainer *sourceContainer = [coreDataStack loadPersistentContainerWithModelName:modelName storeURL:sourceBaseURL];
-        DataMigrationManager *manager = [[DataMigrationManager alloc] initWithOldPersistentContainer:sourceContainer newPersistentContainer:coreDataStack.persistentContainer];
-        [manager migrateDataFromV3:version < 4.8
-                        completion:^{
+        NSPersistentContainer *sourceContainer = [coreDataStack loadPersistentContainerWithModelName:modelName storeURL:storeURL];
+        self.dataMigrationManager = [[DataMigrationManager alloc] initWithOldPersistentContainer:sourceContainer newPersistentContainer:coreDataStack.persistentContainer];
+        [self.dataMigrationManager migrateDataFromV3:version < 4.8
+                                          completion:^{
             // Delete Store file
             [coreDataStack unloadPersistentContainerWithContainer:sourceContainer];
-            [coreDataStack deleteStoreFilesWithStoreURL:sourceBaseURL];
+            [coreDataStack deleteStoreFilesWithStoreURL:storeURL];
             
             [self taskAfterDBMigration:backupFilePath
                             backupInfo:backupInfo
@@ -769,6 +780,13 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	[self removeFilesAtDirectory:[A3WalletImageThumbnailDirectory pathInAppGroupContainer]];
 	[self removeFilesAtDirectory:[A3WalletVideoDirectory pathInAppGroupContainer]];
 	[self removeFilesAtDirectory:[A3WalletVideoThumbnailDirectory pathInAppGroupContainer]];
+    
+    iCloudFileManager *iCloudManager = [iCloudFileManager new];
+    [iCloudManager removeAllFilesWithCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            FNLOG(@"%@", error.localizedDescription);
+        }
+    }];
 }
 
 - (void)removeFilesAtDirectory:(NSString *)path {

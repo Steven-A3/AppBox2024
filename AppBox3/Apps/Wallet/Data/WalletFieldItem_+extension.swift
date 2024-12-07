@@ -14,7 +14,7 @@ extension WalletFieldItem_ {
         // Fetch the WalletField_ object associated with this WalletFieldItem_
         if let walletField = fetchWalletField() {
             // Check if the type is WalletFieldTypeImage
-            return walletField.type == "image"
+            return walletField.type == "Image"
         }
         return false
     }
@@ -23,7 +23,7 @@ extension WalletFieldItem_ {
         // Fetch the WalletField_ object associated with this WalletFieldItem_
         if let walletField = fetchWalletField() {
             // Check if the type is WalletFieldTypeVideo
-            return walletField.type == "video"
+            return walletField.type == "Video"
         }
         return false
     }

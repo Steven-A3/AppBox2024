@@ -26,9 +26,76 @@ public class iCloudFileManager: NSObject {
         return fileManager.ubiquityIdentityToken != nil
     }
     
+    // desitnationPath has like this: WalletVideos/filename
+    // fileURL must be a fileURL for the source file.
+    @objc
+    public func uploadMedia(file fileURL: URL, completion: @escaping (NSError?) -> Void) {
+        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)?.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH) else {
+            let error = NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud container not available."])
+            completion(error)
+            return
+        }
+        
+        guard let extractedPath = extractPathFromFileURL(fileURL) else {
+            completion(NSError(domain: "iCloudFileManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid path structure."]))
+            return
+        }
+        
+        let destinationURL = iCloudURL.appendingPathComponent(extractedPath)
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try self.fileManager.copyItem(at: fileURL, to: destinationURL)
+                completion(nil) // No error
+            } catch {
+                completion(error as NSError) // Convert Error to NSError
+            }
+        }
+    }
+    
+    private func extractPathFromFileURL(_ fileURL: URL) -> String? {
+        let fullPath = fileURL.path // "/a/b/c/directory/filename"
+        let pathComponents = fullPath.split(separator: "/")
+        
+        guard pathComponents.count >= 2 else {
+            print("Invalid path structure")
+            return nil
+        }
+        
+        // Extract "directory" and "filename"
+        let directory = pathComponents[pathComponents.count - 2] // "directory"
+        let filename = pathComponents.last!                      // "filename"
+        
+        // Combine them to form "directory/filename"
+        return "\(directory)/\(filename)"
+    }
+		
+    public func deleteMedia(file fileURL:URL, completion: @escaping (NSError?) -> Void) {
+        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)?.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH) else {
+            let error = NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud container not available."])
+            completion(error)
+            return
+        }
+        
+        guard let extractedPath = extractPathFromFileURL(fileURL) else {
+            let error = NSError(domain: "iCloudFileManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid file URL."])
+            completion(error)
+            return
+        }
+        let destinationURL = iCloudURL.appendingPathComponent(extractedPath)
+        
+        DispatchQueue.global(qos: .background).async {
+            do {
+                try self.fileManager.removeItem(at: destinationURL)
+                completion(nil)
+            } catch {
+                completion(error as NSError)
+            }
+        }
+    }
+    
     // Download all files and directories recursively from iCloud to a local directory
     public func downloadAllFiles(from sourceDir: String, to localDir: URL, progressHandler: ((Double) -> Void)? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(sourceDir) else {
+        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)?.appendingPathComponent(sourceDir) else {
             completion(.failure(NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud container not available."])))
             return
         }
@@ -56,7 +123,7 @@ public class iCloudFileManager: NSObject {
     
     // Upload all files and directories recursively from local directories to iCloud
     public func uploadAllFiles(from localDir: URL, to targetDir: String, progressHandler: ((Double) -> Void)? = nil, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(targetDir) else {
+        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)?.appendingPathComponent(targetDir) else {
             completion(.failure(NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud container not available."])))
             return
         }
@@ -83,28 +150,30 @@ public class iCloudFileManager: NSObject {
     }
     
     // Remove all files and directories recursively from the iCloud container
-    public func removeAllFiles(from targetDir: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent(targetDir) else {
-            completion(.failure(NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud container not available."])))
+    public func removeAllFiles(completion: @escaping (NSError?) -> Void) {
+        guard let iCloudURL = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER) else {
+            let error = NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud container not available."])
+            completion(error)
             return
         }
         
+        let targetURL = iCloudURL.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
         DispatchQueue.global(qos: .background).async {
             do {
                 let coordinator = NSFileCoordinator()
                 var coordinatorError: NSError?
                 
-                coordinator.coordinate(writingItemAt: iCloudURL, options: .forDeleting, error: &coordinatorError) { targetURL in
+                coordinator.coordinate(writingItemAt: targetURL, options: .forDeleting, error: &coordinatorError) { targetURL in
                     do {
                         try self.recursivelyRemoveFiles(at: targetURL)
-                        completion(.success(()))
+                        completion(nil)
                     } catch {
-                        completion(.failure(error))
+                        completion(error as NSError)
                     }
                 }
                 
                 if let error = coordinatorError {
-                    completion(.failure(error))
+                    completion(error as NSError)
                 }
             }
         }

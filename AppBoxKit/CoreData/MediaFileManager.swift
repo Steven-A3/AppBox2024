@@ -49,29 +49,34 @@ public class MediaFileMover: NSObject {
             return
         }
 
-        // Get files and subdirectories in the source directory
-        let items = try fileManager.contentsOfDirectory(at: sourceDirectory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
-        for item in items {
-            let targetURL = targetDirectory.appendingPathComponent(item.lastPathComponent)
-            var isDirectory: ObjCBool = false
-            if fileManager.fileExists(atPath: item.path, isDirectory: &isDirectory) && isDirectory.boolValue {
-                // If item is a directory, move recursively
-                try moveFilesRecursively(from: item, to: targetURL)
-            } else {
-                do {
-                    // Move file
-                    try fileManager.moveItem(at: item, to: targetURL)
-                    print("Moved file: \(item.lastPathComponent) to \(targetURL.path)")
-                } catch {
-                    print("Failed to move file: \(item.lastPathComponent), error: \(error)")
+        do {
+            // Try to get files and subdirectories in the source directory
+            let items = try fileManager.contentsOfDirectory(at: sourceDirectory, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)
+            for item in items {
+                let targetURL = targetDirectory.appendingPathComponent(item.lastPathComponent)
+                var isDirectory: ObjCBool = false
+                if fileManager.fileExists(atPath: item.path, isDirectory: &isDirectory) && isDirectory.boolValue {
+                    // If item is a directory, move recursively
+                    try moveFilesRecursively(from: item, to: targetURL)
+                } else {
+                    do {
+                        // Move file
+                        try fileManager.moveItem(at: item, to: targetURL)
+                        print("Moved file: \(item.lastPathComponent) to \(targetURL.path)")
+                    } catch {
+                        print("Failed to move file: \(item.lastPathComponent), error: \(error)")
+                    }
                 }
             }
+
+            // Remove the now-empty source directory
+            try? fileManager.removeItem(at: sourceDirectory)
+        } catch {
+            // Catch and handle errors from contentsOfDirectory
+            print("Failed to list contents of directory: \(sourceDirectory.path), error: \(error)")
         }
-
-        // Remove the now-empty source directory
-        try? fileManager.removeItem(at: sourceDirectory)
     }
-
+    
     private func createDirectoryIfNotExists(_ url: URL) throws {
         if !fileManager.fileExists(atPath: url.path) {
             try fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)

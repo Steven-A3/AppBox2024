@@ -73,9 +73,11 @@ class DataMigrationManager: NSObject, ObservableObject {
             )
             
             operation.completionBlock = { [weak self] in
+                print("completion block for \(index + 1) of \(totalEntities): \(entityName) migration complete")
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.progress = Double(index + 1) / Double(totalEntities)
+                    print("completion block for \(index + 1) of \(totalEntities): \(entityName) migration complete")
                 }
             }
             
@@ -83,12 +85,14 @@ class DataMigrationManager: NSObject, ObservableObject {
         }
         
         migrationQueue.addBarrierBlock { [weak self] in
+            print("barrier block")
+            
             guard let self = self else { return }
 
             newPersistentContainer.viewContext.automaticallyMergesChangesFromParent = true
 
             let timeElapsed = Date().timeIntervalSince(startTime)
-            let delayTime = max(5.0 - timeElapsed, 0)
+            let delayTime = max(2.0 - timeElapsed, 0)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + delayTime) {
                 self.isMigrating = false
@@ -190,6 +194,7 @@ class MigrationOperation: Operation, @unchecked Sendable {
                 CoreDataStack.shared.migrateEntity(context, fetchRequest, entityName, newContext, newEntityName)
                 currentBatchIndex += 1
             }
+            print("Finished migrating operation \(entityName)")
         } catch {
             print("Error migrating operation \(entityName): \(error)")
         }
