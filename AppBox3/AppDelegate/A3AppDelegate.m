@@ -328,13 +328,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfDidBecomeAcive + 1 forKey:kA3ApplicationNumberOfDidBecomeActive];
     FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);
     
-    A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
-    [syncManager synchronizeWithCompletion:NULL];
-    if ([syncManager isCloudEnabled]) {
-        [syncManager uploadMediaFilesToCloud];
-        [syncManager downloadMediaFilesFromCloud];
-    }
-
     // TODO: Dropbox V2 Pending work
 //    UINavigationController *navigationController = [self navigationController];
 //    UIViewController *topViewController = self.navigationController.topViewController;
@@ -899,12 +892,14 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     // $containerURL/Library/AppBox 폴더를 찾는다.
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *URL_after_V4_7 = [fileManager storeURL];
+    URL_after_V4_7 = [URL_after_V4_7 URLByDeletingLastPathComponent];
+    URL_after_V4_7 = [URL_after_V4_7 URLByAppendingPathComponent:[fileManager before2024StoreFilename]];
     // file:///Users/bkk/Library/Developer/CoreSimulator/Devices/0C8A79CE-B8F8-4A11-8A9E-8E9051C79CB5/data/Containers/Shared/AppGroup/CFE53790-05F4-46DD-9E02-7B000C7CB20A/Library/AppBox/AppBoxStore.sqlite
     
     // - URL-after-V4-7, URL-before-V4-7, URL before version
     NSURL *URL_before_V4_7 = [NSPersistentContainer defaultDirectoryURL];
     URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:@"AppBox3"];
-    URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[fileManager storeFileName]];
+    URL_before_V4_7 = [URL_before_V4_7 URLByAppendingPathComponent:[fileManager before2024StoreFilename]];
     // file:///Users/bkk/Library/Developer/CoreSimulator/Devices/0C8A79CE-B8F8-4A11-8A9E-8E9051C79CB5/data/Containers/Data/Application/BE9779CB-4DAE-467D-91CC-DCA9ED97E0F9/Library/Application%20Support/AppBox3/AppBoxStore.sqlite
     
     // Case 이전 버전 파일이 존재, 새 버전 파일도 존재 - 새 버전을 존중, 이전 버전 파일은 삭제
@@ -941,7 +936,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         }
         
         // Move AppBoxStore.sqlite-shm
-        NSString *storeFilename = [fileManager storeFileName];
+        NSString *storeFilename = [fileManager before2024StoreFilename];
         NSURL *URL_after_shm_file = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@-shm", path_after_V4_7, storeFilename]];
         if ([fileManager fileExistsAtPath:[URL_after_shm_file path]]) {
             [fileManager removeItemAtURL:URL_after_shm_file error:&fileMoveError];

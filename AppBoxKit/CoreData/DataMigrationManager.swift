@@ -178,7 +178,10 @@ class MigrationOperation: Operation, @unchecked Sendable {
     override func main() {
         if isCancelled { return }
         
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
+        let sourceEntityName = isFromV3 ? entityName : entityName + "_"
+        let newEntityName = entityName + "_"
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: sourceEntityName)
         fetchRequest.fetchBatchSize = batchSize
         
         do {
@@ -189,14 +192,13 @@ class MigrationOperation: Operation, @unchecked Sendable {
                 if isCancelled { return }
                 
                 fetchRequest.fetchOffset = currentBatchIndex * batchSize
-                let newEntityName = isFromV3 ? entityName + "_" : entityName
                 
-                CoreDataStack.shared.migrateEntity(context, fetchRequest, entityName, newContext, newEntityName)
+                CoreDataStack.shared.migrateEntity(context, fetchRequest, sourceEntityName, newContext, newEntityName)
                 currentBatchIndex += 1
             }
-            print("Finished migrating operation \(entityName)")
+            print("Finished migrating operation \(sourceEntityName) total \(totalEntityCount)")
         } catch {
-            print("Error migrating operation \(entityName): \(error)")
+            print("Error migrating operation \(sourceEntityName): \(error)")
         }
     }
 }

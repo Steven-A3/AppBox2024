@@ -12,7 +12,7 @@ import CloudKit
 
 @objcMembers
 public class CoreDataStack: NSObject {
-
+    
     public static let shared = CoreDataStack()
     
     // Expose persistentContainer
@@ -65,7 +65,7 @@ public class CoreDataStack: NSObject {
             // Use NSPersistentContainer
             container = NSPersistentContainer(name: modelName, managedObjectModel: managedObjectModel)
         }
-
+        
         guard let cloudStoreURL = cloudStoreURL() else {
             fatalError("Failed to get persistent store URL.")
         }
@@ -75,7 +75,7 @@ public class CoreDataStack: NSObject {
         let cloudStoreDescription = createStoreDescription(for: cloudStoreURL, configuration: "Cloud", options: cloudKitOptions)
         let localStoreDescription = createStoreDescription(for: localStoreURL, configuration: "Local")
         container.persistentStoreDescriptions = [cloudStoreDescription, localStoreDescription]
-
+        
         // Enable persistent history tracking
         cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
@@ -91,12 +91,12 @@ public class CoreDataStack: NSObject {
             self?.persistentContainer = container
             self?.persistentContainer?.viewContext.automaticallyMergesChangesFromParent = true
             
-            #if DEBUG
-//            if let cloudContainer = container as? NSPersistentCloudKitContainer {
-//                self?.initializeCloudKitSchema(container: cloudContainer)
-//            }
-            #endif
-
+#if DEBUG
+            //            if let cloudContainer = container as? NSPersistentCloudKitContainer {
+            //                self?.initializeCloudKitSchema(container: cloudContainer)
+            //            }
+#endif
+            
             if storeDescription.configuration == "Cloud" {
                 DispatchQueue.main.async {
                     completionC()
@@ -113,7 +113,7 @@ public class CoreDataStack: NSObject {
         }
         return description
     }
-
+    
     private func cloudStoreURL() -> URL? {
         guard let containerURL = appGroudContainerURL() else {
             assertionFailure("Unable to access app group container.")
@@ -228,7 +228,7 @@ public class CoreDataStack: NSObject {
             }
         }
     }
-
+    
     public func deleteAllFilesInUbiquityContainerInBackground(
         containerID: String,
         completion: @escaping (Bool, NSError?) -> Void
@@ -273,19 +273,19 @@ public class CoreDataStack: NSObject {
             }
         }
     }
-
+    
     public func migrateEntity(_ context: NSManagedObjectContext, _ fetchRequest: NSFetchRequest<NSManagedObject>, _ entityName: String, _ newContext: NSManagedObjectContext, _ newEntityName: String) {
         do {
             // Fetch all old entities
             let oldEntities = try context.fetch(fetchRequest)
             let staticOldEntities = oldEntities.map { $0 }
             let entityAttributes = oldEntities.first?.entity.attributesByName.keys.map { $0 } ?? []
-
+            
             // Pre-fetch existing entities in the new context
             let existingFetchRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
             let existingEntities = try newContext.fetch(existingFetchRequest)
             let existingIDs = Set(existingEntities.compactMap { $0.value(forKey: "uniqueID") as? String })
-
+            
             // Migrate entities
             for oldEntity in staticOldEntities {
                 if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String, !existingIDs.contains(uniqueID) {
@@ -295,7 +295,7 @@ public class CoreDataStack: NSObject {
                     }
                 }
             }
-
+            
             // Save changes in the new context
             if newContext.hasChanges {
                 try newContext.save()
@@ -328,5 +328,111 @@ public class CoreDataStack: NSObject {
             }
         }
         return container
+    }
+    
+    public func exportDataToStoreFile(at exportStoreURL: URL, completion: @escaping (Bool, Error?) -> Void) {
+        guard let container = persistentContainer else {
+            let error = NSError(domain: "CoreDataStack", code: 500, userInfo: [NSLocalizedDescriptionKey: "Persistent container is not set up."])
+            completion(false, error)
+            return
+        }
+        
+        let coordinator = container.persistentStoreCoordinator
+        
+        // Create a new store description for the export file
+        let exportStoreDescription = NSPersistentStoreDescription(url: exportStoreURL)
+        exportStoreDescription.type = NSSQLiteStoreType
+        
+        do {
+            // Add the export store to the coordinator
+            let exportStore = try coordinator.addPersistentStore(ofType: exportStoreDescription.type, configurationName: nil, at: exportStoreDescription.url, options: nil)
+            
+            // Create a new managed object context for the export store
+            let exportContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+            exportContext.persistentStoreCoordinator = coordinator
+            
+            // Create a fetch context for the source store
+            let fetchContext = container.viewContext
+            
+            fetchContext.perform {
+                do {
+                    let entityNames = container.managedObjectModel.entities.compactMap { $0.name }
+                    
+                    for entityName in entityNames {
+                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+                        let records = try fetchContext.fetch(fetchRequest)
+                        
+                        exportContext.performAndWait {
+                            for record in records {
+                                if let managedObject = record as? NSManagedObject {
+                                    let clonedObject = NSEntityDescription.insertNewObject(forEntityName: entityName, into: exportContext)
+                                    for (key, _) in managedObject.entity.attributesByName {
+                                        clonedObject.setValue(managedObject.value(forKey: key), forKey: key)
+                                    }
+                                }
+                            }
+                            
+                            // Save the export context
+                            do {
+                                if exportContext.hasChanges {
+                                    try exportContext.save()
+                                }
+                            } catch {
+                                print("Failed to save export context: \(error)")
+                                completion(false, error)
+                            }
+                        }
+                    }
+                    
+                    // Remove the export store after copying is complete
+                    try coordinator.remove(exportStore)
+                    completion(true, nil)
+                } catch {
+                    print("Failed to copy data: \(error)")
+                    completion(false, error)
+                }
+            }
+        } catch {
+            print("Failed to add export store: \(error)")
+            completion(false, error)
+        }
+    }
+    
+    public func backupStoreFile(to backupURL: URL) throws {
+        guard let storeURL = self.persistentContainer?.persistentStoreDescriptions.first?.url else {
+            throw NSError(domain: "CoreDataBackup", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not find the persistent store URL."])
+        }
+
+        let fileManager = FileManager.default
+        
+        // Check if the store file exists
+        guard fileManager.fileExists(atPath: storeURL.path) else {
+            throw NSError(domain: "CoreDataBackup", code: 2, userInfo: [NSLocalizedDescriptionKey: "Persistent store file does not exist."])
+        }
+        
+        // Backup the main SQLite file
+        let backupMainFileURL = backupURL
+        try fileManager.copyItem(at: storeURL, to: backupMainFileURL)
+        print("Main store file backed up to \(backupMainFileURL.path)")
+
+        // Backup related files if using SQLite
+        let storeDirectory = storeURL.deletingLastPathComponent()
+        let fileName = storeURL.lastPathComponent
+        
+        let walFileURL = storeDirectory.appendingPathComponent("\(fileName)-wal")
+        let shmFileURL = storeDirectory.appendingPathComponent("\(fileName)-shm")
+        
+        let backupWalURL = backupURL.deletingLastPathComponent().appendingPathComponent("\(fileName)-wal")
+        let backupShmURL = backupURL.deletingLastPathComponent().appendingPathComponent("\(fileName)-shm")
+
+        if fileManager.fileExists(atPath: walFileURL.path) {
+            try fileManager.copyItem(at: walFileURL, to: backupWalURL)
+            print("WAL file backed up to \(backupWalURL.path)")
+        }
+
+        if fileManager.fileExists(atPath: shmFileURL.path) {
+            try fileManager.copyItem(at: shmFileURL, to: backupShmURL)
+            print("SHM file backed up to \(backupShmURL.path)")
+        }
     }
 }

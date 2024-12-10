@@ -74,14 +74,8 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 - (BOOL)canSyncStart;
 
 - (BOOL)isCloudAvailable;
-- (void)setupEnsemble;
-- (void)enableCloudSync;
 - (void)disableCloudSync;
 - (BOOL)isCloudEnabled;
-- (void)synchronizeWithCompletion:(nullable CDECompletionBlock)completion;
-
-- (void)uploadMediaFilesToCloud;
-- (void)downloadMediaFilesFromCloud;
 
 @end
 

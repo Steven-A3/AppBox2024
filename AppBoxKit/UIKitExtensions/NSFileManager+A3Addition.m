@@ -73,11 +73,15 @@
     NSURL *storeURL = [appGroupContainerURL URLByAppendingPathComponent:@"Library/AppBox"];
     
     // Append the store file name to the resulting URL and return it
-    return [storeURL URLByAppendingPathComponent:[self storeFileName]];
+    return [storeURL URLByAppendingPathComponent:[self storeFilename]];
 }
 
-- (NSString *)storeFileName {
+- (NSString *)before2024StoreFilename {
     return @"AppBoxStore.sqlite";
+}
+
+- (NSString *)storeFilename {
+    return @"AppBoxStore2024.sqlite";
 }
 
 @end

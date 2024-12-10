@@ -165,20 +165,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	return _cloudFileSystem;
 }
 
-- (void)enableCloudSync {
-	if ([self isCloudEnabled]) return;
-
-	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3SyncManagerCloudEnabled];
-	[[A3UserDefaults standardUserDefaults] synchronize];
-
-	[self writeSyncInfoToKeyValueStore:A3SyncStartDeniedBecauseOtherDeviceDidStartSyncWithin10Minutes];
-
-	[self setupEnsemble];
-	[self synchronizeWithCompletion:^(NSError *error) {
-		[self.ensemble mergeWithCompletion:NULL];
-	}];
-}
-
 - (void)writeSyncInfoToKeyValueStore:(A3SyncStartDenyReasonValue)reason {
 	NSDictionary *syncInfo = @{
 			A3SyncStartTime : [NSDate date],
@@ -189,20 +175,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
 	[keyValueStore setObject:syncInfo forKey:A3SyncDeviceSyncStartInfo];
 	[keyValueStore synchronize];
-}
-
-- (void)setupEnsemble
-{
-	if (!self.isCloudEnabled || _ensemble) return;
-
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *storeURL = [fileManager storeURL];
-	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
-	_ensemble = [[CDEPersistentStoreEnsemble alloc] initWithEnsembleIdentifier:self.cloudStoreID persistentStoreURL:storeURL managedObjectModelURL:modelURL cloudFileSystem:self.cloudFileSystem];
-	_ensemble.delegate = self;
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localSaveOccurred:) name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidDownload:) name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
 }
 
 - (void)disableCloudSync {
@@ -225,143 +197,8 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 #pragma mark - Sync Methods
 
-- (void)cloudDidDownload:(NSNotification *)notification
-{
-	FNLOG();
-	if (!self.isCloudEnabled) return;
-	
-	[self synchronizeWithCompletion:NULL];
-}
-
-- (void)localSaveOccurred:(NSNotification *)notification
-{
-	FNLOG();
-	if (!self.isCloudEnabled) return;
-	
-	[self synchronizeWithCompletion:NULL];
-}
-
 - (BOOL)isCloudEnabled {
     return [[NSFileManager defaultManager] ubiquityIdentityToken];
-}
-
-- (void)synchronizeWithCompletion:(nullable CDECompletionBlock)completion
-{
-	if (!self.isCloudEnabled) return;
-
-	[self incrementMergeCount];
-	if (!_ensemble.isLeeched) {
-		[_ensemble leechPersistentStoreWithCompletion:^(NSError *error) {
-			[self uploadMediaFilesToCloud];
-			[self downloadMediaFilesFromCloud];
-
-			[self decrementMergeCount];
-            if (error && !self->_ensemble.isLeeched) {
-				NSLog(@"Could not leech to ensemble: %@", error);
-				[self disableCloudSync];
-			}
-			else {
-                self->_leechFailCount = 0;
-				if (completion) completion(error);
-			}
-		}];
-	}
-	else {
-		[_ensemble mergeWithCompletion:^(NSError *error) {
-			[self uploadMediaFilesToCloud];
-			[self downloadMediaFilesFromCloud];
-
-			[self decrementMergeCount];
-			if (error) NSLog(@"Error merging: %@", error);
-			if (completion) completion(error);
-		}];
-	}
-
-	[_syncTimer invalidate];
-	_syncTimer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(syncWithTimer) userInfo:nil repeats:NO];
-}
-
-- (void)syncWithTimer {
-	[_syncTimer invalidate];
-	_syncTimer = nil;
-
-	if (![_ensemble isMerging]) {
-		FNLOG(@"Sync initiated by timer.");
-		[self synchronizeWithCompletion:NULL];
-	}
-}
-
-- (void)decrementMergeCount
-{
-	_activeMergeCount--;
-	if (_activeMergeCount == 0) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidEndNotification object:nil];
-	}
-}
-
-- (void)incrementMergeCount
-{
-	_activeMergeCount++;
-	if (_activeMergeCount == 1) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3SyncActivityDidBeginNotification object:nil];
-	}
-}
-
-#pragma mark - Upload Download Manager
-
-- (void)uploadMediaFilesToCloud {
-	[self uploadFilesToCloudInDirectory:A3DaysCounterImageDirectory];
-	[self uploadFilesToCloudInDirectory:A3WalletImageDirectory];
-	[self uploadFilesToCloudInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)uploadFilesToCloudInDirectory:(NSString *)directory {
-	[_cloudFileSystem connect:^(NSError *error) {
-		[self->_cloudFileSystem fileExistsAtPath:directory completion:^(BOOL exists, BOOL isDirectory, NSError *error_) {
-			void (^fileCopyBlock)(NSError *) = ^(NSError *error__){
-				NSArray *files = [self->_fileManager contentsOfDirectoryAtPath:[directory pathInAppGroupContainer] error:NULL];
-				NSString *localBasePath = [directory pathInAppGroupContainer];
-				for (NSString *filename in files) {
-					NSString *localPath = [localBasePath stringByAppendingPathComponent:filename];
-					NSString *cloudPath = [directory stringByAppendingPathComponent:filename];
-
-					[self->_cloudFileSystem fileExistsAtPath:cloudPath completion:^(BOOL exists_, BOOL isDirectory_, NSError *error___) {
-						if (!exists_) {
-							FNLOG(@"Filename: %@", filename);
-							[self->_cloudFileSystem uploadLocalFile:localPath toPath:cloudPath completion:NULL];
-						}
-					}];
-				}
-			};
-			if (!exists) {
-				[self->_cloudFileSystem createDirectoryAtPath:directory completion:fileCopyBlock];
-			} else {
-				fileCopyBlock(nil);
-			}
-		}];
-	}];
-}
-
-- (void)downloadMediaFilesFromCloud {
-	[self downloadFilesFromCloudInDirectory:A3DaysCounterImageDirectory];
-	[self downloadFilesFromCloudInDirectory:A3WalletImageDirectory];
-	[self downloadFilesFromCloudInDirectory:A3WalletVideoDirectory];
-}
-
-- (void)downloadFilesFromCloudInDirectory:(NSString *)directory {
-	[_cloudFileSystem connect:^(NSError *error) {
-        [self->_cloudFileSystem contentsOfDirectoryAtPath:directory completion:^(NSArray *contents, NSError *error_) {
-			for (CDECloudFile *file in contents) {
-				NSString *filename = file.name;
-				NSString *localFile = [[directory stringByAppendingPathComponent:filename] pathInAppGroupContainer];
-
-				if (![self->_fileManager fileExistsAtPath:localFile]) {
-					FNLOG(@"%@, %@", file.name, file.path);
-					[self->_cloudFileSystem downloadFromPath:file.path toLocalFile:localFile completion:NULL];
-				}
-			}
-		}];
-	}];
 }
 
 @end

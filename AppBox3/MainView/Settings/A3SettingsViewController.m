@@ -551,21 +551,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)toggleCloud:(UISwitch *)switchControl {
-	if ([switchControl isOn]) {
-		if (![[A3SyncManager sharedSyncManager] isCloudAvailable]) {
-			[self alertCloudNotEnabled];
-			[switchControl setOn:NO animated:YES];
-			return;
-		}
-		if (![[A3SyncManager sharedSyncManager] canSyncStart]) {
-			[switchControl setOn:NO animated:YES];
-			return;
-		}
-	}
-	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
-}
-
 - (void)themeColor {
 	[self performSegueWithIdentifier:@"themeColor" sender:nil];
 }

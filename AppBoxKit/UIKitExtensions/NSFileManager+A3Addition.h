@@ -16,6 +16,7 @@
 //- (NSString *)storeName;
 - (NSString *)humanReadableFileSize:(unsigned long long)size;
 - (NSURL *)storeURL;
-- (NSString *)storeFileName;
+- (NSString *)before2024StoreFilename;
+- (NSString *)storeFilename;
 
 @end

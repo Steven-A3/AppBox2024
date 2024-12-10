@@ -21,28 +21,6 @@
 
 @implementation A3AppDelegate (iCloud)
 
-- (void)setCloudEnabled:(BOOL)enable {
-	A3SyncManager *sharedSyncManager = [A3SyncManager sharedSyncManager];
-	if (enable) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-		sharedSyncManager.storePath = [[fileManager storeURL] path];
-		[sharedSyncManager enableCloudSync];
-		[self mergeUserDefaultsDeleteCloud:NO];
-	}
-	else {
-		[sharedSyncManager disableCloudSync];
-
-		[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
-		[[A3UserDefaults standardUserDefaults] synchronize];
-	}
-	[self enableCloudForFiles:enable];
-
-	self.hud.label.text = enable ? NSLocalizedString(@"Enabling iCloud", @"Enabling iCloud") : NSLocalizedString(@"Disabling iCloud", @"Disableing iCloud");
-	[self.hud showAnimated:YES];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(persistentStoreActivityWillEndActivity:) name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
-}
-
 - (void)persistentStoreActivityWillEndActivity:(NSNotification *)notification {
 	FNLOG();
 	
@@ -105,15 +83,6 @@
     
     // Reschedule the background task
     [self scheduleAppRefresh];
-}
-
-#pragma mark - Image and Video files
-
-- (void)enableCloudForFiles:(BOOL)enable {
-	if (enable) {
-		[[A3SyncManager sharedSyncManager] uploadMediaFilesToCloud];
-	}
-	[[A3SyncManager sharedSyncManager] downloadMediaFilesFromCloud];
 }
 
 #pragma mark - A3UserDefaults & NSUbiquitousKeyValueStore

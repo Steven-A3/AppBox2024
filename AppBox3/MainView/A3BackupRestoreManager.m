@@ -80,7 +80,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	NSString *path = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0];
 	path = [path stringByAppendingPathComponent:bundleName];
     NSFileManager *fileManager = [NSFileManager defaultManager];
-	return [path stringByAppendingPathComponent:[fileManager storeFileName]];
+	return [path stringByAppendingPathComponent:[fileManager before2024StoreFilename]];
 }
 
 - (void)addDaysCounterPhotosWith:(NSFileManager *)fileManager fileList:(NSMutableArray *)fileList forBackup:(BOOL)forBackup {
@@ -167,34 +167,24 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     [self removeFileIfexists:fileManager tempCoreDataPath:tempCoreDataPath];
     [self removeFileIfexists:fileManager tempCoreDataPath:[NSString stringWithFormat:@"%@%@", tempCoreDataPath, @"-shm"]];
     [self removeFileIfexists:fileManager tempCoreDataPath:[NSString stringWithFormat:@"%@%@", tempCoreDataPath, @"-wal"]];
-}\
+}
 
 - (NSString *)migrateCoreDataStoreToTemp {
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    NSString *tempCoreDataPath = [[fileManager storeFileName] pathInTemporaryDirectory];
-    // Temporary directory
+    // Generate a temporary path for the Core Data store
+    NSString *tempCoreDataPath = [[fileManager storeFilename] pathInTemporaryDirectory];
+    
+    // Remove any existing temporary file
     [self removeExistingTempFile:fileManager path:tempCoreDataPath];
     
-    NSPersistentContainer *persistentContainer = CoreDataStack.shared.persistentContainer;
-    for (NSPersistentStoreDescription *description in persistentContainer.persistentStoreDescriptions) {
-        if ([description.type isEqualToString:NSInMemoryStoreType]) {
-            continue;
-        }
-        if (nil == description.URL) {
-            continue;
-        }
-        NSPersistentStoreCoordinator *tempPSC = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:persistentContainer.managedObjectModel];
-        NSURL *destinationURL = [NSURL fileURLWithPath:tempCoreDataPath];
-        NSError *addStoreError = nil;
-        NSPersistentStore *newStore = [tempPSC addPersistentStoreWithType:description.type configuration:description.configuration URL:description.URL options:description.options error:&addStoreError];
-        NSError *migrateError = nil;
-        [tempPSC migratePersistentStore:newStore toURL:destinationURL options:description.options withType:description.type error:&migrateError];
-        if (migrateError) {
-            FNLOG(@"%@", migrateError);
-        }
+    @try {
+        // Call the backupStoreFile method
+        [[CoreDataStack shared] backupStoreFileTo:[NSURL fileURLWithPath:tempCoreDataPath] error:nil];
+        NSLog(@"Backup successfully created at %@", tempCoreDataPath);
+    } @catch (NSError *error) {
+        NSLog(@"Failed to create backup: %@", error.localizedDescription);
     }
-    
     return tempCoreDataPath;
 }
 
@@ -208,7 +198,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 	_deleteFilesAfterZip = [NSMutableArray new];
 
 	NSString *path;
-	NSString *filename = [fileManager storeFileName];
+	NSString *filename = [fileManager storeFilename];
 
 	if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
 		[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
@@ -698,6 +688,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
             modelName = @"AppBox3";
             storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore.sqlite"];
         } else {
+            modelName = @"AppBox2024";
             storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore2024.sqlite"];
         }
         NSPersistentContainer *sourceContainer = [coreDataStack loadPersistentContainerWithModelName:modelName storeURL:storeURL];
