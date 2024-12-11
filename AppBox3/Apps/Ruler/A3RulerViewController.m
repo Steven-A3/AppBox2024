@@ -149,7 +149,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
     CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
-    if ([model isEqualToString:@"iPhone 15 Plus"] ||
+    if ([model isEqualToString:@"iPhone 16 Plus"] ||
+        [model isEqualToString:@"iPhone 15 Plus"] ||
+        [model isEqualToString:@"iPhone 16 Pro Max"] ||
         [model isEqualToString:@"iPhone 15 Pro Max"] ||
         [model isEqualToString:@"iPhone 14 Pro Max"])
     {
@@ -161,7 +163,9 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
         _redLineWidth = 0.5;
         return;
     }
-    if ([model isEqualToString:@"iPhone 15"] ||
+    if ([model isEqualToString:@"iPhone 16"] ||
+        [model isEqualToString:@"iPhone 15"] ||
+        [model isEqualToString:@"iPhone 16 Pro"] ||
         [model isEqualToString:@"iPhone 15 Pro"] ||
         [model isEqualToString:@"iPhone 14 Pro"])
     {

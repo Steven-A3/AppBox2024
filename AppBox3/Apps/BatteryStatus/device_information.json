@@ -56,6 +56,10 @@
         "iPhone15,5": "iPhone 15 Plus",
         "iPhone16,1": "iPhone 15 Pro",
         "iPhone16,2": "iPhone 15 Pro Max",
+        "iPhone17,1": "iPhone 16 Pro",
+        "iPhone17,2": "iPhone 16 Pro Max",
+        "iPhone17,3": "iPhone 16",
+        "iPhone17,4": "iPhone 16 Plus",
         "iPad1,1": "iPad",
         "iPad1,2": "iPad 3G",
         "iPad2,1": "iPad 2 (Wi-Fi)",
@@ -138,6 +142,16 @@
         "iPad14,4": "iPad Pro 11 inch 4th Gen",
         "iPad14,5": "iPad Pro 12.9 inch 6th Gen",
         "iPad14,6": "iPad Pro 12.9 inch 6th Gen",
+        "iPad14,8": "iPad Air 11-inch (M2)",
+        "iPad14,9": "iPad Air 11-inch (M2) Cellular",
+        "iPad14,10": "iPad Air 13-inch (M2)",
+        "iPad14,11": "iPad Air 13-inch (M2) Cellular",
+        "iPad16,1": "iPad mini A17 Pro (Wi-Fi)",
+        "iPad16,2": "iPad mini A17 Pro (Wi-Fi+Cellular)",
+        "iPad16,3": "iPad Pro M4 11 inch (Wi-Fi)",
+        "iPad16,4": "iPad Pro M4 11 inch (Wi-Fi+Cellular)",
+        "iPad16,5": "iPad Pro M4 13 inch (Wi-Fi)",
+        "iPad16,6": "iPad Pro M4 13 inch (Wi-Fi+Cellular)",
         
         "iPod1,1": "iPod Touch (1st Generation)",
         "iPod2,1": "iPod Touch (2nd Generation)",
@@ -148,6 +162,38 @@
         "iPod9,1": "iPod Touch (7th Generation)"
     },
     "deviceInformation": {
+        "iPhone 16": {
+            "Model": "iPhone 16",
+            "Chips": "A18 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance + 4x energy-saving)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR5",
+            "PPI": "460"
+        },
+        "iPhone 16 Plus": {
+            "Model": "iPhone 16 Plus",
+            "Chips": "A18 Bionic chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance + 4x energy-saving)",
+            "GPU": "Apple-designed 5 core",
+            "Memory": "6 GB LPDDR5",
+            "PPI": "460"
+        },
+        "iPhone 16 Pro": {
+            "Model": "iPhone 16 Pro",
+            "Chips": "A18 Pro chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance + 4x energy-saving)",
+            "GPU": "Apple-designed 6 core",
+            "Memory": "8 GB LPDDR5",
+            "PPI": "460"
+        },
+        "iPhone 16 Pro Max": {
+            "Model": "iPhone 16 Pro Max",
+            "Chips": "A18 Pro chip, 16-Core Neural Engine",
+            "CPU": "Hexa-core (2x high-performance + 4x energy-saving)",
+            "GPU": "Apple-designed 6 core",
+            "Memory": "8 GB LPDDR5",
+            "PPI": "460"
+        },
         "iPhone 15": {
             "Model": "iPhone 15",
             "Chips": "A16 Bionic chip, 16-Core Neural Engine",
@@ -756,6 +802,38 @@
             "Memory": "8 GB LPDDR4 DRAM",
             "PPI": "264"
         },
+        "iPad Air 11-inch (M2)": {
+            "Model": "iPad Air 11-inch (M2)",
+            "Chips": "Apple M2",
+            "CPU": "8-core (4 x Avalanche + 4 x Blizzard)",
+            "GPU": "Apple GPU (9-core graphics)",
+            "Memory": "8 GB LPDDR5 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 11-inch (M2) Cellular": {
+            "Model": "iPad Air 11-inch (M2) Cellular",
+            "Chips": "Apple M2",
+            "CPU": "8-core (4 x Avalanche + 4 x Blizzard)",
+            "GPU": "Apple GPU (9-core graphics)",
+            "Memory": "8 GB LPDDR5 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 13-inch (M2)": {
+            "Model": "iPad Air 13-inch (M2)",
+            "Chips": "Apple M2",
+            "CPU": "8-core (4 x Avalanche + 4 x Blizzard)",
+            "GPU": "Apple GPU (9-core graphics)",
+            "Memory": "8 GB LPDDR5 DRAM",
+            "PPI": "264"
+        },
+        "iPad Air 13-inch (M2) Cellular": {
+            "Model": "iPad Air 13-inch (M2) Cellular",
+            "Chips": "Apple M2",
+            "CPU": "8-core (4 x Avalanche + 4 x Blizzard)",
+            "GPU": "Apple GPU (9-core graphics)",
+            "Memory": "8 GB LPDDR5 DRAM",
+            "PPI": "264"
+        },
         "iPad Pro 9.7 \" (Wi-Fi+Cellular)": {
             "Model": "iPad Pro 9.7 \" (Wi-Fi+Cellular)",
             "Chips": "A9X chip with 64-bit architecture\nM9 motion coprocessor",
@@ -916,6 +994,38 @@
             "Memory": "8 GB, 16 GB(models with 1TB and 2TB storage",
             "PPI": "264"
         },
+        "iPad Pro M4 11 inch (Wi-Fi)": {
+            "Model": "iPad Pro M4 11 inch (Wi-Fi)",
+            "Chips": "Apple M4, 16-Core Neural Engine",
+            "CPU": "3.49GHz 4 x Everest 6 x Sawtooth",
+            "GPU": "New generation Apple designed 10-core GPU",
+            "Memory": "12 GB, 16 GB(models with 1TB and 2TB storage",
+            "PPI": "264"
+        },
+        "iPad Pro M4 11 inch (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro M4 11 inch (Wi-Fi+Cellular)",
+            "Chips": "Apple M4, 16-Core Neural Engine",
+            "CPU": "3.49GHz 4 x Everest 6 x Sawtooth",
+            "GPU": "New generation Apple designed 10-core GPU",
+            "Memory": "12 GB, 16 GB(models with 1TB and 2TB storage",
+            "PPI": "264"
+        },
+        "iPad Pro M4 13 inch (Wi-Fi)": {
+            "Model": "iPad Pro M4 13 inch (Wi-Fi)",
+            "Chips": "Apple M4, 16-Core Neural Engine",
+            "CPU": "3.49GHz 4 x Everest 6 x Sawtooth",
+            "GPU": "New generation Apple designed 10-core GPU",
+            "Memory": "12 GB, 16 GB(models with 1TB and 2TB storage",
+            "PPI": "264"
+        },
+        "iPad Pro M4 13 inch (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro M4 13 inch (Wi-Fi+Cellular)",
+            "Chips": "Apple M4, 16-Core Neural Engine",
+            "CPU": "3.49GHz 4 x Everest 6 x Sawtooth",
+            "GPU": "New generation Apple designed 10-core GPU",
+            "Memory": "12 GB, 16 GB(models with 1TB and 2TB storage",
+            "PPI": "264"
+        },
         "iPad Pro 12.9 \" 4th Gen (Wi-Fi)": {
             "Model": "iPad Pro 12.9 \" 4th Gen (Wi-Fi)",
             "Chips": "A12Z Bionic chip with 64-bit architecture\nNeural Engine\nEmbedded M12 coprocessor",
@@ -1060,6 +1170,22 @@
             "Memory": "4 GB LPDDR3 DRAM",
             "PPI": "326"
         },
+        "iPad mini A17 Pro (Wi-Fi)": {
+            "Model": "iPad mini A17 Pro (Wi-Fi)",
+            "Chips": "A17 Pro, 16-core Neural Engine",
+            "CPU": "3.78GHz 2 x Everest, 4 x Sawtooth",
+            "GPU": "Apple designed 5-core",
+            "Memory": "8 GB LPDDR3 DRAM",
+            "PPI": "326"
+        },
+        "iPad mini A17 Pro (Wi-Fi+Cellular)": {
+            "Model": "iPad mini 6th Gen (Wi-Fi+Cellular)",
+            "Chips": "A17 Pro, 16-core Neural Engine",
+            "CPU": "3.78GHz 2 x Everest, 4 x Sawtooth",
+            "GPU": "Apple designed 5-core",
+            "Memory": "8 GB LPDDR3 DRAM",
+            "PPI": "326"
+        },
         "iPad": {
             "Model": "iPad",
             "Chips": "Apple A4",
@@ -1134,6 +1260,30 @@
         }
     },
     "remainingTimeInfo": {
+        "iPhone 16": {
+            "Model": "iPhone 16",
+            "Video playback (streamed)": 18,
+            "Video playback": 22,
+            "Audio playback": 80
+        },
+        "iPhone 16 Plus": {
+            "Model": "iPhone 16 Plus",
+            "Video playback (streamed)": 24,
+            "Video playback": 27,
+            "Audio playback": 100
+        },
+        "iPhone 16 Pro": {
+            "Model": "iPhone 16 Pro",
+            "Video playback (streamed)": 22,
+            "Video playback": 27,
+            "Audio playback": 85
+        },
+        "iPhone 16 Pro Max": {
+            "Model": "iPhone 16 Pro Max",
+            "Video playback (streamed)": 29,
+            "Video playback": 33,
+            "Audio playback": 105
+        },
         "iPhone 15 Pro Max": {
             "Model": "iPhone 15 Pro Max",
             "Video playback (streamed)": 25,
@@ -1730,6 +1880,34 @@
             "Video playback": 10,
             "Audio playback": 10
         },
+        "iPad Air 11inch (M2)": {
+            "Model": "iPad Air 11inch (M2)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 11-inch (M2) Cellular": {
+            "Model": "iPad Air 11-inch (M2) Cellular",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 13inch (M2)": {
+            "Model": "iPad Air 13inch (M2)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air 13-inch (M2) Cellular": {
+            "Model": "iPad Air 13-inch (M2) Cellular",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
         "iPad Pro 9.7 \" (Wi-Fi+Cellular)": {
             "Model": "iPad Pro 9.7 \" (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
@@ -1874,6 +2052,32 @@
             "Video playback": 10,
             "Audio playback": 10
         },
+        "iPad Pro M4 11 inch (Wi-Fi)": {
+            "Model": "iPad Pro M4 11 inch (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro M4 11 inch (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro M4 11 inch (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro M4 13 inch (Wi-Fi)": {
+            "Model": "iPad Pro M4 13 inch (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Pro M4 13 inch (Wi-Fi+Cellular)": {
+            "Model": "iPad Pro M4 13 inch (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
         "iPad Pro 12.9 inch 5th Gen": {
             "Model": "iPad Pro 12.9 inch 5th Gen",
             "Internet on Wi-Fi": 10,
@@ -1967,6 +2171,19 @@
         },
         "iPad mini 6th Gen (Wi-Fi+Cellular)": {
             "Model": "iPad mini 6th Gen (Wi-Fi+Cellular)",
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini A17 Pro (Wi-Fi)": {
+            "Model": "iPad mini A17 Pro (Wi-Fi)",
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini A17 Pro (Wi-Fi+Cellular)": {
+            "Model": "iPad mini A17 Pro (Wi-Fi+Cellular)",
             "Internet on Wi-Fi": 10,
             "Internet on Cellular": 9,
             "Video playback": 10,
