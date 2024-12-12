@@ -83,10 +83,7 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-
-	self.automaticallyAdjustsScrollViewInsets = NO;
-	
+    
 	UIImage *image = [[UIImage alloc] init];
 	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setShadowImage:image];
@@ -629,7 +626,6 @@ NSString *const A3RulerScrollDirectionReverse = @"A3RulerScrollDirectionReverse"
 - (void)setupBasicMeasureForInterfaceOrientation:(BOOL)toPortrait {
 	NSString *model = [A3UIDevice platformString];
     CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-    CGFloat screenHeight = MAX(screenBounds.size.width, screenBounds.size.height);
 
     if ([model hasPrefix:@"iPhone"]) {
         [self setupBasicMeasureForiPhone:toPortrait model:model];
