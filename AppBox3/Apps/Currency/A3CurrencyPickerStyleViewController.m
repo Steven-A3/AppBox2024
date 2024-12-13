@@ -36,6 +36,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "UIViewController+extension.h"
 #import "A3UserDefaults+A3Addition.h"
+#import "AppBox3-Swift.h"
 
 NSString *const A3CurrencyPickerSelectedIndexColumnOne = @"A3CurrencyPickerSelectedIndexColumnOne";
 NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelectedIndexColumnTwo";
@@ -942,16 +943,22 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 #pragma mark - Share
 
 - (void)shareButtonAction:(id)sender {
-	_sharePopoverController =
-			[self presentActivityViewControllerWithActivityItems:@[self]
-											   fromBarButtonItem:sender
-											   completionHandler:^() {
-												   [self.mainViewController enableControls:YES];
-												   [self enableControls:YES];
-											   }];
-	_sharePopoverController.delegate = self;
-	[_mainViewController enableControls:NO];
-	[self enableControls:NO];
+    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
+//	_sharePopoverController =
+//			[self presentActivityViewControllerWithActivityItems:@[self]
+//											   fromBarButtonItem:sender
+//											   completionHandler:^() {
+//												   [self.mainViewController enableControls:YES];
+//												   [self enableControls:YES];
+//											   }];
+//	_sharePopoverController.delegate = self;
+//	[_mainViewController enableControls:NO];
+//	[self enableControls:NO];
+}
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController
+              subjectForActivityType:(UIActivityType)activityType {
+    return [self stringForShare];
 }
 
 - (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
@@ -978,7 +985,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	
 	double rate = [toCurrencyInfo.rateToUSD doubleValue] / [fromCurrencyInfo.rateToUSD doubleValue];
 	double inputValue = [_sourceTextField.text floatValueEx];
-	return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
+	return [NSString stringWithFormat:@"%@\n%@ %@ = %@ %@",
+            NSLocalizedString(@"Currency from AppBox Pro", nil),
 			fromCurrencyInfo.currencyCode,
 			[_currencyDataManager stringFromNumber:@(inputValue) withCurrencyCode:fromCurrencyInfo.currencyCode isShare:YES],
 			toCurrencyInfo.currencyCode,
