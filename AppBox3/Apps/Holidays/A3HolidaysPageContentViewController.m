@@ -109,7 +109,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	_previousOrientation = CURRENT_ORIENTATION;
+    _previousOrientation = self.view.window.windowScene.interfaceOrientation;
 }
 
 - (void)dealloc {
@@ -120,8 +120,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[super viewWillAppear:animated];
 
 	if (!self.isMovingToParentViewController) {
-		if (_previousOrientation != CURRENT_ORIENTATION) {
-			UIInterfaceOrientation orientation = CURRENT_ORIENTATION;
+        if (_previousOrientation != self.view.window.windowScene.interfaceOrientation) {
+            UIInterfaceOrientation orientation = self.view.window.windowScene.interfaceOrientation;
 			self.tableView.tableHeaderView = [self tableHeaderViewForInterfaceOrientation:orientation];
 		}
 	}
@@ -322,7 +322,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (UITableView *)tableView {
 	if (!_tableView) {
-		UIView *tableHeaderView = [self tableHeaderViewForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+		UIView *tableHeaderView = [self tableHeaderViewForInterfaceOrientation:self.view.window.windowScene.interfaceOrientation];
 
 		_tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		_tableView.dataSource = self;

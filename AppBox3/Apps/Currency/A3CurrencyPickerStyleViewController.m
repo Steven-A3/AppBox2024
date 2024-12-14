@@ -69,7 +69,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 @property (nonatomic, strong) NSNumber *sourceValue;
 @property (nonatomic, copy) NSString *previousValue;
 @property (strong, nonatomic) NSArray *favorites;
-@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineViewAboveAdBGHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineTopSampleLabelsHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *lineBottomSampleLabelsHeightConstraint;
@@ -187,30 +186,18 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	if (!_didFirstTimeRefresh) {
 		_didFirstTimeRefresh = YES;
 
-		Reachability *reachability = [Reachability reachabilityForInternetConnection];
-		A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 		if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
-			if ([reachability isReachableViaWiFi] ||
-					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-//                [self.currencyDataManager updateCurrencyRatesOnSuccess:^{
-//                    [self didSelectPickerRow];
-//                    [self refreshUpdateDateLabel];
-//                } failure:^{
-//                    
-//                }];
-                // TODO: Call new API
-                [self.currencyDataManager updateCurrencyRatesFromCurrencyLayerOnCompletion:^(BOOL success) {
-                    if (success) {
-                        [self didSelectPickerRow];
-                        [self refreshUpdateDateLabel];
-                    }
-                }];
-			}
+            [self.currencyDataManager updateCurrencyRatesFromCurrencyLayerOnCompletion:^(BOOL success) {
+                if (success) {
+                    [self didSelectPickerRow];
+                    [self refreshUpdateDateLabel];
+                }
+            }];
 		}
 	}
 
 	self.tableView.contentInset = UIEdgeInsetsZero;
-	[self setupIPADLayoutToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+	[self setupIPADLayoutToInterfaceOrientation:self.view.window.windowScene.interfaceOrientation];
 	
 	if ([self.mainViewController.navigationController.navigationBar isHidden]) {
 		[self.mainViewController showNavigationBarOn:self.mainViewController.navigationController];
@@ -588,7 +575,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
     [_activityIndicatorView removeFromSuperview];
     _activityIndicatorView = nil;
     
-    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     [_chartCoverView addSubview:_activityIndicatorView];
     
     [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
@@ -944,36 +931,6 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 - (void)shareButtonAction:(id)sender {
     [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
-//	_sharePopoverController =
-//			[self presentActivityViewControllerWithActivityItems:@[self]
-//											   fromBarButtonItem:sender
-//											   completionHandler:^() {
-//												   [self.mainViewController enableControls:YES];
-//												   [self enableControls:YES];
-//											   }];
-//	_sharePopoverController.delegate = self;
-//	[_mainViewController enableControls:NO];
-//	[self enableControls:NO];
-}
-
-- (NSString *)activityViewController:(UIActivityViewController *)activityViewController
-              subjectForActivityType:(UIActivityType)activityType {
-    return [self stringForShare];
-}
-
-- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
-	return NSLocalizedString(@"Share Currency Converter Data", @"Share Currency Converter Data");
-}
-
-- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
-	if ([activityType isEqualToString:UIActivityTypeMail]) {
-		return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
-									   contents:[self stringForShare]
-										   tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
-	}
-	else {
-		return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-	}
 }
 
 - (NSString *)stringForShare {
@@ -1048,7 +1005,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         [_adBackgroundView setHidden:NO];
         [_lineAboveAdBackgroundView setHidden:NO];
         _adBackgroundViewHeightConstraint.constant = 90;
-        [self setupIPADLayoutToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        [self setupIPADLayoutToInterfaceOrientation:self.view.window.windowScene.interfaceOrientation];
         
         FNLOGRECT(bannerView.frame);
         [self.view addSubview:bannerView];

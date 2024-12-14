@@ -86,7 +86,7 @@
 
     self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentAutomatic;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
-    self.tableView.rowHeight = IS_IPHONE35 ? 70.0 : 84.0;
+    self.tableView.rowHeight = 84.0;
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 	self.tableView.scrollEnabled = NO;
@@ -123,10 +123,6 @@
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d years", @"StringsDict", nil), 1] forSegmentAtIndex:3];
 		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d years", @"StringsDict", nil), 5] forSegmentAtIndex:4];
 	} else
-	if (IS_IPHONE35) {
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 1] forSegmentAtIndex:2];
-		[_segmentedControl setTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"%d mos", @"StringsDict", nil), 5] forSegmentAtIndex:3];
-	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
@@ -219,16 +215,14 @@
 }
 
 - (void)makeFixedConstraint {
-	BOOL isIPHONE35 = IS_IPHONE35;
-
     UIEdgeInsets safeAreaInset = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
-    CGFloat verticalOffset = safeAreaInset.top - 20;
+    CGFloat verticalOffset = safeAreaInset.top - 26;
 	UIView *superview = _tableView.superview;
 	[_tableView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(superview.top).with.offset(64 + verticalOffset);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(isIPHONE35 ? @140 : @168 );
+		make.height.equalTo(@168);
 	}];
 	[_line1 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
@@ -239,13 +233,13 @@
 		make.top.equalTo(self.line1.bottom);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(isIPHONE35 ? @22 : @30);
+		make.height.equalTo(@30);
 	}];
 	[_valueView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.titleView.bottom);
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
-		make.height.equalTo(isIPHONE35 ? @22 : @30);
+		make.height.equalTo(@30);
 	}];
 	[_line2 makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.valueView.bottom);
@@ -263,28 +257,32 @@
 }
 
 - (void)makeConstraints {
-	if (!_constraints) {
-		_constraints = [NSMutableArray new];
-	} else {
-		for (MASConstraint *constraint in _constraints) {
-			[constraint uninstall];
-		}
-	}
-	BOOL isIPHONE35 = IS_IPHONE35, isIPHONE = IS_IPHONE, isPORTRAIT = [UIWindow interfaceOrientationIsPortrait];
-	[_line1 makeConstraints:^(MASConstraintMaker *make) {
-		[self.constraints addObject:make.top.equalTo(self.tableView.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 33))];
-	}];
+    if (!_constraints) {
+        _constraints = [NSMutableArray new];
+    } else {
+        for (MASConstraint *constraint in _constraints) {
+            [constraint uninstall];
+        }
+    }
+    
+    BOOL isIPHONE = IS_IPHONE, isPORTRAIT = [UIWindow interfaceOrientationIsPortrait];
+    
+    [_line1 makeConstraints:^(MASConstraintMaker *make) {
+        [self.constraints addObject:make.top.equalTo(self.tableView.bottom).with.offset(isIPHONE ? 17 : (isPORTRAIT ? 50 : 33))];
+    }];
 
-	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
-		[self.constraints addObject:make.top.equalTo(self.line2.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 40))];
-		[self.constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
-	}];
-	[_chartWebView makeConstraints:^(MASConstraintMaker *make) {
-        CGFloat verticalMargin = isIPHONE ? (isIPHONE35 ? 14 : 18) : (isPORTRAIT ? 20 : 35);
-		[self.constraints addObject:make.top.equalTo(self.segmentedControl.bottom).with.offset(verticalMargin)];
-		[self.constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
-		[self.constraints addObject:make.bottom.equalTo(self.view.bottom).with.offset(-verticalMargin)];
-	}];
+    [_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+        [self.constraints addObject:make.top.equalTo(self.line2.bottom).with.offset(isIPHONE ? 17 : (isPORTRAIT ? 50 : 40))];
+        [self.constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
+    }];
+
+    [_chartWebView makeConstraints:^(MASConstraintMaker *make) {
+        CGFloat verticalMargin = isIPHONE ? 18 : (isPORTRAIT ? 20 : 35);
+        [self.constraints addObject:make.top.equalTo(self.segmentedControl.bottom).with.offset(verticalMargin)];
+        [self.constraints addObject:make.width.equalTo(self.view.width).with.offset(-40)];
+        [self.constraints addObject:make.bottom.equalTo(self.view.bottom).with.offset(-verticalMargin)];
+    }];
+    
     [_webViewCoverView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.chartWebView);
     }];
@@ -619,7 +617,7 @@
 - (void)reloadChartImage {
     [self removeActivityIndicator];
     
-    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
     [_webViewCoverView addSubview:_activityIndicatorView];
     
     [_activityIndicatorView makeConstraints:^(MASConstraintMaker *make) {
@@ -635,7 +633,9 @@
                                    userInfo:nil
                                     repeats:NO];
 
-	[self.chartWebView loadHTMLString:[self chartContentHTMLForView:_chartWebView] baseURL:nil];
+    NSString *urlString = [self chartContentHTMLForView:_chartWebView];
+    FNLOG(@"%@", urlString);
+    [self.chartWebView loadHTMLString:urlString baseURL:nil];
 }
 
 - (void)removeActivityIndicator {
@@ -801,7 +801,7 @@
         }
     }
     
-    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"60M"];
+    NSArray *periodsArray = @[@"1D", @"1m", @"3m", @"1y", @"60M"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
     NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
     CGSize chartSize = targetView.frame.size;

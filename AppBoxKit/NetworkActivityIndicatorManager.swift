@@ -9,11 +9,10 @@
 import UIKit
 
 @objcMembers
-public class NetworkActivityIndicatorManager:NSObject {
+public class NetworkActivityIndicatorManager: NSObject {
     
     public static let shared = NetworkActivityIndicatorManager()
     
-    private var activityIndicatorCount = 0
     private var activityIndicatorView: UIActivityIndicatorView?
     
     private override init() {
@@ -47,28 +46,20 @@ public class NetworkActivityIndicatorManager:NSObject {
     
     // Show network activity indicator
     public func show() {
-        UIApplication.printCallStackIfDebug()
+        Logger.shared.debug("Activity Indicator: Show")
         
         DispatchQueue.main.async {
-            self.activityIndicatorCount += 1
-            self.updateIndicatorVisibility()
+            self.activityIndicatorView?.startAnimating()
         }
     }
     
     // Hide network activity indicator
     public func hide() {
-        UIApplication.printCallStackIfDebug()
+        Logger.shared.debug("Activity Indicator: Hide")
+
         DispatchQueue.main.async {
-            self.activityIndicatorCount = max(self.activityIndicatorCount - 1, 0)
-            self.updateIndicatorVisibility()
-        }
-    }
-    
-    private func updateIndicatorVisibility() {
-        if activityIndicatorCount > 0 {
-            activityIndicatorView?.startAnimating()
-        } else {
-            activityIndicatorView?.stopAnimating()
+            self.activityIndicatorView?.stopAnimating()
+            self.activityIndicatorView?.removeFromSuperview()
         }
     }
 }

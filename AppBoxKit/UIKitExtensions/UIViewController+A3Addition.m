@@ -238,13 +238,15 @@ static char const *const key_statusBarStyle = "key_statusBarStyle";
 	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
 	CGRect clippingViewFrame = moreMenuView.frame;
     
-    CGFloat vertifcalOffset = 0;
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
+    CGFloat vertifcalOffset = 0;
+    vertifcalOffset = safeAreaInsets.top;
+
     if (safeAreaInsets.top == 59) {
-        clippingViewFrame.origin.y = 38.7 + safeAreaInsets.top;
+        clippingViewFrame.origin.y = 38.7 + vertifcalOffset;
+    } else if (safeAreaInsets.top == 62) {
+        clippingViewFrame.origin.y = 37.5 + vertifcalOffset;
     } else {
-        vertifcalOffset = safeAreaInsets.top;
-        
         clippingViewFrame.origin.y = 44.0 - 1.0 + vertifcalOffset;
     }
     clippingViewFrame.size.height = clippingViewFrame.size.height + 0.5;//kjh

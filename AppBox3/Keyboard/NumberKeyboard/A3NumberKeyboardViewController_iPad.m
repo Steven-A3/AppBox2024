@@ -53,7 +53,7 @@
 }
 
 - (void)viewWillLayoutSubviews {
-	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+	[self rotateToInterfaceOrientation:self.view.window.windowScene.interfaceOrientation];
 }
 
 - (void)setupFonts:(BOOL)portrait {

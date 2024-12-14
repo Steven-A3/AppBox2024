@@ -385,6 +385,7 @@
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
 		686218DF2591DC3D00266BC5 /* TJDropboxAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = 686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */; };
+		68632E412D0CB97500607E52 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68632E402D0CB97500607E52 /* Logger.swift */; };
 		686490E429B82BD600AF1D39 /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686490E329B82BD600AF1D39 /* OpenSSL.xcframework */; };
 		686490E529B82BD600AF1D39 /* OpenSSL.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 686490E329B82BD600AF1D39 /* OpenSSL.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
@@ -1807,6 +1808,7 @@
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropboxAuthenticator.m; sourceTree = "<group>"; };
 		686218DE2591DC3D00266BC5 /* TJDropboxAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropboxAuthenticator.h; sourceTree = "<group>"; };
+		68632E402D0CB97500607E52 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		686490E229B82BA700AF1D39 /* Frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Frameworks; path = "External/RMStore/Optional/openssl-1.0.2c/Frameworks"; sourceTree = "<group>"; };
 		686490E329B82BD600AF1D39 /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "External/RMStore/Optional/openssl-1.0.2c/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
@@ -4803,6 +4805,7 @@
 				686D966429F28E8B00AACD02 /* Storyboard.storyboard */,
 				686D966629F290D300AACD02 /* AppBoxKit.xcassets */,
 				686D966829F296E500AACD02 /* CustomTextField.swift */,
+				68632E402D0CB97500607E52 /* Logger.swift */,
 				68C610C029F61BFA0002B484 /* PasswordController.swift */,
 				68C610C229F7FF0B0002B484 /* PasswordViewController.swift */,
 				68330B4C2A17748B005EEEBC /* SecuredTextFieldParentProtocol.swift */,
@@ -7251,6 +7254,7 @@
 				689806F12B16BBA0008D6890 /* WindowUtility.swift in Sources */,
 				686DB42C2A2499B0009BC79C /* NSManagedObject+extension.m in Sources */,
 				686DB3FC2A2499B0009BC79C /* View+MASShorthandAdditions.m in Sources */,
+				68632E412D0CB97500607E52 /* Logger.swift in Sources */,
 				68C610C129F61BFA0002B484 /* PasswordController.swift in Sources */,
 				687A84682CBBDBC20010BDB9 /* DataMigrationManager.swift in Sources */,
 				686B6B432B0932F000E39E18 /* A3SyncManager+NSUbiquitousKeyValueStore.m in Sources */,

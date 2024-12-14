@@ -695,7 +695,7 @@ static NSString *const A3V3InstructionDidShowForUnitConverter = @"A3V3Instructio
 // Without the 'desiredOrientation' method, using showLockscreen in one orientation,
 // then presenting it inside a modal in another orientation would display the view in the first orientation.
 - (UIInterfaceOrientation)desiredOrientation {
-	UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientation statusBarOrientation = self.view.window.windowScene.interfaceOrientation;
 	UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
 	if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
 		return statusBarOrientation;

@@ -430,6 +430,7 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
          self.dataArray = nil;
          
          completion(YES);
+        [NetworkActivityIndicatorManager.shared hide];
      }
                                      failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error)
      {

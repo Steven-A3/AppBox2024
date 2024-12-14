@@ -44,7 +44,8 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 
 @interface A3CurrencyTableViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate,
         UITextFieldDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencyChartViewDelegate,
-        UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorViewControllerDelegate,
+        UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate,
+        A3CalculatorViewControllerDelegate,
         A3InstructionViewControllerDelegate, A3ViewControllerProtocol, GADBannerViewDelegate>
 
 @property(nonatomic, strong) NSMutableArray *favorites;
@@ -54,7 +55,6 @@ NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChan
 @property(nonatomic, strong) NSMutableDictionary *textFields;
 @property(nonatomic, strong) NSArray *moreMenuButtons;
 @property(nonatomic, strong) UIView *moreMenuView;
-@property(nonatomic, strong) UIPopoverController *sharePopoverController;
 @property(nonatomic, strong) UIButton *plusButton;
 @property(nonatomic, strong) UIView *footerView;
 @property(nonatomic, copy) NSString *previousValue;
@@ -167,13 +167,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
     if (!_didFirstTimeRefresh) {
         _didFirstTimeRefresh = YES;
 
-        Reachability *reachability = [Reachability reachabilityForInternetConnection];
-        A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
         if ([[A3UserDefaults standardUserDefaults] currencyAutoUpdate]) {
-            if ([reachability isReachableViaWiFi] ||
-                    ([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-                [self updateCurrencyRatesWithAnimation:NO];
-            }
+            [self updateCurrencyRatesWithAnimation:NO];
         }
         [self reloadUpdateDateLabel];
 
@@ -232,7 +227,7 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
         [strongSelf favorites];
 
         [strongSelf.tableView reloadData];
-        [strongSelf enableControls:_barButtonEnabled];
+        [strongSelf enableControls:self->_barButtonEnabled];
     });
 }
 
@@ -1193,30 +1188,35 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3FMMoveTableViewSwipeCellDelegate> *) cell;
     [swipedCell removeMenuView];
 
-    NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
-    if (!sourceIndexPath) {
-        sourceIndexPath = [self indexPathForDataCell:(A3CurrencyTVDataCell *) cell];
-        if (!sourceIndexPath) {
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForCell:cell];
+    NSIndexPath *sourceIndexPath = nil;
+    NSIndexPath *targetIndexPath = nil;
+    if (!selectedIndexPath) {
+        selectedIndexPath = [self indexPathForDataCell:(A3CurrencyTVDataCell *) cell];
+        if (!selectedIndexPath) {
             return;
         }
     }
-    NSIndexPath *targetIndexPath;
-    if (sourceIndexPath.row == 0) {
+    if (selectedIndexPath.row == 0) {
+        sourceIndexPath = selectedIndexPath;
         targetIndexPath = [NSIndexPath indexPathForRow:2 + (_adItem ? 1 : 0) inSection:0];
     } else {
-        targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        sourceIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        targetIndexPath = selectedIndexPath;
     }
 
-    [self.favorites exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
-
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    
     CurrencyFavorite_ *sourceCurrency = self.favorites[sourceIndexPath.row];
     CurrencyFavorite_ *targetCurrency = self.favorites[targetIndexPath.row];
-    NSString *orderOfSource = sourceCurrency.order;
-    sourceCurrency.order = targetCurrency.order;
-    targetCurrency.order = orderOfSource;
 
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    NSString *tempOrder = sourceCurrency.order;
+    sourceCurrency.order = targetCurrency.order;
+    targetCurrency.order = tempOrder;
     [context saveIfNeeded];
+
+    _favorites = nil;
+    [self favorites];
 
     [self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
 
@@ -1320,35 +1320,14 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     }
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    // Popover controller, iPad only.
-    [self unSwipeAll];
-
-    [self enableControls:YES];
-
-    _sharePopoverController = nil;
-}
-
 #pragma mark - Share
 
 - (void)shareAll:(id)sender {
     _shareAll = YES;
-    _sharePopoverController =
-            [self presentActivityViewControllerWithActivityItems:@[self]
-                                               fromBarButtonItem:sender
-                                               completionHandler:^() {
-                                                   [self unSwipeAll];
-                                                   [self enableControls:YES];
-                                               }];
-    _sharePopoverController.delegate = self;
-    if (IS_IPAD) {
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-            [buttonItem setEnabled:NO];
-        }];
-    }
+    
+    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
 }
 
-// http://itunes.apple.com/us/app/appbox-pro-alarm-clock-wallet/id318404385?mt=8
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
     _shareSourceIndex = sourceIdx;
     _shareTargetIndex = targetIdx;
@@ -1358,40 +1337,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         _shareAll = NO;
     }
 
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-    if (IS_IPHONE) {
-        [self presentViewController:activityController animated:YES completion:nil];
-    } else {
-        _sharePopoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-        UIView *view = (UIView *) sender;
-        FNLOGRECT(view.frame);
-        CGRect rect = [view convertRect:view.frame toView:self.view];
-        rect.origin.x -= 144.0;
-        [_sharePopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
-        _sharePopoverController.delegate = self;
-    }
-}
-
-- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType {
-    if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return NSLocalizedString(@"Currency Converter using AppBox Pro", nil);
-    }
-
-    return @"";
-}
-
-- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType {
-    if ([activityType isEqualToString:UIActivityTypeMail]) {
-        return [self shareMailMessageWithHeader:NSLocalizedString(@"I'd like to share a conversion with you.", nil)
-                                       contents:[self stringForShare]
-                                           tail:NSLocalizedString(@"You can convert more in the AppBox Pro.", nil)];
-    } else {
-        return [[self stringForShare] stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    }
-}
-
-- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController {
-    return NSLocalizedString(@"Share Currency Converter Data", @"Share Currency Converter Data");
+    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
 }
 
 - (NSString *)stringForShare {
@@ -1414,7 +1360,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     CurrencyFavorite_ *sourceFavorite = self.favorites[sourceIdx], *targetFavorite = self.favorites[targetIdx];
     NSString *source = sourceFavorite.uniqueID, *target = targetFavorite.uniqueID;
     float rate = [self rateForSource:source target:target];
-    return [NSString stringWithFormat:@"%@ %@ = %@ %@<br/>",
+    return [NSString stringWithFormat:@"%@ %@ = %@ %@",
                                       source,
                                       [_currencyDataManager stringFromNumber:self.lastInputValue withCurrencyCode:source isShare:YES],
                                       target,

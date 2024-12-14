@@ -464,7 +464,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
 
-	UIInterfaceOrientation toInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientation toInterfaceOrientation = self.view.window.windowScene.interfaceOrientation;
 	if (_isNumberKeyboardVisible && self.numberKeyboardViewController.view.superview) {
 		UIView *keyboardView = self.numberKeyboardViewController.view;
 		CGFloat keyboardHeight = self.numberKeyboardViewController.keyboardHeight;

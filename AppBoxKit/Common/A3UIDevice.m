@@ -86,26 +86,20 @@ NSString *const A3RotateAccordingToDeviceOrientationNotification = @"A3RotateAcc
 	return ([[fileAttributes objectForKey:NSFileSystemSize] doubleValue] - [[fileAttributes objectForKey:NSFileSystemFreeSize] doubleValue]) / [[fileAttributes objectForKey:NSFileSystemSize] doubleValue];
 }
 
-+ (UIInterfaceOrientation)deviceOrientation {
-	return [[UIApplication sharedApplication] statusBarOrientation];
-}
-
-+ (BOOL)deviceOrientationIsPortrait; {
-	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-}
-
-+ (CGFloat)applicationHeightForCurrentOrientation {
-	CGRect applicationFrame = [[UIScreen mainScreen] bounds];
-	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? applicationFrame.size.height : applicationFrame.size.width - kSystemStatusBarHeight;
-}
-
 + (CGRect)appFrame {
-	CGRect screenBounds = [[UIScreen mainScreen] bounds];
-	if (![self deviceOrientationIsPortrait]) {
-		CGFloat height = screenBounds.size.width;
-		screenBounds.size.width = screenBounds.size.height;
-		screenBounds.size.height = height;
-	}
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.allObjects.firstObject;
+    if ([windowScene isKindOfClass:[UIWindowScene class]]) {
+        UIInterfaceOrientation interfaceOrientation = windowScene.interfaceOrientation;
+        BOOL isPortrait = (interfaceOrientation == UIInterfaceOrientationPortrait ||
+                           interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+
+        if (!isPortrait) {
+            CGFloat height = screenBounds.size.width;
+            screenBounds.size.width = screenBounds.size.height;
+            screenBounds.size.height = height;
+        }
+    }
 	if (IS_IPAD) {
 		screenBounds.size.width = APP_VIEW_WIDTH_iPAD;
 	}
@@ -113,19 +107,16 @@ NSString *const A3RotateAccordingToDeviceOrientationNotification = @"A3RotateAcc
 	return screenBounds;
 }
 
-+ (BOOL)hasCellularNetwork {
-	CTTelephonyNetworkInfo *ctInfo = [[CTTelephonyNetworkInfo alloc] init];
-    NSDictionary *carriers = ctInfo.serviceSubscriberCellularProviders;
-	return carriers && [[carriers allKeys] count] > 0;
-}
-
 + (BOOL)hasTorch {
 #if !TARGET_IPHONE_SIMULATOR
-	for ( AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo] ) {
-		if ( device.hasTorch ) {
-			return YES;
-		}
-	}
+    AVCaptureDeviceDiscoverySession *discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera]
+                                                                                                               mediaType:AVMediaTypeVideo
+                                                                                                                position:AVCaptureDevicePositionUnspecified];
+    for (AVCaptureDevice *device in discoverySession.devices) {
+        if (device.hasTorch) {
+            return YES;
+        }
+    }
 #endif
     return NO;
 }

@@ -422,7 +422,7 @@
 		[self.view addSubview:self.dateKeyboardVC.view];
 		superview = self.view;
 	}
-	CGFloat keyboardHeight = [self keyboardHeightForInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+	CGFloat keyboardHeight = [self keyboardHeightForInterfaceOrientation:self.view.window.windowScene.interfaceOrientation];
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);
 		make.right.equalTo(superview.right);
@@ -437,7 +437,7 @@
 	_isShowKeyboard = YES;
 
 	[UIView animateWithDuration:0.3 animations:^{
-		[self layoutKeyboardToOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+		[self layoutKeyboardToOrientation:self.view.window.windowScene.interfaceOrientation];
 	}];
 }
 
@@ -561,7 +561,7 @@
 		[self.view addSubview:self.dateKeyboardVC.view];
 		superview = self.view;
 	}
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = self.view.window.windowScene.interfaceOrientation;
 	CGFloat keyboardHeight = [self keyboardHeightForInterfaceOrientation:orientation];
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(superview.left);

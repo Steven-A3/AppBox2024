@@ -37,7 +37,6 @@
 #define IS_IOS_GREATER_THAN_7	([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 #define IS_IOS9			([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
 #define IS_IOS10			([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0)
-#define CURRENT_ORIENTATION        [[UIApplication sharedApplication] statusBarOrientation]
 
 #define IS_IPAD    	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 #define IS_IPAD_PRO	([[UIScreen mainScreen] nativeBounds].size.height == 2732.0)
@@ -78,11 +77,7 @@ extern NSString *const A3RotateAccordingToDeviceOrientationNotification;
 + (CGFloat)statusBarHeightPortrait;
 + (double)memoryUsage;
 + (double)storageUsage;
-+ (UIInterfaceOrientation)deviceOrientation;
-+ (BOOL)deviceOrientationIsPortrait;
-+ (CGFloat)applicationHeightForCurrentOrientation;
 + (CGRect)appFrame;
-+ (BOOL)hasCellularNetwork;
 + (BOOL)hasTorch;
 + (BOOL)canAccessCamera;
 
@@ -106,4 +101,5 @@ extern NSString *const A3RotateAccordingToDeviceOrientationNotification;
 + (NSString *)systemCurrencyCode;
 
 + (BOOL)isLanguageLikeCJK;
+
 @end

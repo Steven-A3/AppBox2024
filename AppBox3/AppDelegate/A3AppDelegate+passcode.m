@@ -702,25 +702,30 @@
 // Without the 'desiredOrientation' method, using showLockscreen in one orientation,
 // then presenting it inside a modal in another orientation would display the view in the first orientation.
 - (UIInterfaceOrientation)desiredOrientation {
-	UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-	UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
-	if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
-		return statusBarOrientation;
-	}
-	else {
-		if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskPortrait) {
-			return UIInterfaceOrientationPortrait;
-		}
-		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft) {
-			return UIInterfaceOrientationLandscapeLeft;
-		}
-		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight) {
-			return UIInterfaceOrientationLandscapeRight;
-		}
-		else {
-			return UIInterfaceOrientationPortraitUpsideDown;
-		}
-	}
+    UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.allObjects.firstObject;
+    if ([windowScene isKindOfClass:[UIWindowScene class]]) {
+        UIInterfaceOrientation statusBarOrientation = windowScene.interfaceOrientation;
+        // Use interfaceOrientation as needed
+        UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
+        if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
+            return statusBarOrientation;
+        }
+        else {
+            if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskPortrait) {
+                return UIInterfaceOrientationPortrait;
+            }
+            else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft) {
+                return UIInterfaceOrientationLandscapeLeft;
+            }
+            else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight) {
+                return UIInterfaceOrientationLandscapeRight;
+            }
+            else {
+                return UIInterfaceOrientationPortraitUpsideDown;
+            }
+        }
+    }
+    return UIInterfaceOrientationPortrait;
 }
 
 - (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {

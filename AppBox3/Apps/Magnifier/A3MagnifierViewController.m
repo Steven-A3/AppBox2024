@@ -207,7 +207,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
 - (CGAffineTransform)getMagnifierRotationTransform {
 	CGAffineTransform   transform;
 
-	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientation curDeviceOrientation = self.view.window.windowScene.interfaceOrientation;
 	if (curDeviceOrientation == UIDeviceOrientationPortrait) {
 		transform = CGAffineTransformMakeRotation(M_PI_2);
 	} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
@@ -590,7 +590,7 @@ NSString *const A3MagnifierFirstLoadCameraRoll = @"MagnifierFirstLoadCameraRoll"
     
 	// Find out the current orientation and tell the still image output.
 	AVCaptureConnection *stillImageConnection = [_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-	UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientation interfaceOrientation = self.view.window.windowScene.interfaceOrientation;
     if (IS_IPHONE) {
         interfaceOrientation = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
     }

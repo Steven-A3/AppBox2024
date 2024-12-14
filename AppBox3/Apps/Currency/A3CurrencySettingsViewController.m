@@ -41,7 +41,6 @@ NSString *const CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-//	_hasCellularNetwork = [A3UIDevice hasCellularNetwork];
 	_hasCellularNetwork = NO;
 
 	if (IS_IPHONE) {

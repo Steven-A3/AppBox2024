@@ -404,7 +404,7 @@
             CGFloat leftOffset = 12;
             UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
             if (safeAreaInsets.bottom > 0) {
-                if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+                if (self.view.window.windowScene.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
                     leftOffset = 42;
                 }
             }
@@ -556,7 +556,7 @@
         // iPhone X
         UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
         if (safeAreaInsets.bottom > 0) {
-            if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) {
+            if (self.view.window.windowScene.interfaceOrientation == UIInterfaceOrientationLandscapeRight) {
                 frame.origin.x = safeAreaInsets.left - 14;
                 frame.size.width -= safeAreaInsets.left - 14;
             } else {

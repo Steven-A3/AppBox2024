@@ -416,7 +416,7 @@ NSString *const A3MirrorFirstLoadCameraRoll = @"A3MirrorFirstLoadCameraRoll";
     CGFloat scaleFactor = _isLosslessZoom ? 1.0 : _effectiveScale;
 	CGAffineTransform scaleTransform;
 	CGAffineTransform rotationTransform;
-	UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientation orientation = self.view.window.windowScene.interfaceOrientation;
 	switch (orientation) {
 		case UIInterfaceOrientationPortrait:
 			scaleTransform = CGAffineTransformMakeScale(scaleFactor, _isFlip ? -scaleFactor : scaleFactor);
@@ -1178,7 +1178,7 @@ static NSString *const A3V3InstructionDidShowForMirror = @"A3V3InstructionDidSho
 			if (imageDataSampleBuffer) {
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
-				UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+				UIInterfaceOrientation orientation = self.view.window.windowScene.interfaceOrientation;
 				if (IS_IPHONE) {
 					orientation = (UIInterfaceOrientation) [[UIDevice currentDevice] orientation];
 				}

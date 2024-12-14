@@ -258,7 +258,7 @@ NSString *const AVMetadataObjectTypeFace = @"face";
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    AVCaptureVideoOrientation target = [self __interfaceOrientationToVideoOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+    AVCaptureVideoOrientation target = [self __interfaceOrientationToVideoOrientation:self.view.window.windowScene.interfaceOrientation];
     AVCaptureVideoOrientation source = self.layer.connection.videoOrientation;
     if (self.layer.connection.supportsVideoOrientation && source != target) {
         self.layer.connection.videoOrientation = target;

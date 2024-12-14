@@ -14003,6 +14003,7 @@
       }
     },
     "Currency Converter using AppBox Pro" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

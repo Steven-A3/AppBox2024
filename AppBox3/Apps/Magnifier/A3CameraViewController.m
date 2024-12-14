@@ -247,7 +247,7 @@
 - (CGAffineTransform)getRotationTransformWithOption:(BOOL)useDeviceZoom {
 	CGAffineTransform   transform;
 
-	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	UIInterfaceOrientation curDeviceOrientation = self.view.window.windowScene.interfaceOrientation;
 	if (curDeviceOrientation == UIDeviceOrientationPortrait) {
 		transform = CGAffineTransformMakeRotation(-M_PI_2 * (useDeviceZoom ? -1 : 1));
 	} else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
