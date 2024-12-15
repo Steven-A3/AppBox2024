@@ -173,17 +173,11 @@
 - (void)didSelectSectionTwoAtRow:(NSInteger)row {
 	switch (row) {
 		case 1: {
-			NSURL *url;
-            url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
-            [[UIApplication sharedApplication] openURL2:url];
-			break;
-		}
-		case 2: {
             [self presentAlertWithTitle:NSLocalizedString(@"Acknowledgement", @"Acknowledgement")
                                 message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", nil)];
 			break;
 		}
-		case 3: {
+		case 2: {
 			NSMutableString *message = [NSMutableString new];
 			[message appendString:[NSString stringWithFormat:@"\n📌 %@\n\n", NSLocalizedString(A3AppName_Holidays, nil)]];
 			[message appendString:[NSString stringWithFormat:@"%@\n\n", NSLocalizedString(@"DISCLAIMER_MESSAGE", nil)]];

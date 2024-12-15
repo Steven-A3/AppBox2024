@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -250,7 +250,6 @@
 		6826275629B77C3D0052CBD0 /* FirebaseInstallations in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275529B77C3D0052CBD0 /* FirebaseInstallations */; };
 		6826275829B77C8D0052CBD0 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275729B77C8D0052CBD0 /* FirebaseFunctions */; };
 		6826275A29B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275929B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion */; };
-		6826275C29B77D1D0052CBD0 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275B29B77D1D0052CBD0 /* FirebaseAnalyticsSwift */; };
 		6826275E29B77D1D0052CBD0 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275D29B77D1D0052CBD0 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		6826276029B77D1D0052CBD0 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 6826275F29B77D1D0052CBD0 /* FirebaseAppCheck */; };
 		6826276829B77D1E0052CBD0 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6826276729B77D1E0052CBD0 /* FirebaseCrashlytics */; };
@@ -1403,7 +1402,6 @@
 		681361481A6CADE200E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LoanCalculatorPhoneStoryBoard.strings"; sourceTree = "<group>"; };
 		681361491A6CADE300E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/UnitPriceStoryboard.strings"; sourceTree = "<group>"; };
 		6813614A1A6CADE300E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/UnitPriceStoryboard_iPad.strings"; sourceTree = "<group>"; };
-		6813614B1A6CADE300E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/about.strings"; sourceTree = "<group>"; };
 		6813614C1A6CADE300E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Launch_iPhone.strings"; sourceTree = "<group>"; };
 		6813614D1A6CADE300E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Launch_iPad.strings"; sourceTree = "<group>"; };
 		6813614E1A6CADE300E13F51 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Instruction_iPhone.strings"; sourceTree = "<group>"; };
@@ -1809,6 +1807,7 @@
 		686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropboxAuthenticator.m; sourceTree = "<group>"; };
 		686218DE2591DC3D00266BC5 /* TJDropboxAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropboxAuthenticator.h; sourceTree = "<group>"; };
 		68632E402D0CB97500607E52 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		68632E422D0D6D6C00607E52 /* mul */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = mul; path = mul.lproj/about.xcstrings; sourceTree = "<group>"; };
 		686490E229B82BA700AF1D39 /* Frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Frameworks; path = "External/RMStore/Optional/openssl-1.0.2c/Frameworks"; sourceTree = "<group>"; };
 		686490E329B82BD600AF1D39 /* OpenSSL.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OpenSSL.xcframework; path = "External/RMStore/Optional/openssl-1.0.2c/Frameworks/OpenSSL.xcframework"; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
@@ -1932,13 +1931,6 @@
 		6874847A19780EFC00EA8F74 /* UnitPriceInfo+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UnitPriceInfo+extension.m"; sourceTree = "<group>"; };
 		6874892E1854430C008972CC /* NationalFlags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = NationalFlags.xcassets; path = "AppBox3/Asset Catalogs/NationalFlags.xcassets"; sourceTree = "<group>"; };
 		68754A952CFD971E006DBC1F /* WalletFieldItem_+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletFieldItem_+extension.swift"; sourceTree = "<group>"; };
-		687617EF29B76EB800C3EE3A /* GoogleAppMeasurementIdentitySupport.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurementIdentitySupport.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleAppMeasurementIdentitySupport.xcframework"; sourceTree = "<group>"; };
-		687617F029B76EB800C3EE3A /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleAppMeasurement.xcframework"; sourceTree = "<group>"; };
-		687617F129B76EB800C3EE3A /* GoogleUtilities.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleUtilities.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleUtilities.xcframework"; sourceTree = "<group>"; };
-		687617F229B76EB800C3EE3A /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/GoogleMobileAds.xcframework"; sourceTree = "<group>"; };
-		687617F329B76EB900C3EE3A /* PromisesObjC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PromisesObjC.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/PromisesObjC.xcframework"; sourceTree = "<group>"; };
-		687617F429B76EB900C3EE3A /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/UserMessagingPlatform.xcframework"; sourceTree = "<group>"; };
-		687617F529B76EB900C3EE3A /* nanopb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = nanopb.xcframework; path = "External/GoogleMobileAdsSdkiOS-10.2.0/nanopb.xcframework"; sourceTree = "<group>"; };
 		687671521F7FC7B300182BA1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6876D6FA17A75DAE00E16991 /* AppBox3 Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AppBox3 Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6876D70017A75DAE00E16991 /* AppBox3 Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppBox3 Tests-Info.plist"; sourceTree = "<group>"; };
@@ -2125,7 +2117,6 @@
 		6898D8171E45722800B7BEEA /* A3KaomojiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiViewController.m; path = Kaomoji/A3KaomojiViewController.m; sourceTree = "<group>"; };
 		6898D8261E45769B00B7BEEA /* A3KaomojiDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiDataManager.h; path = Kaomoji/A3KaomojiDataManager.h; sourceTree = "<group>"; };
 		6898D8271E45769B00B7BEEA /* A3KaomojiDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiDataManager.m; path = Kaomoji/A3KaomojiDataManager.m; sourceTree = "<group>"; };
-		6899C2661AC986B4008B64C1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		689A203C19AB3650009144B6 /* AppBox3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppBox3-Info.plist"; sourceTree = "<group>"; };
 		689B950C1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiDrillDownTableViewCell.h; path = Kaomoji/A3KaomojiDrillDownTableViewCell.h; sourceTree = "<group>"; };
 		689B950D1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiDrillDownTableViewCell.m; path = Kaomoji/A3KaomojiDrillDownTableViewCell.m; sourceTree = "<group>"; };
@@ -2542,7 +2533,6 @@
 		68D37A381C23F48E00E2FAF9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Launch_iPhone.strings; sourceTree = "<group>"; };
 		68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+appearance.h"; path = "AppDelegate/A3AppDelegate+appearance.h"; sourceTree = "<group>"; };
 		68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+appearance.m"; path = "AppDelegate/A3AppDelegate+appearance.m"; sourceTree = "<group>"; };
-		68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "External/dropbox-ios-sdk-1.3.9/DropboxSDK.framework"; sourceTree = "<group>"; };
 		68DA1E2319DE7CA30058AF50 /* A3CameraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CameraViewController.h; sourceTree = "<group>"; };
 		68DA1E2419DE7CA30058AF50 /* A3CameraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CameraViewController.m; sourceTree = "<group>"; };
 		68DAF44B2B0997E4006BA60A /* A3StandardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StandardTableViewCell.h; sourceTree = "<group>"; };
@@ -2902,14 +2892,6 @@
 		68F150C7194C0E7E00159EAD /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Launch_iPad.strings; sourceTree = "<group>"; };
 		68F150C9194C0E7F00159EAD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Launch_iPad.strings; sourceTree = "<group>"; };
 		68F150CB194C21E300159EAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/about.storyboard; sourceTree = "<group>"; };
-		68F150D0194C21EA00159EAD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = ko; path = ko.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150D2194C21EC00159EAD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = "zh-Hans"; path = "zh-Hans.lproj/about.strings"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150D4194C21ED00159EAD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = de; path = de.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150D6194C21EE00159EAD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = ja; path = ja.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150D8194C21EF00159EAD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = it; path = it.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150DA194C21F100159EAD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = fr; path = fr.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150DC194C21F200159EAD /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pl; path = pl.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
-		68F150DE194C21F400159EAD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = es; path = es.lproj/about.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		68F150E7194C262500159EAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Launch_iPhone.storyboard; sourceTree = "<group>"; };
 		68F150EC194C263200159EAD /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Launch_iPhone.strings; sourceTree = "<group>"; };
 		68F150EE194C263300159EAD /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Launch_iPhone.strings"; sourceTree = "<group>"; };
@@ -3074,7 +3056,6 @@
 				680B59D71E9777C8004362AC /* HealthKit.framework in Frameworks */,
 				686490E429B82BD600AF1D39 /* OpenSSL.xcframework in Frameworks */,
 				689565D42C53D8F7009FF087 /* GoogleMobileAds in Frameworks */,
-				6826275C29B77D1D0052CBD0 /* FirebaseAnalyticsSwift in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				687E4FAF29F8177200FE59F6 /* AuthenticationServices.framework in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
@@ -3974,13 +3955,6 @@
 			children = (
 				686490E329B82BD600AF1D39 /* OpenSSL.xcframework */,
 				686490E229B82BA700AF1D39 /* Frameworks */,
-				687617F029B76EB800C3EE3A /* GoogleAppMeasurement.xcframework */,
-				687617EF29B76EB800C3EE3A /* GoogleAppMeasurementIdentitySupport.xcframework */,
-				687617F229B76EB800C3EE3A /* GoogleMobileAds.xcframework */,
-				687617F129B76EB800C3EE3A /* GoogleUtilities.xcframework */,
-				687617F529B76EB900C3EE3A /* nanopb.xcframework */,
-				687617F329B76EB900C3EE3A /* PromisesObjC.xcframework */,
-				687617F429B76EB900C3EE3A /* UserMessagingPlatform.xcframework */,
 				68CFACD328A3A6F800C6B4F0 /* UniformTypeIdentifiers.framework */,
 				68854E63273CEF000009D028 /* Ensembles.xcframework */,
 				6878361D1E6E4D7000828BA8 /* WebKit.framework */,
@@ -4001,7 +3975,6 @@
 				5727A57319D41B9200ADB17C /* CoreMotion.framework */,
 				68E6F35517B27B8300F10ED9 /* CoreTelephony.framework */,
 				17D4227E7D59F72869C3BE40 /* CoreText.framework */,
-				68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */,
 				68AB0ABB1A3E92C8001BFC5D /* EventKit.framework */,
 				68AB0ABD1A3E92D1001BFC5D /* EventKitUI.framework */,
 				682EA2D715EB10B000BD6AD4 /* Foundation.framework */,
@@ -6011,7 +5984,6 @@
 				6826275529B77C3D0052CBD0 /* FirebaseInstallations */,
 				6826275729B77C8D0052CBD0 /* FirebaseFunctions */,
 				6826275929B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion */,
-				6826275B29B77D1D0052CBD0 /* FirebaseAnalyticsSwift */,
 				6826275D29B77D1D0052CBD0 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				6826275F29B77D1D0052CBD0 /* FirebaseAppCheck */,
 				6826276729B77D1E0052CBD0 /* FirebaseCrashlytics */,
@@ -7706,16 +7678,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				68F150CB194C21E300159EAD /* Base */,
-				68F150D0194C21EA00159EAD /* ko */,
-				68F150D2194C21EC00159EAD /* zh-Hans */,
-				68F150D4194C21ED00159EAD /* de */,
-				68F150D6194C21EE00159EAD /* ja */,
-				68F150D8194C21EF00159EAD /* it */,
-				68F150DA194C21F100159EAD /* fr */,
-				68F150DC194C21F200159EAD /* pl */,
-				68F150DE194C21F400159EAD /* es */,
-				6813614B1A6CADE300E13F51 /* zh-Hant */,
-				6899C2661AC986B4008B64C1 /* en */,
+				68632E422D0D6D6C00607E52 /* mul */,
 			);
 			name = about.storyboard;
 			path = About;
@@ -8557,7 +8520,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
+				minimumVersion = 11.0.0;
 			};
 		};
 		68EA63AA2CBD164900C2D5D7 /* XCRemoteSwiftPackageReference "dotlottie-ios" */ = {
@@ -8590,11 +8553,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsOnDeviceConversion;
-		};
-		6826275B29B77D1D0052CBD0 /* FirebaseAnalyticsSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 68AB292929B774F400B4452B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsSwift;
 		};
 		6826275D29B77D1D0052CBD0 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
 			isa = XCSwiftPackageProductDependency;

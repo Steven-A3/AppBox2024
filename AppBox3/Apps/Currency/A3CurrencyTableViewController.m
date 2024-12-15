@@ -1360,7 +1360,8 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
     CurrencyFavorite_ *sourceFavorite = self.favorites[sourceIdx], *targetFavorite = self.favorites[targetIdx];
     NSString *source = sourceFavorite.uniqueID, *target = targetFavorite.uniqueID;
     float rate = [self rateForSource:source target:target];
-    return [NSString stringWithFormat:@"%@ %@ = %@ %@",
+    return [NSString stringWithFormat:@"%@\n%@ %@ = %@ %@",
+            NSLocalizedString(@"Currency Rates from AppBox Pro", nil),
                                       source,
                                       [_currencyDataManager stringFromNumber:self.lastInputValue withCurrencyCode:source isShare:YES],
                                       target,

@@ -943,7 +943,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 	double rate = [toCurrencyInfo.rateToUSD doubleValue] / [fromCurrencyInfo.rateToUSD doubleValue];
 	double inputValue = [_sourceTextField.text floatValueEx];
 	return [NSString stringWithFormat:@"%@\n%@ %@ = %@ %@",
-            NSLocalizedString(@"Currency from AppBox Pro", nil),
+            NSLocalizedString(@"Currency Rates from AppBox Pro", nil),
 			fromCurrencyInfo.currencyCode,
 			[_currencyDataManager stringFromNumber:@(inputValue) withCurrencyCode:fromCurrencyInfo.currencyCode isShare:YES],
 			toCurrencyInfo.currencyCode,

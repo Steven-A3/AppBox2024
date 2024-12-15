@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     " " : {
 
     },
@@ -14002,125 +13999,12 @@
         }
       }
     },
-    "Currency Converter using AppBox Pro" : {
-      "extractionState" : "stale",
+    "Currency Rates from AppBox Pro" : {
       "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Währungsrechner von AppBox Pro"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertidor de moneda de AppBox Pro"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertisseur de devises utilisant AppBox Pro"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertitore di valuta che usa AppBox Pro"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AppBox Proを使用する為替換算"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AppBox Pro의 환율 변환"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Konwerter walut używa AppBox Pro"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "使用 AppBox Pro的货币转换器"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "使用 AppBox Pro的貨幣轉換器"
-          }
-        }
-      }
-    },
-    "Currency from AppBox Pro" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Währungsrechner"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Currency from AppBox Pro"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moneda"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertisseur de devises"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Convertitore Valuta"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "為替換算"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "환율"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przelicznik walut"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "币种转换器"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "幣種轉換器"
+            "value" : "AppBox Pro 的货币汇率"
           }
         }
       }
@@ -16899,7 +16783,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Degrees"
+            "value" : "度"
           }
         },
         "zh-Hant" : {
@@ -16918,6 +16802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gradi(º)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "度"
           }
         }
       }
@@ -35464,7 +35354,15 @@
       }
     },
     "Now dragging." : {
-      "comment" : "Voiceover annoucement"
+      "comment" : "Voiceover annoucement",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在拖动"
+          }
+        }
+      }
     },
     "Number" : {
       "extractionState" : "manual",
@@ -35532,7 +35430,15 @@
       }
     },
     "of" : {
-      "comment" : "Used in the context: 'Showing 1 of 3 items'"
+      "comment" : "Used in the context: 'Showing 1 of 3 items'",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "中的"
+          }
+        }
+      }
     },
     "Off" : {
       "comment" : "Off",
@@ -36078,7 +35984,15 @@
       }
     },
     "Open Source Licenses" : {
-      "comment" : "Open Source Licenses"
+      "comment" : "Open Source Licenses",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开源许可证"
+          }
+        }
+      }
     },
     "Optional" : {
       "comment" : "Optional",
@@ -37945,7 +37859,15 @@
       }
     },
     "photo" : {
-      "comment" : "Used in the context: '1 photo'"
+      "comment" : "Used in the context: '1 photo'",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "照片"
+          }
+        }
+      }
     },
     "Photo" : {
       "comment" : "Photo",
@@ -38072,7 +37994,15 @@
       }
     },
     "photos" : {
-      "comment" : "Used in the context: '3 photos'"
+      "comment" : "Used in the context: '3 photos'",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "张照片"
+          }
+        }
+      }
     },
     "Pitch(in/fit)" : {
       "extractionState" : "manual",
@@ -38374,7 +38304,14 @@
       }
     },
     "Please enable photo library access in Settings." : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请在设置中启用照片库访问权限。"
+          }
+        }
+      }
     },
     "Please enter confirm passcode." : {
       "extractionState" : "manual",
@@ -48840,7 +48777,14 @@
       }
     },
     "The backup process has been canceled." : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "备份过程已被取消。"
+          }
+        }
+      }
     },
     "The best unit price is A at %@" : {
       "comment" : "The best unit price is A at %@",
@@ -52710,6 +52654,12 @@
             "state" : "translated",
             "value" : "Keine"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无单位"
+          }
         }
       }
     },
@@ -53688,7 +53638,14 @@
       }
     },
     "Updating..." : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在更新…"
+          }
+        }
+      }
     },
     "Upgrade to iOS 17 for Ads Free Pass. Visit Settings > General > Software Update." : {
       "localizations" : {
@@ -55469,7 +55426,15 @@
       }
     },
     "Website" : {
-      "comment" : "Website"
+      "comment" : "Website",
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "网站"
+          }
+        }
+      }
     },
     "Week" : {
       "extractionState" : "manual",
@@ -55895,7 +55860,14 @@
       }
     },
     "WiFi" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi"
+          }
+        }
+      }
     },
     "Wipe" : {
       "comment" : "Wipe",
@@ -56740,7 +56712,14 @@
       }
     },
     "Yes" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定"
+          }
+        }
+      }
     },
     "You can add photos into events." : {
       "localizations" : {

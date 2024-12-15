@@ -69,7 +69,7 @@
 }
 
 - (void)updateBackupInfo {
-	_backupInfoString = NSLocalizedString(@"", nil);
+    _backupInfoString = @"";
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	NSString *documentDirectoryPath = [fileManager documentDirectoryPath];

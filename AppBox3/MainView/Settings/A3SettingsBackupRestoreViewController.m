@@ -149,6 +149,22 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 		NSString *accessToken = [dropboxLinkInfo valueForKey:ACKeychainPassword];
 		self.dropboxAccessToken = accessToken;
 		[TJDropbox getAccountInformationWithAccessToken:accessToken completion:^(NSDictionary * _Nullable parsedResponse, NSError * _Nullable error) {
+            if (error) {
+                if ([error.localizedDescription containsString:@"invalid_access_token"]) {
+                    FNLOG(@"Access token is invalid or revoked. Reauthenticate the user.");
+                    // Handle reauthentication
+                } else if (error.code == 429) {
+                    FNLOG(@"Rate limit exceeded. Retry later.");
+                } else if (error.code == NSURLErrorNotConnectedToInternet) {
+                    FNLOG(@"No internet connection. Notify the user.");
+                } else {
+                    FNLOG(@"An unexpected error occurred: %@", error.localizedDescription);
+                }
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self linkDropboxAccount];
+                });
+                return;
+            }
 			self.dropboxAccountInfo = parsedResponse;
 			/*
 				Result of get accountInfo
@@ -174,6 +190,9 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 				}
 			 */
 			[TJDropbox listFolderWithPath:kDropboxDir accessToken:accessToken completion:^(NSArray<NSDictionary *> * _Nullable entries, NSString * _Nullable cursor, NSError * _Nullable error) {
+                if (error) {
+                    return;
+                }
 				NSDate *recentModified = nil;
 				NSDateFormatter *dateFormatter = [NSDateFormatter new];
 				dateFormatter.dateFormat = @"y-MM-dd'T'HH:mm:ss'Z'";
