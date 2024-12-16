@@ -615,7 +615,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
         }
     }
     
-    NSArray *periodsArray = @[@"1d", @"1m", @"3m", @"1y", @"60M"];
+    NSArray *periodsArray = @[@"1D", @"1m", @"3m", @"1y", @"60M"];
     NSURL *url = [[NSBundle mainBundle] URLForResource:@"chartWidget" withExtension:@"html"];
     NSString *templateString = [NSString stringWithContentsOfURL:url usedEncoding:NULL error:nil];
     CGSize chartSize = _chartWebView.frame.size;
