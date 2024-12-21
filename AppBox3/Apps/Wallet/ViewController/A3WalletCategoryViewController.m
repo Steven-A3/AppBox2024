@@ -81,7 +81,7 @@
         self.navigationItem.rightBarButtonItems = @[infoBarButton, self.searchBarButton];
     }
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     
 // TODO
 // 카테코리 테이블에서 임시로 순서변경 제스쳐 제거.
@@ -230,19 +230,37 @@
 
     _didPassViewDidAppear = YES;
 }
+- (void)cloudStoreDidImport:(NSNotification *)notification {
+    NSManagedObjectContext *context = notification.object;
+    if (![context isKindOfClass:[NSManagedObjectContext class]]) {
+        return; // Ensure the notification's object is a managed object context.
+    }
 
-- (void)cloudStoreDidImport {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        FNLOG(@"cloudStoreDidImport");
-        self.items = nil;
-        [self refreshItems];
+    NSDictionary *userInfo = notification.userInfo;
 
-        // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-        [self updateNavigationBarTitle];
+    // Combine all changes into a single set
+    NSMutableSet *allChangedObjects = [NSMutableSet set];
+    [allChangedObjects unionSet:userInfo[NSInsertedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSUpdatedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSDeletedObjectsKey] ?: [NSSet set]];
 
-        // more button 활성화여부
-        [self itemCountCheck];
-    });
+    // Check if any of the changes are related to the "WalletItem_" entity
+    for (NSManagedObject *object in allChangedObjects) {
+        if ([object.entity.name isEqualToString:@"WalletItem_"]) {
+            FNLOG(@"Change detected for WalletItem_: %@", object);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.items = nil;
+                [self refreshItems];
+
+                // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
+                [self updateNavigationBarTitle];
+
+                // more button 활성화여부
+                [self itemCountCheck];
+            });
+            break; // No need to continue once we know there's a change
+        }
+    }
 }
 
 - (void)initializeViews

@@ -119,7 +119,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:@{kA3SettingsMainMenuStyle:A3SettingsMainMenuStyleIconGrid}];
 
-    _shouldPresentAd = YES;
+    _shouldPresentAd = NO;
     _expirationDate = [NSDate distantPast];
     _passcodeFreeBegin = [[NSDate distantPast] timeIntervalSinceReferenceDate];
     _appIsNotActiveYet = YES;
@@ -157,14 +157,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
             
             [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
             [[A3UserDefaults standardUserDefaults] synchronize];
-            
-            iCloudFileManager *fileManager = [[iCloudFileManager alloc] init];
-            [fileManager downloadMediaFilesToAppGroupWithProgressHandler:^(NSNumber * _Nonnull progress) {
-                
-            } completion:^(NSError * _Nullable error) {
-                
-            }];
-            
+           
             [self setupMainMenuViewController];
             [self handleNotification:launchOptions];
             [self addNotificationObservers];
@@ -196,7 +189,22 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
             [self handleNotification:launchOptions];
             [self addNotificationObservers];
         }
+        iCloudFileManager *fileManager = [[iCloudFileManager alloc] init];
+        [fileManager downloadMediaFilesToAppGroupWithProgressHandler:^(NSNumber * _Nonnull progress) {
+            
+        } completion:^(NSError * _Nullable error) {
+            
+        }];
         
+        stack.mediaFileCleanerBlock = ^{
+            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
+                NSManagedObjectContext *context = [CoreDataStack shared].persistentContainer.viewContext;
+                MediaFileCleaner *cleaner = [[MediaFileCleaner alloc] init];
+                [cleaner cleanUnusedMediaFilesWithContext:context];
+            });
+            
+        };
+
         [self.window makeKeyAndVisible];
     }];
 
@@ -1105,10 +1113,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 }
  
 - (void)presentInterstitialAds {
+    if (!self.shouldPresentAd) {
+        return;
+    }
+    
     [self evaluateSubscriptionWithCompletion:^{
-        if (!self.shouldPresentAd) {
-            return;
-        }
         
         if (self.adDisplayedAfterApplicationDidBecomeActive) {
             return;

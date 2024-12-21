@@ -645,7 +645,11 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         [mover moveMediaFilesFrom:sourceBaseURL error:&error];
     }
     [self migrateUserDefaults:backupInfo version:version];
-    
+    iCloudFileManager *iCloudManager = [iCloudFileManager new];
+    [iCloudManager uploadMediaFilesFromAppGroupWithProgressHandler:NULL completion:^(NSError * _Nullable error) {
+        
+    }];
+
     NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
     if (selectedColor) {
         [A3AppDelegate instance].window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];

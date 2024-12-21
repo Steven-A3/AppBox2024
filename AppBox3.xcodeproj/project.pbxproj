@@ -276,6 +276,9 @@
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		68330B4E2A17748C005EEEBC /* SecuredTextFieldParentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68330B4C2A17748B005EEEBC /* SecuredTextFieldParentProtocol.swift */; };
 		68330B4F2A17748C005EEEBC /* SecuredTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68330B4D2A17748C005EEEBC /* SecuredTextFieldView.swift */; };
+		6834AEEF2D15F4E9002A4509 /* CloudWaitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6834AEEE2D15F4E9002A4509 /* CloudWaitView.swift */; };
+		6834AEF12D15FA68002A4509 /* CloudWaitHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6834AEF02D15FA68002A4509 /* CloudWaitHostingViewController.swift */; };
+		6834AEF52D16AD40002A4509 /* MediaFileCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6834AEF42D16AD40002A4509 /* MediaFileCleaner.swift */; };
 		68351DFB1EA8C7870076B11B /* Abbreviation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351DFD1EA8C7870076B11B /* Abbreviation.storyboard */; };
 		68351E241EA8E6200076B11B /* WhatsNew4_5.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351E261EA8E6200076B11B /* WhatsNew4_5.storyboard */; };
 		68352B3A2CCC81390056B638 /* UIApplication+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68352B392CCC81390056B638 /* UIApplication+extension.swift */; };
@@ -563,6 +566,10 @@
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
 		688788831A9B29C7008C8567 /* A3RulerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688788821A9B29C7008C8567 /* A3RulerViewController.m */; };
+		68898E1D2D15558D00F62AB3 /* CoreDataStack+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68898E1C2D15558D00F62AB3 /* CoreDataStack+Backup.swift */; };
+		68898E1F2D15563600F62AB3 /* CoreDataStack+Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68898E1E2D15563600F62AB3 /* CoreDataStack+Migration.swift */; };
+		68898E212D15570500F62AB3 /* CoreDataStack+Delete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68898E202D15570500F62AB3 /* CoreDataStack+Delete.swift */; };
+		68898E232D155F3400F62AB3 /* CoreDataStack+EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68898E222D155F3400F62AB3 /* CoreDataStack+EventMonitor.swift */; };
 		6889D0A21CF3E1EC00B7F90E /* Pedometer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6889D0A41CF3E1EC00B7F90E /* Pedometer.storyboard */; };
 		688CC6CD1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688CC6CC1E20B85F004374D4 /* A3AbbreviationCopiedViewController.m */; };
 		688EF65E2CB18BE200996A71 /* WalletFieldItem_+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688EF65C2CB18BE200996A71 /* WalletFieldItem_+CoreDataClass.swift */; };
@@ -649,6 +656,7 @@
 		68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 68B1292729EA0CA3003A5EB1 /* AppBoxKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; };
 		68B1293B29EA0CA7003A5EB1 /* AppBoxKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		68B3AC9C2D12B5390073ABDA /* CoreDataStack+CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B3AC9B2D12B5390073ABDA /* CoreDataStack+CKRecord.swift */; };
 		68B4028329D6DE3C00CA91CA /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680A632B29B96B670020B964 /* AuthenticationServices.framework */; };
 		68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */; };
 		68B4028929D6DE3C00CA91CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B4028729D6DE3C00CA91CA /* MainInterface.storyboard */; };
@@ -1615,6 +1623,9 @@
 		6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySelectViewController.m; path = Apps/Currency/A3CurrencySelectViewController.m; sourceTree = "<group>"; };
 		68330B4C2A17748B005EEEBC /* SecuredTextFieldParentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredTextFieldParentProtocol.swift; sourceTree = "<group>"; };
 		68330B4D2A17748C005EEEBC /* SecuredTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredTextFieldView.swift; sourceTree = "<group>"; };
+		6834AEEE2D15F4E9002A4509 /* CloudWaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudWaitView.swift; sourceTree = "<group>"; };
+		6834AEF02D15FA68002A4509 /* CloudWaitHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudWaitHostingViewController.swift; sourceTree = "<group>"; };
+		6834AEF42D16AD40002A4509 /* MediaFileCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFileCleaner.swift; sourceTree = "<group>"; };
 		68351DFC1EA8C7870076B11B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Abbreviation.storyboard; sourceTree = "<group>"; };
 		68351E071EA8C78A0076B11B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Abbreviation.strings; sourceTree = "<group>"; };
 		68351E091EA8C78F0076B11B /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Abbreviation.strings; sourceTree = "<group>"; };
@@ -2045,6 +2056,10 @@
 		688788811A9B29C7008C8567 /* A3RulerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3RulerViewController.h; path = Ruler/A3RulerViewController.h; sourceTree = "<group>"; };
 		688788821A9B29C7008C8567 /* A3RulerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3RulerViewController.m; path = Ruler/A3RulerViewController.m; sourceTree = "<group>"; };
 		6888090917C63DBB008B2856 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		68898E1C2D15558D00F62AB3 /* CoreDataStack+Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Backup.swift"; sourceTree = "<group>"; };
+		68898E1E2D15563600F62AB3 /* CoreDataStack+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Migration.swift"; sourceTree = "<group>"; };
+		68898E202D15570500F62AB3 /* CoreDataStack+Delete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+Delete.swift"; sourceTree = "<group>"; };
+		68898E222D155F3400F62AB3 /* CoreDataStack+EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+EventMonitor.swift"; sourceTree = "<group>"; };
 		6889D0A31CF3E1EC00B7F90E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pedometer.storyboard; sourceTree = "<group>"; };
 		6889D0AA1CF3E1F100B7F90E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Pedometer.strings; sourceTree = "<group>"; };
 		6889D0AC1CF3E1F300B7F90E /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Pedometer.strings; sourceTree = "<group>"; };
@@ -2200,6 +2215,7 @@
 		68B1292829EA0CA3003A5EB1 /* AppBoxKit.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AppBoxKit.docc; sourceTree = "<group>"; };
 		68B1292E29EA0CA3003A5EB1 /* AppBoxKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppBoxKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68B1293529EA0CA7003A5EB1 /* AppBoxKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBoxKitTests.swift; sourceTree = "<group>"; };
+		68B3AC9B2D12B5390073ABDA /* CoreDataStack+CKRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataStack+CKRecord.swift"; sourceTree = "<group>"; };
 		68B4028229D6DE3C00CA91CA /* Autofill-extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Autofill-extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
 		68B4028829D6DE3C00CA91CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -3421,11 +3437,18 @@
 			children = (
 				6817C3772CE9879F00019829 /* iCloudFileManager.swift */,
 				687AD80E2CABEC710074CBBD /* CoreDataStack.swift */,
+				68898E1C2D15558D00F62AB3 /* CoreDataStack+Backup.swift */,
+				68898E202D15570500F62AB3 /* CoreDataStack+Delete.swift */,
+				68898E1E2D15563600F62AB3 /* CoreDataStack+Migration.swift */,
+				68B3AC9B2D12B5390073ABDA /* CoreDataStack+CKRecord.swift */,
+				68898E222D155F3400F62AB3 /* CoreDataStack+EventMonitor.swift */,
 				687A84672CBBDBC20010BDB9 /* DataMigrationManager.swift */,
 				68EA639F2CBCEB6B00C2D5D7 /* MigrationView.swift */,
 				68EA63A42CBD0DD600C2D5D7 /* LottieView.swift */,
 				680F72D32CBD259200752A53 /* MigrationHostingViewController.swift */,
 				6817C3752CE976FF00019829 /* MediaFileManager.swift */,
+				6834AEEE2D15F4E9002A4509 /* CloudWaitView.swift */,
+				6834AEF02D15FA68002A4509 /* CloudWaitHostingViewController.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -3539,6 +3562,7 @@
 				6895E9E52B1C0BBF00007546 /* ExportWalletContents.swift */,
 				68117FBF2C96B817009963F9 /* GearView.swift */,
 				68FE8AFD2D0C07E30028DA5A /* ShareTextManager.swift */,
+				6834AEF42D16AD40002A4509 /* MediaFileCleaner.swift */,
 			);
 			path = Swift;
 			sourceTree = "<group>";
@@ -6674,6 +6698,7 @@
 				687AD83F2CAD42250074CBBD /* CurrencyHistoryItem_+CoreDataProperties.swift in Sources */,
 				680886E51891751B0093FD97 /* SBTickerView.m in Sources */,
 				68B6A32C18CEC76D004084EF /* A3WalletItemPhotoFieldCell.m in Sources */,
+				6834AEF52D16AD40002A4509 /* MediaFileCleaner.swift in Sources */,
 				689C9A561839CD7F007C97EE /* UIButton+AFNetworking.m in Sources */,
 				689C9A551839CD7F007C97EE /* UIAlertView+AFNetworking.m in Sources */,
 				57888EC21940667000306028 /* A3InstructionViewController.m in Sources */,
@@ -7181,6 +7206,7 @@
 				6817C3782CE9879F00019829 /* iCloudFileManager.swift in Sources */,
 				687AD80F2CABEC710074CBBD /* CoreDataStack.swift in Sources */,
 				686DB40F2A2499B0009BC79C /* MASViewConstraint.m in Sources */,
+				68898E1F2D15563600F62AB3 /* CoreDataStack+Migration.swift in Sources */,
 				686DB42A2A2499B0009BC79C /* NSMutableArray+A3Sort.m in Sources */,
 				68330B4F2A17748C005EEEBC /* SecuredTextFieldView.swift in Sources */,
 				686DB42F2A2499B0009BC79C /* NSString+conversion.m in Sources */,
@@ -7191,6 +7217,7 @@
 				686DB3F72A2499B0009BC79C /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				686DB4342A2499B0009BC79C /* NSDate-Utilities.m in Sources */,
 				686B6B462B0932F000E39E18 /* A3Utilities.m in Sources */,
+				6834AEEF2D15F4E9002A4509 /* CloudWaitView.swift in Sources */,
 				68CA05252C96C141002A5FB0 /* JVFloatLabeledTextField.m in Sources */,
 				686B6B482B0932F000E39E18 /* A3UserDefaults.m in Sources */,
 				680F72D42CBD259200752A53 /* MigrationHostingViewController.swift in Sources */,
@@ -7201,22 +7228,27 @@
 				68DAF44E2B0997E4006BA60A /* A3StandardTableViewCell.m in Sources */,
 				68352B3A2CCC81390056B638 /* UIApplication+extension.swift in Sources */,
 				6815B3DD2CBA2ACD00B1D53C /* NetworkActivityIndicatorManager.swift in Sources */,
+				68898E232D155F3400F62AB3 /* CoreDataStack+EventMonitor.swift in Sources */,
 				68C610C329F7FF0B0002B484 /* PasswordViewController.swift in Sources */,
 				686DB4392A2499B0009BC79C /* NSDate+formatting.m in Sources */,
 				68EA63A52CBD0DD600C2D5D7 /* LottieView.swift in Sources */,
 				686B6B5A2B0932F000E39E18 /* A3SyncManager.m in Sources */,
 				686DB4082A2499B0009BC79C /* MASLayoutConstraint.m in Sources */,
+				68898E1D2D15558D00F62AB3 /* CoreDataStack+Backup.swift in Sources */,
+				68B3AC9C2D12B5390073ABDA /* CoreDataStack+CKRecord.swift in Sources */,
 				686DB4012A2499B0009BC79C /* ViewController+MASAdditions.m in Sources */,
 				68EA63A02CBCEB6B00C2D5D7 /* MigrationView.swift in Sources */,
 				6817C3762CE976FF00019829 /* MediaFileManager.swift in Sources */,
 				686DB4282A2499B0009BC79C /* NSDateFormatter+A3Addition.m in Sources */,
 				686DB4382A2499B0009BC79C /* NSManagedObjectContext+extension.m in Sources */,
 				68CA05232C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m in Sources */,
+				68898E212D15570500F62AB3 /* CoreDataStack+Delete.swift in Sources */,
 				686DB4062A2499B0009BC79C /* MASConstraintMaker.m in Sources */,
 				686B6B422B0932F000E39E18 /* A3SyncManager+mainmenu.m in Sources */,
 				68B1292929EA0CA3003A5EB1 /* AppBoxKit.docc in Sources */,
 				68CA05272C96C141002A5FB0 /* NSString+TextDirectionality.m in Sources */,
 				686B6B532B0932F000E39E18 /* A3PasscodeCommonViewController.m in Sources */,
+				6834AEF12D15FA68002A4509 /* CloudWaitHostingViewController.swift in Sources */,
 				686DB4092A2499B0009BC79C /* NSArray+MASAdditions.m in Sources */,
 				68E600BA2A249CC80083587D /* PasscodeField.swift in Sources */,
 				686DB4292A2499B0009BC79C /* NSMutableArray+MoveObject.m in Sources */,

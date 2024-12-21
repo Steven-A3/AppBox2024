@@ -794,6 +794,16 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 }
 
 - (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated {
+    NSArray *appNeedsCoreData = @[
+        A3AppName_Wallet, A3AppName_DaysCounter, A3AppName_Translator
+    ];
+    if (!CoreDataStack.shared.coreDataReady && [appNeedsCoreData containsObject:appName]) {
+        CloudWaitHostingViewController *viewController = [[CloudWaitHostingViewController alloc] initWithCompletion:^{
+            FNLOG(@"CloudWaitView dismissed.");
+        }];
+        [viewController popToRootAndPushViewController:viewController animated:YES];
+        return YES;
+    }
 	BOOL appLaunched = NO;
 	BOOL proceedPasscodeCheck = NO;
 

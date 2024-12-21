@@ -70,32 +70,48 @@
 
 + (NSNumber *)aggregationOperation:(NSString *)operator_ column:(NSString *)column predicate:(NSPredicate *)predicate {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSExpression *expression = [NSExpression expressionForFunction:operator_ arguments:@[[NSExpression expressionForKeyPath:column] ] ];
+    __block NSNumber *result = nil;
+
+    [context performBlockAndWait:^{
+        NSExpression *expression = [NSExpression expressionForFunction:operator_
+                                                             arguments:@[[NSExpression expressionForKeyPath:column]]];
+        
+        NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
+        expressionDescription.name = @"result";
+        expressionDescription.expression = expression;
+
+        // Dynamically determine the attribute type for proper result type
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass(self)
+                                                             inManagedObjectContext:context];
+        NSAttributeDescription *attributeDescription = [entityDescription attributesByName][column];
+        if (attributeDescription) {
+            expressionDescription.expressionResultType = attributeDescription.attributeType;
+        } else {
+            FNLOG(@"Column '%@' does not exist on entity '%@'", column, NSStringFromClass(self));
+            return;
+        }
+
+        NSFetchRequest *fetchRequest = [self fetchRequest];
+        if (predicate) {
+            fetchRequest.predicate = predicate;
+        }
+        fetchRequest.propertiesToFetch = @[expressionDescription];
+        fetchRequest.resultType = NSDictionaryResultType;
+        fetchRequest.returnsObjectsAsFaults = NO;
+
+        NSError *fetchError = nil;
+        NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
+        if (fetchError) {
+            FNLOG(@"Error during aggregation operation: %@", fetchError);
+            return;
+        }
+        if (results.count > 0) {
+            NSDictionary *resultDictionary = results.firstObject;
+            result = resultDictionary[@"result"];
+        }
+    }];
     
-    NSExpressionDescription *expressionDescription = [[NSExpressionDescription alloc] init];
-    
-    [expressionDescription setName:@"result"];
-    [expressionDescription setExpression:expression];
-    
-    // 다음은 컬럼의 타입을 읽어와서 ResultType을 설정해야 한다.
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass(self) inManagedObjectContext:context];
-    NSAttributeDescription *attributeDescription = [[entityDescription attributesByName] objectForKey:column];
-    [expressionDescription setExpressionResultType:[attributeDescription attributeType]];
-    
-    NSFetchRequest *fetchRequest = [self fetchRequest];
-    if (predicate) {
-        [fetchRequest setPredicate:predicate];
-    }
-    [fetchRequest setPropertiesToFetch:@[column]];
-    [fetchRequest setResultType:NSDictionaryResultType];
-    [fetchRequest setReturnsObjectsAsFaults:NO];
-    NSError *fetchError = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
-    if ([results count]) {
-        NSDictionary *resultDictionary = results.firstObject;
-        return resultDictionary[@"result"];
-    }
-    return nil;
+    return result;
 }
 
 + (instancetype)findFirst {
@@ -106,25 +122,31 @@
     return [self findFirstWithPredicate:nil sortedBy:attribute ascending:ascending];
 }
 
-+ (instancetype)findFirstWithPredicate:(NSPredicate *)searchterm sortedBy:(NSString *)property ascending:(BOOL)ascending {
++ (instancetype)findFirstWithPredicate:(NSPredicate *)searchTerm sortedBy:(NSString *)property ascending:(BOOL)ascending {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSFetchRequest *fetchRequest = [self fetchRequest];
-    if (searchterm) {
-        [fetchRequest setPredicate:searchterm];
-    }
-    if (property) {
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:property ascending:ascending];
-        [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    }
-    NSError *fetchError = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
-    if (fetchError) {
-        FNLOG(@"%@", fetchError);
-    }
-    if ([results count]) {
-        return results.firstObject;
-    }
-    return nil;
+    __block id firstObject = nil;
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [self fetchRequest];
+        if (searchTerm) {
+            [fetchRequest setPredicate:searchTerm];
+        }
+        if (property) {
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:property ascending:ascending];
+            [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        }
+        // Limit the fetch request to just one result for efficiency
+        [fetchRequest setFetchLimit:1];
+        
+        NSError *fetchError = nil;
+        NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
+        if (fetchError) {
+            FNLOG(@"%@", fetchError);
+        }
+        if ([results count] > 0) {
+            firstObject = results.firstObject;
+        }
+    }];
+    return firstObject;
 }
 
 + (NSArray *)findAllSortedBy:(NSString *)attribute ascending:(BOOL)ascending {
@@ -133,33 +155,39 @@
 
 + (NSArray *)findAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)searchTerm {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSFetchRequest *fetchRequest = [self fetchRequest];
-    if (searchTerm) {
-        [fetchRequest setPredicate:searchTerm];
-    }
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortTerm ascending:ascending];
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    NSError *fetchError = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
-    if (nil != fetchError) {
-        FNLOG(@"%@", fetchError);
-        return nil;
-    }
+    __block NSArray *results = nil;
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [self fetchRequest];
+        if (searchTerm) {
+            [fetchRequest setPredicate:searchTerm];
+        }
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortTerm ascending:ascending];
+        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        NSError *fetchError = nil;
+        results = [context executeFetchRequest:fetchRequest error:&fetchError];
+        if (fetchError) {
+            FNLOG(@"%@", fetchError);
+            results = nil;
+        }
+    }];
     return results;
 }
 
 + (NSArray *)findAllWithPredicate:(NSPredicate *)predicate {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSFetchRequest *fetchRequest = [self fetchRequest];
-    if (predicate) {
-        [fetchRequest setPredicate:predicate];
-    }
-    NSError *fetchError = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
-    if (fetchError) {
-        FNLOG(@"%@", fetchError);
-        return nil;
-    }
+    __block NSArray *results = nil;
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [self fetchRequest];
+        if (predicate) {
+            [fetchRequest setPredicate:predicate];
+        }
+        NSError *fetchError = nil;
+        results = [context executeFetchRequest:fetchRequest error:&fetchError];
+        if (fetchError) {
+            FNLOG(@"%@", fetchError);
+            results = nil;
+        }
+    }];
     return results;
 }
 
@@ -174,7 +202,6 @@
 }
 
 + (instancetype)findFirstByAttribute:(NSString *)attribute withValue:(NSString *)value {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", attribute, value];
     return [self findFirstWithPredicate:predicate];
 }
@@ -189,16 +216,21 @@
 
 + (NSUInteger)countOfEntitiesWithPredicate:(NSPredicate *)predicate {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSFetchRequest *fetchRequest = [self fetchRequest];
-    if (predicate) {
-        [fetchRequest setPredicate:predicate];
-    }
-    fetchRequest.resultType = NSCountResultType;
-    NSError *fetchError = nil;
-    NSUInteger count = [context countForFetchRequest:fetchRequest error:&fetchError];
-    if (fetchError) {
-        FNLOG(@"%@", fetchError);
-    }
+    __block NSUInteger count = 0;
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [self fetchRequest];
+        if (predicate) {
+            [fetchRequest setPredicate:predicate];
+        }
+        fetchRequest.resultType = NSCountResultType;
+        
+        NSError *fetchError = nil;
+        count = [context countForFetchRequest:fetchRequest error:&fetchError];
+        if (fetchError) {
+            FNLOG(@"%@", fetchError);
+            count = NSNotFound; // Optional: Return a special value for errors.
+        }
+    }];
     return count;
 }
 
@@ -208,34 +240,63 @@
 
 + (void)deleteAllMatchingPredicate:(NSPredicate *)predicate {
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSFetchRequest *fetchRequest = [self fetchRequest];
-    if (predicate) {
-        [fetchRequest setPredicate:predicate];
-    }
-    NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
-    NSError *deleteError = nil;
-    [context executeRequest:deleteRequest error:&deleteError];
-    if (deleteError) {
-        FNLOG(@"%@", deleteError);
-    }
+    
+    [context performBlockAndWait:^{
+        NSFetchRequest *fetchRequest = [self fetchRequest];
+        if (predicate) {
+            [fetchRequest setPredicate:predicate];
+        }
+        
+        // Create a batch delete request
+        NSBatchDeleteRequest *deleteRequest = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetchRequest];
+        deleteRequest.resultType = NSBatchDeleteResultTypeObjectIDs; // Optimize result handling
+        
+        NSError *deleteError = nil;
+        NSBatchDeleteResult *deleteResult = (NSBatchDeleteResult *)[context executeRequest:deleteRequest error:&deleteError];
+        
+        if (deleteError) {
+            FNLOG(@"Error deleting objects: %@", deleteError);
+            return;
+        }
+        
+        // Merge changes to ensure in-memory objects reflect the deletion
+        NSArray<NSManagedObjectID *> *deletedObjectIDs = deleteResult.result;
+        if (deletedObjectIDs) {
+            NSDictionary *changes = @{NSDeletedObjectsKey: deletedObjectIDs};
+            [NSManagedObjectContext mergeChangesFromRemoteContextSave:changes intoContexts:@[context]];
+        }
+    }];
 }
 
-+ (NSFetchedResultsController *)fetchAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)searchTerm groupBy:(NSString *)groupingKeyPath delegate:(id<NSFetchedResultsControllerDelegate>)delegate {
-    
++ (NSFetchedResultsController *)fetchAllSortedBy:(NSString *)sortTerm
+                                       ascending:(BOOL)ascending
+                                  withPredicate:(NSPredicate *)searchTerm
+                                        groupBy:(NSString *)groupingKeyPath
+                                       delegate:(id<NSFetchedResultsControllerDelegate>)delegate {
     NSFetchRequest *fetchRequest = [self fetchRequest];
     if (searchTerm) {
         [fetchRequest setPredicate:searchTerm];
     }
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortTerm ascending:ascending];
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
+
+    // Ensure the context is accessed on its designated queue
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                managedObjectContext:context
-                                                                                  sectionNameKeyPath:groupingKeyPath
-                                                                                           cacheName:nil];
-    controller.delegate = delegate;
-    [controller performFetch:nil];
+    __block NSFetchedResultsController *controller = nil;
+    
+    [context performBlockAndWait:^{
+        controller = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                         managedObjectContext:context
+                                                           sectionNameKeyPath:groupingKeyPath
+                                                                    cacheName:nil];
+        controller.delegate = delegate;
+
+        NSError *fetchError = nil;
+        if (![controller performFetch:&fetchError]) {
+            FNLOG(@"Error performing fetch: %@", fetchError);
+        }
+    }];
+
     return controller;
 }
 

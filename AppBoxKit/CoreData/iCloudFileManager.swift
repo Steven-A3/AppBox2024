@@ -179,32 +179,50 @@ public class iCloudFileManager: NSObject {
         }
     }
     
+    func determineStorageType(from string: String) -> String {
+        if string.contains("iCloud") {
+            return "iCloud"
+        } else if string.contains("AppGroup") {
+            return "AppGroup"
+        }
+        return "Unknown" // Return nil if neither condition is met
+    }
+    
     // Helper: Recursively copy files and directories, skipping existing files
     private func recursivelyCopyFiles(from source: URL, to target: URL, progressHandler: ((Double) -> Void)? = nil) throws {
         try createDirectoryIfNotExists(target)
         
+        if determineStorageType(from:source.path) == "AppGroup" && source.lastPathComponent == "WalletVideos" {
+            Logger.shared.info("COPY FILE - \(source.lastPathComponent)")
+        }
         let items = try fileManager.contentsOfDirectory(at: source, includingPropertiesForKeys: nil)
+        Logger.shared.info("COPY FILES - FROM \(determineStorageType(from:source.path)) TO \(determineStorageType(from:target.path))")
+        Logger.shared.info("COPY FILES - \(items.count) items found")
+        
         var progress: Double = 0.0
         let totalItems = Double(items.count)
         
         for item in items {
+            Logger.shared.info("COPY FILE - \(item.path)")
             let targetItem = target.appendingPathComponent(item.lastPathComponent)
             
             // Skip the file if it already exists in the target directory
-            if fileManager.fileExists(atPath: targetItem.path) {
-                print("File already exists, skipping: \(targetItem.path)")
+            var isDir: ObjCBool = false
+            if fileManager.fileExists(atPath: targetItem.path, isDirectory: &isDir), !isDir.boolValue {
+                Logger.shared.info("COPY FILE - File already exists, skipping: \(targetItem.path)")
                 progress += 1.0
                 progressHandler?(progress / totalItems)
                 continue
             }
             
-            var isDir: ObjCBool = false
             if fileManager.fileExists(atPath: item.path, isDirectory: &isDir), isDir.boolValue {
+                Logger.shared.info("COPY FILE - Directory found, recursively copying: \(item.path)")
                 // Recursively copy subdirectories
                 try recursivelyCopyFiles(from: item, to: targetItem, progressHandler: progressHandler)
             } else {
                 // Copy individual files
                 try fileManager.copyItem(at: item, to: targetItem)
+                Logger.shared.info("COPY FILE - (TRUE) File copied:\(targetItem.path)")
             }
             
             progress += 1.0

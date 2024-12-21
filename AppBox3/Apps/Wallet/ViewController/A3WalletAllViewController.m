@@ -79,7 +79,7 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidShow) name:A3NotificationMainMenuDidShow object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuDidHide) name:A3NotificationMainMenuDidHide object:nil];
 	}
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     self.tableView.contentInset = UIEdgeInsetsZero;
@@ -100,13 +100,33 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 	}
 }
 
-- (void)cloudStoreDidImport {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshItems];
-        [self itemCountCheck];
-        [self setupSearchBar];
-        [self updateTopViewInfo:self->_topViewRef];
-    });
+- (void)cloudStoreDidImport:(NSNotification *)notification {
+    NSManagedObjectContext *context = notification.object;
+    if (![context isKindOfClass:[NSManagedObjectContext class]]) {
+        return; // Ensure the notification's object is a managed object context.
+    }
+
+    NSDictionary *userInfo = notification.userInfo;
+
+    // Combine all changes into a single set
+    NSMutableSet *allChangedObjects = [NSMutableSet set];
+    [allChangedObjects unionSet:userInfo[NSInsertedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSUpdatedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSDeletedObjectsKey] ?: [NSSet set]];
+
+    // Check if any of the changes are related to the "WalletItem_" entity
+    for (NSManagedObject *object in allChangedObjects) {
+        if ([object.entity.name isEqualToString:@"WalletItem_"]) {
+            FNLOG(@"Change detected for WalletItem_: %@", object);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshItems];
+                [self itemCountCheck];
+                [self setupSearchBar];
+                [self updateTopViewInfo:self->_topViewRef];
+            });
+            break; // No need to continue once we know there's a change
+        }
+    }
 }
 
 - (void)removeObserver {
@@ -479,7 +499,8 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 
 - (void)refreshItems
 {
-    self.items = nil;
+    super.items = nil;
+    [self items];
     [self.tableView reloadData];
 }
 

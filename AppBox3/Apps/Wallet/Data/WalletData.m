@@ -255,10 +255,18 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)initializeWalletCategories {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    [WalletData createLocalizedPresetCategories];
-    [WalletData createSystemCategory];
-    [context saveIfNeeded];
+    CoreDataStack *stack = [CoreDataStack shared];
+    [stack fetchCloudKitRecordWithRecordType:@"CD_WalletCategory_"
+                                   fieldName:@"CD_uniqueID"
+                                  fieldValue:A3WalletUUIDAllCategory
+                                  completion:^(CKRecord * _Nullable record, NSError * _Nullable error) {
+        if (record == nil) {
+            NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+            [WalletData createLocalizedPresetCategories];
+            [WalletData createSystemCategory];
+            [context saveIfNeeded];
+        }
+    }];
 }
 
 + (void)insertFavoriteCategory {

@@ -102,7 +102,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     self.tableView.backgroundColor = [UIColor whiteColor];
 
     [self registerContentSizeCategoryDidChangeNotification];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 
     _item.lastOpened = [NSDate date];
@@ -116,18 +116,34 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	}
 }
 
-- (void)cloudStoreDidImport {
-	if (_itemDeleted) return;
+- (void)cloudStoreDidImport:(NSNotification *)notification {
+    if (_itemDeleted) return;
+    
+    NSManagedObjectContext *context = notification.object;
+    if (![context isKindOfClass:[NSManagedObjectContext class]]) {
+        return; // Ensure the notification's object is a managed object context.
+    }
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Code here is executed on the main thread.
-        // You can safely update UI components.
-        self->_fieldItems = nil;
-        [self fieldItems];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-    });
+    NSDictionary *userInfo = notification.userInfo;
+
+    // Combine all changes into a single set
+    NSMutableSet *allChangedObjects = [NSMutableSet set];
+    [allChangedObjects unionSet:userInfo[NSInsertedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSUpdatedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSDeletedObjectsKey] ?: [NSSet set]];
+
+    // Check if any of the changes are related to the "WalletItem_" entity
+    for (NSManagedObject *object in allChangedObjects) {
+        if ([object.entity.name isEqualToString:@"WalletItem_"]) {
+            FNLOG(@"Change detected for WalletItem_: %@", object);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_fieldItems = nil;
+                [self fieldItems];
+                [self.tableView reloadData];
+            });
+            break; // No need to continue once we know there's a change
+        }
+    }
 }
 
 - (void)removeObserver {

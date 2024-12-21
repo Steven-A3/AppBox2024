@@ -15,7 +15,9 @@ struct MigrationView: View {
     // Persistent Containers as parameters
     var oldPersistentContainer: NSPersistentContainer
     var newPersistentContainer: NSPersistentContainer
-    
+
+    @State private var publisher = NotificationCenter.default.publisher(for: NSPersistentCloudKitContainer.eventChangedNotification)
+
     // Initialize MigrationManager with the containers
     @StateObject private var migrationManager: DataMigrationManager
     
@@ -80,14 +82,20 @@ struct MigrationView: View {
                 }
             }
         }
-        .edgesIgnoringSafeArea(.bottom)
-        .onAppear {
-            if !migrationManager.isMigrating {
-                migrationManager.migrateDataAfterUIChange() {
-                    // Completion logic if necessary
+        .onReceive(publisher) { notification in
+            if let userInfo = notification.userInfo {
+                if let event = userInfo["event"] as? NSPersistentCloudKitContainer.Event {
+                    if event.type == .export {
+                        if !migrationManager.isMigrating {
+                            migrationManager.migrateDataAfterUIChange() {
+                                
+                            }
+                        }
+                    }
                 }
             }
         }
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 

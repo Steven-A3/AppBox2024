@@ -17,12 +17,16 @@ public class CoreDataStack: NSObject {
     
     // Expose persistentContainer
     public var persistentContainer: NSPersistentContainer?
+    public var coreDataReady: Bool = false
     
     private let modelName = "AppBox2024"
     private let cloudStoreFileName = "AppBoxStore2024.sqlite"
     private let localStoreFileName = "AppBoxStore2024Local.sqlite"
     
-    private var isICloudAccountAvailable: Bool = false
+    var isICloudAccountAvailable: Bool = false
+    
+    /// Block to execute media file cleaning
+    public var mediaFileCleanerBlock: (() -> Void)?
     
     private override init() {
         super.init()
@@ -98,6 +102,7 @@ public class CoreDataStack: NSObject {
 #endif
             
             if storeDescription.configuration == "Cloud" {
+                self?.startObservingCloudKitEvents()
                 DispatchQueue.main.async {
                     completionC()
                 }
@@ -115,7 +120,7 @@ public class CoreDataStack: NSObject {
     }
     
     private func cloudStoreURL() -> URL? {
-        guard let containerURL = appGroudContainerURL() else {
+        guard let containerURL = appGroupContainerURL() else {
             assertionFailure("Unable to access app group container.")
             return nil
         }
@@ -123,14 +128,14 @@ public class CoreDataStack: NSObject {
     }
     
     private func localStoreURL() -> URL? {
-        guard let containerURL = appGroudContainerURL() else {
+        guard let containerURL = appGroupContainerURL() else {
             assertionFailure("Unable to access app group container.")
             return nil
         }
         return containerURL.appendingPathComponent(localStoreFileName)
     }
     
-    private func appGroudContainerURL() -> URL? {
+    func appGroupContainerURL() -> URL? {
         guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
             assertionFailure("Unable to access app group container.")
             return nil
@@ -188,131 +193,6 @@ public class CoreDataStack: NSObject {
         }
     }
     
-    public func deleteAllRecords(_ completion: @escaping @convention(block) (Bool, Error?) -> Void) {
-        guard let context = persistentContainer?.newBackgroundContext() else {
-            return
-        }
-        
-        let entitiesToDelete = [
-            "AbbreviationFavorite_", "Calculation_", "CurrencyFavorite_", "CurrencyHistory_",
-            "CurrencyHistoryItem_", "DaysCounterCalendar_", "DaysCounterDate_", "DaysCounterEvent_",
-            "DaysCounterEventLocation_", "DaysCounterFavorite_", "DaysCounterReminder_", "ExpenseListBudget_",
-            "ExpenseListBudgetLocation_", "ExpenseListHistory_", "ExpenseListItem_", "KaomojiFavorite_",
-            "LadyCalendarAccount_", "LadyCalendarPeriod_", "LoanCalcComparisonHistory_", "LoanCalcHistory_",
-            "Pedometer_", "PercentCalcHistory_", "QRCodeHistory_", "SalesCalcHistory_", "TipCalcHistory_",
-            "TipCalcRecent_", "TranslatorFavorite_", "TranslatorGroup_", "TranslatorHistory_", "UnitHistory_",
-            "UnitHistoryItem_", "UnitPriceHistory_", "UnitPriceInfo_", "WalletCategory_", "WalletFavorite_",
-            "WalletField_", "WalletFieldItem_", "WalletItem_"
-        ]
-        
-        context.perform {
-            do {
-                for entityName in entitiesToDelete {
-                    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-                    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                    deleteRequest.resultType = .resultTypeObjectIDs
-                    let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
-                    if let objectIDs = result?.result as? [NSManagedObjectID] {
-                        let changes = [NSDeletedObjectsKey: objectIDs]
-                        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
-                    }
-                }
-                try context.save()
-                DispatchQueue.main.async {
-                    completion(true, nil)
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(false, error)
-                }
-            }
-        }
-    }
-    
-    public func deleteAllFilesInUbiquityContainerInBackground(
-        containerID: String,
-        completion: @escaping (Bool, NSError?) -> Void
-    ) {
-        DispatchQueue.global(qos: .background).async {
-            let fileManager = FileManager.default
-            
-            // Check if iCloud is available with the provided container ID
-            if let ubiquityURL = fileManager.url(forUbiquityContainerIdentifier: containerID) {
-                // Check if the directory exists
-                if fileManager.fileExists(atPath: ubiquityURL.path) {
-                    do {
-                        // Get contents of the directory
-                        let files = try fileManager.contentsOfDirectory(at: ubiquityURL, includingPropertiesForKeys: nil, options: [])
-                        
-                        // Iterate and delete each item
-                        for file in files {
-                            try fileManager.removeItem(at: file)
-                            print("Deleted file: \(file.path)")
-                        }
-                        // Call completion handler with success
-                        DispatchQueue.main.async {
-                            completion(true, nil)
-                        }
-                    } catch let error as NSError {
-                        // Call completion handler with error
-                        DispatchQueue.main.async {
-                            completion(false, error)
-                        }
-                    }
-                } else {
-                    let error = NSError(domain: "iCloudContainerError", code: 404, userInfo: [NSLocalizedDescriptionKey: "The directory does not exist at path: \(ubiquityURL.path)"])
-                    DispatchQueue.main.async {
-                        completion(false, error)
-                    }
-                }
-            } else {
-                let error = NSError(domain: "iCloudContainerError", code: 401, userInfo: [NSLocalizedDescriptionKey: "iCloud is not available for container ID: \(containerID)."])
-                DispatchQueue.main.async {
-                    completion(false, error)
-                }
-            }
-        }
-    }
-    
-    public func migrateEntity(_ context: NSManagedObjectContext, _ fetchRequest: NSFetchRequest<NSManagedObject>, _ entityName: String, _ newContext: NSManagedObjectContext, _ newEntityName: String) {
-        do {
-            // Fetch all old entities
-            let oldEntities = try context.fetch(fetchRequest)
-            let staticOldEntities = oldEntities.map { $0 }
-            let entityAttributes = oldEntities.first?.entity.attributesByName.keys.map { $0 } ?? []
-            
-            // Pre-fetch existing entities in the new context
-            let existingFetchRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
-            let existingEntities = try newContext.fetch(existingFetchRequest)
-            let existingIDs = Set(existingEntities.compactMap { $0.value(forKey: "uniqueID") as? String })
-            
-            // Migrate entities
-            for oldEntity in staticOldEntities {
-                if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String, !existingIDs.contains(uniqueID) {
-                    let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
-                    for attribute in entityAttributes {
-                        newEntity.setValue(oldEntity.value(forKey: attribute), forKey: attribute)
-                    }
-                }
-            }
-            
-            // Save changes in the new context
-            if newContext.hasChanges {
-                try newContext.save()
-            }
-        } catch {
-            print("Error migrating \(entityName): \(error)")
-        }
-    }
-    
-    public func appGroupContainerURL() -> URL {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!
-    }
-    
-    public func V47StoreURL() -> URL {
-        appGroupContainerURL().appendingPathComponent("Library/AppBox/AppBoxStore.sqlite")
-    }
-    
     public func loadPersistentContainer(modelName: String?, storeURL: URL) -> NSPersistentContainer {
         let modelName = modelName ?? self.modelName
         let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
@@ -328,111 +208,5 @@ public class CoreDataStack: NSObject {
             }
         }
         return container
-    }
-    
-    public func exportDataToStoreFile(at exportStoreURL: URL, completion: @escaping (Bool, Error?) -> Void) {
-        guard let container = persistentContainer else {
-            let error = NSError(domain: "CoreDataStack", code: 500, userInfo: [NSLocalizedDescriptionKey: "Persistent container is not set up."])
-            completion(false, error)
-            return
-        }
-        
-        let coordinator = container.persistentStoreCoordinator
-        
-        // Create a new store description for the export file
-        let exportStoreDescription = NSPersistentStoreDescription(url: exportStoreURL)
-        exportStoreDescription.type = NSSQLiteStoreType
-        
-        do {
-            // Add the export store to the coordinator
-            let exportStore = try coordinator.addPersistentStore(ofType: exportStoreDescription.type, configurationName: nil, at: exportStoreDescription.url, options: nil)
-            
-            // Create a new managed object context for the export store
-            let exportContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-            exportContext.persistentStoreCoordinator = coordinator
-            
-            // Create a fetch context for the source store
-            let fetchContext = container.viewContext
-            
-            fetchContext.perform {
-                do {
-                    let entityNames = container.managedObjectModel.entities.compactMap { $0.name }
-                    
-                    for entityName in entityNames {
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-                        let records = try fetchContext.fetch(fetchRequest)
-                        
-                        exportContext.performAndWait {
-                            for record in records {
-                                if let managedObject = record as? NSManagedObject {
-                                    let clonedObject = NSEntityDescription.insertNewObject(forEntityName: entityName, into: exportContext)
-                                    for (key, _) in managedObject.entity.attributesByName {
-                                        clonedObject.setValue(managedObject.value(forKey: key), forKey: key)
-                                    }
-                                }
-                            }
-                            
-                            // Save the export context
-                            do {
-                                if exportContext.hasChanges {
-                                    try exportContext.save()
-                                }
-                            } catch {
-                                print("Failed to save export context: \(error)")
-                                completion(false, error)
-                            }
-                        }
-                    }
-                    
-                    // Remove the export store after copying is complete
-                    try coordinator.remove(exportStore)
-                    completion(true, nil)
-                } catch {
-                    print("Failed to copy data: \(error)")
-                    completion(false, error)
-                }
-            }
-        } catch {
-            print("Failed to add export store: \(error)")
-            completion(false, error)
-        }
-    }
-    
-    public func backupStoreFile(to backupURL: URL) throws {
-        guard let storeURL = self.persistentContainer?.persistentStoreDescriptions.first?.url else {
-            throw NSError(domain: "CoreDataBackup", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not find the persistent store URL."])
-        }
-
-        let fileManager = FileManager.default
-        
-        // Check if the store file exists
-        guard fileManager.fileExists(atPath: storeURL.path) else {
-            throw NSError(domain: "CoreDataBackup", code: 2, userInfo: [NSLocalizedDescriptionKey: "Persistent store file does not exist."])
-        }
-        
-        // Backup the main SQLite file
-        let backupMainFileURL = backupURL
-        try fileManager.copyItem(at: storeURL, to: backupMainFileURL)
-        print("Main store file backed up to \(backupMainFileURL.path)")
-
-        // Backup related files if using SQLite
-        let storeDirectory = storeURL.deletingLastPathComponent()
-        let fileName = storeURL.lastPathComponent
-        
-        let walFileURL = storeDirectory.appendingPathComponent("\(fileName)-wal")
-        let shmFileURL = storeDirectory.appendingPathComponent("\(fileName)-shm")
-        
-        let backupWalURL = backupURL.deletingLastPathComponent().appendingPathComponent("\(fileName)-wal")
-        let backupShmURL = backupURL.deletingLastPathComponent().appendingPathComponent("\(fileName)-shm")
-
-        if fileManager.fileExists(atPath: walFileURL.path) {
-            try fileManager.copyItem(at: walFileURL, to: backupWalURL)
-            print("WAL file backed up to \(backupWalURL.path)")
-        }
-
-        if fileManager.fileExists(atPath: shmFileURL.path) {
-            try fileManager.copyItem(at: shmFileURL, to: backupShmURL)
-            print("SHM file backed up to \(backupShmURL.path)")
-        }
     }
 }
