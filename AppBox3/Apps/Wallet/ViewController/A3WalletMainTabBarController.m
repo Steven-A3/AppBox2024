@@ -46,15 +46,6 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	if ([WalletCategory_ countOfEntities] == 0) {
 		[WalletData initializeWalletCategories];
 	}
-
-    // Recents Category는 4.6.23에서 추가가 된다.
-    // Recents Category가 있는지 확인한다.
-    NSArray *recentsCategory = [WalletCategory_ findByAttribute:@"uniqueID" withValue:A3WalletUUIDRecentsCategory];
-    if ([recentsCategory count] == 0) {
-        [WalletData insertRecentsCategory];
-        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-        [context saveIfNeeded];
-    }
     
 	// test for "kWhichTabPrefKey" key value
     if (![[A3UserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsSelectedTab]) {

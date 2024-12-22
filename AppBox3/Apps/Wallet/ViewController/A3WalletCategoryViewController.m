@@ -227,9 +227,9 @@
             }
         }
     }
-
     _didPassViewDidAppear = YES;
 }
+
 - (void)cloudStoreDidImport:(NSNotification *)notification {
     NSManagedObjectContext *context = notification.object;
     if (![context isKindOfClass:[NSManagedObjectContext class]]) {
