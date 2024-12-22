@@ -7,3 +7,4 @@
 **/WorkspaceSettings.*
 **/xcschememanagement.plist
 **/*.xcscheme
+AppBox3.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
