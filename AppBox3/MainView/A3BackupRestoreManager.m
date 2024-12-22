@@ -25,6 +25,7 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3UserDefaults+A3Addition.h"
 #import "AppBOxKit/AppBoxKit-Swift.h"
+#import "WalletData.h"
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -702,6 +703,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
             // Delete Store file
             [coreDataStack unloadPersistentContainerWithContainer:sourceContainer];
             [coreDataStack deleteStoreFilesWithStoreURL:storeURL];
+            
+            [WalletData createSystemCategory];
             
             [self taskAfterDBMigration:backupFilePath
                             backupInfo:backupInfo
