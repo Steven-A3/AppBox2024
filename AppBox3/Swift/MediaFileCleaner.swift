@@ -15,7 +15,7 @@ class MediaFileCleaner : NSObject {
     private let localBaseURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
     private let iCloudBaseURL = FileManager.default.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)?.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
 
-    private let fileAccessQueue = DispatchQueue(label: "com.yourapp.fileAccessQueue") // Serial queue for file operations
+    private let fileAccessQueue = DispatchQueue(label: "net.allaboutapps.fileAccessQueue") // Serial queue for file operations
 
     @objc func cleanUnusedMediaFiles(context: NSManagedObjectContext) {
         let group = DispatchGroup()
@@ -113,18 +113,20 @@ class MediaFileCleaner : NSObject {
             let fileNames = try fileManager.contentsOfDirectory(atPath: directory.path)
             for fileName in fileNames {
                 guard
-                    let uniqueID = extractUniqueID(from: fileName),
-                    let formattedFileName = fileNameFormat(uniqueID),
-                    !validIDs.contains(formattedFileName)
-                else { continue }
-
-                // Delete the file
-                let filePath = directory.appendingPathComponent(fileName).path
-                do {
-                    try fileManager.removeItem(atPath: filePath)
-                    print("Deleted unused file: \(filePath)")
-                } catch {
-                    print("Error deleting file at \(filePath): \(error)")
+                    let uniqueID = extractUniqueID(from: fileName), // Extract the unique ID
+                    validIDs.contains(uniqueID), // Check if the unique ID is in the valid set
+                    let expectedFileName = fileNameFormat(uniqueID), // Generate the expected file name
+                    fileName == expectedFileName // Ensure the file name matches the expected format
+                else {
+                    // File is not valid; proceed with deletion
+                    let filePath = directory.appendingPathComponent(fileName).path
+                    do {
+                        try fileManager.removeItem(atPath: filePath)
+                        print("Deleted unused file: \(filePath)")
+                    } catch {
+                        print("Error deleting file at \(filePath): \(error)")
+                    }
+                    continue
                 }
             }
         } catch {
