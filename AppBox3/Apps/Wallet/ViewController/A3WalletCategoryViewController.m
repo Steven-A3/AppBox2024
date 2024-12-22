@@ -228,6 +228,9 @@
         }
     }
     _didPassViewDidAppear = YES;
+
+    FNLOGPOINTS(self.tableView.contentOffset);
+    FNLOGINSETS(self.tableView.contentInset);
 }
 
 - (void)cloudStoreDidImport:(NSNotification *)notification {
@@ -291,7 +294,6 @@
 		FNLOG();
 		NSMutableArray *items;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", self.category.uniqueID];
-//        items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
         items = [NSMutableArray arrayWithArray:[WalletItem_ findAllSortedBy:@"name" ascending:YES withPredicate:predicate]];
 		[super setItems:items];
     }
@@ -664,6 +666,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 		_searchController.searchBar.delegate = self;
         [_searchController.searchBar sizeToFit];
         _searchController.obscuresBackgroundDuringPresentation = NO;
+        FNLOGRECT(_searchController.searchBar.frame);
     }
     return _searchController;
 }
@@ -975,7 +978,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 28;
+	return 22;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -1000,7 +1003,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 	[view addSubview:sectionTitle];
 
 	[sectionTitle makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(view.left).with.offset(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 28);
+		make.left.equalTo(view.left).with.offset(IS_IPHONE ? ([[UIScreen mainScreen] scale] > 2 ? 20 : 15) : 22);
 		make.centerY.equalTo(view.centerY);
 	}];
 	return view;

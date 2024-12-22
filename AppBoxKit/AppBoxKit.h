@@ -44,3 +44,4 @@ FOUNDATION_EXPORT const unsigned char AppBoxKitVersionString[];
 #import <AppBoxKit/JVFloatLabeledTextField.h>
 #import <AppBoxKit/A3FloatLabeledPasswordTextField.h>
 #import <AppBoxKit/A3StandardTableViewCell.h>
+#import <AppBoxKit/ObjcLogger.h>

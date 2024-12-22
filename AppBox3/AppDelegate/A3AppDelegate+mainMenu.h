@@ -28,7 +28,6 @@
 
 - (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated;
 - (UIViewController *)getViewControllerForAppNamed:(NSString *)appName;
-- (void)startRestorePurchase;
 - (BOOL)isMainMenuStyleList;
 - (void)updateRecentlyUsedAppsWithAppName:(NSString *)appName;
 - (BOOL)securitySettingIsOnForAppNamed:(NSString *)appName;

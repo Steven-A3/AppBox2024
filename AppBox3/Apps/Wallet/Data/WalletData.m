@@ -163,48 +163,75 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)createLocalizedPresetCategories {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-	NSArray *presetCategories = [self categoryPresetData];
-	NSMutableArray *categories = [NSMutableArray new];
-	[presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.newBackgroundContext;
+
+    [context performBlock:^{
+        // Fetch existing categories in one request
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"WalletCategory_"];
-        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", category[PRESET_ID_KEY]];
-        NSError *error;
-        NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
+        fetchRequest.resultType = NSDictionaryResultType;
+        fetchRequest.propertiesToFetch = @[@"uniqueID"];
+        NSError *fetchError = nil;
+        NSArray *existingCategories = [context executeFetchRequest:fetchRequest error:&fetchError];
         
-        if (error || count > 0) {
+        if (fetchError) {
+            NSLog(@"Error fetching existing categories: %@", fetchError);
             return;
         }
+
+        // Create a set of unique IDs for existing categories
+        NSSet *existingIDs = [NSSet setWithArray:[existingCategories valueForKey:@"uniqueID"]];
         
-        WalletCategory_ *newCategory = [[WalletCategory_ alloc] initWithContext:context];
-		newCategory.uniqueID = category[PRESET_ID_KEY];
-		newCategory.name = NSLocalizedStringFromTable(category[PRESET_NAME_KEY], @"WalletPreset", nil);
-		newCategory.icon = category[PRESET_ICON_KEY];
-		newCategory.isSystem = @NO;
-		newCategory.doNotShow = @NO;
-		[categories addObject:newCategory];
+        // Retrieve preset categories
+        NSArray *presetCategories = [self categoryPresetData];
+        NSMutableArray *categories = [NSMutableArray new];
 
-		[category[PRESET_FIELDS_KEY] enumerateObjectsUsingBlock:^(NSDictionary *field, NSUInteger idx, BOOL *stop) {
-            WalletField_ *newField = [[WalletField_  alloc] initWithContext:context];
-			newField.uniqueID = field[PRESET_ID_KEY];
-			newField.categoryID = newCategory.uniqueID;
-			newField.name = NSLocalizedStringFromTable(field[PRESET_NAME_KEY], @"WalletPreset", nil);
-			newField.style = field[PRESET_STYLE_KEY];
-			newField.type = field[PRESET_TYPE_KEY];
-			[newField assignOrderAsLast];
-		}];
-	}];
+        [presetCategories enumerateObjectsUsingBlock:^(NSDictionary *category, NSUInteger idx, BOOL *stop) {
+            NSString *uniqueID = category[PRESET_ID_KEY];
+            
+            // Skip if the category already exists
+            if ([existingIDs containsObject:uniqueID]) {
+                return;
+            }
+            
+            // Create new category
+            WalletCategory_ *newCategory = [[WalletCategory_ alloc] initWithContext:context];
+            newCategory.uniqueID = uniqueID;
+            newCategory.name = NSLocalizedStringFromTable(category[PRESET_NAME_KEY], @"WalletPreset", nil);
+            newCategory.icon = category[PRESET_ICON_KEY];
+            newCategory.isSystem = @NO;
+            newCategory.doNotShow = @NO;
+            [categories addObject:newCategory];
 
-	[categories sortUsingComparator:^NSComparisonResult(WalletCategory_ *obj1, WalletCategory_ *obj2) {
-		return [obj1.name compare:obj2.name];
-	}];
-	NSInteger order = 1000000;
-	for (WalletCategory_ *category in categories) {
-		category.order = [NSString orderStringWithOrder:order];
-		order += 1000000;
-	}
+            // Create fields for the category
+            [category[PRESET_FIELDS_KEY] enumerateObjectsUsingBlock:^(NSDictionary *field, NSUInteger idx, BOOL *stop) {
+                WalletField_ *newField = [[WalletField_ alloc] initWithContext:context];
+                newField.uniqueID = field[PRESET_ID_KEY];
+                newField.categoryID = newCategory.uniqueID;
+                newField.name = NSLocalizedStringFromTable(field[PRESET_NAME_KEY], @"WalletPreset", nil);
+                newField.style = field[PRESET_STYLE_KEY];
+                newField.type = field[PRESET_TYPE_KEY];
+                [newField assignOrderAsLast];
+            }];
+        }];
 
-	return;
+        // Sort categories by name
+        [categories sortUsingComparator:^NSComparisonResult(WalletCategory_ *obj1, WalletCategory_ *obj2) {
+            return [obj1.name compare:obj2.name];
+        }];
+
+        // Assign order values
+        NSInteger order = 1000000;
+        for (WalletCategory_ *category in categories) {
+            category.order = [NSString orderStringWithOrder:order];
+            order += 1000000;
+        }
+
+        // Save the context
+        NSError *saveError = nil;
+        if (![context save:&saveError]) {
+            NSLog(@"Error saving context: %@", saveError);
+        }
+    }];
 }
 
 + (void)createSystemCategory {
@@ -216,42 +243,89 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)insertAllCategory {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.newBackgroundContext;
 
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDAllCategory];
-    NSError *error;
-    NSArray *existingEntity = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if ([existingEntity count] == 0) {
-        WalletCategory_ *allCategory = [[WalletCategory_ alloc] initWithContext:context];
-        allCategory.uniqueID = A3WalletUUIDAllCategory;
-        allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
-        allCategory.icon = @"wallet_folder";
-        allCategory.isSystem = @YES;
-        allCategory.doNotShow = @NO;
-        [allCategory assignOrderAsFirst];
-    }
+    [context performBlockAndWait:^{
+        @try {
+            // Check if "All Category" already exists
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDAllCategory];
+            fetchRequest.fetchLimit = 1; // Limit to one result for efficiency
+
+            NSError *fetchError = nil;
+            NSUInteger count = [context countForFetchRequest:fetchRequest error:&fetchError];
+            
+            if (fetchError) {
+                NSLog(@"Error fetching WalletCategory_: %@", fetchError);
+                return;
+            }
+
+            // If no existing category found, create a new one
+            if (count == 0) {
+                WalletCategory_ *allCategory = [[WalletCategory_ alloc] initWithContext:context];
+                allCategory.uniqueID = A3WalletUUIDAllCategory;
+                allCategory.name = NSLocalizedString(@"Wallet_All_Category", @"All");
+                allCategory.icon = @"wallet_folder";
+                allCategory.isSystem = @YES;
+                allCategory.doNotShow = @NO;
+                allCategory.order = [NSString orderStringWithOrder:9999999999999999];
+
+                // Assign the order as the first
+                [allCategory assignOrderAsFirst];
+
+                // Save the context
+                NSError *saveError = nil;
+                if (![context save:&saveError]) {
+                    NSLog(@"Error saving context: %@", saveError);
+                }
+            }
+        } @catch (NSException *exception) {
+            NSLog(@"Exception in insertAllCategory: %@", exception);
+        }
+    }];
 }
 
 + (void)insertRecentsCategory {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDRecentsCategory];
-    NSError *error;
-    NSArray *existingEntity = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if ([existingEntity count] == 0) {
-        NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-        WalletCategory_ *recentsCategory = [[WalletCategory_ alloc] initWithContext:context];
-        recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
-        recentsCategory.name = NSLocalizedString(@"Recents", nil);
-        recentsCategory.icon = @"history";
-        recentsCategory.isSystem = @YES;
-        recentsCategory.doNotShow = @NO;
-        [recentsCategory assignOrderAsFirst];
-    }
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.newBackgroundContext;
+
+    [context performBlockAndWait:^{
+        @try {
+            // Check if "Recents Category" already exists
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDRecentsCategory];
+            fetchRequest.fetchLimit = 1; // Limit fetch for efficiency
+
+            NSError *fetchError = nil;
+            NSUInteger count = [context countForFetchRequest:fetchRequest error:&fetchError];
+
+            if (fetchError) {
+                NSLog(@"Error fetching WalletCategory_ for Recents: %@", fetchError);
+                return;
+            }
+
+            // If no existing category found, create a new one
+            if (count == 0) {
+                WalletCategory_ *recentsCategory = [[WalletCategory_ alloc] initWithContext:context];
+                recentsCategory.uniqueID = A3WalletUUIDRecentsCategory;
+                recentsCategory.name = NSLocalizedString(@"Recents", nil);
+                recentsCategory.icon = @"history";
+                recentsCategory.isSystem = @YES;
+                recentsCategory.doNotShow = @NO;
+                recentsCategory.order = [NSString orderStringWithOrder:9999999999999999];
+
+                // Assign the order as the first
+                [recentsCategory assignOrderAsFirst];
+
+                // Save the context
+                NSError *saveError = nil;
+                if (![context save:&saveError]) {
+                    NSLog(@"Error saving context for Recents Category: %@", saveError);
+                }
+            }
+        } @catch (NSException *exception) {
+            NSLog(@"Exception in insertRecentsCategory: %@", exception);
+        }
+    }];
 }
 
 + (void)initializeWalletCategories {
@@ -270,22 +344,46 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
 }
 
 + (void)insertFavoriteCategory {
-    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDFavoriteCategory];
-    NSError *error;
-    NSArray *existingEntity = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if ([existingEntity count] == 0) {
-        WalletCategory_ *favoriteCategory = [[WalletCategory_ alloc] initWithContext:context];
-        favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
-        favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
-        favoriteCategory.icon = @"star01";
-        favoriteCategory.isSystem = @YES;
-        favoriteCategory.doNotShow = @NO;
-        [favoriteCategory assignOrderAsFirst];
-    }
+    NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.newBackgroundContext;
+
+    [context performBlockAndWait:^{
+        @try {
+            // Check if "Favorite Category" already exists
+            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"WalletCategory_"];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDFavoriteCategory];
+            fetchRequest.fetchLimit = 1; // Fetch only one result for efficiency
+
+            NSError *fetchError = nil;
+            NSUInteger count = [context countForFetchRequest:fetchRequest error:&fetchError];
+
+            if (fetchError) {
+                NSLog(@"Error fetching WalletCategory_ for Favorites: %@", fetchError);
+                return;
+            }
+
+            // If no existing category found, create a new one
+            if (count == 0) {
+                WalletCategory_ *favoriteCategory = [[WalletCategory_ alloc] initWithContext:context];
+                favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
+                favoriteCategory.name = NSLocalizedString(@"Favorites", nil);
+                favoriteCategory.icon = @"star01";
+                favoriteCategory.isSystem = @YES;
+                favoriteCategory.doNotShow = @NO;
+                favoriteCategory.order = [NSString orderStringWithOrder:9999999999999999];
+
+                // Assign the order as the first
+                [favoriteCategory assignOrderAsFirst];
+
+                // Save the context
+                NSError *saveError = nil;
+                if (![context save:&saveError]) {
+                    NSLog(@"Error saving context for Favorite Category: %@", saveError);
+                }
+            }
+        } @catch (NSException *exception) {
+            NSLog(@"Exception in insertFavoriteCategory: %@", exception);
+        }
+    }];
 }
 
 + (NSArray *)walletCategoriesFilterDoNotShow:(BOOL)hideDoNotShow {

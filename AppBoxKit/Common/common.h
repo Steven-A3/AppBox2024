@@ -16,10 +16,12 @@
 #define FNLOGRECT(rect)		NSLog(@"%s line %d, (%.1fx%.1f)-(%.1fx%.1f)", __FUNCTION__, __LINE__, rect.origin.x, rect.origin.y, \
  rect.size.width, rect.size.height)
 #define FNLOGINSETS(insets)	NSLog(@"%s line %d, (top:%.1f, left:%.1f, bottom:%.1f, right:%.1f)", __FUNCTION__, __LINE__, insets.top, insets.left, insets.bottom, insets.right)
+#define FNLOGPOINTS(point)  NSLog(@"%s line %d, (x:%.1f, y:%.1f)", __FUNCTION__, __LINE__, point.x, point.y)
 #else
 #define FNLOG(p,...)
 #define FNLOGRECT(rect)
 #define FNLOGINSETS(insets)
+#define FNLOGPOINTS(point)
 #endif
 
 #define DegreesToRadians(degrees)	((degrees) * M_PI / 180.0)

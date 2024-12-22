@@ -13,6 +13,7 @@
 #import "A3SyncManager.h"
 #import "common.h"
 #import "AppBoxKit/AppBoxKit-Swift.h"
+#import "AppBoxKit/AppBoxKit.h"
 
 @implementation NSManagedObject (extension)
 
@@ -44,28 +45,79 @@
 }
 
 - (void)assignOrderAsFirst {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", ID_KEY, [self valueForKey:ID_KEY]];
-    NSManagedObject *obj = [[self class] findFirstWithPredicate:predicate sortedBy:A3CommonPropertyOrder ascending:YES];
-    NSString *minOrder = [obj valueForKey:A3CommonPropertyOrder];
-    NSInteger minOrderValue = [minOrder integerValue];
-    if (minOrderValue > 1) {
-        [self setValue:[NSString orderStringWithOrder:minOrderValue / 2] forKey:A3CommonPropertyOrder];
-    } else {
-        NSArray *allItems = [[self class] findAllWithPredicate:nil];
-        NSInteger newOrder = 1000000;
-        for (NSManagedObject *object in allItems) {
-            [object setValue:[NSString orderStringWithOrder:newOrder] forKey:A3CommonPropertyOrder];
-            newOrder += 1000000;
+    NSManagedObjectContext *context = self.managedObjectContext;
+
+    [context performBlock:^{
+        @try {
+            // Fetch the object with the minimum order value
+            NSManagedObject *obj = [[self class] findFirstOrderedByAttribute:A3CommonPropertyOrder ascending:YES];
+
+            NSString *minOrder = [obj valueForKey:A3CommonPropertyOrder];
+            NSInteger minOrderValue = [minOrder integerValue];
+
+            if (obj && minOrderValue > 1) {
+                // Assign a new order value less than the current minimum
+                NSString *orderString = [NSString orderStringWithOrder:MAX(1, minOrderValue / 2)];
+#ifdef DEBUG
+                NSString *name = [self valueForKey:@"name"];
+                NSString *message = [NSString stringWithFormat:@"NEW ORDER: %@ / %@", name, orderString];
+                LogDebug(message);
+#endif
+                [self setValue:orderString forKey:A3CommonPropertyOrder];
+            } else {
+                // If no minimum or all orders are very low, reassign all orders
+                NSArray *allItems = [[self class] findAllSortedBy:A3CommonPropertyOrder ascending:YES];
+
+                // Reassign all orders, ensuring the current object gets the first position
+                NSInteger newOrder = 500000; // Assign first position to the current object
+                NSString *orderString = [NSString orderStringWithOrder:newOrder];
+                [self setValue:orderString forKey:A3CommonPropertyOrder];
+#ifdef DEBUG
+                NSString *name = [self valueForKey:@"name"];
+                NSString *message = [NSString stringWithFormat:@"NEW ORDER: %@ / %@", name, orderString];
+                LogDebug(message);
+#endif
+                newOrder += 1000000; // Start incrementing for others
+
+                for (NSManagedObject *object in allItems) {
+                    if (object != self) {
+                        [object setValue:[NSString orderStringWithOrder:newOrder] forKey:A3CommonPropertyOrder];
+                        newOrder += 1000000;
+                    }
+                }
+            }
+
+            // Save the context
+            NSError *saveError = nil;
+            if (![context save:&saveError]) {
+                NSLog(@"Error saving context: %@", saveError);
+            }
+        } @catch (NSException *exception) {
+            NSLog(@"Exception occurred in assignOrderAsFirst: %@", exception);
         }
-    }
+    }];
 }
 
 - (void)assignOrderAsLast {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", ID_KEY, [self valueForKey:ID_KEY]];
-    NSManagedObject *obj = [[self class] findFirstWithPredicate:predicate sortedBy:A3CommonPropertyOrder ascending:NO];
-    NSString *maxOrder = [obj valueForKey:A3CommonPropertyOrder];
-    NSInteger maxOrderValue = [maxOrder integerValue];
-    [self setValue:[NSString orderStringWithOrder:maxOrderValue + 1000000] forKey:A3CommonPropertyOrder];
+    NSManagedObjectContext *context = self.managedObjectContext;
+    
+    [context performBlock:^{
+        // Fetch the object with the maximum order value
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != %@", ID_KEY, [self valueForKey:ID_KEY]];
+        NSManagedObject *obj = [[self class] findFirstWithPredicate:predicate sortedBy:A3CommonPropertyOrder ascending:NO];
+        
+        NSString *maxOrder = [obj valueForKey:A3CommonPropertyOrder];
+        NSInteger maxOrderValue = [maxOrder integerValue];
+        
+        // Safely set the new order value
+        [self setValue:[NSString orderStringWithOrder:maxOrderValue + 1000000] forKey:A3CommonPropertyOrder];
+        
+        // Save the context if needed
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Error saving context: %@", error);
+        }
+    }];
 }
 
 + (NSNumber *)aggregationOperation:(NSString *)operator_ column:(NSString *)column predicate:(NSPredicate *)predicate {

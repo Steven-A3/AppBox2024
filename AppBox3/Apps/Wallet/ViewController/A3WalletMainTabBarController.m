@@ -42,10 +42,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 {
     [super viewDidLoad];
 
+    self.navigationController.navigationBar.prefersLargeTitles = NO;
 	self.delegate = self;
-	if ([WalletCategory_ countOfEntities] == 0) {
-		[WalletData initializeWalletCategories];
-	}
     
 	// test for "kWhichTabPrefKey" key value
     if (![[A3UserDefaults standardUserDefaults] objectForKey:A3WalletUserDefaultsSelectedTab]) {
@@ -59,6 +57,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 	[self setupTabBar];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
+    
 	// 카테고리 이름/아이콘이 바뀌면 탭바의 표시되는 정보도 변경되어야 하므로 노티를 수신한다.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryChangedNotification:) name:A3WalletNotificationCategoryChanged object:nil];
 
@@ -71,7 +71,35 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItemCategoryMovedNotification:) name:A3WalletNotificationItemCategoryMoved object:nil];
 }
 
+- (void)cloudStoreDidImport:(NSNotification *)notification {
+    NSManagedObjectContext *context = notification.object;
+    if (![context isKindOfClass:[NSManagedObjectContext class]]) {
+        return; // Ensure the notification's object is a managed object context.
+    }
+
+    NSDictionary *userInfo = notification.userInfo;
+
+    // Combine all changes into a single set
+    NSMutableSet *allChangedObjects = [NSMutableSet set];
+    [allChangedObjects unionSet:userInfo[NSInsertedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSUpdatedObjectsKey] ?: [NSSet set]];
+    [allChangedObjects unionSet:userInfo[NSDeletedObjectsKey] ?: [NSSet set]];
+
+    // Check if any of the changes are related to the "WalletItem_" entity
+    for (NSManagedObject *object in allChangedObjects) {
+        if ([object.entity.name isEqualToString:@"WalletCategory_"]) {
+            FNLOG(@"Change detected for WalletCategory_: %@", object);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self->_categories = nil;
+                [self setupTabBar];
+            });
+            break; // No need to continue once we know there's a change
+        }
+    }
+}
+
 - (void)removeObserver {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryChanged object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryAdded object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3WalletNotificationCategoryDeleted object:nil];
@@ -274,7 +302,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 - (void)setupTabBar
 {
 	self.tabBarController.tabBar.translucent = NO;
-
+    
 	_categories = nil;
 
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];

@@ -32,6 +32,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
+#import "WalletData.h"
 
 NSString *const kA3ApplicationLastRunVersion = @"kLastRunVersion";
 NSString *const kA3ApplicationNumberOfDidBecomeActive = @"kA3ApplicationNumberOfDidBecomeActive";
@@ -803,6 +804,11 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
         }];
         [viewController popToRootAndPushViewController:viewController animated:YES];
         return YES;
+    }
+    if ([appName containsString:A3AppName_Wallet]) {
+        if ([WalletCategory_ countOfEntities] == 0) {
+            [WalletData initializeWalletCategories];
+        }
     }
 	BOOL appLaunched = NO;
 	BOOL proceedPasscodeCheck = NO;
