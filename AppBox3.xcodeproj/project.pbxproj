@@ -233,6 +233,7 @@
 		681E1266193443F00077DCFA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E1239193443F00077DCFA /* zip.c */; };
 		681E1281193447D70077DCFA /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 681E1280193447D70077DCFA /* libz.dylib */; };
 		681E1284193448230077DCFA /* AAAZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1283193448230077DCFA /* AAAZip.m */; };
+		68200AC72D19308700D609F2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68200AC62D19308700D609F2 /* CloudKit.framework */; };
 		682126861843902A009A7964 /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682126851843902A009A7964 /* NSNumberExtensions.m */; };
 		68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */; };
 		6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
@@ -1551,6 +1552,7 @@
 		681E1280193447D70077DCFA /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		681E1282193448230077DCFA /* AAAZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAAZip.h; sourceTree = "<group>"; };
 		681E1283193448230077DCFA /* AAAZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAAZip.m; sourceTree = "<group>"; };
+		68200AC62D19308700D609F2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		682126841843902A009A7964 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		682126851843902A009A7964 /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
 		68236CDB186AA7B4006F442B /* A3AppDelegate+passcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+passcode.h"; path = "AppDelegate/A3AppDelegate+passcode.h"; sourceTree = "<group>"; };
@@ -3058,6 +3060,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68200AC72D19308700D609F2 /* CloudKit.framework in Frameworks */,
 				683F56132A1EBCE600684674 /* WultraPassphraseMeter in Frameworks */,
 				68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */,
 				683F56172A1EBCE600684674 /* WultraPassphraseMeterENDictionary in Frameworks */,
@@ -3981,6 +3984,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68200AC62D19308700D609F2 /* CloudKit.framework */,
 				686490E329B82BD600AF1D39 /* OpenSSL.xcframework */,
 				686490E229B82BA700AF1D39 /* Frameworks */,
 				68CFACD328A3A6F800C6B4F0 /* UniformTypeIdentifiers.framework */,
@@ -7936,7 +7940,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.1;
+				CURRENT_PROJECT_VERSION = 4.8.0.3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7997,7 +8001,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.1;
+				CURRENT_PROJECT_VERSION = 4.8.0.3;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -8394,7 +8398,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.8.0.1;
+				CURRENT_PROJECT_VERSION = 4.8.0.3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -8441,7 +8445,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4.8.0.1;
+				CURRENT_PROJECT_VERSION = 4.8.0.3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_NS_ASSERTIONS = NO;
