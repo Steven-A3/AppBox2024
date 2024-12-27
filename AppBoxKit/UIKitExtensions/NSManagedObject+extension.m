@@ -61,7 +61,7 @@
 #ifdef DEBUG
                 NSString *name = [self valueForKey:@"name"];
                 NSString *message = [NSString stringWithFormat:@"NEW ORDER: %@ / %@", name, orderString];
-                LogDebug(message);
+                FNLOG(@"%@", message);
 #endif
                 [self setValue:orderString forKey:A3CommonPropertyOrder];
             } else {
@@ -75,7 +75,7 @@
 #ifdef DEBUG
                 NSString *name = [self valueForKey:@"name"];
                 NSString *message = [NSString stringWithFormat:@"NEW ORDER: %@ / %@", name, orderString];
-                LogDebug(message);
+                FNLOG(@"%@", message);
 #endif
                 newOrder += 1000000; // Start incrementing for others
 

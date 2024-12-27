@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSURL *backupFileURLFromFiles;
 @property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 @property (nonatomic, strong) AAAZip *zipArchive;
+@property (nonatomic, strong) FileDownloadManager *downloadManager;
 
 @end
 
@@ -177,7 +178,8 @@
             [UIAlertAction actionWithTitle:NSLocalizedString(@"Continue", @"")
                                      style:UIAlertActionStyleDestructive
                                    handler:^(UIAlertAction * _Nonnull action) {
-                [self.backupRestoreManager backupToDocumentDirectory];
+                self.downloadManager = [[FileDownloadManager alloc] init];
+                [self.backupRestoreManager backupToDocumentDirectory:self.downloadManager];
             }];
             UIAlertAction *cancelAction =
             [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"")

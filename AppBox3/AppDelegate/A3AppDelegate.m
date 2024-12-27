@@ -577,24 +577,41 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 - (void)prepareDirectories {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
-    // Prepairing app group container and iCloud container.
-    NSURL *appGroupContainerURL = [fileManager containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
-    NSLog(@"App Group Container URL: %@", appGroupContainerURL);
-    NSURL *iCloudContainerURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
-    NSLog(@"iCloud container URL: %@", iCloudContainerURL);
-    
+    // Dispatching iCloud container setup to a background queue
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
+        
+        if (ubiquityURL) {
+            NSURL *daysCounterImageURL = [ubiquityURL URLByAppendingPathComponent:A3DaysCounterImageDirectory];
+            
+            NSError *error = nil;
+            [fileManager createDirectoryAtURL:daysCounterImageURL withIntermediateDirectories:YES attributes:nil error:&error];
+            
+            if (error) {
+                FNLOG(@"Failed to create iCloud directory: %@", error.localizedDescription);
+            } else {
+                FNLOG(@"iCloud directory created successfully: %@", daysCounterImageURL.path);
+            }
+        } else {
+            FNLOG(@"iCloud container URL not available.");
+        }
+    });
+
+    // Other directory setups (remain on the main thread if they don't require async execution)
     NSString *applicationSupportPath = [fileManager applicationSupportPath];
     if (![fileManager fileExistsAtPath:applicationSupportPath]) {
         [fileManager createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];
     }
-    if ( ![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]] ) {
+    if (![fileManager fileExistsAtPath:[A3DaysCounterModelManager thumbnailDirectory]]) {
         [fileManager createDirectoryAtPath:[A3DaysCounterModelManager thumbnailDirectory] withIntermediateDirectories:YES attributes:nil error:NULL];
     }
     NSString *imageDirectory = [A3DaysCounterImageDirectory pathInAppGroupContainer];
     if (![fileManager fileExistsAtPath:imageDirectory]) {
         [fileManager createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
     }
+
     [WalletData createDirectories];
+    
     NSString *dataDirectory = [@"data" pathInCachesDirectory];
     if (![fileManager fileExistsAtPath:dataDirectory]) {
         [fileManager createDirectoryAtPath:dataDirectory withIntermediateDirectories:YES attributes:nil error:NULL];

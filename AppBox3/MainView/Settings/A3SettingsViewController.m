@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 @property (nonatomic, strong) MBProgressHUD *HUD;
 @property (nonatomic, copy) NSString *previousMainMenuStyle;
 @property (nonatomic, strong) A3BackupRestoreManager *backupRestoreManager;
+@property (nonatomic, strong) FileDownloadManager *fileDownloadManager;
 
 @end
 
@@ -476,7 +477,8 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (void)exportPhotosVideos {
-    [self.backupRestoreManager exportPhotosVideos];
+    self.fileDownloadManager = [[FileDownloadManager alloc] init];
+    [self.backupRestoreManager exportPhotosVideos:self.fileDownloadManager];
 }
 
 - (void)alertNewDropboxBackupInfo {

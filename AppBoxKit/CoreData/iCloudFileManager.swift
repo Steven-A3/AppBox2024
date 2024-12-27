@@ -19,8 +19,13 @@ public class iCloudConstants: NSObject {
 
 @objcMembers
 public class iCloudFileManager: NSObject {
-    private let fileManager = FileManager.default
+    public static let shared = iCloudFileManager()
     
+    private let fileManager = FileManager.default
+    private var isDownloadInProgress = false
+    private var isUploadInProgress = false
+    private let accessQueue = DispatchQueue(label: "com.iCloudFileManager.accessQueue", attributes: .concurrent)
+
     // Check availability of iCloud container
     public func isICloudAvailable() -> Bool {
         return fileManager.ubiquityIdentityToken != nil
@@ -263,79 +268,108 @@ public class iCloudFileManager: NSObject {
     
     // Objective-C compatible wrapper for downloading MediaFiles
     public func downloadMediaFilesToAppGroup(progressHandler: ((NSNumber) -> Void)?, completion: @escaping (NSError?) -> Void) {
-        // Ensure iCloud is available
+        accessQueue.sync(flags: .barrier) {
+            guard !isDownloadInProgress else {
+                let error = NSError(domain: "iCloudFileManager", code: 3, userInfo: [NSLocalizedDescriptionKey: "A download is already in progress."])
+                Logger.shared.error("A download is already in progress.")
+                completion(error)
+                return
+            }
+            isDownloadInProgress = true
+        }
+        
         guard isICloudAvailable() else {
             let error = NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud is not available."])
+            Logger.shared.error("iCloud is not available.")
+            setDownloadInProgress(false)
             completion(error)
             return
         }
-
-        // Source directory in iCloud
-        let sourceDir = iCloudConstants.MEDIA_FILES_PATH
-
-        // Destination directory in App Group container
+        
         guard let appGroupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
             let error = NSError(domain: "iCloudFileManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "App Group container URL not available."])
+            setDownloadInProgress(false)
             completion(error)
             return
         }
-
+        
+        let sourceDir = iCloudConstants.MEDIA_FILES_PATH
         let destinationDir = appGroupURL.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
-
-        // Perform the download
+        
         downloadAllFiles(
             from: sourceDir,
             to: destinationDir,
             progressHandler: { progress in
-                progressHandler?(NSNumber(value: progress)) // Convert progress to NSNumber for Objective-C
+                progressHandler?(NSNumber(value: progress))
             },
-            completion: { result in
+            completion: { [weak self] result in
+                self?.setDownloadInProgress(false)
                 switch result {
                 case .success():
-                    completion(nil) // No error
+                    completion(nil)
                 case .failure(let error):
-                    completion(error as NSError) // Convert Error to NSError
+                    completion(error as NSError)
                 }
             }
         )
     }
-
-    // Objective-C compatible wrapper for uploading MediaFiles
+    
     public func uploadMediaFilesFromAppGroup(progressHandler: ((NSNumber) -> Void)?, completion: @escaping (NSError?) -> Void) {
-        // Ensure iCloud is available
+        accessQueue.sync(flags: .barrier) {
+            guard !isUploadInProgress else {
+                let error = NSError(domain: "iCloudFileManager", code: 3, userInfo: [NSLocalizedDescriptionKey: "An upload is already in progress."])
+                Logger.shared.error("An upload is already in progress.")
+                completion(error)
+                return
+            }
+            isUploadInProgress = true
+        }
+        
         guard isICloudAvailable() else {
             let error = NSError(domain: "iCloudFileManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "iCloud is not available."])
+            Logger.shared.error("iCloud is not available.")
+            setUploadInProgress(false)
             completion(error)
             return
         }
-
-        // Source directory in App Group container
+        
         guard let appGroupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
             let error = NSError(domain: "iCloudFileManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "App Group container URL not available."])
+            setUploadInProgress(false)
             completion(error)
             return
         }
-
+        
         let sourceDir = appGroupURL.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
-
-        // Destination directory in iCloud
         let targetDir = iCloudConstants.MEDIA_FILES_PATH
-
-        // Perform the upload
+        
         uploadAllFiles(
             from: sourceDir,
             to: targetDir,
             progressHandler: { progress in
-                progressHandler?(NSNumber(value: progress)) // Convert progress to NSNumber for Objective-C
+                progressHandler?(NSNumber(value: progress))
             },
-            completion: { result in
+            completion: { [weak self] result in
+                self?.setUploadInProgress(false)
                 switch result {
                 case .success():
-                    completion(nil) // No error
+                    completion(nil)
                 case .failure(let error):
-                    completion(error as NSError) // Convert Error to NSError
+                    completion(error as NSError)
                 }
             }
         )
+    }
+    
+    private func setDownloadInProgress(_ inProgress: Bool) {
+        accessQueue.async(flags: .barrier) {
+            self.isDownloadInProgress = inProgress
+        }
+    }
+    
+    private func setUploadInProgress(_ inProgress: Bool) {
+        accessQueue.async(flags: .barrier) {
+            self.isUploadInProgress = inProgress
+        }
     }
 }

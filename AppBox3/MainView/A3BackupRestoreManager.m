@@ -66,14 +66,14 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 #pragma mark - Backup Data
 
-- (void)backupData {
+- (void)backupData:(FileDownloadManager *)downloadManager {
 	_backupToDocumentDirectory = NO;
-	[self backupCoreDataStore];
+	[self backupCoreDataStore:downloadManager];
 }
 
-- (void)backupToDocumentDirectory {
+- (void)backupToDocumentDirectory:(FileDownloadManager *)downloadManager {
 	_backupToDocumentDirectory = YES;
-	[self backupCoreDataStore];
+	[self backupCoreDataStore:downloadManager];
 }
 
 - (NSString *)storeFilePath {
@@ -134,7 +134,23 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     }];
 }
 
-- (void)exportPhotosVideos {
+- (void)exportPhotosVideosWith:(NSMutableArray *)fileList fileManager:(NSFileManager *)fileManager {
+    [self addDaysCounterPhotosWith:fileManager fileList:fileList forBackup:NO];
+    [self addWalletPhotosVideosWith:fileManager fileList:fileList forBackup:NO];
+    
+    self.HUD.label.text = NSLocalizedString(@"Compressing", @"Compressing");
+    self.HUD.progress = 0;
+    [self->_hostingView addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    AAAZip *zip = [AAAZip new];
+    zip.delegate = self;
+    zip.encryptZip = NO;
+    self->_backupFilePath = [self uniqueBackupFilenameWithPostfix:@"PhotosVideos" extension:@"zip"];
+    [zip createZipFile:self->_backupFilePath withArray:fileList];
+}
+
+- (void)exportPhotosVideos:(FileDownloadManager *)downloadManager {
     // 압축이 완료되면 UIActivityViewController를 통해 압축 파일을 전달한다.
     _backupToDocumentDirectory = YES;
     
@@ -143,19 +159,14 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    [self addDaysCounterPhotosWith:fileManager fileList:fileList forBackup:NO];
-    [self addWalletPhotosVideosWith:fileManager fileList:fileList forBackup:NO];
-
-    self.HUD.label.text = NSLocalizedString(@"Compressing", @"Compressing");
-    self.HUD.progress = 0;
-    [_hostingView addSubview:self.HUD];
-    [self.HUD showAnimated:YES];
-    
-    AAAZip *zip = [AAAZip new];
-    zip.delegate = self;
-    zip.encryptZip = NO;
-    _backupFilePath = [self uniqueBackupFilenameWithPostfix:@"PhotosVideos" extension:@"zip"];
-    [zip createZipFile:_backupFilePath withArray:fileList];
+    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
+    if (ubiquityURL) {
+        [downloadManager checkAndDownloadFilesAt:ubiquityURL completion:^{
+            [self exportPhotosVideosWith:fileList fileManager:fileManager];
+        }];
+    } else {
+        [self exportPhotosVideosWith:fileList fileManager:fileManager];
+    }
 }
 
 - (void)removeFileIfexists:(NSFileManager *)fileManager tempCoreDataPath:(NSString *)tempCoreDataPath {
@@ -189,80 +200,91 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     return tempCoreDataPath;
 }
 
-- (void)backupCoreDataStore {
+- (void)backupCoreDataAndFiles:(NSFileManager *)fileManager {
     [CoreDataStack.shared.persistentContainer.viewContext reset];
-
+    
     _backupCoreDataStorePath = [self migrateCoreDataStoreToTemp];
-
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSMutableArray *fileList = [NSMutableArray new];
-	_deleteFilesAfterZip = [NSMutableArray new];
-
-	NSString *path;
-	NSString *filename = [fileManager storeFilename];
-
-	if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
-		[fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
-	}
-
-	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
-	if ([fileManager fileExistsAtPath:path]) {
-		[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
-	}
-
-	path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
-	if ([fileManager fileExistsAtPath:path]) {
-		[fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
-	}
-
-	// Backup data files
+    
+    NSMutableArray *fileList = [NSMutableArray new];
+    _deleteFilesAfterZip = [NSMutableArray new];
+    
+    NSString *path;
+    NSString *filename = [fileManager storeFilename];
+    
+    if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
+        [fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
+    }
+    
+    path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
+    if ([fileManager fileExistsAtPath:path]) {
+        [fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
+    }
+    
+    path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
+    if ([fileManager fileExistsAtPath:path]) {
+        [fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
+    }
+    
+    // Backup data files
     [self addDaysCounterPhotosWith:fileManager fileList:fileList forBackup:YES];
     
-	NSArray *holidayCountries = [HolidayData userSelectedCountries];
-	A3HolidaysFlickrDownloadManager *holidaysFlickrDownloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
-	for (NSString *countryCode in holidayCountries) {
-		if ([holidaysFlickrDownloadManager hasUserSuppliedImageForCountry:countryCode]) {
-			NSString *holidayBackground = [[A3HolidaysFlickrDownloadManager sharedInstance] holidayImagePathForCountryCode:countryCode];
-			if ([holidayBackground length]) {
-				if (![fileManager fileExistsAtPath:holidayBackground]) continue;
-				[fileList addObject:
-						@{
-							A3ZipFilename : holidayBackground,
-							A3ZipNewFilename : [holidayBackground lastPathComponent]
-						}
-				];
-			}
-		}
-	}
-
+    NSArray *holidayCountries = [HolidayData userSelectedCountries];
+    A3HolidaysFlickrDownloadManager *holidaysFlickrDownloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+    for (NSString *countryCode in holidayCountries) {
+        if ([holidaysFlickrDownloadManager hasUserSuppliedImageForCountry:countryCode]) {
+            NSString *holidayBackground = [[A3HolidaysFlickrDownloadManager sharedInstance] holidayImagePathForCountryCode:countryCode];
+            if ([holidayBackground length]) {
+                if (![fileManager fileExistsAtPath:holidayBackground]) continue;
+                [fileList addObject:
+                     @{
+                    A3ZipFilename : holidayBackground,
+                    A3ZipNewFilename : [holidayBackground lastPathComponent]
+                }
+                ];
+            }
+        }
+    }
+    
     [self addWalletPhotosVideosWith:fileManager fileList:fileList forBackup:YES];
+    
+    NSDictionary *backupInfoDictionary = @{
+        A3BackupFileVersionKey : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+        A3BackupFileDateKey : [NSDate date],
+        A3BackupFileOSVersionKey : [[UIDevice currentDevice] systemVersion],
+        A3BackupFileSystemModelKey : [A3UIDevice platform],
+        A3BackupFileUserDefaultsKey : [self userDefaultsDictionary],
+        A3BackupFileDeviceUserDefaultsKey : [self deviceUserDefaultsDictionary],
+    };
+    
+    FNLOG(@"%@", backupInfoDictionary);
+    [backupInfoDictionary writeToFile:[A3BackupInfoFilename pathInDocumentDirectory] atomically:YES];
+    [fileList addObject:@{
+        A3ZipFilename : [A3BackupInfoFilename pathInDocumentDirectory],
+        A3ZipNewFilename : A3BackupInfoFilename
+    }];
+    [_deleteFilesAfterZip addObject:[A3BackupInfoFilename pathInDocumentDirectory]];
+    
+    self.HUD.label.text = NSLocalizedString(@"Compressing", @"Compressing");
+    self.HUD.progress = 0;
+    [_hostingView addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
 
-	NSDictionary *backupInfoDictionary = @{
-			A3BackupFileVersionKey : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-			A3BackupFileDateKey : [NSDate date],
-			A3BackupFileOSVersionKey : [[UIDevice currentDevice] systemVersion],
-			A3BackupFileSystemModelKey : [A3UIDevice platform],
-			A3BackupFileUserDefaultsKey : [self userDefaultsDictionary],
-			A3BackupFileDeviceUserDefaultsKey : [self deviceUserDefaultsDictionary],
-	};
-
-	FNLOG(@"%@", backupInfoDictionary);
-	[backupInfoDictionary writeToFile:[A3BackupInfoFilename pathInDocumentDirectory] atomically:YES];
-	[fileList addObject:@{
-			A3ZipFilename : [A3BackupInfoFilename pathInDocumentDirectory],
-			A3ZipNewFilename : A3BackupInfoFilename
-	}];
-	[_deleteFilesAfterZip addObject:[A3BackupInfoFilename pathInDocumentDirectory]];
-
-	self.HUD.label.text = NSLocalizedString(@"Compressing", @"Compressing");
-	self.HUD.progress = 0;
-	[_hostingView addSubview:self.HUD];
-	[self.HUD showAnimated:YES];
-
-	AAAZip *zip = [AAAZip new];
-	zip.delegate = self;
+    AAAZip *zip = [AAAZip new];
+    zip.delegate = self;
     _backupFilePath = [self uniqueBackupFilenameWithPostfix:nil extension:nil];
-	[zip createZipFile:_backupFilePath withArray:fileList];
+    [zip createZipFile:_backupFilePath withArray:fileList];
+}
+
+- (void)backupCoreDataStore:(FileDownloadManager *)downloadManager {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
+    if (ubiquityURL) {
+        [downloadManager checkAndDownloadFilesAt:ubiquityURL completion:^{
+            [self backupCoreDataAndFiles:fileManager];
+        }];
+    } else {
+        [self backupCoreDataAndFiles:fileManager];
+    }
 }
 
 - (void)addToFileList:(NSMutableArray *)fileList forDataFilename:(NSString *)filename fileManager:(NSFileManager *)fileManager {
@@ -591,11 +613,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
                      toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletImageDirectory]];
     [self moveFilesFromURL:[sourceBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]
                      toURL:[targetBaseURL URLByAppendingPathComponent:A3WalletVideoDirectory]];
-    
-    iCloudFileManager *iCloudManager = [iCloudFileManager new];
-    [iCloudManager uploadMediaFilesFromAppGroupWithProgressHandler:NULL completion:^(NSError * _Nullable error) {
-        
-    }];
 }
 
 - (void)migrateUserDefaults:(NSDictionary *)backupInfo version:(float)version {
@@ -646,10 +663,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         [mover moveMediaFilesFrom:sourceBaseURL error:&error];
     }
     [self migrateUserDefaults:backupInfo version:version];
-    iCloudFileManager *iCloudManager = [iCloudFileManager new];
-    [iCloudManager uploadMediaFilesFromAppGroupWithProgressHandler:NULL completion:^(NSError * _Nullable error) {
-        
-    }];
 
     NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
     if (selectedColor) {
@@ -739,13 +752,62 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)moveFilesFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL {
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *files = [fileManager contentsOfDirectoryAtPath:[fromURL path] error:NULL];
-	for (NSString *filename in files) {
-		[fileManager moveItemAtURL:[fromURL URLByAppendingPathComponent:filename]
-							 toURL:[toURL URLByAppendingPathComponent:filename]
-							 error:NULL];
-	}
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
+    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+    
+    NSError *error = nil;
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:[fromURL path] error:&error];
+    if (error) {
+        NSLog(@"Error reading contents of directory at %@: %@", fromURL.path, error.localizedDescription);
+        return;
+    }
+    
+    for (NSString *filename in files) {
+        NSURL *sourceFileURL = [fromURL URLByAppendingPathComponent:filename];
+        NSURL *destinationFileURL = [toURL URLByAppendingPathComponent:filename];
+        
+        if (ubiquityURL) {
+            // Use NSFileCoordinator to coordinate moving to iCloud
+            [fileCoordinator coordinateWritingItemAtURL:destinationFileURL
+                                                 options:NSFileCoordinatorWritingForReplacing
+                                                   error:&error
+                                              byAccessor:^(NSURL *newURL) {
+                NSError *moveError = nil;
+                BOOL success = [fileManager setUbiquitous:YES
+                                                 itemAtURL:sourceFileURL
+                                            destinationURL:newURL
+                                                     error:&moveError];
+                if (!success) {
+                    FNLOG(@"Failed to move file %@ to iCloud: %@", filename, moveError.localizedDescription);
+                } else {
+                    FNLOG(@"Successfully moved file %@ to iCloud", filename);
+                }
+            }];
+            
+            if (error) {
+                FNLOG(@"Error during file coordination for moving %@ to iCloud: %@", filename, error.localizedDescription);
+            }
+        } else {
+            // Use NSFileCoordinator for local move
+            [fileCoordinator coordinateWritingItemAtURL:destinationFileURL
+                                                 options:NSFileCoordinatorWritingForReplacing
+                                                   error:&error
+                                              byAccessor:^(NSURL *newURL) {
+                NSError *moveError = nil;
+                BOOL success = [fileManager moveItemAtURL:sourceFileURL toURL:newURL error:&moveError];
+                if (!success) {
+                    FNLOG(@"Failed to move file %@ locally: %@", filename, moveError.localizedDescription);
+                } else {
+                    FNLOG(@"Successfully moved file %@ locally", filename);
+                }
+            }];
+            
+            if (error) {
+                FNLOG(@"Error during file coordination for moving %@ locally: %@", filename, error.localizedDescription);
+            }
+        }
+    }
 }
 
 - (void)migrationManager:(A3DataMigrationManager *)manager didFinishMigration:(BOOL)success {

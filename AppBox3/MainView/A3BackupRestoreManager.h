@@ -26,9 +26,9 @@ extern NSString *const A3BackupInfoFilename;
 @property (nonatomic, weak) UIView *hostingView;
 @property (nonatomic, weak) UIViewController *hostingViewController;
 
-- (void)backupData;
-- (void)backupToDocumentDirectory;
+- (void)backupData:(FileDownloadManager *)downloadManager;
+- (void)backupToDocumentDirectory:(FileDownloadManager *)downloadManager;
 - (void)restoreDataAt:(NSString *)backupFilePath;
-- (void)exportPhotosVideos;
+- (void)exportPhotosVideos:(FileDownloadManager *)downloadManager;
 
 @end

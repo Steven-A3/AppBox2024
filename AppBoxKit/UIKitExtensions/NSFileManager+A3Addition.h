@@ -18,5 +18,7 @@
 - (NSURL *)storeURL;
 - (NSString *)before2024StoreFilename;
 - (NSString *)storeFilename;
+- (NSURL *)ubiquityStoreURL;
+- (NSURL *)ubiquityMediaFilesURL;
 
 @end

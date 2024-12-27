@@ -30,8 +30,8 @@ typedef NS_ENUM(NSInteger, ObjcLoggerLevel) {
 /// Log a message with a specific level
 - (void)logWithLevel:(ObjcLoggerLevel)level
              message:(NSString *)message
-                file:(NSString *)file
-            function:(NSString *)function
+                file:(const char *)file
+            function:(const char *)function
                 line:(NSInteger)line;
 
 /// Convert log level to string (for internal use)
@@ -40,9 +40,16 @@ typedef NS_ENUM(NSInteger, ObjcLoggerLevel) {
 @end
 
 /// Logging macros
-#define LogDebug(message) [[ObjcLogger shared] logWithLevel:ObjcLoggerLevelDebug message:(message) file:[NSString stringWithUTF8String:__FILE__] function:[NSString stringWithUTF8String:__FUNCTION__] line:__LINE__]
-#define LogInfo(message) [[ObjcLogger shared] logWithLevel:ObjcLoggerLevelInfo message:(message) file:[NSString stringWithUTF8String:__FILE__] function:[NSString stringWithUTF8String:__FUNCTION__] line:__LINE__]
-#define LogWarning(message) [[ObjcLogger shared] logWithLevel:ObjcLoggerLevelWarning message:(message) file:[NSString stringWithUTF8String:__FILE__] function:[NSString stringWithUTF8String:__FUNCTION__] line:__LINE__]
-#define LogError(message) [[ObjcLogger shared] logWithLevel:ObjcLoggerLevelError message:(message) file:[NSString stringWithUTF8String:__FILE__] function:[NSString stringWithUTF8String:__FUNCTION__] line:__LINE__]
+#define Log(level, message) \
+    [[ObjcLogger shared] logWithLevel:(level) \
+                              message:(message) \
+                                 file:__FILE__ \
+                             function:__FUNCTION__ \
+                                 line:__LINE__]
+
+#define LogDebug(message) Log(ObjcLoggerLevelDebug, (message))
+#define LogInfo(message) Log(ObjcLoggerLevelInfo, (message))
+#define LogWarning(message) Log(ObjcLoggerLevelWarning, (message))
+#define LogError(message) Log(ObjcLoggerLevelError, (message))
 
 NS_ASSUME_NONNULL_END

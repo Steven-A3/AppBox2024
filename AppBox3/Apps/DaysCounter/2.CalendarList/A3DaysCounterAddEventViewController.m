@@ -1643,9 +1643,12 @@
     }
     else {
         if ([_originalPhotoID length] && ![_originalPhotoID isEqualToString:_eventItem.photoID]) {
-            // Delete Old Image
-            NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:_originalPhotoID] pathInAppGroupContainer];
-            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+            // Delete old image
+            NSError *error = nil;
+            if (![self deletePhotoFileWithID:_originalPhotoID error:&error]) {
+                NSLog(@"Failed to delete photo file: %@", error);
+                // Optionally handle the error - maybe show an alert to user
+            }
         }
         [_sharedManager modifyEvent:_eventItem];
     }
@@ -2707,6 +2710,51 @@
     _eventItem.notes = textView.text;
 
     _textViewResponder = nil;
+}
+
+// Add helper method for deleting photo file
+- (BOOL)deletePhotoFileWithID:(NSString *)photoID error:(NSError **)error {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
+    
+    if (ubiquityURL) {
+        // iCloud path
+        NSURL *directoryURL = [ubiquityURL URLByAppendingPathComponent:A3DaysCounterImageDirectory];
+        NSURL *photoURL = [directoryURL URLByAppendingPathComponent:photoID];
+        
+        NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+        __block BOOL success = YES;
+        NSError *coordinatorError = nil;
+        __block NSError *strongError = nil; // Temporary strong reference
+
+        [fileCoordinator coordinateWritingItemAtURL:photoURL
+                                            options:NSFileCoordinatorWritingForDeleting
+                                              error:&coordinatorError
+                                         byAccessor:^(NSURL *newURL) {
+            NSError *removeError = nil;
+            success = [fileManager removeItemAtURL:newURL error:&removeError];
+            if (!success) {
+                strongError = removeError; // Use the strong reference
+            }
+        }];
+        
+        if (coordinatorError) {
+            if (error) {
+                *error = coordinatorError;
+            }
+            return NO;
+        }
+        
+        if (!success && error) {
+            *error = strongError; // Assign the strong reference back to the out-parameter
+        }
+        
+        return success;
+    } else {
+        // Local path
+        NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:photoID] pathInAppGroupContainer];
+        return [fileManager removeItemAtPath:path error:error];
+    }
 }
 
 @end

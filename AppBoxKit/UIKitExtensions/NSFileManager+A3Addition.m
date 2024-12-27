@@ -84,4 +84,12 @@
     return @"AppBoxStore2024.sqlite";
 }
 
+- (NSURL *)ubiquityStoreURL {
+    return [self URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
+}
+
+- (NSURL *)ubiquityMediaFilesURL {
+    return [[self ubiquityStoreURL] URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
+}
+
 @end

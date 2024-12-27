@@ -6,11 +6,22 @@
 //  Copyright © 2024 ALLABOUTAPPS. All rights reserved.
 //
 
+//
+//  MediaFileManager.swift
+//  AppBoxKit
+//
+//  Created by BYEONG KWON KWAK on 11/17/24.
+//  Copyright © 2024 ALLABOUTAPPS. All rights reserved.
+//
+
 import Foundation
 
+/// A utility class for moving media files from a source directory to an app group container or iCloud.
+///
 @objcMembers
 public class MediaFileMover: NSObject {
     private let fileManager = FileManager.default
+    private let ubiquityURL = FileManager.default.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
 
     public func moveMediaFiles(from baseURL: URL) throws {
         // Ensure the app group URL is available
@@ -59,12 +70,43 @@ public class MediaFileMover: NSObject {
                     // If item is a directory, move recursively
                     try moveFilesRecursively(from: item, to: targetURL)
                 } else {
-                    do {
-                        // Move file
-                        try fileManager.moveItem(at: item, to: targetURL)
-                        print("Moved file: \(item.lastPathComponent) to \(targetURL.path)")
-                    } catch {
-                        print("Failed to move file: \(item.lastPathComponent), error: \(error)")
+                    // Move file
+                    if ubiquityURL != nil {
+                        // Use NSFileCoordinator for coordinated file operations
+                        let coordinator = NSFileCoordinator()
+                        var coordinatorError: NSError?
+                        
+                        coordinator.coordinate(writingItemAt: targetURL, options: .forReplacing, error: &coordinatorError) { url in
+                            do {
+                                // Check if the file already exists at the target URL
+                                if fileManager.fileExists(atPath: url.path) {
+                                    try fileManager.removeItem(at: url)
+                                    print("Removed existing file at \(url.path)")
+                                }
+                                
+                                // Set the file to ubiquitous (move to iCloud)
+                                try fileManager.setUbiquitous(true, itemAt: item, destinationURL: url)
+                                print("Moved file to iCloud: \(item.lastPathComponent)")
+                            } catch {
+                                print("Error during coordinated write or setting ubiquitous: \(error)")
+                            }
+                        }
+                        
+                        if let error = coordinatorError {
+                            print("NSFileCoordinator error: \(error)")
+                        }
+                    } else {
+                        // Move to app group container if iCloud is not available
+                        do {
+                            if fileManager.fileExists(atPath: targetURL.path) {
+                                try fileManager.removeItem(at: targetURL)
+                                print("Removed existing file at \(targetURL.path)")
+                            }
+                            try fileManager.moveItem(at: item, to: targetURL)
+                            print("Moved file: \(item.lastPathComponent) to \(targetURL.path)")
+                        } catch {
+                            print("Error moving file: \(error)")
+                        }
                     }
                 }
             }
