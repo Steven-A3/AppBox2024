@@ -8,3 +8,5 @@
 **/xcschememanagement.plist
 **/*.xcscheme
 AppBox3.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+buildServer.json
+.vscode/settings.json

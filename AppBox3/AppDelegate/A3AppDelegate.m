@@ -91,7 +91,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 @property (nonatomic, strong) GADRequest *adRequest;
 @property (nonatomic, strong) GADBannerView *adBannerView;
 @property (nonatomic, strong) GADInterstitialAd *adInterstitial;
-@property (nonatomic, strong) FileDownloadManager *fileDownloadManager;
 
 @end
 

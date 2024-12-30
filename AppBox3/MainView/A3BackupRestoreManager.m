@@ -67,12 +67,12 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 #pragma mark - Backup Data
 
-- (void)backupData:(FileDownloadManager *)downloadManager {
+- (void)backupData {
 	_backupToDocumentDirectory = NO;
-	[self backupCoreDataStore:downloadManager];
+	[self backupCoreDataStore];
 }
 
-- (void)backupToDocumentDirectory:(FileDownloadManager *)downloadManager {
+- (void)backupToDocumentDirectory {
 	_backupToDocumentDirectory = YES;
 	[self backupCoreDataStore:downloadManager];
 }
@@ -151,7 +151,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     [zip createZipFile:self->_backupFilePath withArray:fileList];
 }
 
-- (void)exportPhotosVideos:(FileDownloadManager *)downloadManager {
+- (void)exportPhotosVideos {
     // 압축이 완료되면 UIActivityViewController를 통해 압축 파일을 전달한다.
     _backupToDocumentDirectory = YES;
     
@@ -269,7 +269,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     [zip createZipFile:_backupFilePath withArray:fileList];
 }
 
-- (void)backupCoreDataStore:(FileDownloadManager *)downloadManager {
+- (void)backupCoreDataStore {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [self backupCoreDataAndFiles:fileManager];
 }

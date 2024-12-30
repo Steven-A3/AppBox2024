@@ -42,7 +42,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 @property (nonatomic, copy) NSDictionary *dropboxAccountInfo;
 @property (nonatomic, copy) NSArray *dropboxFolderList;
 @property (nonatomic, assign) BOOL restoreInProgress;
-@property (nonatomic, strong) FileDownloadManager *downloadManager;
 
 @end
 
@@ -358,8 +357,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
                     break;
                 }
 				case 1: {
-                    self.downloadManager = [[FileDownloadManager alloc] init];
-					[self.backupRestoreManager backupData:self.downloadManager];
+					[self.backupRestoreManager backupData];
 					break;
                 }
 			}

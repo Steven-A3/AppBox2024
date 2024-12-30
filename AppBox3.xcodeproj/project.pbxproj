@@ -234,7 +234,6 @@
 		681E1284193448230077DCFA /* AAAZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E1283193448230077DCFA /* AAAZip.m */; };
 		68200AC72D19308700D609F2 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68200AC62D19308700D609F2 /* CloudKit.framework */; };
 		682126861843902A009A7964 /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682126851843902A009A7964 /* NSNumberExtensions.m */; };
-		682161582D1E6F5400D0AB6C /* FileDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682161572D1E6F5400D0AB6C /* FileDownloadManager.swift */; };
 		68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */; };
 		6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
 		6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */; };
@@ -1555,7 +1554,6 @@
 		68200AC62D19308700D609F2 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		682126841843902A009A7964 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		682126851843902A009A7964 /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
-		682161572D1E6F5400D0AB6C /* FileDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadManager.swift; sourceTree = "<group>"; };
 		68236CDB186AA7B4006F442B /* A3AppDelegate+passcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+passcode.h"; path = "AppDelegate/A3AppDelegate+passcode.h"; sourceTree = "<group>"; };
 		68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+passcode.m"; path = "AppDelegate/A3AppDelegate+passcode.m"; sourceTree = "<group>"; };
 		6823F6F41863294700E6E90D /* A3YahooCurrency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3YahooCurrency.h; path = Apps/Currency/Model/A3YahooCurrency.h; sourceTree = "<group>"; };
@@ -3445,7 +3443,6 @@
 			isa = PBXGroup;
 			children = (
 				685FB7162D209EE4002030F8 /* CloudKitMediaFileManager.swift */,
-				682161572D1E6F5400D0AB6C /* FileDownloadManager.swift */,
 				687AD80E2CABEC710074CBBD /* CoreDataStack.swift */,
 				68898E1C2D15558D00F62AB3 /* CoreDataStack+Backup.swift */,
 				68898E202D15570500F62AB3 /* CoreDataStack+Delete.swift */,
@@ -7214,7 +7211,6 @@
 				686B6B542B0932F000E39E18 /* A3PasscodeViewController.m in Sources */,
 				686DB4072A2499B0009BC79C /* NSArray+MASShorthandAdditions.m in Sources */,
 				686DB43C2A2499B0009BC79C /* NSFileManager+A3Addition.m in Sources */,
-				682161582D1E6F5400D0AB6C /* FileDownloadManager.swift in Sources */,
 				686B6B552B0932F000E39E18 /* A3PasswordViewController.m in Sources */,
 				686B6B502B0932F000E39E18 /* A3UserDefaults+A3Addition.m in Sources */,
 				686D966929F296E500AACD02 /* CustomTextField.swift in Sources */,
