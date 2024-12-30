@@ -50,49 +50,4 @@ extension CoreDataStack {
             }
         }
     }
-    
-    public func deleteAllFilesInUbiquityContainerInBackground(
-        containerID: String,
-        completion: @escaping (Bool, NSError?) -> Void
-    ) {
-        DispatchQueue.global(qos: .background).async {
-            let fileManager = FileManager.default
-            
-            // Check if iCloud is available with the provided container ID
-            if let ubiquityURL = fileManager.url(forUbiquityContainerIdentifier: containerID) {
-                // Check if the directory exists
-                if fileManager.fileExists(atPath: ubiquityURL.path) {
-                    do {
-                        // Get contents of the directory
-                        let files = try fileManager.contentsOfDirectory(at: ubiquityURL, includingPropertiesForKeys: nil, options: [])
-                        
-                        // Iterate and delete each item
-                        for file in files {
-                            try fileManager.removeItem(at: file)
-                            print("Deleted file: \(file.path)")
-                        }
-                        // Call completion handler with success
-                        DispatchQueue.main.async {
-                            completion(true, nil)
-                        }
-                    } catch let error as NSError {
-                        // Call completion handler with error
-                        DispatchQueue.main.async {
-                            completion(false, error)
-                        }
-                    }
-                } else {
-                    let error = NSError(domain: "iCloudContainerError", code: 404, userInfo: [NSLocalizedDescriptionKey: "The directory does not exist at path: \(ubiquityURL.path)"])
-                    DispatchQueue.main.async {
-                        completion(false, error)
-                    }
-                }
-            } else {
-                let error = NSError(domain: "iCloudContainerError", code: 401, userInfo: [NSLocalizedDescriptionKey: "iCloud is not available for container ID: \(containerID)."])
-                DispatchQueue.main.async {
-                    completion(false, error)
-                }
-            }
-        }
-    }
 }

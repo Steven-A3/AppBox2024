@@ -13,7 +13,6 @@ import CoreData
 class MediaFileCleaner : NSObject {
     private let fileManager = FileManager.default
     private let localBaseURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
-    private let iCloudBaseURL = FileManager.default.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)?.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
 
     private let fileAccessQueue = DispatchQueue(label: "net.allaboutapps.fileAccessQueue") // Serial queue for file operations
 
@@ -93,17 +92,10 @@ class MediaFileCleaner : NSObject {
 
     private func deleteFilesNotInRecords(directory: String, validIDs: Set<String>, fileNameFormat: @escaping (String) -> String?) {
         let localDir = localBaseURL.appendingPathComponent(directory)
-        let iCloudDir = iCloudBaseURL?.appendingPathComponent(directory)
 
         // Perform file deletion asynchronously on the queue
         fileAccessQueue.async {
             self.deleteFilesSafely(from: localDir, validIDs: validIDs, fileNameFormat: fileNameFormat)
-        }
-
-        if let iCloudDir = iCloudDir {
-            fileAccessQueue.async {
-                self.deleteFilesSafely(from: iCloudDir, validIDs: validIDs, fileNameFormat: fileNameFormat)
-            }
         }
     }
 

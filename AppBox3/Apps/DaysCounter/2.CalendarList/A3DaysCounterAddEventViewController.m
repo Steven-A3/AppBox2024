@@ -43,6 +43,8 @@
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
+@import CloudKit;
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -2715,46 +2717,18 @@
 // Add helper method for deleting photo file
 - (BOOL)deletePhotoFileWithID:(NSString *)photoID error:(NSError **)error {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-    
-    if (ubiquityURL) {
-        // iCloud path
-        NSURL *directoryURL = [ubiquityURL URLByAppendingPathComponent:A3DaysCounterImageDirectory];
-        NSURL *photoURL = [directoryURL URLByAppendingPathComponent:photoID];
-        
-        NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        __block BOOL success = YES;
-        NSError *coordinatorError = nil;
-        __block NSError *strongError = nil; // Temporary strong reference
-
-        [fileCoordinator coordinateWritingItemAtURL:photoURL
-                                            options:NSFileCoordinatorWritingForDeleting
-                                              error:&coordinatorError
-                                         byAccessor:^(NSURL *newURL) {
-            NSError *removeError = nil;
-            success = [fileManager removeItemAtURL:newURL error:&removeError];
-            if (!success) {
-                strongError = removeError; // Use the strong reference
-            }
-        }];
-        
-        if (coordinatorError) {
-            if (error) {
-                *error = coordinatorError;
-            }
-            return NO;
-        }
-        
-        if (!success && error) {
-            *error = strongError; // Assign the strong reference back to the out-parameter
-        }
-        
-        return success;
-    } else {
         // Local path
-        NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:photoID] pathInAppGroupContainer];
-        return [fileManager removeItemAtPath:path error:error];
+    NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:photoID] pathInAppGroupContainer];
+    BOOL success = [fileManager removeItemAtPath:path error:error];
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager removeFileWithRecordType:A3DaysCounterImageDirectory customID:photoID completion:^(NSError * _Nullable error) {
+                
+            }];
+        }
     }
+    return success;
 }
 
 @end

@@ -91,6 +91,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 @property (nonatomic, strong) GADRequest *adRequest;
 @property (nonatomic, strong) GADBannerView *adBannerView;
 @property (nonatomic, strong) GADInterstitialAd *adInterstitial;
+@property (nonatomic, strong) FileDownloadManager *fileDownloadManager;
 
 @end
 
@@ -138,6 +139,9 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     [self prepareDirectories];
     
     CoreDataStack *stack = [CoreDataStack shared];
+    if (@available(iOS 17.0, *)) {
+        CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteChange:) name:NSPersistentStoreRemoteChangeNotification object:nil];
     
@@ -189,20 +193,13 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
             [self handleNotification:launchOptions];
             [self addNotificationObservers];
         }
-        iCloudFileManager *fileManager = [[iCloudFileManager alloc] init];
-        [fileManager downloadMediaFilesToAppGroupWithProgressHandler:^(NSNumber * _Nonnull progress) {
-            
-        } completion:^(NSError * _Nullable error) {
-            
-        }];
-        
+
         stack.mediaFileCleanerBlock = ^{
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
                 NSManagedObjectContext *context = [CoreDataStack shared].persistentContainer.viewContext;
                 MediaFileCleaner *cleaner = [[MediaFileCleaner alloc] init];
                 [cleaner cleanUnusedMediaFilesWithContext:context];
             });
-            
         };
 
         [self.window makeKeyAndVisible];
@@ -577,27 +574,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 - (void)prepareDirectories {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
-    // Dispatching iCloud container setup to a background queue
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-        
-        if (ubiquityURL) {
-            NSURL *daysCounterImageURL = [ubiquityURL URLByAppendingPathComponent:A3DaysCounterImageDirectory];
-            
-            NSError *error = nil;
-            [fileManager createDirectoryAtURL:daysCounterImageURL withIntermediateDirectories:YES attributes:nil error:&error];
-            
-            if (error) {
-                FNLOG(@"Failed to create iCloud directory: %@", error.localizedDescription);
-            } else {
-                FNLOG(@"iCloud directory created successfully: %@", daysCounterImageURL.path);
-            }
-        } else {
-            FNLOG(@"iCloud container URL not available.");
-        }
-    });
-
-    // Other directory setups (remain on the main thread if they don't require async execution)
     NSString *applicationSupportPath = [fileManager applicationSupportPath];
     if (![fileManager fileExistsAtPath:applicationSupportPath]) {
         [fileManager createDirectoryAtPath:applicationSupportPath withIntermediateDirectories:YES attributes:nil error:NULL];

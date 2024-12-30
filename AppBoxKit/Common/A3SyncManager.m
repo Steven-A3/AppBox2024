@@ -157,13 +157,13 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	return @"net.allaboutapps.AppBox";
 }
 
-- (CDEICloudFileSystem *)cloudFileSystem {
-	if (!_cloudFileSystem) {
-		_cloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:@"iCloud.net.allaboutapps.AppBox"
-                                                              relativePathToRootInContainer:[self rootDirectoryName]];
-	}
-	return _cloudFileSystem;
-}
+//- (CDEICloudFileSystem *)cloudFileSystem {
+//	if (!_cloudFileSystem) {
+//		_cloudFileSystem = [[CDEICloudFileSystem alloc] initWithUbiquityContainerIdentifier:@"iCloud.net.allaboutapps.AppBox"
+//                                                              relativePathToRootInContainer:[self rootDirectoryName]];
+//	}
+//	return _cloudFileSystem;
+//}
 
 - (void)writeSyncInfoToKeyValueStore:(A3SyncStartDenyReasonValue)reason {
 	NSDictionary *syncInfo = @{
@@ -177,19 +177,19 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	[keyValueStore synchronize];
 }
 
-- (void)disableCloudSync {
-	[_ensemble deleechPersistentStoreWithCompletion:^(NSError *error) {
-		[self reset];
-	}];
-}
+//- (void)disableCloudSync {
+//	[_ensemble deleechPersistentStoreWithCompletion:^(NSError *error) {
+//		[self reset];
+//	}];
+//}
 
 - (void)reset
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
 
-	_ensemble.delegate = nil;
-	_ensemble = nil;
+//	_ensemble.delegate = nil;
+//	_ensemble = nil;
 
 	[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
 	[[A3UserDefaults standardUserDefaults] synchronize];

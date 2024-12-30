@@ -43,6 +43,8 @@
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+@import CloudKit;
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
@@ -366,64 +368,32 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSURL *photoImageURLInTempDirectory = [fieldItem photoImageURLInOriginalDirectory:NO];
     NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
     NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
-    
-    NSError *error = nil;
-    __block BOOL result;
-    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-    
-    // Check if iCloud is available
-    NSURL *ubiquityURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
-    if (ubiquityURL) {
-        // Move photo file to iCloud
-        [coordinator coordinateReadingItemAtURL:photoImageURLInTempDirectory
-                                        options:NSFileCoordinatorReadingWithoutChanges
-                               writingItemAtURL:photoImageURLInOriginalDirectory
-                                        options:NSFileCoordinatorWritingForReplacing
-                                          error:&error
-                                     byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-            if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-                result = [fileManager removeItemAtURL:newWritingURL error:nil];
-                NSAssert(result, @"Failed to delete existing file in iCloud");
-            }
-            result = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:nil];
-            NSAssert(result, @"Failed to move file to iCloud");
-        }];
-        NSAssert(![fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]], @"Temp file not deleted");
-    } else {
-        // Move photo file locally
-        [coordinator coordinateReadingItemAtURL:photoImageURLInTempDirectory
-                                        options:NSFileCoordinatorReadingWithoutChanges
-                               writingItemAtURL:photoImageURLInOriginalDirectory
-                                        options:NSFileCoordinatorWritingForReplacing
-                                          error:&error
-                                     byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-            if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-                result = [fileManager removeItemAtURL:newWritingURL error:nil];
-                NSAssert(result, @"Failed to delete existing file in original directory");
-            }
-            result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:nil];
-            NSAssert(result, @"Failed to move file locally");
-        }];
-        NSAssert([fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]], @"File not moved to original directory");
-        NSAssert(![fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]], @"Temp file not deleted");
-    }
 
-    // Move thumbnail image
-    [coordinator coordinateReadingItemAtURL:thumbnailImageInTempURL
-                                    options:NSFileCoordinatorReadingWithoutChanges
-                           writingItemAtURL:thumbnailImageURL
-                                    options:NSFileCoordinatorWritingForReplacing
-                                      error:&error
-                                 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-        if ([fileManager fileExistsAtPath:[newWritingURL path]]) {
-            result = [fileManager removeItemAtURL:newWritingURL error:nil];
-            NSAssert(result, @"Failed to delete existing thumbnail");
+    if (![fileManager fileExistsAtPath:[photoImageURLInTempDirectory path]]) {
+        return;
+    }
+    if ([fileManager fileExistsAtPath:[photoImageURLInOriginalDirectory path]]) {
+        [fileManager removeItemAtURL:photoImageURLInOriginalDirectory error:nil];
+    }
+    [fileManager moveItemAtURL:photoImageURLInTempDirectory toURL:photoImageURLInOriginalDirectory error:nil];
+
+    if (![fileManager fileExistsAtPath:[thumbnailImageInTempURL path]]) {
+        return;
+    }
+    
+    if ([fileManager fileExistsAtPath:[thumbnailImageURL path]]) {
+        [fileManager removeItemAtURL:thumbnailImageURL error:nil];
+    }
+    [fileManager moveItemAtURL:thumbnailImageInTempURL toURL:thumbnailImageURL error:nil];
+    
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager addFileWithUrl:photoImageURLInOriginalDirectory recordType:A3WalletImageDirectory customID:fieldItem.uniqueID ext:nil completion:^(NSError * _Nullable error) {
+                
+            }];
         }
-        result = [fileManager moveItemAtURL:newReadingURL toURL:newWritingURL error:nil];
-        NSAssert(result, @"Failed to move thumbnail");
-    }];
-    NSAssert([fileManager fileExistsAtPath:[thumbnailImageURL path]], @"Thumbnail not moved to original directory");
-    NSAssert(![fileManager fileExistsAtPath:[thumbnailImageInTempURL path]], @"Temp thumbnail not deleted");
+    }
 }
 
 - (void)deletePhotoFilesForFieldItem:(WalletFieldItem_ *)fieldItem {
@@ -434,17 +404,23 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSURL *thumbnailImageURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:YES]];
     NSURL *thumbnailImageInTempURL = [NSURL fileURLWithPath:[fieldItem photoImageThumbnailPathInOriginal:NO]];
     
-    NSError *error;
-    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-    [coordinator coordinateWritingItemAtURL:photoImageURLInOriginalDirectory
-                                    options:NSFileCoordinatorWritingForDeleting
-                                      error:&error
-                                 byAccessor:^(NSURL *newURL) {
-        [fileManager removeItemAtURL:newURL error:NULL];
-    }];
+    [fileManager removeItemAtURL:photoImageURLInOriginalDirectory error:NULL];
     [fileManager removeItemAtURL:photoImageURLInTempDirectory error:NULL];
     [fileManager removeItemAtPath:[thumbnailImageURL path] error:NULL];
     [fileManager removeItemAtPath:[thumbnailImageInTempURL path] error:NULL];
+    
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            if ([fieldItem.uniqueID length]) {
+                CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+                [manager removeFileWithRecordType:A3WalletImageDirectory customID:fieldItem.uniqueID completion:^(NSError * _Nullable error) {
+                    
+                }];
+            } else {
+                FNLOG(@"WalletFieldItem uniqueID empty!");
+            }
+        }
+    }
 }
 
 - (void)moveVideoFilesToOriginalDirectoryForFieldItem:(WalletFieldItem_ *)fieldItem {
@@ -452,7 +428,6 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
         return;
     }
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
     NSError *error = nil;
     
     // Define URLs for the original and temp video and thumbnail paths
@@ -461,38 +436,17 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSURL *thumbnailImagePath = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:YES]];
     NSURL *thumbnailImageInTemp = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:NO]];
     
-    NSURL *ubiquityURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
-    if (ubiquityURL) {
-        // Coordinate video file move
-        [fileCoordinator coordinateReadingItemAtURL:videoFileURLInTemp
-                                            options:NSFileCoordinatorReadingWithoutChanges
-                                   writingItemAtURL:videoFileURL
-                                            options:NSFileCoordinatorWritingForReplacing
-                                              error:&error
-                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-            // Remove existing file at the destination
-            if ([fileManager fileExistsAtPath:newWritingURL.path]) {
-                [fileManager removeItemAtURL:newWritingURL error:nil];
-            }
-            
-            // Move the video file
-            NSError *moveError = nil;
-            BOOL success = [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:&moveError];
-            if (!success || error) {
-                NSLog(@"Failed to move video file: %@", error.localizedDescription);
-            }
-        }];
-    } else {
-        [fileManager moveItemAtURL:videoFileURLInTemp toURL:videoFileURL error:&error];
-    }
-    
+    [fileManager moveItemAtURL:videoFileURLInTemp toURL:videoFileURL error:&error];
     [fileManager moveItemAtURL:thumbnailImageInTemp toURL:thumbnailImagePath error:&error];
     
-    // Assertions for validation
-    NSAssert([fileManager fileExistsAtPath:videoFileURL.path], @"Video file should exist in the original directory.");
-    NSAssert(![fileManager fileExistsAtPath:videoFileURLInTemp.path], @"Video file should no longer exist in the temp directory.");
-    NSAssert([fileManager fileExistsAtPath:thumbnailImagePath.path], @"Thumbnail should exist in the original directory.");
-    NSAssert(![fileManager fileExistsAtPath:thumbnailImageInTemp.path], @"Thumbnail should no longer exist in the temp directory.");
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager addFileWithUrl:videoFileURL recordType:A3WalletVideoDirectory customID:fieldItem.uniqueID ext:fieldItem.videoExtension completion:^(NSError * _Nullable error) {
+                
+            }];
+        }
+    }
 }
 
 - (void)deleteVideoFilesForFieldItem:(WalletFieldItem_ *)fieldItem {
@@ -501,23 +455,25 @@ static const NSInteger ActionTag_PhotoLibraryEdit = 2;
     NSURL *videoFileURLInTemp = [fieldItem videoFileURLInOriginal:NO];
     NSURL *thumbnailImagePath = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:YES]];
     NSURL *thumbnailImageInTemp = [NSURL fileURLWithPath:[fieldItem videoThumbnailPathInOriginal:NO]];
-    NSError *error;
-    NSURL *ubiquityURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
-    if (ubiquityURL) {
-        NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        [coordinator coordinateWritingItemAtURL:videoFileURL
-                                        options:NSFileCoordinatorWritingForDeleting
-                                          error:&error
-                                     byAccessor:^(NSURL *newURL) {
-            [fileManager removeItemAtURL:newURL error:NULL];
-        }];
-    } else {
-        [fileManager removeItemAtURL:videoFileURL error:NULL];
-    }
+    
+    [fileManager removeItemAtURL:videoFileURL error:NULL];
     [fileManager removeItemAtURL:videoFileURLInTemp error:NULL];
     
     [fileManager removeItemAtPath:[thumbnailImagePath path] error:NULL];
     [fileManager removeItemAtPath:[thumbnailImageInTemp path] error:NULL];
+    
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            if ([fieldItem.uniqueID length]) {
+                CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+                [manager removeFileWithRecordType:A3WalletVideoDirectory customID:fieldItem.uniqueID completion:^(NSError * _Nullable error) {
+                    
+                }];
+            } else {
+                FNLOG(@"WalletFieldItem uniqueID equals empty!");
+            }
+        }
+    }
 }
 
 - (void)removeTempFiles {

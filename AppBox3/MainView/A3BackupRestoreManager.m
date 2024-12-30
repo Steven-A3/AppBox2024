@@ -24,8 +24,9 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "A3UserDefaults+A3Addition.h"
-#import "AppBOxKit/AppBoxKit-Swift.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 #import "WalletData.h"
+@import CloudKit;
 
 NSString *const A3ZipFilename = @"name";
 NSString *const A3ZipNewFilename = @"newname";
@@ -159,14 +160,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-    if (ubiquityURL) {
-        [downloadManager checkAndDownloadFilesAt:ubiquityURL completion:^{
-            [self exportPhotosVideosWith:fileList fileManager:fileManager];
-        }];
-    } else {
-        [self exportPhotosVideosWith:fileList fileManager:fileManager];
-    }
+    [self exportPhotosVideosWith:fileList fileManager:fileManager];
 }
 
 - (void)removeFileIfexists:(NSFileManager *)fileManager tempCoreDataPath:(NSString *)tempCoreDataPath {
@@ -277,14 +271,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (void)backupCoreDataStore:(FileDownloadManager *)downloadManager {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-    if (ubiquityURL) {
-        [downloadManager checkAndDownloadFilesAt:ubiquityURL completion:^{
-            [self backupCoreDataAndFiles:fileManager];
-        }];
-    } else {
-        [self backupCoreDataAndFiles:fileManager];
-    }
+    [self backupCoreDataAndFiles:fileManager];
 }
 
 - (void)addToFileList:(NSMutableArray *)fileList forDataFilename:(NSString *)filename fileManager:(NSFileManager *)fileManager {
@@ -653,14 +640,37 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 - (void)taskAfterDBMigration:(NSString *)backupFilePath backupInfo:(NSDictionary *)backupInfo backupInfoFilePath:(NSString *)backupInfoFilePath fileManager:(NSFileManager *)fileManager sourceBaseURL:(NSURL *)sourceBaseURL version:(float)version {
     // version >= 4.8
     MediaFileMover *mover = [[MediaFileMover alloc] init];
+    NSURL *mediaFilesURL = nil;
     NSURL *appGroupContainerURL = [fileManager containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
-    NSURL *mediaFilesURL = [appGroupContainerURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
+    mediaFilesURL = [appGroupContainerURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
     NSError *error;
     if (version >= 4.8) {
         NSURL *mediaSourceURL = [sourceBaseURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
         [mover moveFilesRecursivelyFrom:mediaSourceURL to:mediaFilesURL error:&error];
     } else {
         [mover moveMediaFilesFrom:sourceBaseURL error:&error];
+    }
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            
+            // Use a weak reference to `manager` to avoid a retain cycle
+            __weak typeof(manager) weakManager = manager;
+            
+            [manager addFilesFrom:mediaFilesURL recordType:A3DaysCounterImageDirectory completion:^(NSError * _Nullable error) {
+                __strong typeof(weakManager) strongManager = weakManager;
+                if (strongManager) {
+                    [strongManager addFilesFrom:mediaFilesURL recordType:A3WalletImageDirectory completion:^(NSError * _Nullable error) {
+                        __strong typeof(weakManager) strongManager = weakManager;
+                        if (strongManager) {
+                            [strongManager addFilesFrom:mediaFilesURL recordType:A3WalletVideoDirectory completion:^(NSError * _Nullable error) {
+                                // Final completion block
+                            }];
+                        }
+                    }];
+                }
+            }];
+        }
     }
     [self migrateUserDefaults:backupInfo version:version];
 
@@ -753,8 +763,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (void)moveFilesFromURL:(NSURL *)fromURL toURL:(NSURL *)toURL {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
     
     NSError *error = nil;
     NSArray *files = [fileManager contentsOfDirectoryAtPath:[fromURL path] error:&error];
@@ -767,45 +775,12 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
         NSURL *sourceFileURL = [fromURL URLByAppendingPathComponent:filename];
         NSURL *destinationFileURL = [toURL URLByAppendingPathComponent:filename];
         
-        if (ubiquityURL) {
-            // Use NSFileCoordinator to coordinate moving to iCloud
-            [fileCoordinator coordinateWritingItemAtURL:destinationFileURL
-                                                 options:NSFileCoordinatorWritingForReplacing
-                                                   error:&error
-                                              byAccessor:^(NSURL *newURL) {
-                NSError *moveError = nil;
-                BOOL success = [fileManager setUbiquitous:YES
-                                                 itemAtURL:sourceFileURL
-                                            destinationURL:newURL
-                                                     error:&moveError];
-                if (!success) {
-                    FNLOG(@"Failed to move file %@ to iCloud: %@", filename, moveError.localizedDescription);
-                } else {
-                    FNLOG(@"Successfully moved file %@ to iCloud", filename);
-                }
-            }];
-            
-            if (error) {
-                FNLOG(@"Error during file coordination for moving %@ to iCloud: %@", filename, error.localizedDescription);
-            }
+        NSError *moveError = nil;
+        BOOL success = [fileManager moveItemAtURL:sourceFileURL toURL:destinationFileURL error:&moveError];
+        if (!success) {
+            FNLOG(@"Failed to move file %@: %@", filename, moveError.localizedDescription);
         } else {
-            // Use NSFileCoordinator for local move
-            [fileCoordinator coordinateWritingItemAtURL:destinationFileURL
-                                                 options:NSFileCoordinatorWritingForReplacing
-                                                   error:&error
-                                              byAccessor:^(NSURL *newURL) {
-                NSError *moveError = nil;
-                BOOL success = [fileManager moveItemAtURL:sourceFileURL toURL:newURL error:&moveError];
-                if (!success) {
-                    FNLOG(@"Failed to move file %@ locally: %@", filename, moveError.localizedDescription);
-                } else {
-                    FNLOG(@"Successfully moved file %@ locally", filename);
-                }
-            }];
-            
-            if (error) {
-                FNLOG(@"Error during file coordination for moving %@ locally: %@", filename, error.localizedDescription);
-            }
+            FNLOG(@"Successfully moved file %@", filename);
         }
     }
 }
@@ -834,19 +809,25 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)removeMediaFiles {
-	[self removeFilesAtDirectory:[A3DaysCounterImageDirectory pathInAppGroupContainer]];
-	[self removeFilesAtDirectory:[A3DaysCounterImageThumbnailDirectory pathInAppGroupContainer]];
-	[self removeFilesAtDirectory:[A3WalletImageDirectory pathInAppGroupContainer]];
-	[self removeFilesAtDirectory:[A3WalletImageThumbnailDirectory pathInAppGroupContainer]];
-	[self removeFilesAtDirectory:[A3WalletVideoDirectory pathInAppGroupContainer]];
-	[self removeFilesAtDirectory:[A3WalletVideoThumbnailDirectory pathInAppGroupContainer]];
+    [self removeFilesAtDirectory:[A3DaysCounterImageDirectory pathInAppGroupContainer]];
+    [self removeFilesAtDirectory:[A3DaysCounterImageThumbnailDirectory pathInAppGroupContainer]];
+    [self removeFilesAtDirectory:[A3WalletImageDirectory pathInAppGroupContainer]];
+    [self removeFilesAtDirectory:[A3WalletImageThumbnailDirectory pathInAppGroupContainer]];
+    [self removeFilesAtDirectory:[A3WalletVideoDirectory pathInAppGroupContainer]];
+    [self removeFilesAtDirectory:[A3WalletVideoThumbnailDirectory pathInAppGroupContainer]];
     
-    iCloudFileManager *iCloudManager = [iCloudFileManager new];
-    [iCloudManager removeAllFilesWithCompletion:^(NSError * _Nullable error) {
-        if (error) {
-            FNLOG(@"%@", error.localizedDescription);
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager deleteAllRecordsFor:A3DaysCounterImageDirectory completion:^(NSError * _Nullable error) {
+                [manager deleteAllRecordsFor:A3WalletImageDirectory completion:^(NSError * _Nullable error) {
+                    [manager deleteAllRecordsFor:A3WalletVideoDirectory completion:^(NSError * _Nullable error) {
+                        
+                    }];
+                }];
+            }];
         }
-    }];
+    }
 }
 
 - (void)removeFilesAtDirectory:(NSString *)path {

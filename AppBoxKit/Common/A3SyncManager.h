@@ -64,8 +64,8 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 
 @interface A3SyncManager : NSObject
 
-@property (nonatomic, readonly, strong) CDEPersistentStoreEnsemble *ensemble;
-@property (nonatomic, strong) CDEICloudFileSystem *cloudFileSystem;
+//@property (nonatomic, readonly, strong) CDEPersistentStoreEnsemble *ensemble;
+//@property (nonatomic, strong) CDEICloudFileSystem *cloudFileSystem;
 @property (nonatomic, copy) NSString *storePath;
 @property (nonatomic, strong) NSFileManager *fileManager;
 

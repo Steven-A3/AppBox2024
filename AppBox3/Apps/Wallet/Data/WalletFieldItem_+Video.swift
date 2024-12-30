@@ -28,17 +28,12 @@ extension WalletFieldItem_ {
         
         let relativePath = "\(iCloudConstants.MEDIA_FILES_PATH)/WalletVideos/\(uniqueID)-video.\(videoExtension)"
         
-        // Try to get the iCloud URL
-        if let ubiquityURL = FileManager.default.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER) {
-            return ubiquityURL.appendingPathComponent(relativePath) as NSURL
-        }
-        
         // Try to get the App Group container URL if iCloud is not available
         if let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) {
             return appGroupURL.appendingPathComponent(relativePath) as NSURL
         }
         
-        // Fallback to nil if neither is available
+        // Fallback to nil if the App Group container URL is not available
         return nil
     }
 
@@ -77,19 +72,12 @@ extension WalletFieldItem_ {
                 try fileManager.removeItem(at: destinationURL as URL)
             }
 
-            // Determine if iCloud is available
-            if let _ = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER) {
-                // Move the video file to iCloud
-                try fileManager.setUbiquitous(true, itemAt: sourceURL as URL, destinationURL: destinationURL as URL)
-            } else {
-                // Move the video file to local storage
-                try fileManager.moveItem(at: sourceURL as URL, to: destinationURL as URL)
-            }
+            // Move the video file to local storage
+            try fileManager.moveItem(at: sourceURL as URL, to: destinationURL as URL)
             return true
         } catch let fileError as NSError {
             setErrorPointer(error, error: fileError)
             return false
         }
     }
-
 }

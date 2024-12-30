@@ -10,6 +10,8 @@
 #import "WalletData.h"
 #import "UIImage+Resizing.h"
 #import <AppBoxKit/AppBoxKit.h>
+#import <AppBoxKit/AppBoxKit-Swift.h>
+@import CloudKit;
 
 @implementation WalletFieldItem_ (initialize)
 
@@ -29,6 +31,18 @@
                         [fileManager removeItemAtURL:newURL error:NULL];
                     }];
                     [fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
+                    if (@available(iOS 17.0, *)) {
+                        if (CKContainer.defaultContainer) {
+                            if ([self.uniqueID length]) {
+                                CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+                                [manager removeFileWithRecordType:A3WalletImageDirectory customID:self.uniqueID  completion:^(NSError * _Nullable error) {
+                                    
+                                }];
+                            } else {
+                                FNLOG(@"WalletFieldItem uniqueID empty");
+                            }
+                        }
+                    }
                     return;
                 }
                 if ([self.hasVideo boolValue])  {
@@ -45,6 +59,18 @@
                     NSString *thumbnalePath = [self videoThumbnailPathInOriginal:YES];
                     if ([fileManager isDeletableFileAtPath:thumbnalePath]) {
                         [fileManager removeItemAtPath:thumbnalePath error:nil];
+                    }
+                    if (@available(iOS 17.0, *)) {
+                        if (CKContainer.defaultContainer) {
+                            if ([self.uniqueID length]) {
+                                CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+                                [manager removeFileWithRecordType:A3WalletVideoDirectory customID:self.uniqueID completion:^(NSError * _Nullable error) {
+                                    
+                                }];
+                            } else {
+                                FNLOG(@"WalletFieldItem uniqueID empty.");
+                            }
+                        }
                     }
                 }
             }
@@ -64,39 +90,9 @@
     NSURL *imageURL = [self photoImageURLInOriginalDirectory:inOriginalDirectory];
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    // Check iCloud availability and if it is not available, return the image from the local directory
-    if (![fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER]) {
-        if ([fileManager fileExistsAtPath:imageURL.path]) {
-            NSData *data = [NSData dataWithContentsOfURL:imageURL];
-            return [UIImage imageWithData:data];
-        }
-    }
-    
-    if ([fileManager isUbiquitousItemAtURL:imageURL]) {
-        NSError *error = nil;
-        NSString *downloadingStatus = nil;
-
-        // Check the downloading status
-        [imageURL getResourceValue:&downloadingStatus forKey:NSURLUbiquitousItemDownloadingStatusKey error:&error];
-        if (error) {
-            NSLog(@"Error checking iCloud file status: %@", error.localizedDescription);
-            return nil;
-        }
-        
-        if ([downloadingStatus isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent] ||
-            [downloadingStatus isEqualToString:NSURLUbiquitousItemDownloadingStatusDownloaded]) {
-            // File is downloaded, load the data
-            NSData *data = [NSData dataWithContentsOfURL:imageURL];
-            return [UIImage imageWithData:data];
-        } else if ([downloadingStatus isEqualToString:NSURLUbiquitousItemDownloadingStatusNotDownloaded]) {
-            // Start downloading the file
-            [fileManager startDownloadingUbiquitousItemAtURL:imageURL error:&error];
-            if (error) {
-                NSLog(@"Error starting iCloud download: %@", error.localizedDescription);
-            } else {
-                NSLog(@"iCloud file download started.");
-            }
-        }
+    if ([fileManager fileExistsAtPath:imageURL.path]) {
+        NSData *data = [NSData dataWithContentsOfURL:imageURL];
+        return [UIImage imageWithData:data];
     }
     
     return nil;
@@ -107,37 +103,23 @@
 - (void)setPhotoImage:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *fileURL = [self photoImageURLInOriginalDirectory:inOriginalDirectory];
-    NSURL *tempDirectoryURL = [NSURL fileURLWithPath:NSTemporaryDirectory() isDirectory:YES];
-    NSURL *tempFileURL = [tempDirectoryURL URLByAppendingPathComponent:fileURL.lastPathComponent];
-    NSError *error = nil;
-
-    // Check iCloud availability
-    NSURL *iCloudContainerURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
-    BOOL isICloudAvailable = (iCloudContainerURL != nil);
-
-    if (isICloudAvailable) {
-        // Remove existing file in iCloud if it exists
-        if ([fileManager fileExistsAtPath:fileURL.path]) {
-            BOOL success = [fileManager removeItemAtURL:fileURL error:&error];
-            NSAssert(success, @"Failed to remove existing file in iCloud: %@", error.localizedDescription);
-        }
-
-        // Save the image temporarily
-        BOOL success = [UIImageJPEGRepresentation(image, 1.0) writeToURL:tempFileURL atomically:YES];
-        NSAssert(success, @"Failed to save image temporarily.");
-
-        // Move the file from the temporary directory to iCloud
-        success = [fileManager setUbiquitous:YES itemAtURL:tempFileURL destinationURL:fileURL error:&error];
-        NSAssert(success, @"Failed to move file to iCloud: %@", error.localizedDescription);
-    } else {
         // iCloud is not available: handle locally
-        if ([fileManager fileExistsAtPath:fileURL.path]) {
-            BOOL success = [fileManager removeItemAtURL:fileURL error:&error];
-            NSAssert(success, @"Failed to remove existing file: %@", error.localizedDescription);
+    if ([fileManager fileExistsAtPath:fileURL.path]) {
+        NSError *error = nil;
+        BOOL success = [fileManager removeItemAtURL:fileURL error:&error];
+        NSAssert(success, @"Failed to remove existing file: %@", error.localizedDescription);
+    }
+    
+    BOOL success = [UIImageJPEGRepresentation(image, 1.0) writeToURL:fileURL atomically:YES];
+    NSAssert(success, @"Failed to save image locally.");
+    
+    if (@available(iOS 17.0, *)) {
+        if (CKContainer.defaultContainer) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager addFileWithUrl:fileURL recordType:A3WalletImageDirectory customID:self.uniqueID ext:nil completion:^(NSError * _Nullable error) {
+                
+            }];
         }
-
-        BOOL success = [UIImageJPEGRepresentation(image, 1.0) writeToURL:fileURL atomically:YES];
-        NSAssert(success, @"Failed to save image locally.");
     }
 }
 
@@ -207,27 +189,7 @@
     if ([fileManager fileExistsAtPath:localURL.path]) {
         return localURL;
     }
-
-    // Check if the file exists in the cloud
-    NSURL *cloudContainerURL = [fileManager URLForUbiquityContainerIdentifier:iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER];
-    if (cloudContainerURL) {
-        NSURL *cloudFileURL = [[cloudContainerURL
-                                URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH]
-                                URLByAppendingPathComponent:A3WalletVideoDirectory];
-        cloudFileURL = [cloudFileURL URLByAppendingPathComponent:filename];
-
-        if ([fileManager fileExistsAtPath:cloudFileURL.path]) {
-            NSError *error = nil;
-            // Copy the file from the cloud to the local directory
-            if ([fileManager copyItemAtURL:cloudFileURL toURL:localURL error:&error]) {
-                return localURL; // Return the local URL after successful copy
-            } else {
-                NSLog(@"Failed to copy video file from iCloud: %@", error.localizedDescription);
-            }
-        }
-    }
-
-    // Return nil if the file could not be found locally or in the cloud
+    // Return nil if the file could not be found locally
     return nil;
 }
 

@@ -35,20 +35,12 @@ extension CoreDataStack {
             Logger.shared.info("CoreDataStack: Setup event occurred.")
         case .import:
             Logger.shared.info("CoreDataStack: Import event occurred.")
-            let fileManager = iCloudFileManager()
-            fileManager.downloadMediaFilesToAppGroup { _ in
-            } completion: { _ in
-            }
+
             guard let mediaFileCleanerBlock = self.mediaFileCleanerBlock else { return }
             mediaFileCleanerBlock()
         case .export:
             coreDataReady = true
             Logger.shared.info("CoreDataStack: Export event occurred.")
-            
-            let fileManager = iCloudFileManager()
-            fileManager.uploadMediaFilesFromAppGroup { _ in
-            } completion: { _ in
-            }
 
         default :
             Logger.shared.info("CoreDataStack: Unknown event occurred.")

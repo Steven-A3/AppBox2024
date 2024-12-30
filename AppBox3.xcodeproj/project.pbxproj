@@ -222,7 +222,6 @@
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		6817C3762CE976FF00019829 /* MediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6817C3752CE976FF00019829 /* MediaFileManager.swift */; };
-		6817C3782CE9879F00019829 /* iCloudFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6817C3772CE9879F00019829 /* iCloudFileManager.swift */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
 		681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
@@ -390,6 +389,7 @@
 		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
+		685FB7172D209EE4002030F8 /* CloudKitMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685FB7162D209EE4002030F8 /* CloudKitMediaFileManager.swift */; };
 		686218DF2591DC3D00266BC5 /* TJDropboxAuthenticator.m in Sources */ = {isa = PBXBuildFile; fileRef = 686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */; };
 		68632E412D0CB97500607E52 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68632E402D0CB97500607E52 /* Logger.swift */; };
 		686490E429B82BD600AF1D39 /* OpenSSL.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686490E329B82BD600AF1D39 /* OpenSSL.xcframework */; };
@@ -1525,7 +1525,6 @@
 		6817830D1902823D003E1BB9 /* A3WalletItemTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemTitleCell.h; sourceTree = "<group>"; };
 		6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleCell.m; sourceTree = "<group>"; };
 		6817C3752CE976FF00019829 /* MediaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFileManager.swift; sourceTree = "<group>"; };
-		6817C3772CE9879F00019829 /* iCloudFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudFileManager.swift; sourceTree = "<group>"; };
 		681983711CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PedometerCollectionViewFlowLayout.h; path = Pedometer/A3PedometerCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PedometerCollectionViewFlowLayout.m; path = Pedometer/A3PedometerCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		681AB7C61E95D2100015F57D /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -1823,6 +1822,7 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		685FB7162D209EE4002030F8 /* CloudKitMediaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitMediaFileManager.swift; sourceTree = "<group>"; };
 		686218D42591DC3D00266BC5 /* TJDropboxAuthenticator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropboxAuthenticator.m; sourceTree = "<group>"; };
 		686218DE2591DC3D00266BC5 /* TJDropboxAuthenticator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropboxAuthenticator.h; sourceTree = "<group>"; };
 		68632E402D0CB97500607E52 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -3444,8 +3444,8 @@
 		680219C42C3A75DF007694F9 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				685FB7162D209EE4002030F8 /* CloudKitMediaFileManager.swift */,
 				682161572D1E6F5400D0AB6C /* FileDownloadManager.swift */,
-				6817C3772CE9879F00019829 /* iCloudFileManager.swift */,
 				687AD80E2CABEC710074CBBD /* CoreDataStack.swift */,
 				68898E1C2D15558D00F62AB3 /* CoreDataStack+Backup.swift */,
 				68898E202D15570500F62AB3 /* CoreDataStack+Delete.swift */,
@@ -7219,7 +7219,6 @@
 				686B6B502B0932F000E39E18 /* A3UserDefaults+A3Addition.m in Sources */,
 				686D966929F296E500AACD02 /* CustomTextField.swift in Sources */,
 				686DB40D2A2499B0009BC79C /* MASConstraint.m in Sources */,
-				6817C3782CE9879F00019829 /* iCloudFileManager.swift in Sources */,
 				687AD80F2CABEC710074CBBD /* CoreDataStack.swift in Sources */,
 				686DB40F2A2499B0009BC79C /* MASViewConstraint.m in Sources */,
 				68898E1F2D15563600F62AB3 /* CoreDataStack+Migration.swift in Sources */,
@@ -7227,6 +7226,7 @@
 				68330B4F2A17748C005EEEBC /* SecuredTextFieldView.swift in Sources */,
 				686DB42F2A2499B0009BC79C /* NSString+conversion.m in Sources */,
 				686DB4102A2499B0009BC79C /* MASViewAttribute.m in Sources */,
+				685FB7172D209EE4002030F8 /* CloudKitMediaFileManager.swift in Sources */,
 				686DB43B2A2499B0009BC79C /* UIViewController+A3Addition.m in Sources */,
 				686B6B5D2B0932F000E39E18 /* A3KeychainUtils.m in Sources */,
 				686B6B4C2B0932F000E39E18 /* A3UIDevice.m in Sources */,

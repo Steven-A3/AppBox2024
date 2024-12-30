@@ -11,6 +11,8 @@
 #import "UIImage+Resizing.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3AppDelegate.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
+@import CloudKit;
 
 @implementation DaysCounterEvent_ (extension)
 
@@ -88,54 +90,21 @@
     
 	if (inOriginalDirectory) {
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-        if (ubiquityURL) {
-            return [[ubiquityURL URLByAppendingPathComponent:A3DaysCounterImageDirectory] URLByAppendingPathComponent:self.photoID];
-        } else {
-            NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInAppGroupContainer];
-            FNLOG(@"\nphotoOriginalPath: %@", path);
-            return [NSURL fileURLWithPath:path];
-        }
+        NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInAppGroupContainer];
+        return [NSURL fileURLWithPath:path];
 	}
-    FNLOG(@"\nphotoTempPath: %@", [self.photoID pathInTemporaryDirectory]);
     return [NSURL fileURLWithPath:[self.photoID pathInTemporaryDirectory] ];
 }
 
 - (UIImage *)photoInOriginalDirectory:(BOOL)inOriginalDirectory {
-    NSURL *ubiquityURL = [[NSFileManager defaultManager] ubiquityMediaFilesURL];
     NSURL *photoURL = [self photoURLInOriginalDirectory:inOriginalDirectory];
     
-    if (ubiquityURL) {
-        NSError *error = nil;
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[photoURL path] error:&error];
-        
-        if (attributes) {
-            NSString *downloadingStatus = attributes[NSURLUbiquitousItemDownloadingStatusKey];
-            
-            if ([downloadingStatus isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent]) {
-                // File is downloaded, read and return UIImage
-                NSData *data = [[NSData alloc] initWithContentsOfURL:photoURL];
-                if (data) {
-                    return [UIImage imageWithData:data];
-                }
-            } else {
-                // File is not downloaded, request the download
-                [[NSFileManager defaultManager] startDownloadingUbiquitousItemAtURL:photoURL error:&error];
-                if (error) {
-                    FNLOG(@"Error starting download: %@", error.localizedDescription);
-                }
-            }
-        } else {
-            FNLOG(@"Error fetching file attributes: %@", error.localizedDescription);
-        }
+    // iCloud is not available, read from the local file system
+    NSData *data = [[NSData alloc] initWithContentsOfURL:photoURL];
+    if (data) {
+        return [UIImage imageWithData:data];
     } else {
-        // iCloud is not available, read from the local file system
-        NSData *data = [[NSData alloc] initWithContentsOfURL:photoURL];
-        if (data) {
-            return [UIImage imageWithData:data];
-        } else {
-            FNLOG(@"Failed to read data from local file system: %@", photoURL);
-        }
+        FNLOG(@"Failed to read data from local file system: %@", photoURL);
     }
 
     // Return a temporary system image if the file is not yet available
@@ -145,65 +114,32 @@
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     self.photoID = [[NSUUID UUID] UUIDString];
-    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
     NSURL *photoURL = [self photoURLInOriginalDirectory:inOriginalDirectory];
     
-    if (inOriginalDirectory && ubiquityURL) {
-        // Save the image temporarily in the temporary directory
-        NSURL *temporaryDirectory = [NSURL fileURLWithPath:NSTemporaryDirectory()];
-        NSURL *tempFileURL = [temporaryDirectory URLByAppendingPathComponent:self.photoID];
-        
-        // Use NSFileCoordinator for writing to the temporary file
-        NSError *error = nil;
-        NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        
-        [fileCoordinator coordinateWritingItemAtURL:tempFileURL options:NSFileCoordinatorWritingForReplacing error:&error byAccessor:^(NSURL *newURL) {
-            BOOL tempSaveSuccess = [UIImageJPEGRepresentation(image, 1.0) writeToURL:newURL atomically:YES];
-            if (!tempSaveSuccess) {
-                NSLog(@"Failed to save the photo to the temporary directory: %@", newURL.path);
-                return;
-            }
-        }];
-        
-        if (error) {
-            NSLog(@"Error during file coordination for temporary save: %@", error.localizedDescription);
+    // Save the file directly to the local file system
+    NSError *error = nil;
+    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+    
+    [fileCoordinator coordinateWritingItemAtURL:photoURL options:NSFileCoordinatorWritingForReplacing error:&error byAccessor:^(NSURL *newURL) {
+        BOOL result = [UIImageJPEGRepresentation(image, 1.0) writeToURL:newURL atomically:YES];
+        if (!result) {
+            NSLog(@"Failed to write photo data: %@", newURL.path);
+        } else {
+            NSLog(@"File successfully saved locally: %@", newURL.path);
+        }
+    }];
+    
+    if (error) {
+        NSLog(@"Error during file coordination for local save: %@", error.localizedDescription);
+    }
+    if (@available(iOS 17.0, *)) {
+        if (!inOriginalDirectory) {
             return;
         }
-        
-        // Use NSFileCoordinator for moving the temporary file to the iCloud directory
-        [fileCoordinator coordinateWritingItemAtURL:photoURL options:NSFileCoordinatorWritingForReplacing error:&error byAccessor:^(NSURL *newURL) {
-            NSError *moveError = nil;
-            BOOL moveToICloudSuccess = [fileManager setUbiquitous:YES
-                                                       itemAtURL:tempFileURL
-                                                  destinationURL:newURL
-                                                           error:&moveError];
-            if (!moveToICloudSuccess) {
-                NSLog(@"Failed to move the file to iCloud: %@", moveError.localizedDescription);
-            } else {
-                NSLog(@"File successfully moved to iCloud: %@", newURL.path);
-            }
+        CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+        [manager addFileWithUrl:photoURL recordType:A3DaysCounterImageDirectory customID:self.photoID ext:nil completion:^(NSError * _Nullable error) {
+            
         }];
-        
-        if (error) {
-            NSLog(@"Error during file coordination for moving to iCloud: %@", error.localizedDescription);
-        }
-    } else {
-        // Save the file directly to the local file system
-        NSError *error = nil;
-        NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        
-        [fileCoordinator coordinateWritingItemAtURL:photoURL options:NSFileCoordinatorWritingForReplacing error:&error byAccessor:^(NSURL *newURL) {
-            BOOL result = [UIImageJPEGRepresentation(image, 1.0) writeToURL:newURL atomically:YES];
-            if (!result) {
-                NSLog(@"Failed to write photo data: %@", newURL.path);
-            } else {
-                NSLog(@"File successfully saved locally: %@", newURL.path);
-            }
-        }];
-        
-        if (error) {
-            NSLog(@"Error during file coordination for local save: %@", error.localizedDescription);
-        }
     }
 }
 
@@ -251,36 +187,7 @@
     NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *ubiquityURL = [[NSFileManager defaultManager] ubiquityMediaFilesURL];
-    if (ubiquityURL) {
-        NSError *error = nil;
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[photoURLInOriginalDirectory path] error:&error];
-        if (attributes) {
-            NSString *downloadingStatus = attributes[NSURLUbiquitousItemDownloadingStatusKey];
-            
-            if ([downloadingStatus isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent]) {
-                // File is downloaded, then copy the file to the temporary directory
-                NSFileManager *fileManager = [[NSFileManager alloc] init];
-                NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-                NSError *error;
-                [fileCoordinator coordinateReadingItemAtURL:photoURLInOriginalDirectory
-                                                    options:NSFileCoordinatorReadingWithoutChanges
-                                           writingItemAtURL:photoURLInTemporaryDirectory
-                                                    options:NSFileCoordinatorWritingForReplacing
-                                                      error:&error
-                                                 byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                    [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:NULL];
-                }];
-            } else {
-                [fileManager startDownloadingUbiquitousItemAtURL:photoURLInOriginalDirectory error:&error];
-                if (error) {
-                    FNLOG(@"Error starting download: %@", error.localizedDescription);
-                }
-            }
-        }
-    } else {
-        [fileManager copyItemAtURL:photoURLInOriginalDirectory toURL:photoURLInTemporaryDirectory error:NULL];
-    }
+    [fileManager copyItemAtURL:photoURLInOriginalDirectory toURL:photoURLInTemporaryDirectory error:NULL];
     
     NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
     NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
@@ -298,32 +205,15 @@
     NSURL *photoURLInTemporaryDirectory = [self photoURLInOriginalDirectory:NO];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-    
-    if (ubiquityURL) {
-        NSError *error = nil;
-        // Delete the file in the iCloud directory
-        [fileManager removeItemAtURL:photoURLInOriginalDirectory error:NULL];
-        NSFileCoordinator* fileCoordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-        [fileCoordinator coordinateReadingItemAtURL:photoURLInTemporaryDirectory
-                                            options:NSFileCoordinatorReadingWithoutChanges
-                                   writingItemAtURL:photoURLInOriginalDirectory
-                                            options:NSFileCoordinatorWritingForReplacing
-                                              error:&error
-                                         byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-            [fileManager removeItemAtURL:newWritingURL error:NULL];
-            [fileManager setUbiquitous:YES itemAtURL:newReadingURL destinationURL:newWritingURL error:NULL];
-        }];
-    } else {
-        [fileManager removeItemAtURL:photoURLInOriginalDirectory error:NULL];
-        [fileManager moveItemAtURL:photoURLInTemporaryDirectory toURL:photoURLInOriginalDirectory error:NULL];
-    }
+    [fileManager removeItemAtURL:photoURLInOriginalDirectory error:NULL];
+    [fileManager moveItemAtURL:photoURLInTemporaryDirectory toURL:photoURLInOriginalDirectory error:NULL];
     
     NSString *thumbnailPath = [self thumbnailPathInOriginalDirectory:YES];
     NSString *thumbnailPathInTemp = [self thumbnailPathInOriginalDirectory:NO];
     
     [fileManager removeItemAtPath:thumbnailPath error:NULL];
     [fileManager moveItemAtPath:thumbnailPathInTemp toPath:thumbnailPath error:NULL];
+    
 }
 
 - (void)deletePhoto {
@@ -341,6 +231,16 @@
     [fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:YES] error:NULL];
     [fileManager removeItemAtPath:[self thumbnailPathInOriginalDirectory:NO] error:NULL];
     
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            // self.photoID may be nil if photo is in the process of being deleted
+            [manager removeFileWithRecordType:A3DaysCounterImageDirectory customID:[photoURL lastPathComponent] completion:^(NSError * _Nullable error) {
+                
+            }];
+        }
+    }
+
     self.photoID = nil;
 }
 

@@ -142,22 +142,6 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
         }
     }
 
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSURL *ubiquityURL = [fileManager ubiquityMediaFilesURL];
-        if (ubiquityURL) {
-            NSString *iCloudImagePath = [[ubiquityURL URLByAppendingPathComponent:A3WalletImageDirectory] path];
-            if (![fileManager fileExistsAtPath:iCloudImagePath]) {
-                NSError *error;
-                [fileManager createDirectoryAtPath:iCloudImagePath withIntermediateDirectories:YES attributes:nil error:&error];
-            }
-            NSString *iCloudVideoPath = [[ubiquityURL URLByAppendingPathComponent:A3WalletVideoDirectory] path];
-            if (![fileManager fileExistsAtPath:iCloudVideoPath]) {
-                NSError *error;
-                [fileManager createDirectoryAtPath:iCloudVideoPath withIntermediateDirectories:YES attributes:nil error:&error];
-            }
-        }
-    });
-
 	NSString *imageThumbnailDirectory = [A3WalletImageThumbnailDirectory pathInCachesDirectory];
     if (![fileManager fileExistsAtPath:imageThumbnailDirectory]) {
         NSError *error;

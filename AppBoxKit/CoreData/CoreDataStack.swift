@@ -11,6 +11,14 @@ import CoreData
 import CloudKit
 
 @objcMembers
+public class iCloudConstants: NSObject {
+    public static let OLD_ICLOUD_CONTAINER_IDENTIFIER: String = "84XB754BWU.com.e2ndesign.TPremium2"
+    public static let ICLOUD_CONTAINER_IDENTIFIER: String = "iCloud.net.allaboutapps.AppBox"
+    public static let APP_GROUP_CONTAINER_IDENTIFIER: String = "group.allaboutapps.appbox"
+    public static let MEDIA_FILES_PATH: String = "Library/AppBox/MediaFiles"
+}
+
+@objcMembers
 public class CoreDataStack: NSObject {
     
     public static let shared = CoreDataStack()

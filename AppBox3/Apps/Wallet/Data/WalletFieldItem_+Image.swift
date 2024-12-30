@@ -58,17 +58,12 @@ extension WalletFieldItem_ {
         // Define the relative path for the image file
         let relativePath = "\(iCloudConstants.MEDIA_FILES_PATH)/WalletImages/\(uniqueID)"
         
-        // Check if iCloud is available
-        if let ubiquityURL = FileManager.default.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER) {
-            return ubiquityURL.appendingPathComponent(relativePath) as NSURL
-        }
-        
         // Use application group container URL if iCloud is not available
         if let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) {
             return appGroupURL.appendingPathComponent(relativePath) as NSURL
         }
         
-        // If neither iCloud nor app group URL is available, return nil
+        // If app group URL is available, return nil
         return nil
     }
 
@@ -106,13 +101,17 @@ extension WalletFieldItem_ {
                 try fileManager.removeItem(at: destinationURL as URL)
             }
 
-            // Determine if iCloud is available
-            if let _ = fileManager.url(forUbiquityContainerIdentifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER) {
-                // Move the file to iCloud
-                try fileManager.setUbiquitous(true, itemAt: sourceURL as URL, destinationURL: destinationURL as URL)
-            } else {
                 // Move the file to local storage
-                try fileManager.moveItem(at: sourceURL as URL, to: destinationURL as URL)
+            try fileManager.moveItem(at: sourceURL as URL, to: destinationURL as URL)
+            if #available(iOS 17.0, *) {
+                let manager = CloudKitMediaFileManagerWrapper.shared
+                manager.addFile(url: destinationURL as URL, recordType: A3WalletImageDirectory, customID: self.uniqueID!, ext: nil) { error in
+                    if let error = error {
+                        print("Failed to add file: \(error.localizedDescription)")
+                    } else {
+                        print("File added successfully.")
+                    }
+                }
             }
             return true
         } catch let fileError as NSError {
