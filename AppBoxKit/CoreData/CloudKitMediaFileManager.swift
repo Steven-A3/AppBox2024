@@ -194,6 +194,7 @@ public actor CloudKitMediaFileManager: CKSyncEngineDelegate {
                     try? FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
                     try? FileManager.default.copyItem(at: assetURL, to: fileURL)
                     Logger.shared.info( "File saved: \(fileURL)")
+                    NotificationCenter.default.post(name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object:nil)
                 }
             }
         }

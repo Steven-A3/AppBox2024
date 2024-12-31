@@ -146,7 +146,7 @@
 	if (originalImage) {
 		return [self makePhotoImageThumbnailWithImage:originalImage inOriginalDirectory:YES];
 	}
-	return nil;
+    return [UIImage systemImageNamed:@"photo.circle.fill"];
 }
 
 - (UIImage *)videoThumbnail {
@@ -156,7 +156,7 @@
 	}
 	NSURL *videoURL = [self videoFileURLInOriginal:YES];
     if (![[NSFileManager defaultManager] fileExistsAtPath:[videoURL path]]) {
-        return nil;
+        return [UIImage imageNamed:@"video"];
     }
 	UIImage *originalImage = [WalletData videoPreviewImageOfURL:videoURL];
 	[self makeVideoThumbnailWithImage:originalImage inOriginalDirectory:YES];

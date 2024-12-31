@@ -74,7 +74,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 - (void)backupToDocumentDirectory {
 	_backupToDocumentDirectory = YES;
-	[self backupCoreDataStore:downloadManager];
+	[self backupCoreDataStore];
 }
 
 - (NSString *)storeFilePath {
