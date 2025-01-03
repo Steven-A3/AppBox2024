@@ -24,6 +24,7 @@ struct CloudWaitView: View {
             if let userInfo = notification.userInfo {
                 if let event = userInfo["event"] as? NSPersistentCloudKitContainer.Event {
                     if event.type == .export {
+                        Logger.shared.info("CloudWaitView: Export event occurred.")
                         guard let completion = self.completion else { return }
                         completion()
                     }

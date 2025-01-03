@@ -73,7 +73,7 @@ extension CoreDataStack {
 
             if iCloudAvailable {
                 // Query existing entities via CKRecord
-                let container = CKContainer.default()
+                let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
                 let privateDatabase = container.privateCloudDatabase
                 let query = CKQuery(recordType: "CD_" + entityName, predicate: NSPredicate(value: true))
                 
@@ -127,6 +127,6 @@ extension CoreDataStack {
     }
     
     public func V47StoreURL() -> URL {
-        appGroupContainerURL()!.appendingPathComponent("Library/AppBox/AppBoxStore.sqlite")
+        appGroupContainerURL()!.appendingPathComponent("AppBoxStore.sqlite")
     }
 }

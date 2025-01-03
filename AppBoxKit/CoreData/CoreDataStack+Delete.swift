@@ -50,4 +50,64 @@ extension CoreDataStack {
             }
         }
     }
+    
+    public func resetCloudKitSync(_ completion: @escaping @convention(block) (Bool, Error?) -> Void) {
+        let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
+        deleteAllCustomZones(from: container
+        ) { result in
+            switch result {
+            case .success:
+                print("Successfully reset CloudKit sync.")
+                completion(true, nil)
+            case .failure(let error):
+                print("Failed to reset CloudKit sync: \(error.localizedDescription)")
+                completion(false, error)
+            }
+        }
+    }
+    
+    public func deleteAllCustomZones(from container: CKContainer, completion: @escaping (Result<Void, Error>) -> Void) {
+        let database = container.privateCloudDatabase
+        
+        // Fetch all record zones
+        database.fetchAllRecordZones { zones, error in
+            if let error = error {
+                print("Failed to fetch zones: \(error.localizedDescription)")
+                completion(.failure(error))
+                return
+            }
+            
+            guard let zones = zones else {
+                print("No zones found.")
+                completion(.success(()))
+                return
+            }
+            
+            // Extract the zone IDs from the zones
+            let customZoneIDs = zones.map { $0.zoneID }
+            
+            if customZoneIDs.isEmpty {
+                print("No custom zones to delete.")
+                completion(.success(()))
+                return
+            }
+            
+            // Create an operation to delete the custom zones
+            let modifyZonesOperation = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: customZoneIDs)
+            
+            modifyZonesOperation.modifyRecordZonesResultBlock = { result in
+                switch result {
+                case .success:
+                    print("Successfully deleted all custom zones.")
+                    completion(.success(()))
+                case .failure(let error):
+                    print("Failed to delete custom zones: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+            }
+            
+            // Add the operation to the database
+            database.add(modifyZonesOperation)
+        }
+    }
 }

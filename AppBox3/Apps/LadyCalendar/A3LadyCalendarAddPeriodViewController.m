@@ -881,17 +881,15 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	_periodItem.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:_periodItem.startDate options:0];
 
 	if ( _periodItem.endDate == nil) {
-		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Please input end date.", @"Please input end date.") title:nil];
+        [[UIApplication sharedApplication] showAlertWithTitle:nil message:NSLocalizedString(@"Please input end date.", nil)];
         return;
     }
     else if ( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ) {
-		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The start date must be before the end date.", nil)
-										   title:NSLocalizedString(@"Cannot Save Period.", nil)];
+        [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Cannot Save Period.", nil) message:NSLocalizedString(@"Please input end date.", nil)];
         return;
     }
     else if ( [_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ) {
-		[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"The new date you entered overlaps with previous dates.", @"The new date you entered overlaps with previous dates.")
-										   title:NSLocalizedString(@"Info", @"Info")];
+        [[UIApplication sharedApplication] showAlertWithTitle:NSLocalizedString(@"Info", @"Info") message:NSLocalizedString(@"The new date you entered overlaps with previous dates.", nil)];
         return;
     }
     if ( _prevPeriod && !_isCustomCycleLengthMode ) {

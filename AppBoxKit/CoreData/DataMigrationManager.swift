@@ -13,8 +13,8 @@ import SwiftUI
 class DataMigrationManager: NSObject, ObservableObject {
     
     // Core Data Persistent Containers
-    var oldPersistentContainer: NSPersistentContainer
-    var newPersistentContainer: NSPersistentContainer
+    var oldPersistentContainer: NSPersistentContainer?
+    var newPersistentContainer: NSPersistentContainer?
     
     // Progress Tracking
     @Published var progress: Double = 0.0
@@ -27,10 +27,9 @@ class DataMigrationManager: NSObject, ObservableObject {
     private let migrationQueue = OperationQueue()
     
     @objc public
-    init(oldPersistentContainer: NSPersistentContainer, newPersistentContainer: NSPersistentContainer) {
-        self.oldPersistentContainer = oldPersistentContainer
-        self.newPersistentContainer = newPersistentContainer
-
+    override init() {
+        super.init()
+        
         migrationQueue.maxConcurrentOperationCount = 1 // Adjust concurrency as needed
 #if DEBUG
         // Check if we are running in a preview environment in DEBUG mode
@@ -44,6 +43,9 @@ class DataMigrationManager: NSObject, ObservableObject {
     
     @objc public
     func migrateData(fromV3: Bool, completion: @escaping () -> Void) {
+        let oldStoreURL = CoreDataStack.shared.V47StoreURL()
+        self.oldPersistentContainer = CoreDataStack.shared.loadPersistentContainer(modelName: "AppBox3", storeURL: oldStoreURL)
+        self.newPersistentContainer = CoreDataStack.shared.persistentContainer
         isMigrating = true
         progress = 0.0
         
@@ -61,12 +63,12 @@ class DataMigrationManager: NSObject, ObservableObject {
         ]
         
         let totalEntities = entitiesToMigrate.count
-        newPersistentContainer.viewContext.automaticallyMergesChangesFromParent = false
+        newPersistentContainer!.viewContext.automaticallyMergesChangesFromParent = false
         
         for (index, entityName) in entitiesToMigrate.enumerated() {
             let operation = MigrationOperation(
-                context: oldPersistentContainer.viewContext,
-                newContext: newPersistentContainer.viewContext,
+                context: oldPersistentContainer!.viewContext,
+                newContext: newPersistentContainer!.viewContext,
                 entityName: entityName,
                 batchSize: 3000,
                 isFromV3: fromV3
@@ -89,7 +91,7 @@ class DataMigrationManager: NSObject, ObservableObject {
             
             guard let self = self else { return }
 
-            newPersistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+            newPersistentContainer?.viewContext.automaticallyMergesChangesFromParent = true
 
             let timeElapsed = Date().timeIntervalSince(startTime)
             let delayTime = max(2.0 - timeElapsed, 0)
@@ -104,6 +106,9 @@ class DataMigrationManager: NSObject, ObservableObject {
     }
     
     private func cleanupMemory() {
+        guard let oldPersistentContainer = oldPersistentContainer, let newPersistentContainer = newPersistentContainer else {
+            return
+        }
         oldPersistentContainer.viewContext.reset()
         newPersistentContainer.viewContext.reset()
         
@@ -151,8 +156,15 @@ class DataMigrationManager: NSObject, ObservableObject {
         }
 #endif
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.migrateData(fromV3: true) {
+        self.migrateData(fromV3: true) {
+            if #available(iOS 17.0, *) {
+                let mediaManager = CloudKitMediaFileManagerWrapper.shared
+                let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
+                
+                mediaManager.addAllMediaFiles(from: url) { error in
+                    completion()
+                }
+            } else {
                 completion()
             }
         }

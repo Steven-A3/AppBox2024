@@ -286,6 +286,8 @@
 		6836C0092BA27D110065BE1A /* LandscapeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6836C0082BA27D110065BE1A /* LandscapeViewController.m */; };
 		683D68461DBC5C00008C47C9 /* ACSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68401DBC5C00008C47C9 /* ACSimpleKeychain.m */; };
 		683D68471DBC5C00008C47C9 /* TJDropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 683D68431DBC5C00008C47C9 /* TJDropbox.m */; };
+		683E266F2D23726B00866049 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683E266E2D23726B00866049 /* PersistenceController.swift */; };
+		683E26712D23830000866049 /* WalletItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683E26702D23830000866049 /* WalletItemListView.swift */; };
 		683F56132A1EBCE600684674 /* WultraPassphraseMeter in Frameworks */ = {isa = PBXBuildFile; productRef = 683F56122A1EBCE600684674 /* WultraPassphraseMeter */; };
 		683F56152A1EBCE600684674 /* WultraPassphraseMeterCore in Frameworks */ = {isa = PBXBuildFile; productRef = 683F56142A1EBCE600684674 /* WultraPassphraseMeterCore */; };
 		683F56172A1EBCE600684674 /* WultraPassphraseMeterENDictionary in Frameworks */ = {isa = PBXBuildFile; productRef = 683F56162A1EBCE600684674 /* WultraPassphraseMeterENDictionary */; };
@@ -1661,6 +1663,8 @@
 		683D68421DBC5C00008C47C9 /* TJDropbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJDropbox.h; sourceTree = "<group>"; };
 		683D68431DBC5C00008C47C9 /* TJDropbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJDropbox.m; sourceTree = "<group>"; };
 		683D684D1DBC5F3A008C47C9 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		683E266E2D23726B00866049 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		683E26702D23830000866049 /* WalletItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletItemListView.swift; sourceTree = "<group>"; };
 		68425D561977BD5F007C1AAE /* DaysCounterReminder+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterReminder+extension.h"; sourceTree = "<group>"; };
 		68425D571977BD5F007C1AAE /* DaysCounterReminder+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DaysCounterReminder+extension.m"; sourceTree = "<group>"; };
 		68425D591977BF63007C1AAE /* DaysCounterFavorite+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DaysCounterFavorite+extension.h"; sourceTree = "<group>"; };
@@ -3559,6 +3563,8 @@
 		680A633829BA9AE60020B964 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				683E26702D23830000866049 /* WalletItemListView.swift */,
+				683E266E2D23726B00866049 /* PersistenceController.swift */,
 				684AE51D29E7EC9E00589D62 /* Main.storyboard */,
 				684AE51A29E7EC8E00589D62 /* ChangePasswordViewController.swift */,
 				680A633A29BA9D780020B964 /* AppBox3-Bridging-Header.h */,
@@ -6553,6 +6559,7 @@
 				6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */,
 				680886D81891751B0093FD97 /* A3ClockInfo.m in Sources */,
 				68F14FE819485E8500159EAD /* A3DaysCounterEventListNameCell.m in Sources */,
+				683E26712D23830000866049 /* WalletItemListView.swift in Sources */,
 				68F1C8C818D7F37D009FAE8A /* A3LadyCalendarDetailViewController.m in Sources */,
 				68F1500919485E8500159EAD /* A3DaysCounterChangeLocationViewController.m in Sources */,
 				68143D5718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m in Sources */,
@@ -6736,6 +6743,7 @@
 				688EF67B2CB2679B00996A71 /* Pedometer_+CoreDataProperties.swift in Sources */,
 				68B6A2AA18CEC76D004084EF /* A3LoanCalcExtraPaymentViewController.m in Sources */,
 				68A6BA7D1E7FC29500889051 /* A3WhatsNewFirstPageViewController.m in Sources */,
+				683E266F2D23726B00866049 /* PersistenceController.swift in Sources */,
 				68F1C8C118D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m in Sources */,
 				68F32E51188AC3C600248F16 /* UIViewController+tableViewStandardDimension.m in Sources */,
 				680D639918CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m in Sources */,
@@ -7940,7 +7948,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.4;
+				CURRENT_PROJECT_VERSION = 4.8.0.5;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -8001,7 +8009,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.4;
+				CURRENT_PROJECT_VERSION = 4.8.0.5;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -8398,7 +8406,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.8.0.4;
+				CURRENT_PROJECT_VERSION = 4.8.0.5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -8445,7 +8453,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4.8.0.4;
+				CURRENT_PROJECT_VERSION = 4.8.0.5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_NS_ASSERTIONS = NO;

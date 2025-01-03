@@ -18,13 +18,9 @@ public class MigrationHostingViewController: UIViewController {
     // The SwiftUI view that we want to expose to Objective-C
     private var hostingController: UIHostingController<MigrationView>?
     
-    // Persistent Container for the old database version
-    private var oldPersistentContainer: NSPersistentContainer
-    
     // Custom initializer to accept the oldPersistentContainer
     @objc
-    public init(oldPersistentContainer: NSPersistentContainer, completion: (() -> Void)? = nil) {
-        self.oldPersistentContainer = oldPersistentContainer
+    public init(completion: (() -> Void)? = nil) {
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,7 +35,7 @@ public class MigrationHostingViewController: UIViewController {
         super.viewDidLoad()
         
         // Initialize the SwiftUI view with oldPersistentContainer and completion handler
-        let migrationView = MigrationView(oldPersistentContainer: oldPersistentContainer, completion: completion)
+        let migrationView = MigrationView(completion: completion)
         
         // Wrap the SwiftUI view in a UIHostingController
         hostingController = UIHostingController(rootView: migrationView)

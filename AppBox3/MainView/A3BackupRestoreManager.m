@@ -653,22 +653,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     if (@available(iOS 17.0, *)) {
         if ([CKContainer defaultContainer]) {
             CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
-            
-            // Use a weak reference to `manager` to avoid a retain cycle
-            __weak typeof(manager) weakManager = manager;
-            
-            [manager addFilesFrom:mediaFilesURL recordType:A3DaysCounterImageDirectory completion:^(NSError * _Nullable error) {
-                __strong typeof(weakManager) strongManager = weakManager;
-                if (strongManager) {
-                    [strongManager addFilesFrom:mediaFilesURL recordType:A3WalletImageDirectory completion:^(NSError * _Nullable error) {
-                        __strong typeof(weakManager) strongManager = weakManager;
-                        if (strongManager) {
-                            [strongManager addFilesFrom:mediaFilesURL recordType:A3WalletVideoDirectory completion:^(NSError * _Nullable error) {
-                                // Final completion block
-                            }];
-                        }
-                    }];
-                }
+            [manager addAllMediaFilesFrom:mediaFilesURL completion:^(NSError * _Nullable error) {
+                // Final completion block
             }];
         }
     }
@@ -720,7 +706,7 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
             storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore2024.sqlite"];
         }
         NSPersistentContainer *sourceContainer = [coreDataStack loadPersistentContainerWithModelName:modelName storeURL:storeURL];
-        self.dataMigrationManager = [[DataMigrationManager alloc] initWithOldPersistentContainer:sourceContainer newPersistentContainer:coreDataStack.persistentContainer];
+        self.dataMigrationManager = [[DataMigrationManager alloc] init];
         [self.dataMigrationManager migrateDataFromV3:version < 4.8
                                           completion:^{
             // Delete Store file

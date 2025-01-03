@@ -115,7 +115,8 @@ public actor CloudKitMediaFileManager: CKSyncEngineDelegate {
     }
     
     private func deleteFromCloudKit(recordType: String, customID: String) {
-        let recordID = CKRecord.ID(recordName: customID)
+        let zoneID = CKRecordZone.ID(zoneName: Self.zoneName)
+        let recordID = CKRecord.ID(recordName: customID, zoneID: zoneID)
         syncEngine.state.add(pendingRecordZoneChanges: [.deleteRecord(recordID)])
     }
     
@@ -276,7 +277,9 @@ extension CloudKitMediaFileManager {
                     operation = CKQueryOperation(cursor: cursor)
                 } else {
                     let query = CKQuery(recordType: recordType, predicate: NSPredicate(value: true))
+                    let zoneID = CKRecordZone.ID(zoneName: Self.zoneName)
                     operation = CKQueryOperation(query: query)
+                    operation.zoneID = zoneID
                 }
                 
                 var recordsToDelete: [CKRecord.ID] = []
@@ -337,7 +340,7 @@ extension CloudKitMediaFileManager {
             }
         } while cursor != nil
     }
-
+    
     
     private func fetchRecords(for cursor: CKQueryOperation.Cursor?) async throws -> [CKRecord.ID] {
         try await withCheckedThrowingContinuation { continuation in
@@ -372,6 +375,51 @@ extension CloudKitMediaFileManager {
             
             operation.configuration.isLongLived = true
             Self.container!.privateCloudDatabase.add(operation)
+        }
+    }
+    
+    /// Ensures a custom record zone exists in the private database. If not, it creates the zone using CKModifyRecordZonesOperation.
+    /// - Parameters:
+    ///   - zoneName: The name of the custom record zone.
+    ///   - completion: A completion handler called with an optional error.
+    func ensureMediaFilesRecordZoneExists(completion: @escaping (Error?) -> Void) {
+        let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
+        let privateDatabase = container.privateCloudDatabase
+        let zoneID = CKRecordZone.ID(zoneName: Self.zoneName)
+        
+        // Fetch existing zones to check if the zone already exists
+        privateDatabase.fetch(withRecordZoneID: zoneID) { fetchedZone, error in
+            if let ckError = error as? CKError, ckError.code == .zoneNotFound {
+                // Zone not found; create it
+                print("Record zone \(Self.zoneName) not found. Creating it now.")
+                
+                let newZone = CKRecordZone(zoneID: zoneID)
+                let modifyOperation = CKModifyRecordZonesOperation(
+                    recordZonesToSave: [newZone],
+                    recordZoneIDsToDelete: nil
+                )
+                
+                modifyOperation.modifyRecordZonesResultBlock = { result in
+                    switch result {
+                    case .success:
+                        print("Successfully created record zone: \(Self.zoneName)")
+                        completion(nil)
+                    case .failure(let error):
+                        print("Failed to create record zone: \(error.localizedDescription)")
+                        completion(error)
+                    }
+                }
+                
+                privateDatabase.add(modifyOperation)
+            } else if let fetchedZone = fetchedZone {
+                // Zone already exists
+                print("Record zone \(fetchedZone.zoneID.zoneName) already exists.")
+                completion(nil)
+            } else if let otherError = error {
+                // Handle other errors
+                print("Error fetching record zone: \(otherError.localizedDescription)")
+                completion(otherError)
+            } 
         }
     }
 }
@@ -415,6 +463,46 @@ public class CloudKitMediaFileManagerWrapper: NSObject {
             await manager.deleteAllRecords(for: recordType)
             DispatchQueue.main.async {
                 completion(nil)
+            }
+        }
+    }
+    
+    @objc public func addAllMediaFiles(from mediaFilesURL: URL, completion: @escaping (Error?) -> Void) {
+        Task {
+            await manager.ensureMediaFilesRecordZoneExists { error in
+                let manager = Self.shared
+                
+                // Add DaysCounterImages
+                manager.addFiles(from: mediaFilesURL, recordType: A3DaysCounterImageDirectory) { error in
+                    guard error == nil else {
+                        completion(error)
+                        return
+                    }
+                    
+                    // Add WalletImages
+                    manager.addFiles(from: mediaFilesURL, recordType: A3WalletImageDirectory) { error in
+                        guard error == nil else {
+                            completion(error)
+                            return
+                        }
+                        
+                        // Add WalletVideos
+                        manager.addFiles(from: mediaFilesURL, recordType: A3WalletVideoDirectory) { error in
+                            // Final completion block
+                            completion(error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc public func ensureMediaFilesRecordZoneExists(completion: @escaping (Error?) -> Void) {
+        Task {
+            await manager.ensureMediaFilesRecordZoneExists { error in
+                DispatchQueue.main.async {
+                    completion(error)
+                }
             }
         }
     }

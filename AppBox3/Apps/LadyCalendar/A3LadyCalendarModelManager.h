@@ -13,7 +13,6 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 
 @property (nonatomic, strong) LadyCalendarAccount_ *currentAccount;
 
-+ (void)alertMessage:(NSString*)message title:(NSString*)title;
 - (NSString *)defaultAccountName;
 - (void)prepare;
 - (void)prepareAccount;

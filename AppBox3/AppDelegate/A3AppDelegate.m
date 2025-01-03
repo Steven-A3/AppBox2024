@@ -107,6 +107,67 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
+- (void)doVersionCheck:(NSString *)activeVersion launchOptions:(NSDictionary * _Nullable)launchOptions stack:(CoreDataStack *)stack {
+    if (!self->_previousVersion) {
+        // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
+        // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
+        self->_firstRunAfterInstall = YES;
+        [A3KeychainUtils removePassword];
+        [self initializePasscodeUserDefaults];
+        
+        [self favoriteMenuDictionary];
+        
+        [self setDefaultValues];
+        
+        [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
+        [[A3UserDefaults standardUserDefaults] synchronize];
+        
+        [stack setupStackWithCompletion:^{
+        }];
+        
+        [self setupMainMenuViewController];
+        [self handleNotification:launchOptions];
+        [self addNotificationObservers];
+    } else if (![self->_previousVersion isEqualToString:activeVersion]) {
+        // First run after update.
+        
+        if ([self->_previousVersion compare:@"4.7.7" options:NSNumericSearch] == NSOrderedAscending) {
+            [self migrateV47StoreFilesToAfterV48];
+        }
+        if ([self->_previousVersion compare:@"4.8" options:NSNumericSearch] == NSOrderedAscending) {
+            [self migratePre2024MediaFiles];
+        }
+        
+        MigrationHostingViewController *vc =
+        [[MigrationHostingViewController alloc] initWithCompletion:^{
+            [self setupMainMenuViewController];
+            [self handleNotification:launchOptions];
+            [self addNotificationObservers];
+            
+            [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
+            [[A3UserDefaults standardUserDefaults] synchronize];
+        }];
+        self.window.rootViewController = vc;
+    } else {
+        [stack setupStackWithCompletion:^{
+        }];
+        
+        [self setupMainMenuViewController];
+        [self handleNotification:launchOptions];
+        [self addNotificationObservers];
+    }
+    
+    stack.mediaFileCleanerBlock = ^{
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
+            NSManagedObjectContext *context = [CoreDataStack shared].persistentContainer.viewContext;
+            MediaFileCleaner *cleaner = [[MediaFileCleaner alloc] init];
+            [cleaner cleanUnusedMediaFilesWithContext:context];
+        });
+    };
+    
+    [self.window makeKeyAndVisible];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #ifdef  DEBUG
     [self experiments];
@@ -138,71 +199,17 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     [self prepareDirectories];
     
     CoreDataStack *stack = [CoreDataStack shared];
-    if (@available(iOS 17.0, *)) {
-        CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
-    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteChange:) name:NSPersistentStoreRemoteChangeNotification object:nil];
     
-    [stack setupStackWithCompletion:^{
-        FNLOG(@"Completion of setupStackWithCompletion");
-        
-        if (!self->_previousVersion) {
-            // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
-            // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
-            self->_firstRunAfterInstall = YES;
-            [A3KeychainUtils removePassword];
-            [self initializePasscodeUserDefaults];
-            
-            [self favoriteMenuDictionary];
-            
-            [self setDefaultValues];
-            
-            [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
-            [[A3UserDefaults standardUserDefaults] synchronize];
-           
-            [self setupMainMenuViewController];
-            [self handleNotification:launchOptions];
-            [self addNotificationObservers];
-        } else if (![self->_previousVersion isEqualToString:activeVersion]) {
-            // First run after update.
-            
-            if ([self->_previousVersion compare:@"4.7.7" options:NSNumericSearch] == NSOrderedAscending) {
-                [self migrateV47StoreFilesToAfterV48];
-            }
-            if ([self->_previousVersion compare:@"4.8" options:NSNumericSearch] == NSOrderedAscending) {
-                [self migratePre2024MediaFiles];
-            }
-
-            NSURL *storeURL = [stack V47StoreURL];
-            NSPersistentContainer *container = [stack loadPersistentContainerWithModelName:@"AppBox3" storeURL:storeURL];
-            MigrationHostingViewController *vc =
-            [[MigrationHostingViewController alloc] initWithOldPersistentContainer:container
-                                                                        completion:^{
-                [self setupMainMenuViewController];
-                [self handleNotification:launchOptions];
-                [self addNotificationObservers];
-                
-                [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
-                [[A3UserDefaults standardUserDefaults] synchronize];
-            }];
-            self.window.rootViewController = vc;
-        } else {
-            [self setupMainMenuViewController];
-            [self handleNotification:launchOptions];
-            [self addNotificationObservers];
-        }
-
-        stack.mediaFileCleanerBlock = ^{
-            dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
-                NSManagedObjectContext *context = [CoreDataStack shared].persistentContainer.viewContext;
-                MediaFileCleaner *cleaner = [[MediaFileCleaner alloc] init];
-                [cleaner cleanUnusedMediaFilesWithContext:context];
-            });
-        };
-
-        [self.window makeKeyAndVisible];
-    }];
+    if (@available(iOS 17.0, *)) {
+        CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+        [manager ensureMediaFilesRecordZoneExistsWithCompletion:^(NSError * _Nullable error) {
+            [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
+        }];
+    } else {
+        [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
+    }
 
     return shouldPerformAdditionalDelegateHandling;
 }

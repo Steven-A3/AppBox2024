@@ -30,6 +30,7 @@
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -400,7 +401,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         cell.selected = NO;
         
         if([[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem.uniqueID]){
-			[A3LadyCalendarModelManager alertMessage:NSLocalizedString(@"Cannot remove current account.", @"Cannot remove current account.") title:nil];
+            [[UIApplication sharedApplication] showAlertWithTitle:nil message:NSLocalizedString(@"Cannot remove current account.", nil)];
             return;
         }
         
@@ -409,6 +410,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 }
 
 #pragma mark - UIActionSheetDelegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [self setFirstActionSheet:nil];

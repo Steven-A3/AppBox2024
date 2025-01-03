@@ -382,12 +382,6 @@
 
 #pragma mark -
 
-- (void)alertMessage:(NSString*)message
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil];
-    [alertView show];
-}
-
 - (BOOL)isExistsEndDateCellInItems:(NSArray*)items
 {
     BOOL isExists = NO;
@@ -1601,7 +1595,7 @@
         _eventItem.eventName = NSLocalizedString(@"Untitled", @"Untitled");
     }
     if ( [_eventItem.isPeriod boolValue] && ![_eventItem endDateCreateIfNotExist:NO ]) {
-        [self alertMessage:NSLocalizedString(@"Please enter the end date.", @"Please enter the end date.")];
+        [[UIApplication sharedApplication] showAlertWithTitle:nil message:NSLocalizedString(@"Please enter the end date.", @"Please enter the end date.")];
         return;
     }
     

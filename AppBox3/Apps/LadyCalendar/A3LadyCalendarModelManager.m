@@ -32,16 +32,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 @implementation A3LadyCalendarModelManager
 
-+ (void)alertMessage:(NSString*)message title:(NSString*)title
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-														message:message
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
-											  otherButtonTitles:nil];
-    [alertView show];
-}
-
 - (NSString *)defaultAccountName {
 	return [NSString stringWithFormat:@"%@01", NSLocalizedString(@"User", nil)];
 }
@@ -494,7 +484,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 	NSDate *today = [NSDate date];
 
-	UIApplication *application = [UIApplication sharedApplication];
 	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
 
 	for (LadyCalendarPeriod_ *period in predictPeriods) {
