@@ -197,9 +197,7 @@
     
     CGFloat verticalOffset = 0;
     UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
-    if (safeAreaInsets.top > 20) {
-        verticalOffset = -safeAreaInsets.bottom;
-    }
+    verticalOffset = -safeAreaInsets.bottom;
     
     [self.view addSubview:_addEventButton];
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {

@@ -107,6 +107,23 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
+- (void)prepareCoreDataStack:(CoreDataStack *)stack {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Code here is executed on the main thread.
+        // You can safely update UI components.
+        if (@available(iOS 17.0, *)) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager ensureMediaFilesRecordZoneExistsWithCompletion:^(NSError * _Nullable error) {
+                [stack setupStackWithCompletion:^{
+                }];
+            }];
+        } else {
+            [stack setupStackWithCompletion:^{
+            }];
+        }
+    });
+}
+
 - (void)doVersionCheck:(NSString *)activeVersion launchOptions:(NSDictionary * _Nullable)launchOptions stack:(CoreDataStack *)stack {
     if (!self->_previousVersion) {
         // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
@@ -122,8 +139,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
         [[A3UserDefaults standardUserDefaults] synchronize];
         
-        [stack setupStackWithCompletion:^{
-        }];
+        [self prepareCoreDataStack:stack];
         
         [self setupMainMenuViewController];
         [self handleNotification:launchOptions];
@@ -140,6 +156,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         
         MigrationHostingViewController *vc =
         [[MigrationHostingViewController alloc] initWithCompletion:^{
+            [WalletData createSystemCategory];
             [self setupMainMenuViewController];
             [self handleNotification:launchOptions];
             [self addNotificationObservers];
@@ -149,22 +166,13 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         }];
         self.window.rootViewController = vc;
     } else {
-        [stack setupStackWithCompletion:^{
-        }];
+        [self prepareCoreDataStack:stack];
         
         [self setupMainMenuViewController];
         [self handleNotification:launchOptions];
         [self addNotificationObservers];
     }
-    
-    stack.mediaFileCleanerBlock = ^{
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
-            NSManagedObjectContext *context = [CoreDataStack shared].persistentContainer.viewContext;
-            MediaFileCleaner *cleaner = [[MediaFileCleaner alloc] init];
-            [cleaner cleanUnusedMediaFilesWithContext:context];
-        });
-    };
-    
+
     [self.window makeKeyAndVisible];
 }
 
@@ -203,10 +211,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteChange:) name:NSPersistentStoreRemoteChangeNotification object:nil];
     
     if (@available(iOS 17.0, *)) {
-        CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
-        [manager ensureMediaFilesRecordZoneExistsWithCompletion:^(NSError * _Nullable error) {
-            [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
-        }];
+        [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
     } else {
         [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
     }

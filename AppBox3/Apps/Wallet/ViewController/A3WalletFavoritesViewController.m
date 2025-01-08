@@ -135,7 +135,7 @@
 
     // Check if any of the changes are related to the "WalletItem_" entity
     for (NSManagedObject *object in allChangedObjects) {
-        if ([object.entity.name isEqualToString:@"WalletItem_"]) {
+        if ([object.entity.name isEqualToString:@"WalletFavorite_"]) {
             FNLOG(@"Change detected for WalletItem_: %@", object);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self refreshItems];

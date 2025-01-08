@@ -17,6 +17,8 @@ struct MigrationView: View {
     @State private var publisher = NotificationCenter.default.publisher(for: NSPersistentCloudKitContainer.eventChangedNotification)
     @StateObject private var migrationManager: DataMigrationManager
     @State private var coreDataReady: Bool = false
+    
+    @State private var monitorCloudKitEventsForMigration = false
 
     // MARK: - Initializer
     init(completion: (() -> Void)? = nil) {
@@ -56,12 +58,27 @@ struct MigrationView: View {
                 Spacer().frame(height: geometry.size.height / 8)
             }
             .edgesIgnoringSafeArea(.bottom)
-            .onReceive(publisher) { handleNotification($0) }
+            .onReceive(publisher) { notification in
+                if let userInfo = notification.userInfo {
+                    if let event = userInfo["event"] as? NSPersistentCloudKitContainer.Event {
+                        if event.type == .export {
+                            coreDataReady = true
+                            if monitorCloudKitEventsForMigration && !migrationManager.isMigrating {
+                                monitorCloudKitEventsForMigration = false
+                                migrationManager.migrateDataAfterUIChange() {
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     // MARK: - Helpers
     private func titleForCurrentStage() -> String {
+        Logger.shared.debug("coreDataReady: \(coreDataReady), migrationManager.isMigrating: \(migrationManager.isMigrating), migrationManager.isMigrationComplete: \(migrationManager.isMigrationComplete)")
         switch (coreDataReady, migrationManager.isMigrating, migrationManager.isMigrationComplete) {
         case (true, false, false): return "Preparing Optimization"
         case (true, true, false): return "Optimization in Progress"
@@ -72,20 +89,14 @@ struct MigrationView: View {
 
     @ViewBuilder
     private func stageContent() -> some View {
-        switch (coreDataReady, migrationManager.isMigrating, migrationManager.isMigrationComplete) {
-        case (false, false, false):
+        switch (coreDataReady, monitorCloudKitEventsForMigration, migrationManager.isMigrating, migrationManager.isMigrationComplete) {
+        case (false, false, false, false):
             // Initial stage: No buttons
             HStack {
                 ActionButton(title: "Reset iCloud", action: resetiCloud)
                 ActionButton(title: "Optimize", action: startOptimization)
             }
-        case (true, false, false):
-            // Optimization stage: Two buttons
-            EmptyView()
-        case (true, true, false):
-            // Optimization in progress: No buttons
-            EmptyView()
-        case (true, false, true):
+        case (true, false, false, true):
             // Completion stage: Start AppBox Pro button
             ActionButton(title: "Start AppBox Pro", action: finishMigration)
         default:
@@ -93,30 +104,35 @@ struct MigrationView: View {
         }
     }
 
-    private func handleNotification(_ notification: Notification) {
-        if let event = notification.userInfo?["event"] as? NSPersistentCloudKitContainer.Event,
-           event.type == .export {
-            coreDataReady = true
-            migrationManager.migrateDataAfterUIChange() {}
-        }
-    }
-
     // MARK: - Actions
     private func resetiCloud() {
-        migrationManager.isMigrating = true
         CoreDataStack.shared.resetCloudKitSync { success, error in
             let stack = CoreDataStack.shared
-            stack.setupStackWithCompletion {
-                migrationManager.migrateDataAfterUIChange() {}
+            self.monitorCloudKitEventsForMigration = true
+            
+            if #available(iOS 17.0, *) {
+                CloudKitMediaFileManagerWrapper.shared.ensureMediaFilesRecordZoneExists { error in
+                    stack.setupStackWithCompletion {
+                    }
+                }
+            } else {
+                stack.setupStackWithCompletion {
+                }
             }
         }
     }
 
     private func startOptimization() {
-        migrationManager.isMigrating = true
         let stack = CoreDataStack.shared
-        stack.setupStackWithCompletion {
-            migrationManager.migrateDataAfterUIChange() {}
+        self.monitorCloudKitEventsForMigration = true
+        if #available(iOS 17.0, *) {
+            CloudKitMediaFileManagerWrapper.shared.ensureMediaFilesRecordZoneExists { error in
+                stack.setupStackWithCompletion {
+                }
+            }
+        } else {
+            stack.setupStackWithCompletion {
+            }
         }
     }
 

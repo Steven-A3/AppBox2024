@@ -67,6 +67,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 		return mutableCalendars;
 	}
 
+    FNLOG(@"DaysCounter Calendars not found! Now creating default Calendars");
+    
 	NSMutableArray *calendars =
 	[NSMutableArray arrayWithArray:@[
 			[NSMutableDictionary dictionaryWithDictionary:@{

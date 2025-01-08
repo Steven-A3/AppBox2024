@@ -32,11 +32,18 @@ public class CoreDataStack: NSObject {
     private let localStoreFileName = "AppBoxStore2024Local.sqlite"
     
     var isICloudAccountAvailable: Bool = false
-    
+
+    let cloudContainer = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
+    let cloudDatabase: CKDatabase
+    let deduplicationRecordID = CKRecord.ID(recordName: "DeduplicationTimestamp")
+    let minimumInterval: TimeInterval = 60 * 10
+
     /// Block to execute media file cleaning
     public var mediaFileCleanerBlock: (() -> Void)?
     
     private override init() {
+        self.cloudDatabase = cloudContainer.privateCloudDatabase
+        
         super.init()
     }
     

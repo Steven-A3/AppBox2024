@@ -17,19 +17,28 @@
 
 - (void)didSave {
     dispatch_async(dispatch_get_main_queue(), ^{
-        @autoreleasepool {
-            if (self.isDeleted) {
-                FNLOG();
-                NSFileManager *fileManager = [NSFileManager defaultManager];
+        if (self.isDeleted) {
+            FNLOG();
+            
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSManagedObjectContext *context = self.managedObjectContext;
+            NSFetchRequest *fetchRequest = [WalletFieldItem_ fetchRequest];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", self.uniqueID];
+            
+            NSError *fetchError = nil;
+            NSUInteger count = [context countForFetchRequest:fetchRequest error:&fetchError];
+            
+            if (fetchError) {
+                FNLOG(@"Error fetching count for uniqueID: %@", fetchError.localizedDescription);
+                return;
+            }
+            
+            if (count == 0) {
                 if ([self.hasImage boolValue]) {
+                    
+                    NSURL *imageURL = [self imageURL];
                     NSError *error;
-                    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-                    [coordinator coordinateWritingItemAtURL:[self imageURL]
-                                                    options:NSFileCoordinatorWritingForDeleting
-                                                      error:&error
-                                                 byAccessor:^(NSURL *newURL) {
-                        [fileManager removeItemAtURL:newURL error:NULL];
-                    }];
+                    [fileManager removeItemAtURL:imageURL error:&error];
                     [fileManager removeItemAtPath:[self photoImageThumbnailPathInOriginal:YES] error:NULL];
                     if (@available(iOS 17.0, *)) {
                         if (CKContainer.defaultContainer) {
@@ -46,16 +55,9 @@
                     return;
                 }
                 if ([self.hasVideo boolValue])  {
+                    NSURL *videoURL = [self videoURL];
                     NSError *error;
-                    NSFileCoordinator *coordinator = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
-                    [coordinator coordinateWritingItemAtURL:[self videoURL]
-                                                    options:NSFileCoordinatorWritingForDeleting
-                                                      error:&error
-                                                 byAccessor:^(NSURL *newURL)
-                     {
-                        NSError *removeError;
-                        [fileManager removeItemAtURL:newURL error:&removeError];
-                    }];
+                    [fileManager removeItemAtURL:videoURL error:&error];
                     NSString *thumbnalePath = [self videoThumbnailPathInOriginal:YES];
                     if ([fileManager isDeletableFileAtPath:thumbnalePath]) {
                         [fileManager removeItemAtPath:thumbnalePath error:nil];

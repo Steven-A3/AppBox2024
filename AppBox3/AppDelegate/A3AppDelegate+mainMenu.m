@@ -805,6 +805,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
         [viewController popToRootAndPushViewController:viewController animated:YES];
         return YES;
     }
+    
     if ([appName containsString:A3AppName_Wallet]) {
         if ([WalletCategory_ countOfEntities] == 0) {
             [WalletData initializeWalletCategories];
@@ -829,7 +830,7 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
                 return YES;
             }
         }
-        [CoreDataStack.shared.persistentContainer.viewContext reset];
+//        [CoreDataStack.shared.persistentContainer.viewContext reset];
 
 		UIViewController *targetViewController= [self getViewControllerForAppNamed:appName];
 		[targetViewController callPrepareCloseOnActiveMainAppViewController];

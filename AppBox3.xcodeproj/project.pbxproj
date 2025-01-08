@@ -7948,7 +7948,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.5;
+				CURRENT_PROJECT_VERSION = 4.8.0.6;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -8009,7 +8009,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.5;
+				CURRENT_PROJECT_VERSION = 4.8.0.6;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -8406,7 +8406,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.8.0.5;
+				CURRENT_PROJECT_VERSION = 4.8.0.6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -8453,7 +8453,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4.8.0.5;
+				CURRENT_PROJECT_VERSION = 4.8.0.6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_NS_ASSERTIONS = NO;

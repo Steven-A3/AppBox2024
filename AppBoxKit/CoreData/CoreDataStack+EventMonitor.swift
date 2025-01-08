@@ -35,13 +35,9 @@ extension CoreDataStack {
             Logger.shared.info("CoreDataStack: Setup event occurred.")
         case .import:
             Logger.shared.info("CoreDataStack: Import event occurred.")
-
-            guard let mediaFileCleanerBlock = self.mediaFileCleanerBlock else { return }
-            mediaFileCleanerBlock()
         case .export:
             coreDataReady = true
             Logger.shared.info("CoreDataStack: Export event occurred.")
-
         default :
             Logger.shared.info("CoreDataStack: Unknown event occurred.")
         }

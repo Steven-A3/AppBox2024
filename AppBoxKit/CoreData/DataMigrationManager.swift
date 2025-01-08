@@ -49,6 +49,9 @@ class DataMigrationManager: NSObject, ObservableObject {
         isMigrating = true
         progress = 0.0
         
+        Logger.shared.debug("Migrating data from version 3...")
+        UIApplication.printCallStackIfDebug()
+        
         let startTime = Date()
         let entitiesToMigrate = [
             "AbbreviationFavorite", "Calculation", "CurrencyFavorite", "CurrencyHistory",
@@ -75,7 +78,6 @@ class DataMigrationManager: NSObject, ObservableObject {
             )
             
             operation.completionBlock = { [weak self] in
-                print("completion block for \(index + 1) of \(totalEntities): \(entityName) migration complete")
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.progress = Double(index + 1) / Double(totalEntities)
@@ -100,6 +102,7 @@ class DataMigrationManager: NSObject, ObservableObject {
                 self.isMigrating = false
                 self.cleanupMemory()
                 self.isMigrationComplete = true
+                Logger.shared.debug("isMigrationComplete = \(self.isMigrationComplete)")
                 completion()
             }
         }
@@ -110,7 +113,6 @@ class DataMigrationManager: NSObject, ObservableObject {
             return
         }
         oldPersistentContainer.viewContext.reset()
-        newPersistentContainer.viewContext.reset()
         
         DispatchQueue.main.async {
             self.triggerMemoryCleanup()
@@ -195,6 +197,7 @@ class MigrationOperation: Operation, @unchecked Sendable {
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: sourceEntityName)
         fetchRequest.fetchBatchSize = batchSize
+        let isiCloudAvailable = FileManager.default.ubiquityIdentityToken != nil
         
         do {
             let totalEntityCount = try context.count(for: fetchRequest)
@@ -205,7 +208,7 @@ class MigrationOperation: Operation, @unchecked Sendable {
                 
                 fetchRequest.fetchOffset = currentBatchIndex * batchSize
                 
-                CoreDataStack.shared.migrateEntity(context, fetchRequest, sourceEntityName, newContext, newEntityName)
+                CoreDataStack.shared.migrateEntity(context, fetchRequest, sourceEntityName, newContext, newEntityName, iCloudAvailable: isiCloudAvailable)
                 currentBatchIndex += 1
             }
             print("Finished migrating operation \(sourceEntityName) total \(totalEntityCount)")
