@@ -177,7 +177,6 @@
 
 - (NSURL *)videoFileURLInOriginal:(BOOL)inOriginal {
     NSString *filename = [NSString stringWithFormat:@"%@-video.%@", self.uniqueID, self.videoExtension];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSURL *localURL;
 
     // Determine the local file URL
@@ -187,12 +186,7 @@
         localURL = [NSURL fileURLWithPath:[filename pathInTemporaryDirectory]];
     }
 
-    // Check if the file exists locally
-    if ([fileManager fileExistsAtPath:localURL.path]) {
-        return localURL;
-    }
-    // Return nil if the file could not be found locally
-    return nil;
+    return localURL;
 }
 
 - (UIImage *)makeThumbnailWithImage:(UIImage *)originalImage path:(NSString *)path {

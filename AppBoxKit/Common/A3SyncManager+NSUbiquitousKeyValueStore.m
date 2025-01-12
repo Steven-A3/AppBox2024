@@ -48,8 +48,8 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 			NSDictionary *objectInLocal = [userDefaults objectForKey:key];
 
             FNLOG(@"%@, %@", objectInCloud, objectInLocal);
-            
-            if (![objectInCloud isKindOfClass:[NSDictionary class]] || ![objectInLocal isKindOfClass:[NSDictionary class]]) {
+
+            if (![objectInCloud isKindOfClass:[NSDictionary class]] || ((objectInLocal != nil) && ![objectInLocal isKindOfClass:[NSDictionary class]])) {
                 continue;
             }
 			if (!objectInLocal || [objectInLocal[A3KeyValueDBState] unsignedIntegerValue] == A3DataObjectStateInitialized) {
@@ -99,18 +99,60 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 	return [[self objectForKey:key] boolValue];
 }
 
+/**
+ * Retrieves the value associated with the specified key from local user defaults.
+ * If the value is not found locally, it attempts to retrieve the value from
+ * the iCloud key-value store (NSUbiquitousKeyValueStore).
+ *
+ * The method ensures data consistency by checking for a valid dictionary structure
+ * and handles placeholders for removed or empty objects.
+ *
+ * @param key The key whose value you want to retrieve.
+ * @return The value associated with the specified key, or `nil` if the key does not exist
+ *         or the value is marked as empty.
+ *
+ * Behavior:
+ * - First checks the local user defaults (A3UserDefaults).
+ * - If the key exists locally, validates and returns the stored value.
+ * - If the key does not exist locally, queries the NSUbiquitousKeyValueStore for the value.
+ * - Ensures the object is a valid dictionary and checks for special placeholders
+ *   indicating removed or empty values.
+ */
 - (id)objectForKey:(NSString *)key {
-	NSDictionary *object = [[A3UserDefaults standardUserDefaults] objectForKey:key];
-	if ([object isKindOfClass:[NSDictionary class]]) {
-		id dataObject = object[A3KeyValueDBDataObject];
-		if ([dataObject isEqual:A3SyncManagerEmptyObject])
-			return nil;
-		return dataObject;
-	}
-	return nil;
+#ifdef DEBUG
+    if ([key isEqualToString:A3LadyCalendarUserDefaultsSettings]) {
+        FNLOG(@"Accessing A3LadyCalendarUserDefaultsSettings");
+    }
+#endif
+    NSDictionary *object = [[A3UserDefaults standardUserDefaults] objectForKey:key];
+    if ([object isKindOfClass:[NSDictionary class]]) {
+        id dataObject = object[A3KeyValueDBDataObject];
+        if ([dataObject isEqual:A3SyncManagerEmptyObject]) {
+            return nil;
+        }
+        return dataObject;
+    }
+    
+    // If the object is not available locally, check the iCloud key-value store
+    NSUbiquitousKeyValueStore *keyValueStore = [NSUbiquitousKeyValueStore defaultStore];
+    NSDictionary *cloudObject = [keyValueStore objectForKey:key];
+    if ([cloudObject isKindOfClass:[NSDictionary class]]) {
+        id dataObject = cloudObject[A3KeyValueDBDataObject];
+        if ([dataObject isEqual:A3SyncManagerEmptyObject]) {
+            return nil;
+        }
+        return dataObject;
+    }
+    
+    return nil;
 }
 
 - (void)setObject:(id)object forKey:(NSString *)key state:(A3DataObjectStateValue)state {
+#ifdef DEBUG
+    if ([key isEqualToString:A3LadyCalendarUserDefaultsSettings]) {
+        FNLOG(@"Setting A3LadyCalendarUserDefaultsSettings");
+    }
+#endif
 	FNLOG(@"%@", key);
 	if (object == nil)
 		return;

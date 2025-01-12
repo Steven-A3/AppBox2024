@@ -61,42 +61,44 @@ extension CoreDataStack {
         iCloudAvailable: Bool
     ) {
         do {
-            // Fetch all old entities on the main thread's context
-            let oldEntities = try context.fetch(fetchRequest)
-            let staticOldEntities = oldEntities.map { $0 }
-            let entityAttributes = oldEntities.first?.entity.attributesByName.keys.map { $0 } ?? []
-
-            // Prepare a set of existing IDs in the background context
-            var existingIDs: Set<String> = []
-            newContext.performAndWait {
-                do {
-                    let existingFetchRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
-                    let existingEntities = try newContext.fetch(existingFetchRequest)
-                    existingIDs = Set(existingEntities.compactMap { $0.value(forKey: "uniqueID") as? String })
-                    
-                    Logger.shared.debug("Migration found \(existingIDs.count) \(newEntityName) entities")
-                } catch {
-                    Logger.shared.debug("Error fetching existing entities for \(newEntityName): \(error)")
-                }
-            }
-
-            // Migrate entities
-            newContext.performAndWait {
-                for oldEntity in staticOldEntities {
-                    if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String, !existingIDs.contains(uniqueID) {
-                        let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
-                        for attribute in entityAttributes {
-                            newEntity.setValue(oldEntity.value(forKey: attribute), forKey: attribute)
-                        }
+            try context.performAndWait {
+                // Fetch all old entities on the main thread's context
+                let oldEntities = try context.fetch(fetchRequest)
+                let staticOldEntities = oldEntities.map { $0 }
+                let entityAttributes = oldEntities.first?.entity.attributesByName.keys.map { $0 } ?? []
+                
+                // Prepare a set of existing IDs in the background context
+                var existingIDs: Set<String> = []
+                newContext.performAndWait {
+                    do {
+                        let existingFetchRequest = NSFetchRequest<NSManagedObject>(entityName: newEntityName)
+                        let existingEntities = try newContext.fetch(existingFetchRequest)
+                        existingIDs = Set(existingEntities.compactMap { $0.value(forKey: "uniqueID") as? String })
+                        
+                        Logger.shared.debug("Migration found \(existingIDs.count) \(newEntityName) entities")
+                    } catch {
+                        Logger.shared.debug("Error fetching existing entities for \(newEntityName): \(error)")
                     }
                 }
-
-                // Save changes in the background context
-                if newContext.hasChanges {
-                    do {
-                        try newContext.save()
-                    } catch {
-                        Logger.shared.debug("Error saving new context for \(newEntityName): \(error)")
+                
+                // Migrate entities
+                newContext.performAndWait {
+                    for oldEntity in staticOldEntities {
+                        if let uniqueID = oldEntity.value(forKey: "uniqueID") as? String, !existingIDs.contains(uniqueID) {
+                            let newEntity = NSEntityDescription.insertNewObject(forEntityName: newEntityName, into: newContext)
+                            for attribute in entityAttributes {
+                                newEntity.setValue(oldEntity.value(forKey: attribute), forKey: attribute)
+                            }
+                        }
+                    }
+                    
+                    // Save changes in the background context
+                    if newContext.hasChanges {
+                        do {
+                            try newContext.save()
+                        } catch {
+                            Logger.shared.debug("Error saving new context for \(newEntityName): \(error)")
+                        }
                     }
                 }
             }

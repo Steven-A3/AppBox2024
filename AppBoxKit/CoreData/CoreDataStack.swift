@@ -32,12 +32,12 @@ public class CoreDataStack: NSObject {
     private let localStoreFileName = "AppBoxStore2024Local.sqlite"
     
     var isICloudAccountAvailable: Bool = false
-
+    
     let cloudContainer = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
     let cloudDatabase: CKDatabase
     let deduplicationRecordID = CKRecord.ID(recordName: "DeduplicationTimestamp")
     let minimumInterval: TimeInterval = 60 * 10
-
+    
     /// Block to execute media file cleaning
     public var mediaFileCleanerBlock: (() -> Void)?
     
@@ -223,5 +223,71 @@ public class CoreDataStack: NSObject {
             }
         }
         return container
+    }
+    
+    /**
+     Resets the Core Data stack by unloading the current persistent container,
+     deleting the associated store files, and resetting the state if iCloud is available.
+     
+     - Parameters:
+     - completion: A closure that is called when the reset operation is complete.
+     The closure has a single parameter, an `Error?`, which will be `nil`
+     if the operation was successful or contain an error if it failed.
+     
+     This method performs the following steps:
+     1. Checks if iCloud is available. If not, it does nothing and calls the completion handler with `nil`.
+     2. Checks if the `persistentContainer` is initialized. If not, it immediately calls the
+     completion handler with an error indicating the container is not set up.
+     3. Unloads the current persistent container to release any held resources and prepare for reset.
+     4. Deletes the store files associated with both the cloud and local Core Data stores.
+     5. Resets CloudKit sync if iCloud is available.
+     6. Calls the completion handler to signal that the reset process is complete.
+     
+     Usage:
+     */
+    @objc
+    public func resetContainer(completion: @escaping (Error?) -> Void) {
+        // Step 1: Check if iCloud is available
+        guard isICloudAccountAvailable else {
+            print("iCloud is not available. Reset operation skipped.")
+            completion(nil)
+            return
+        }
+        
+        // Step 2: Check if persistentContainer is initialized
+        guard let container = persistentContainer else {
+            completion(NSError(domain: "CoreDataStack", code: 1, userInfo: [NSLocalizedDescriptionKey: "Persistent container is not initialized."]))
+            return
+        }
+        
+        // Step 3: Unload the persistent container
+        unloadPersistentContainer(container: container)
+        persistentContainer = nil
+        
+        // Step 4: Delete store files
+        if let cloudStoreURL = cloudStoreURL() {
+            deleteStoreFiles(storeURL: cloudStoreURL)
+        }
+        if let localStoreURL = localStoreURL() {
+            deleteStoreFiles(storeURL: localStoreURL)
+        }
+        
+        // Step 5: Reset CloudKit sync
+        resetCloudKitSync { success, error in
+            if let error = error {
+                print("Failed to reset CloudKit sync: \(error.localizedDescription)")
+                completion(error)
+                return
+            }
+            
+            if success {
+                print("CloudKit sync successfully reset.")
+            }
+            
+            // Step 6: Reinitialize the Core Data stack
+            self.setupStackWithCompletion {
+                completion(nil) // Indicate successful reset
+            }
+        }
     }
 }

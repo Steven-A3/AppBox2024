@@ -145,10 +145,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	return NO;
 }
 
-- (BOOL)isCloudAvailable {
-	return [[NSFileManager defaultManager] ubiquityIdentityToken] != nil;
-}
-
 - (NSString *)cloudStoreID {
 	return @"AppBoxCloudStore";
 }
@@ -176,12 +172,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	[keyValueStore setObject:syncInfo forKey:A3SyncDeviceSyncStartInfo];
 	[keyValueStore synchronize];
 }
-
-//- (void)disableCloudSync {
-//	[_ensemble deleechPersistentStoreWithCompletion:^(NSError *error) {
-//		[self reset];
-//	}];
-//}
 
 - (void)reset
 {

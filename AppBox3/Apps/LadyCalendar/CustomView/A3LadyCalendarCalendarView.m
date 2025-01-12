@@ -139,7 +139,7 @@
 				CGContextSetAllowsAntialiasing(context, NO);
 				CGContextSetStrokeColorWithColor(context, themeColor.CGColor);
                 CGContextSetFillColorWithColor(context, themeColor.CGColor);
-                CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, _dateBGHeight));
+                CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, _cellSize.height));
 				CGContextSetAllowsAntialiasing(context, YES);
 				[str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, _dateBGHeight + 5.0) withAttributes:todayTextAttr];
 				CGContextRestoreGState(context);

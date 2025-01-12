@@ -761,7 +761,7 @@ static NSString *const A3V3InstructionDidShowForLadyCalendar = @"A3V3Instruction
 	if (!_moreMenuView) {
         CGFloat verticalOffset = 0;
         UIEdgeInsets safeAreaInsets = [[[UIApplication sharedApplication] myKeyWindow] safeAreaInsets];
-        verticalOffset = safeAreaInsets.top - 20;
+        verticalOffset = safeAreaInsets.top - 26;
 
         _moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 64 + verticalOffset, self.view.bounds.size.width, 44)];
 		_moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];

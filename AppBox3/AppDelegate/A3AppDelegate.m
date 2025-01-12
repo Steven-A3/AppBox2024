@@ -133,7 +133,9 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         [self initializePasscodeUserDefaults];
         
         [self favoriteMenuDictionary];
-        
+
+        // Initialize sync manager and start listening server change.
+        [A3SyncManager sharedSyncManager];
         [self setDefaultValues];
         
         [[A3UserDefaults standardUserDefaults] setObject:activeVersion forKey:kA3ApplicationLastRunVersion];
@@ -156,7 +158,6 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         
         MigrationHostingViewController *vc =
         [[MigrationHostingViewController alloc] initWithCompletion:^{
-            [WalletData createSystemCategory];
             [self setupMainMenuViewController];
             [self handleNotification:launchOptions];
             [self addNotificationObservers];
@@ -203,6 +204,9 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
+#ifdef DEBUG
+    FNLOGINSETS(self.window.safeAreaInsets);
+#endif
 
     [self prepareDirectories];
     
@@ -210,11 +214,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRemoteChange:) name:NSPersistentStoreRemoteChangeNotification object:nil];
     
-    if (@available(iOS 17.0, *)) {
-        [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
-    } else {
-        [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
-    }
+    [self doVersionCheck:activeVersion launchOptions:launchOptions stack:stack];
 
     return shouldPerformAdditionalDelegateHandling;
 }
@@ -1178,6 +1178,7 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
 - (void)experiments {
     NSURL *targetBaseURL = [NSURL fileURLWithPath:NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0]];
     NSLog(@"%@", targetBaseURL);
+    
 }
 #endif
 

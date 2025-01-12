@@ -73,8 +73,6 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 
 - (BOOL)canSyncStart;
 
-- (BOOL)isCloudAvailable;
-- (void)disableCloudSync;
 - (BOOL)isCloudEnabled;
 
 @end

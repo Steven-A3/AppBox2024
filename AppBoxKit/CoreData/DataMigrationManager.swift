@@ -59,7 +59,8 @@ class DataMigrationManager: NSObject, ObservableObject {
             "DaysCounterEventLocation", "DaysCounterFavorite", "DaysCounterReminder", "ExpenseListBudget",
             "ExpenseListBudgetLocation", "ExpenseListHistory", "ExpenseListItem", "KaomojiFavorite",
             "LadyCalendarAccount", "LadyCalendarPeriod", "LoanCalcComparisonHistory", "LoanCalcHistory",
-            "Pedometer", "PercentCalcHistory", "QRCodeHistory", "SalesCalcHistory", "TipCalcHistory",
+            /* Pedometer 데이터는 마이그레이션에서 제외하고, 시스템에서 다시 읽어오기로 한다. */
+            /*"Pedometer",*/ "PercentCalcHistory", "QRCodeHistory", "SalesCalcHistory", "TipCalcHistory",
             "TipCalcRecent", "TranslatorFavorite", "TranslatorGroup", "TranslatorHistory", "UnitHistory",
             "UnitHistoryItem", "UnitPriceHistory", "UnitPriceInfo", "WalletCategory", "WalletFavorite",
             "WalletField", "WalletFieldItem", "WalletItem"
@@ -109,7 +110,7 @@ class DataMigrationManager: NSObject, ObservableObject {
     }
     
     private func cleanupMemory() {
-        guard let oldPersistentContainer = oldPersistentContainer, let newPersistentContainer = newPersistentContainer else {
+        guard let oldPersistentContainer = oldPersistentContainer else {
             return
         }
         oldPersistentContainer.viewContext.reset()

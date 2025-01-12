@@ -103,6 +103,9 @@ NSString *const A3WalletAllViewSortKeyDate = @"date";
 - (void)cloudStoreDidImport:(NSNotification *)notification {
     NSManagedObjectContext *context = notification.object;
     if (![context isKindOfClass:[NSManagedObjectContext class]]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
         return; // Ensure the notification's object is a managed object context.
     }
 

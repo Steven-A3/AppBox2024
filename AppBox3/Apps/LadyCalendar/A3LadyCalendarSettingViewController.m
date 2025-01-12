@@ -130,6 +130,7 @@
         // You can safely update UI components.
         self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings]];
         [self.tableView reloadData];
+        FNLOG(@"A3NotificationCloudKeyValueStoreDidImport");
     });
 }
 

@@ -380,46 +380,61 @@ extension CloudKitMediaFileManager {
     
     /// Ensures a custom record zone exists in the private database. If not, it creates the zone using CKModifyRecordZonesOperation.
     /// - Parameters:
-    ///   - zoneName: The name of the custom record zone.
     ///   - completion: A completion handler called with an optional error.
     func ensureMediaFilesRecordZoneExists(completion: @escaping (Error?) -> Void) {
         let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
         let privateDatabase = container.privateCloudDatabase
         let zoneID = CKRecordZone.ID(zoneName: Self.zoneName)
         
-        // Fetch existing zones to check if the zone already exists
-        privateDatabase.fetch(withRecordZoneID: zoneID) { fetchedZone, error in
-            if let ckError = error as? CKError, ckError.code == .zoneNotFound {
-                // Zone not found; create it
-                print("Record zone \(Self.zoneName) not found. Creating it now.")
-                
-                let newZone = CKRecordZone(zoneID: zoneID)
-                let modifyOperation = CKModifyRecordZonesOperation(
-                    recordZonesToSave: [newZone],
-                    recordZoneIDsToDelete: nil
-                )
-                
-                modifyOperation.modifyRecordZonesResultBlock = { result in
-                    switch result {
-                    case .success:
-                        print("Successfully created record zone: \(Self.zoneName)")
+        let queue = DispatchQueue(label: "com.app.MediaFilesRecordZone", attributes: .concurrent)
+        
+        queue.async {
+            privateDatabase.fetch(withRecordZoneID: zoneID) { fetchedZone, error in
+                Task {
+                    if let ckError = error as? CKError {
+                        switch ckError.code {
+                        case .zoneNotFound, .userDeletedZone:
+                            // Zone not found or purged; recreate it
+                            Logger.shared.debug("Record zone \(Self.zoneName) not found or was purged. Recreating it now.")
+                            
+                            let newZone = CKRecordZone(zoneID: zoneID)
+                            let modifyOperation = CKModifyRecordZonesOperation(
+                                recordZonesToSave: [newZone],
+                                recordZoneIDsToDelete: nil
+                            )
+                            
+                            modifyOperation.modifyRecordZonesResultBlock = { result in
+                                queue.async(flags: .barrier) {
+                                    Task {
+                                        switch result {
+                                        case .success:
+                                            Logger.shared.debug("Successfully recreated record zone: \(Self.zoneName)")
+                                            completion(nil)
+                                        case .failure(let error):
+                                            Logger.shared.debug("Failed to recreate record zone: \(error.localizedDescription)")
+                                            completion(error)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            privateDatabase.add(modifyOperation)
+                        default:
+                            // Handle other CloudKit errors
+                            Logger.shared.debug("Error fetching record zone: \(ckError.localizedDescription)")
+                            completion(ckError)
+                        }
+                    } else if let fetchedZone = fetchedZone {
+                        // Zone exists
+                        Logger.shared.debug("Record zone \(fetchedZone.zoneID.zoneName) already exists.")
                         completion(nil)
-                    case .failure(let error):
-                        print("Failed to create record zone: \(error.localizedDescription)")
-                        completion(error)
+                    } else if let otherError = error {
+                        // Handle unexpected errors
+                        Logger.shared.debug("Error fetching record zone: \(otherError.localizedDescription)")
+                        completion(otherError)
                     }
                 }
-                
-                privateDatabase.add(modifyOperation)
-            } else if let fetchedZone = fetchedZone {
-                // Zone already exists
-                print("Record zone \(fetchedZone.zoneID.zoneName) already exists.")
-                completion(nil)
-            } else if let otherError = error {
-                // Handle other errors
-                print("Error fetching record zone: \(otherError.localizedDescription)")
-                completion(otherError)
-            } 
+            }
         }
     }
 }

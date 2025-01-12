@@ -57,11 +57,14 @@ struct MigrationView: View {
                 
                 Spacer().frame(height: geometry.size.height / 8)
             }
+            .onAppear(perform: {
+                startOptimization()
+            })
             .edgesIgnoringSafeArea(.bottom)
             .onReceive(publisher) { notification in
                 if let userInfo = notification.userInfo {
                     if let event = userInfo["event"] as? NSPersistentCloudKitContainer.Event {
-                        if event.type == .export {
+                        if event.type == .import && event.endDate != nil {
                             coreDataReady = true
                             if monitorCloudKitEventsForMigration && !migrationManager.isMigrating {
                                 monitorCloudKitEventsForMigration = false
@@ -90,12 +93,6 @@ struct MigrationView: View {
     @ViewBuilder
     private func stageContent() -> some View {
         switch (coreDataReady, monitorCloudKitEventsForMigration, migrationManager.isMigrating, migrationManager.isMigrationComplete) {
-        case (false, false, false, false):
-            // Initial stage: No buttons
-            HStack {
-                ActionButton(title: "Reset iCloud", action: resetiCloud)
-                ActionButton(title: "Optimize", action: startOptimization)
-            }
         case (true, false, false, true):
             // Completion stage: Start AppBox Pro button
             ActionButton(title: "Start AppBox Pro", action: finishMigration)

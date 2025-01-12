@@ -276,11 +276,11 @@ NSString *const A3WalletUUIDMemoCategory = @"2BD209C3-9CB5-4229-AA68-0E08BCB6C6F
                 // Save the context
                 NSError *saveError = nil;
                 if (![context save:&saveError]) {
-                    NSLog(@"Error saving context: %@", saveError);
+                    FNLOG(@"Error saving context: %@", saveError);
                 }
             }
         } @catch (NSException *exception) {
-            NSLog(@"Exception in insertAllCategory: %@", exception);
+            FNLOG(@"Exception in insertAllCategory: %@", exception);
         }
     }];
 }

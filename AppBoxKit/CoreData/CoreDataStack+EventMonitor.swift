@@ -35,8 +35,12 @@ extension CoreDataStack {
             Logger.shared.info("CoreDataStack: Setup event occurred.")
         case .import:
             Logger.shared.info("CoreDataStack: Import event occurred.")
+            Logger.shared.info("CoreDataStack: Import event started at \(String(describing: event.startDate))")
+            Logger.shared.info("CoreDataStack: Import event ended at \(String(describing: event.endDate))")
+            if event.endDate != nil {
+                coreDataReady = true
+            }
         case .export:
-            coreDataReady = true
             Logger.shared.info("CoreDataStack: Export event occurred.")
         default :
             Logger.shared.info("CoreDataStack: Unknown event occurred.")
