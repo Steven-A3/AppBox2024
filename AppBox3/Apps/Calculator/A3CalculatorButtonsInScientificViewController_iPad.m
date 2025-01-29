@@ -54,6 +54,13 @@
             top = 448.0 * scale;
             width = 768.0 * scale;
             height = 576.0 * scale;
+        } else if (bounds.size.height == 1210) {
+            // iPad Pro 11"
+            vscale = 1210.0/1024.0;
+            
+            top = 540.0;
+            width = 834.0;
+            height = 576.0 * vscale;
         } else if (bounds.size.height == 1194) {
             // iPad Pro 11"
             vscale = 1194.0/1024.0;
@@ -99,6 +106,16 @@
             top = 288.0 * scale;
             width = 1024.0;
             height = 480.0 * scale;
+        } else if (bounds.size.width == 1210.0) {
+            // iPad Pro 11"
+            vscale = 834.0/768.0;
+
+            top = 288.0;
+            width = 1210.0;
+            height = 481.0 * vscale;
+            
+            p_buttonheight = 96.0 * vscale;
+            l_buttonheight = 80.0 * vscale;
         } else if (bounds.size.width == 1194.0) {
             // iPad Pro 11"
             vscale = 834.0/768.0;

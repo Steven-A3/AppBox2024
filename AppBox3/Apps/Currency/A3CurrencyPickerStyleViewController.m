@@ -929,8 +929,8 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 
 #pragma mark - Share
 
-- (void)shareButtonAction:(id)sender {
-    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
+- (void)shareButtonAction:(UIBarButtonItem *)sender {
+    [[ShareTextManager shared] shareText:[self stringForShare] from:self.mainViewController sourceView:nil barButtonItem:sender];
 }
 
 - (NSString *)stringForShare {

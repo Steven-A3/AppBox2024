@@ -41,6 +41,7 @@ extern NSString *const A3LoanCalcCurrencyCodeChanged;
 @property (nonatomic, readwrite) BOOL showExtraPayment;
 
 - (NSString *)termValueString;
-
 - (NSString *)interestRateString;
++ (LoanCalcData *)unarchivedObject:(NSData *)data;
+
 @end

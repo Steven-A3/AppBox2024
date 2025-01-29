@@ -393,6 +393,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
             if (bounds.size.height == 1024.0) {
                 // iPad Pro 12.9"
                 self.calctopconstraint.offset(414.5 * scale);
+            } else if (bounds.size.width == 1210.0) {
+                // iPad Pro 11"
+                self.calctopconstraint.offset(420.0);
             } else if (bounds.size.width == 1194.0) {
                 // iPad Pro 11"
                 self.calctopconstraint.offset(420.0);
@@ -435,6 +438,9 @@ NSString *const A3CalculatorModeScientific = @"scientific";
             if (bounds.size.height == 1024) {
                 // iPad Pro 12.9"
                 self.calctopconstraint.offset(273.5 * scale);
+            } else if (bounds.size.width == 1210.0) {
+                // iPad Pro 11"
+                self.calctopconstraint.offset(273.5);
             } else if (bounds.size.width == 1194.0) {
                 // iPad Pro 11"
                 self.calctopconstraint.offset(273.5);

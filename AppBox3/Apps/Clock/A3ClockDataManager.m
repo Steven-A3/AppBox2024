@@ -111,9 +111,30 @@
 	[[A3UserDefaults standardUserDefaults] synchronize];
 }
 
+- (NSMutableArray *)deduplicateArray:(NSArray *)array {
+    // Create a mutable array to store unique numbers
+    NSMutableArray *uniqueNumbers = [NSMutableArray array];
+    
+    // Create a mutable set to track seen values
+    NSMutableSet *seenValues = [NSMutableSet set];
+    
+    // Iterate through the original array
+    for (NSNumber *number in array) {
+        // Check if the value has already been seen
+        if (![seenValues containsObject:number]) {
+            // Add the number to the unique array and the seen set
+            [uniqueNumbers addObject:number];
+            [seenValues addObject:number];
+        }
+    }
+    return uniqueNumbers;
+}
+
 - (NSMutableArray *)waveCirclesArray {
 	A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 	NSMutableArray *circleArray = [[userDefaults objectForKey:A3ClockWaveCircleLayout] mutableCopy];
+    circleArray = [self deduplicateArray:circleArray];
+    FNLOG(@"%@", circleArray);
 
 	if (circleArray) return circleArray;
 

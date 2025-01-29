@@ -531,10 +531,8 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
     if (!super.loanData) {
         NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey];
         if (loanData) {
-            NSError *error = nil;
-            super.loanData = [NSKeyedUnarchiver unarchivedObjectOfClass:[LoanCalcData class] fromData:loanData error:&error];
-            if (error) {
-                NSLog(@"Failed to unarchive loan data: %@", error.localizedDescription);
+            super.loanData = [LoanCalcData unarchivedObject:loanData];
+            if (super.loanData == nil) {
                 // Optionally, you can initialize a new instance if unarchiving fails
                 super.loanData = [[LoanCalcData alloc] init];
                 [self initializeLoanData:super.loanData];
@@ -555,10 +553,9 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         
         if (loanData) {
             NSError *error = nil;
-            _loanDataA = [NSKeyedUnarchiver unarchivedObjectOfClass:[LoanCalcData class] fromData:loanData error:&error];
+            _loanDataA = [LoanCalcData unarchivedObject:loanData];
             
-            if (error) {
-                NSLog(@"Failed to unarchive loanDataA: %@", error.localizedDescription);
+            if (_loanDataA == nil) {
                 // Optionally, initialize a new instance if unarchiving fails
                 _loanDataA = [[LoanCalcData alloc] init];
                 [self initializeLoanData:_loanDataA];
@@ -578,11 +575,9 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_B];
         
         if (loanData) {
-            NSError *error = nil;
-            _loanDataB = [NSKeyedUnarchiver unarchivedObjectOfClass:[LoanCalcData class] fromData:loanData error:&error];
+            _loanDataB = [LoanCalcData unarchivedObject:loanData];
             
-            if (error) {
-                NSLog(@"Failed to unarchive loanDataB: %@", error.localizedDescription);
+            if (_loanDataB == nil) {
                 // If unarchiving fails, initialize a new instance
                 _loanDataB = [[LoanCalcData alloc] init];
                 [self initializeLoanData:_loanDataB];

@@ -1325,7 +1325,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
 - (void)shareAll:(id)sender {
     _shareAll = YES;
     
-    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
+    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view barButtonItem:nil];
 }
 
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
@@ -1337,7 +1337,7 @@ static NSString *const A3V3InstructionDidShowForCurrency = @"A3V3InstructionDidS
         _shareAll = NO;
     }
 
-    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view];
+    [[ShareTextManager shared] shareText:[self stringForShare] from:self sourceView:self.view barButtonItem:nil];
 }
 
 - (NSString *)stringForShare {

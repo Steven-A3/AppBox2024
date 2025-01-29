@@ -97,4 +97,18 @@ NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged"
 	return resultString;
 }
 
++ (LoanCalcData *)unarchivedObject:(NSData *)data {
+    NSError *error;
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+    LoanCalcData *decodedObject = nil;
+    if (error) {
+        FNLOG(@"Error unarchiving color data: %@", error.localizedDescription);
+    } else {
+        unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+        decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+        [unarchiver finishDecoding];
+    }
+    return decodedObject;
+}
+
 @end

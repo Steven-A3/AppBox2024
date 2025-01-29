@@ -36,7 +36,6 @@
 }
 
 - (void)viewWillLayoutSubviews {
-
 	CGFloat scale = [A3UIDevice scaleToOriginalDesignDimension];
     CGFloat vscale = scale;
     CGFloat p_bigbuttonwidth = 120.0 * scale, p_smallbuttonwidth = 90.0 * scale, p_buttonheight = 89.0 * scale;
@@ -52,11 +51,21 @@
     BOOL isPortrait = [UIWindow interfaceOrientationIsPortrait];
 	if (isPortrait) {
         CGFloat top, width, height;
-        if (bounds.size.height == 1366.0) {
+        if (bounds.size.height == 1376.0) {
+            // iPad Pro 13"
+            top = 617.0 * scale;
+            width = 768.0 * scale;
+            height = 407.0 * scale;
+        } else if (bounds.size.height == 1366.0) {
             // iPad Pro 12.9"
             top = 617.0 * scale;
             width = 768.0 * scale;
             height = 407.0 * scale;
+        } else if (bounds.size.height == 1210.0) {
+            // iPad Pro 11"
+            top = 732.0;
+            width = 834.0;
+            height = 407.0 * vscale + 40;
         } else if (bounds.size.height == 1194.0) {
             // iPad Pro 11"
             top = 732.0;
@@ -88,11 +97,25 @@
         bigbuttonwidth = p_bigbuttonwidth; smallbuttonwidth = p_smallbuttonwidth; buttonheight = p_buttonheight;
 	} else {
         CGFloat top, width, height;
-        if (bounds.size.width == 1366.0) {
+        if (bounds.size.width == 1376.0) {
+            // iPad Pro 13"
+            top = 420.0 * scale;
+            width = 1024.0 * scale;
+            height = 348.0 * scale;
+        } else if (bounds.size.width == 1366.0) {
             // iPad Pro 12.9"
             top = 420.0 * scale;
             width = 1024.0 * scale;
             height = 348.0 * scale;
+        } else if (bounds.size.width == 1210.0) {
+            // iPad Pro 11"
+            vscale = 834.0/768.0;
+            width = 1210.0 * scale;
+            height = 348.0 * scale;
+            top = 834.0 - height;
+
+            p_buttonheight = 89.0 * vscale;
+            l_buttonheight = 74.0 * vscale;
         } else if (bounds.size.width == 1194.0) {
             // iPad Pro 11", height = 834
             vscale = 834.0/768.0;

@@ -203,7 +203,17 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 - (NSDateComponents *)dateComponentsForKey:(NSString *)key {
 	NSData *data = [self objectForKey:key];
 	if (data) {
-        return [NSKeyedUnarchiver unarchivedObjectOfClass:[NSDateComponents class] fromData:data error:NULL];
+        NSError *error;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+        NSDateComponents *decodedObject = nil;
+        if (error) {
+            FNLOG(@"Error unarchiving NSDateComponents data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
+        }
+        return decodedObject;
 	}
 	return nil;
 }

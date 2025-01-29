@@ -198,10 +198,17 @@
 	NSData *data = [self objectForKey:A3ClockWaveClockColor];
 	if (data) {
         NSError *error;
-        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
-        if (error == nil) {
-            return color;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+        UIColor *decodedObject = nil;
+        if (error) {
+            FNLOG(@"Error unarchiving NSDateComponents data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
         }
+
+        return decodedObject;
 	}
 	return [UIColor colorWithRed:63.0/255.0 green:156.0/255.0 blue:250.0/255.0 alpha:1.0];
 }
@@ -218,10 +225,17 @@
 	NSData *data = [self objectForKey:A3ClockFlipDarkColor];
 	if (data) {
         NSError *error;
-        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
-        if (error == nil) {
-            return color;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+        UIColor *decodedObject = nil;
+        if (error) {
+            FNLOG(@"Error unarchiving NSDateComponents data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
         }
+
+        return decodedObject;
 	}
 	return [UIColor blackColor];
 }
@@ -238,10 +252,17 @@
 	NSData *data = [self objectForKey:A3ClockFlipLightColor];
 	if (data) {
         NSError *error;
-        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
-        if (error == nil) {
-            return color;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+        UIColor *decodedObject = nil;
+        if (error) {
+            FNLOG(@"Error unarchiving NSDateComponents data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
         }
+
+        return decodedObject;
 	}
 	return [UIColor whiteColor];
 }
@@ -258,10 +279,17 @@
 	NSData *data = [self objectForKey:A3ClockLEDColor];
 	if (data) {
         NSError *error;
-        UIColor *color = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:data error:&error];
-        if (error == nil) {
-            return color;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+        UIColor *decodedObject = nil;
+        if (error) {
+            FNLOG(@"Error unarchiving NSDateComponents data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
         }
+
+        return decodedObject;
 	}
 	return [UIColor whiteColor];
 }

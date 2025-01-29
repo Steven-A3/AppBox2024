@@ -21,7 +21,7 @@ import UIKit
     ///   - text: The text to share
     ///   - viewController: The presenting view controller
     ///   - sourceView: The view from which the popover should originate (for iPad)
-    @objc func shareText(_ text: String, from viewController: UIViewController, sourceView: UIView? = nil) {
+    @objc func shareText(_ text: String, from viewController: UIViewController, sourceView: UIView? = nil, barButtonItem: UIBarButtonItem? = nil) {
         let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         
         // Exclude certain activity types if desired
@@ -32,7 +32,9 @@ import UIKit
         
         // Handle popover presentation for iPad
         if let popoverController = activityViewController.popoverPresentationController {
-            if let sourceView = sourceView {
+            if let barButtonItem = barButtonItem {
+                popoverController.barButtonItem = barButtonItem
+            } else if let sourceView = sourceView {
                 popoverController.sourceView = sourceView
                 popoverController.sourceRect = sourceView.bounds
             } else {

@@ -30,4 +30,6 @@ typedef NS_ENUM(NSInteger, ValueIdx) {
 @property (nonatomic, assign) BOOL calculated;
 
 -(NSArray *)formattedStringValuesByCalcType;
++ (A3PercentCalcData *)unarchiveFromData:(NSData *)data;
+
 @end

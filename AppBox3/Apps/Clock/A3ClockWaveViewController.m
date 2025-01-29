@@ -66,8 +66,17 @@
 
 	NSData *backgroundColorData = [[A3UserDefaults standardUserDefaults] objectForKey:A3ClockWaveClockColor];
 	if (backgroundColorData) {
-		UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:backgroundColorData];
-		[self.view setBackgroundColor:color];
+        NSError *error = nil;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:backgroundColorData error:&error];
+
+        if (error) {
+            FNLOG(@"Error unarchiving color data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            UIColor *color = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
+            [self.view setBackgroundColor:color];
+        }
 	} else {
 		[self.view setBackgroundColor:self.clockDataManager.waveColors[7]];
 	}
@@ -82,7 +91,10 @@
 		_layoutInitialized = YES;
 		[self updateLayout];
 	}
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)updateLayout {

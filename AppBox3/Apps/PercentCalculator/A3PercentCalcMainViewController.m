@@ -515,9 +515,8 @@
     // 최근 데이터에 저장했던 데이터인지 체크.
     NSArray *fetchedRows = [PercentCalcHistory_ findAllSortedBy:@"updateDate" ascending:NO];
     for (PercentCalcHistory_ * entity in fetchedRows) {
-        A3PercentCalcData *entityHistory = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class]
-                                                                             fromData:entity.historyItem
-                                                                                error:NULL];
+        A3PercentCalcData *entityHistory = [A3PercentCalcData unarchiveFromData:entity.historyItem];
+        
         if (!entityHistory) {
             continue;
         }

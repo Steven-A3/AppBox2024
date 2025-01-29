@@ -11,7 +11,7 @@
 
 @implementation A3PercentCalcData
 
--(id)initWithCoder:(NSCoder *)aDecoder
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init])
     {
@@ -23,14 +23,14 @@
     return self;
 }
 
--(void) encodeWithCoder:(NSCoder *)aCoder
+- (void) encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeInteger:_dataType forKey:@"dataType"];
     [aCoder encodeObject:_values forKey:@"values"];
     [aCoder encodeBool:_calculated forKey:@"calculated"];
 }
 
--(NSArray *)formattedStringValuesByCalcType
+- (NSArray *)formattedStringValuesByCalcType
 {
     FNLOG(@"formattedStringValuesByCalcType");
     FNLOG(@"%@", _values);
@@ -87,6 +87,20 @@
     
     FNLOG(@"formattedStringValuesByCalcType return");
     return result;
+}
+
++ (A3PercentCalcData *)unarchiveFromData:(NSData *)data {
+    NSError *error;
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+    A3PercentCalcData *decodedObject = nil;
+    if (error) {
+        FNLOG(@"Error unarchiving color data: %@", error.localizedDescription);
+    } else {
+        unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+        decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+        [unarchiver finishDecoding];
+    }
+    return decodedObject;
 }
 
 @end

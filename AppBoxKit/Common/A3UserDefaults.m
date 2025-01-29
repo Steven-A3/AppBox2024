@@ -214,13 +214,17 @@ NSString *const A3UserDefaultsChangedKey = @"A3UserDefaultsChangedKey";
 - (NSDateComponents *)dateComponentsForKey:(NSString *)key {
     NSData *data = [self objectForKey:key];
     if (data) {
-        NSError *error = nil;
-        id object = [NSKeyedUnarchiver unarchivedObjectOfClass:[NSDateComponents class] fromData:data error:&error];
+        NSError *error;
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingFromData:data error:&error];
+        NSDateComponents *decodedObject = nil;
         if (error) {
-            NSLog(@"Failed to unarchive data: %@", error);
-            return nil;
+            FNLOG(@"Error unarchiving NSDateComponents data: %@", error.localizedDescription);
+        } else {
+            unarchiver.requiresSecureCoding = NO; // Set this to YES if your object conforms to NSSecureCoding
+            decodedObject = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+            [unarchiver finishDecoding];
         }
-        return object;
+        return decodedObject;
     }
     return nil;
 }

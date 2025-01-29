@@ -182,11 +182,13 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PercentCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
-    NSError *error = nil;
-    A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class] fromData:aData.historyItem error:&error];
-
-    if (error) {
-        NSLog(@"Failed to unarchive A3PercentCalcData: %@", error.localizedDescription);
+    A3PercentCalcData *historyData = [A3PercentCalcData unarchiveFromData:aData.historyItem];
+    
+    if (historyData == nil) {
+        historyData = [[A3PercentCalcData alloc] init];
+        historyData.dataType = 0;
+        historyData.values = @[@0, @0, @0, @0];
+        historyData.calculated = NO;
     }
 
     NSArray *results = [A3PercentCalculator percentCalculateFor:historyData];
@@ -381,14 +383,9 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PercentCalcHistory_ *aData = [_fetchedResultsController objectAtIndexPath:indexPath];
-    NSError *error = nil;
-    A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class] fromData:aData.historyItem error:&error];
+    A3PercentCalcData *historyData = [A3PercentCalcData unarchiveFromData:aData.historyItem];
 
-    if (error) {
-        NSLog(@"Failed to unarchive A3PercentCalcData: %@", error.localizedDescription);
-    }
-
-    return historyData.dataType==PercentCalcType_5 ? 84.0 : 62.0;
+    return historyData.dataType == PercentCalcType_5 ? 84.0 : 62.0;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -402,12 +399,7 @@ NSString *const A3PercentCalcHistoryCompareCellID = @"cell2";
     }
     
     if ([_delegate respondsToSelector:@selector(setHistoryData:)]) {
-        NSError *error = nil;
-        A3PercentCalcData *historyData = [NSKeyedUnarchiver unarchivedObjectOfClass:[A3PercentCalcData class] fromData:aData.historyItem error:&error];
-
-        if (error) {
-            NSLog(@"Failed to unarchive A3PercentCalcData: %@", error.localizedDescription);
-        }
+        A3PercentCalcData *historyData = [A3PercentCalcData unarchiveFromData:aData.historyItem];
         
         if (!historyData) {
             return;
