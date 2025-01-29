@@ -612,7 +612,7 @@ static NSString *const A3V3InstructionDidShowForWalletCategoryView = @"A3V3Instr
 }
 
 - (BOOL)shouldShowHelpView {
-	return ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletCategoryView];
+	return [[CoreDataStack shared] coreDataReady] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletCategoryView];
 }
 
 - (void)showInstructionView

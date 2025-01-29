@@ -14,6 +14,7 @@ extension CoreDataStack {
     public func startObservingCloudKitEvents() {
         if !isICloudAccountAvailable {
             coreDataReady = true
+            NotificationCenter.default.post(name: Notification.Name(iCloudConstants.COREDATA_READY_TO_USE_NOTIFICATION), object: nil)
             return
         }
         NotificationCenter.default.addObserver(
@@ -35,12 +36,23 @@ extension CoreDataStack {
             Logger.shared.info("CoreDataStack: Setup event occurred.")
         case .import:
             Logger.shared.info("CoreDataStack: Import event occurred.")
+            if event.endDate == nil {
+                iCloudActivityIndicatorManager.shared.show("iCloud importing data...")
+            } else {
+                iCloudActivityIndicatorManager.shared.hide()
+            }
             Logger.shared.info("CoreDataStack: Import event started at \(String(describing: event.startDate))")
             Logger.shared.info("CoreDataStack: Import event ended at \(String(describing: event.endDate))")
             if event.endDate != nil {
                 coreDataReady = true
+                NotificationCenter.default.post(name: Notification.Name(iCloudConstants.COREDATA_READY_TO_USE_NOTIFICATION), object: nil)
             }
         case .export:
+            if event.endDate == nil {
+                iCloudActivityIndicatorManager.shared.show("iCloud exporting data...")
+            } else {
+                iCloudActivityIndicatorManager.shared.hide()
+            }
             Logger.shared.info("CoreDataStack: Export event occurred.")
         default :
             Logger.shared.info("CoreDataStack: Unknown event occurred.")

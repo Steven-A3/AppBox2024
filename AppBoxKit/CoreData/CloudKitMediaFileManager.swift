@@ -134,7 +134,7 @@ public actor CloudKitMediaFileManager: CKSyncEngineDelegate {
                 Logger.shared.info("Failed to save sync state data: \(error)")
             }
         case .fetchedRecordZoneChanges(let changes):
-            handleFetchedChanges(changes)
+            await handleFetchedChanges(changes)
         case .sentRecordZoneChanges(let changes):
             handleSentChanges(changes)
         default:
@@ -183,7 +183,7 @@ public actor CloudKitMediaFileManager: CKSyncEngineDelegate {
         }
     }
     
-    private func handleFetchedChanges(_ changes: CKSyncEngine.Event.FetchedRecordZoneChanges) {
+    private func handleFetchedChanges(_ changes: CKSyncEngine.Event.FetchedRecordZoneChanges) async {
         for modification in changes.modifications {
             let record = modification.record
             let recordType = record.recordType
@@ -196,6 +196,14 @@ public actor CloudKitMediaFileManager: CKSyncEngineDelegate {
                     try? FileManager.default.copyItem(at: assetURL, to: fileURL)
                     Logger.shared.info( "File saved: \(fileURL)")
                     NotificationCenter.default.post(name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object:nil)
+                }
+            } else if recordType == "EventRecord" {
+                // Handle EventRecord
+                let currentDeviceID = await MainActor.run { UIDevice.current.identifierForVendor?.uuidString ?? "" }
+                if record["eventType"] == "Reset" && record["ownerDeviceIdentifier"] != currentDeviceID {
+                    // Reset the sync engine state
+                    CoreDataStack.shared.resetLocalContainer()
+                    fatalError("Intenti8onally crashed to reset the app.")
                 }
             }
         }

@@ -795,19 +795,8 @@ static char const *const kA3MenuGroupColors = "kA3MenuGroupColors";
 }
 
 - (BOOL)launchAppNamed:(NSString *)appName verifyPasscode:(BOOL)verifyPasscode animated:(BOOL)animated {
-    NSArray *appNeedsCoreData = @[
-        A3AppName_Wallet, A3AppName_DaysCounter, A3AppName_Translator, A3AppName_LadiesCalendar
-    ];
-    if (!CoreDataStack.shared.coreDataReady && [appNeedsCoreData containsObject:appName]) {
-        CloudWaitHostingViewController *viewController = [[CloudWaitHostingViewController alloc] initWithCompletion:^{
-            FNLOG(@"CloudWaitView dismissed.");
-        }];
-        [viewController popToRootAndPushViewController:viewController animated:YES];
-        return YES;
-    }
-    
     if ([appName containsString:A3AppName_Wallet]) {
-        if ([WalletCategory_ countOfEntities] == 0) {
+        if ([[CoreDataStack shared] coreDataReady] && [WalletCategory_ countOfEntities] == 0) {
             [WalletData initializeWalletCategories];
         }
     }

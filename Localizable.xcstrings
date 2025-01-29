@@ -12597,9 +12597,6 @@
         }
       }
     },
-    "Clearing iCloud Data ..." : {
-
-    },
     "Clock" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -42001,6 +41998,9 @@
         }
       }
     },
+    "Restoring Data ..." : {
+
+    },
     "Restricted" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -47741,6 +47741,7 @@
     },
     "Syncing...(%@)" : {
       "comment" : "Syncing...(%@)",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

@@ -16,20 +16,9 @@
 #import "NSManagedObjectContext+extension.h"
 #import "AppBox3-Swift.h"
 #import "NSFileManager+A3Addition.h"
-#import <Ensembles/Ensembles.h>
 #import <BackgroundTasks/BackgroundTasks.h>
 
 @implementation A3AppDelegate (iCloud)
-
-- (void)persistentStoreActivityWillEndActivity:(NSNotification *)notification {
-	FNLOG();
-	
-	CDEEnsembleActivity activity = (CDEEnsembleActivity) [[notification.userInfo objectForKey:CDEEnsembleActivityKey] unsignedIntegerValue];
-	if (activity == CDEEnsembleActivityLeeching || activity == CDEEnsembleActivityDeleeching) {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEPersistentStoreEnsembleWillEndActivityNotification object:nil];
-		[self.hud hideAnimated:YES];
-	}
-}
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Register background refresh task

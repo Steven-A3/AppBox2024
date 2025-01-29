@@ -10,6 +10,7 @@
 #import "NSDate-Utilities.h"
 #import "NSFileManager+A3Addition.h"
 #import "A3UserDefaults.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 
@@ -37,6 +38,19 @@ NSString *const A3SyncManagerEmptyObject = @"(!_^_!Empty!_^_!_#+129)";
 		// If something is changing externally, get the changes
 		// and update the corresponding keys locally.
 		NSArray* changedKeys = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangedKeysKey];
+        
+        if ([changedKeys containsObject:kUserDefaultsKeyForSystemInitiatesDataReset]) {
+            if (!self.ignoreDataReset) {
+                CoreDataStack *stack = [CoreDataStack shared];
+                [stack resetLocalContainer];
+                abort();
+            } else {
+                // This effective once and reset the flag to respond additional reset.
+                self.ignoreDataReset = NO;
+            }
+            return;
+        }
+        
 		NSUbiquitousKeyValueStore* store = [NSUbiquitousKeyValueStore defaultStore];
 		A3UserDefaults* userDefaults = [A3UserDefaults standardUserDefaults];
 

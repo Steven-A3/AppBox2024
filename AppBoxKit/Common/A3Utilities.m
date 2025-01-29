@@ -127,7 +127,7 @@ NSString *const A3LoanCalcUserDefaultsCustomCurrencyCode 	= @"A3LoanCalcUserDefa
 
 #pragma mark ------ Lady Calendar
 NSString *const A3LadyCalendarCurrentAccountID              = @"A3LadyCalendarCurrentAccountID";
-NSString *const A3LadyCalendarUserDefaultsSettings = @"A3LadyCalendarUserDefaultsSettings";
+NSString *const A3LadyCalendarUserDefaultsSettings          = @"A3LadyCalendarUserDefaultsSettings";
 NSString *const A3LadyCalendarLastViewMonth                 = @"A3LadyCalendarLastViewMonth";
 
 #pragma mark ------ Lunar Converter
@@ -169,6 +169,7 @@ NSString *const kUserDefaultsKeyForAskPasscodeForDaysCounter = @"kUserRequirePas
 NSString *const kUserDefaultsKeyForAskPasscodeForLadyCalendar = @"kUserRequirePasscodePCalendar";
 NSString *const kUserDefaultsKeyForAskPasscodeForWallet 	= @"passcodeAskPasscodeForWallet";
 
+NSString *const kUserDefaultsKeyForSystemInitiatesDataReset = @"kUserDefaultsKeyForSystemInitiatesDataReset";
 
 @implementation A3Utilities
 

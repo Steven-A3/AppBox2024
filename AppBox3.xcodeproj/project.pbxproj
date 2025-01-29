@@ -223,7 +223,6 @@
 		6817830F1902823D003E1BB9 /* A3WalletItemTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817830E1902823D003E1BB9 /* A3WalletItemTitleCell.m */; };
 		6817C3762CE976FF00019829 /* MediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6817C3752CE976FF00019829 /* MediaFileManager.swift */; };
 		681983731CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 681983721CE5B5D9003453BF /* A3PedometerCollectionViewFlowLayout.m */; };
-		681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		681C511F194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 681C5121194EB57400CB653A /* LoanCalculatorPadStoryBoard.storyboard */; };
 		681E11FD1932E2250077DCFA /* A3DataMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 681E11FC1932E2250077DCFA /* A3DataMigrationManager.m */; };
 		681E125D193443F00077DCFA /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 681E122D193443F00077DCFA /* ioapi.c */; };
@@ -276,8 +275,6 @@
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		68330B4E2A17748C005EEEBC /* SecuredTextFieldParentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68330B4C2A17748B005EEEBC /* SecuredTextFieldParentProtocol.swift */; };
 		68330B4F2A17748C005EEEBC /* SecuredTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68330B4D2A17748C005EEEBC /* SecuredTextFieldView.swift */; };
-		6834AEEF2D15F4E9002A4509 /* CloudWaitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6834AEEE2D15F4E9002A4509 /* CloudWaitView.swift */; };
-		6834AEF12D15FA68002A4509 /* CloudWaitHostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6834AEF02D15FA68002A4509 /* CloudWaitHostingViewController.swift */; };
 		6834AEF52D16AD40002A4509 /* MediaFileCleaner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6834AEF42D16AD40002A4509 /* MediaFileCleaner.swift */; };
 		68351DFB1EA8C7870076B11B /* Abbreviation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351DFD1EA8C7870076B11B /* Abbreviation.storyboard */; };
 		68351E241EA8E6200076B11B /* WhatsNew4_5.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68351E261EA8E6200076B11B /* WhatsNew4_5.storyboard */; };
@@ -383,9 +380,10 @@
 		68586B762D1BD76A009F8177 /* WalletCategory_+Deduplicate.swift in Resources */ = {isa = PBXBuildFile; fileRef = 68586B752D1BD76A009F8177 /* WalletCategory_+Deduplicate.swift */; };
 		68586B7C2D1BD93A009F8177 /* WalletFieldItem_+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68586B7B2D1BD93A009F8177 /* WalletFieldItem_+Video.swift */; };
 		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
+		6859F4112D36A64F00CECBF3 /* ProgressOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6859F4102D36A64F00CECBF3 /* ProgressOverlayView.swift */; };
+		6859F4132D36A7EE00CECBF3 /* ProgressOverlayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6859F4122D36A7EE00CECBF3 /* ProgressOverlayManager.swift */; };
 		6859F9FF1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */; };
 		6859FA0A1E5BDD040064BAD7 /* A3DrillDownHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859FA091E5BDD040064BAD7 /* A3DrillDownHelpViewController.m */; };
-		685B83DA29FD1320007B679E /* Ensembles.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; };
 		685C50C01F7DD78200BE5BBB /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 685C50BF1F7DD78200BE5BBB /* MBProgressHUD.m */; };
 		685CF1AD1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685CF1AC1DFFF46300DE2636 /* A3AbbreviationTableViewCell.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
@@ -566,7 +564,6 @@
 		6882801F17E5E8DB000D8069 /* A3HolidaysPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882801E17E5E8DB000D8069 /* A3HolidaysPageViewController.m */; };
 		6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6882802517E5ECED000D8069 /* A3HolidaysPageContentViewController.m */; };
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
-		68854E64273CEF010009D028 /* Ensembles.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; };
 		68857D361E6D1A6E009E4ABC /* currencyRates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68857D341E6D1A6E009E4ABC /* currencyRates.plist */; };
 		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
 		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
@@ -618,6 +615,7 @@
 		6898A6E71908AEA50099C09E /* WalletFavorite+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */; };
 		6898D8181E45722800B7BEEA /* A3KaomojiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898D8171E45722800B7BEEA /* A3KaomojiViewController.m */; };
 		6898D8281E45769B00B7BEEA /* A3KaomojiDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898D8271E45769B00B7BEEA /* A3KaomojiDataManager.m */; };
+		689B51D62D48D3EE00FBB6D1 /* iCloudAcitivityIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689B51D52D48D3EE00FBB6D1 /* iCloudAcitivityIndicatorManager.swift */; };
 		689B950E1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689B950D1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m */; };
 		689B95191E4981D30005A43A /* A3KaomojiDrillDownViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689B95181E4981D30005A43A /* A3KaomojiDrillDownViewController.m */; };
 		689BA5F31EE94E270097B373 /* chartWidget.html in Resources */ = {isa = PBXBuildFile; fileRef = 689BA5F21EE94E270097B373 /* chartWidget.html */; };
@@ -643,9 +641,7 @@
 		689D59061C1569BA002CD422 /* ClinometerToolbarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59001C1569BA002CD422 /* ClinometerToolbarViewController.m */; };
 		689D59071C1569BA002CD422 /* InclinometerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59021C1569BA002CD422 /* InclinometerView.m */; };
 		689D59081C1569BA002CD422 /* InclinometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689D59041C1569BA002CD422 /* InclinometerViewController.m */; };
-		689E8B3A2A190F86008BA7BD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 689E8B392A190F86008BA7BD /* Localizable.strings */; };
 		689E9855197C1B99003710C3 /* A3UnitNamesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 689E9854197C1B99003710C3 /* A3UnitNamesTest.m */; };
-		68A2D3252A05D795006D0898 /* Ensembles.xcframework in Headers */ = {isa = PBXBuildFile; fileRef = 68854E63273CEF000009D028 /* Ensembles.xcframework */; settings = {ATTRIBUTES = (Private, ); }; };
 		68A69A1221674F6000AF1DC5 /* UIImage+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */; };
 		68A69A1321674F6000AF1DC5 /* UIImage+Filtering.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0E21674F6000AF1DC5 /* UIImage+Filtering.m */; };
 		68A69A1421674F6000AF1DC5 /* UIImage+Enhancing.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A69A0F21674F6000AF1DC5 /* UIImage+Enhancing.m */; };
@@ -659,8 +655,8 @@
 		68B1292F29EA0CA4003A5EB1 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; };
 		68B1293629EA0CA7003A5EB1 /* AppBoxKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B1293529EA0CA7003A5EB1 /* AppBoxKitTests.swift */; };
 		68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 68B1292729EA0CA3003A5EB1 /* AppBoxKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; };
-		68B1293B29EA0CA7003A5EB1 /* AppBoxKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		68B1293A29EA0CA7003A5EB1 /* AppBoxKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; platformFilter = ios; };
+		68B1293B29EA0CA7003A5EB1 /* AppBoxKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68B1292529EA0CA1003A5EB1 /* AppBoxKit.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		68B3AC9C2D12B5390073ABDA /* CoreDataStack+CKRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B3AC9B2D12B5390073ABDA /* CoreDataStack+CKRecord.swift */; };
 		68B4028329D6DE3C00CA91CA /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 680A632B29B96B670020B964 /* AuthenticationServices.framework */; };
 		68B4028629D6DE3C00CA91CA /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B4028529D6DE3C00CA91CA /* CredentialProviderViewController.swift */; };
@@ -809,6 +805,7 @@
 		68C5F85728AA1AF20055F7CA /* A3WalletRecentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C5F85628AA1AF20055F7CA /* A3WalletRecentsViewController.m */; };
 		68C610C129F61BFA0002B484 /* PasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C610C029F61BFA0002B484 /* PasswordController.swift */; };
 		68C610C329F7FF0B0002B484 /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C610C229F7FF0B0002B484 /* PasswordViewController.swift */; };
+		68C62B002D3728D0001FCED6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 68C62AFF2D3728CF001FCED6 /* Localizable.xcstrings */; };
 		68C7E1081BE20C1C00861AFD /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */; };
 		68C802D819571A0200BC19EE /* WalletCategoryPreset.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */; };
 		68C802DB19571A2000BC19EE /* WalletPreset.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C802DD19571A2000BC19EE /* WalletPreset.strings */; };
@@ -1123,7 +1120,6 @@
 			files = (
 				68B1293B29EA0CA7003A5EB1 /* AppBoxKit.framework in Embed Frameworks */,
 				686490E529B82BD600AF1D39 /* OpenSSL.xcframework in Embed Frameworks */,
-				681BF928273CF40E00304924 /* Ensembles.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1627,8 +1623,6 @@
 		6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySelectViewController.m; path = Apps/Currency/A3CurrencySelectViewController.m; sourceTree = "<group>"; };
 		68330B4C2A17748B005EEEBC /* SecuredTextFieldParentProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredTextFieldParentProtocol.swift; sourceTree = "<group>"; };
 		68330B4D2A17748C005EEEBC /* SecuredTextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredTextFieldView.swift; sourceTree = "<group>"; };
-		6834AEEE2D15F4E9002A4509 /* CloudWaitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudWaitView.swift; sourceTree = "<group>"; };
-		6834AEF02D15FA68002A4509 /* CloudWaitHostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudWaitHostingViewController.swift; sourceTree = "<group>"; };
 		6834AEF42D16AD40002A4509 /* MediaFileCleaner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFileCleaner.swift; sourceTree = "<group>"; };
 		68351DFC1EA8C7870076B11B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Abbreviation.storyboard; sourceTree = "<group>"; };
 		68351E071EA8C78A0076B11B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Abbreviation.strings; sourceTree = "<group>"; };
@@ -1810,6 +1804,8 @@
 		68586B752D1BD76A009F8177 /* WalletCategory_+Deduplicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletCategory_+Deduplicate.swift"; sourceTree = "<group>"; };
 		68586B7B2D1BD93A009F8177 /* WalletFieldItem_+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletFieldItem_+Video.swift"; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
+		6859F4102D36A64F00CECBF3 /* ProgressOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlayView.swift; sourceTree = "<group>"; };
+		6859F4122D36A7EE00CECBF3 /* ProgressOverlayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressOverlayManager.swift; sourceTree = "<group>"; };
 		6859F9FD1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiHelpViewController.h; path = Kaomoji/A3KaomojiHelpViewController.h; sourceTree = "<group>"; };
 		6859F9FE1E5BCDBB0064BAD7 /* A3KaomojiHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiHelpViewController.m; path = Kaomoji/A3KaomojiHelpViewController.m; sourceTree = "<group>"; };
 		6859FA081E5BDD040064BAD7 /* A3DrillDownHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DrillDownHelpViewController.h; sourceTree = "<group>"; };
@@ -2058,7 +2054,6 @@
 		6883CBDB29FA609A0053036F /* AppBoxKit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppBoxKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainViewController.h; sourceTree = "<group>"; };
 		6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainViewController.m; sourceTree = "<group>"; };
-		68854E63273CEF000009D028 /* Ensembles.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Ensembles.xcframework; path = External/Ensembles.xcframework; sourceTree = "<group>"; };
 		68857D341E6D1A6E009E4ABC /* currencyRates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = currencyRates.plist; path = Apps/Currency/Model/currencyRates.plist; sourceTree = "<group>"; };
 		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
 		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
@@ -2141,6 +2136,7 @@
 		6898D8261E45769B00B7BEEA /* A3KaomojiDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiDataManager.h; path = Kaomoji/A3KaomojiDataManager.h; sourceTree = "<group>"; };
 		6898D8271E45769B00B7BEEA /* A3KaomojiDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiDataManager.m; path = Kaomoji/A3KaomojiDataManager.m; sourceTree = "<group>"; };
 		689A203C19AB3650009144B6 /* AppBox3-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AppBox3-Info.plist"; sourceTree = "<group>"; };
+		689B51D52D48D3EE00FBB6D1 /* iCloudAcitivityIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudAcitivityIndicatorManager.swift; sourceTree = "<group>"; };
 		689B950C1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiDrillDownTableViewCell.h; path = Kaomoji/A3KaomojiDrillDownTableViewCell.h; sourceTree = "<group>"; };
 		689B950D1E49816A0005A43A /* A3KaomojiDrillDownTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KaomojiDrillDownTableViewCell.m; path = Kaomoji/A3KaomojiDrillDownTableViewCell.m; sourceTree = "<group>"; };
 		689B95171E4981D30005A43A /* A3KaomojiDrillDownViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KaomojiDrillDownViewController.h; path = Kaomoji/A3KaomojiDrillDownViewController.h; sourceTree = "<group>"; };
@@ -2191,7 +2187,6 @@
 		689D59021C1569BA002CD422 /* InclinometerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerView.m; sourceTree = "<group>"; };
 		689D59031C1569BA002CD422 /* InclinometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InclinometerViewController.h; sourceTree = "<group>"; };
 		689D59041C1569BA002CD422 /* InclinometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InclinometerViewController.m; sourceTree = "<group>"; };
-		689E8B392A190F86008BA7BD /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		689E9854197C1B99003710C3 /* A3UnitNamesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitNamesTest.m; sourceTree = "<group>"; };
 		68A69A0421674F5F00AF1DC5 /* UIImage+Filtering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Filtering.h"; sourceTree = "<group>"; };
 		68A69A0D21674F6000AF1DC5 /* UIImage+Blurring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Blurring.m"; sourceTree = "<group>"; };
@@ -2492,6 +2487,7 @@
 		68C5F85928AA39030055F7CA /* WalletItem Last Opened.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WalletItem Last Opened.xcdatamodel"; sourceTree = "<group>"; };
 		68C610C029F61BFA0002B484 /* PasswordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordController.swift; sourceTree = "<group>"; };
 		68C610C229F7FF0B0002B484 /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
+		68C62AFF2D3728CF001FCED6 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		68C7E1061BE20C1C00861AFD /* A3CurrencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyViewController.h; path = Apps/Currency/A3CurrencyViewController.h; sourceTree = "<group>"; };
 		68C7E1071BE20C1C00861AFD /* A3CurrencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyViewController.m; path = Apps/Currency/A3CurrencyViewController.m; sourceTree = "<group>"; };
 		68C802D719571A0200BC19EE /* WalletCategoryPreset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WalletCategoryPreset.plist; sourceTree = "<group>"; };
@@ -3064,7 +3060,6 @@
 				683F56152A1EBCE600684674 /* WultraPassphraseMeterCore in Frameworks */,
 				68CFACD428A3A6F900C6B4F0 /* UniformTypeIdentifiers.framework in Frameworks */,
 				6826275629B77C3D0052CBD0 /* FirebaseInstallations in Frameworks */,
-				68854E64273CEF010009D028 /* Ensembles.xcframework in Frameworks */,
 				6826276829B77D1E0052CBD0 /* FirebaseCrashlytics in Frameworks */,
 				68691B7C1EB69007006685B0 /* StoreKit.framework in Frameworks */,
 				6826275A29B77D1D0052CBD0 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
@@ -3104,7 +3099,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				683F561D2A1EBDDA00684674 /* WultraPassphraseMeterENDictionary in Frameworks */,
-				685B83DA29FD1320007B679E /* Ensembles.xcframework in Frameworks */,
 				683F56192A1EBDDA00684674 /* WultraPassphraseMeter in Frameworks */,
 				683F561B2A1EBDDA00684674 /* WultraPassphraseMeterCore in Frameworks */,
 				68EA63AC2CBD224F00C2D5D7 /* DotLottie in Frameworks */,
@@ -3437,6 +3431,7 @@
 		680219C42C3A75DF007694F9 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				6859F4102D36A64F00CECBF3 /* ProgressOverlayView.swift */,
 				685FB7162D209EE4002030F8 /* CloudKitMediaFileManager.swift */,
 				687AD80E2CABEC710074CBBD /* CoreDataStack.swift */,
 				68898E1C2D15558D00F62AB3 /* CoreDataStack+Backup.swift */,
@@ -3449,8 +3444,8 @@
 				68EA63A42CBD0DD600C2D5D7 /* LottieView.swift */,
 				680F72D32CBD259200752A53 /* MigrationHostingViewController.swift */,
 				6817C3752CE976FF00019829 /* MediaFileManager.swift */,
-				6834AEEE2D15F4E9002A4509 /* CloudWaitView.swift */,
-				6834AEF02D15FA68002A4509 /* CloudWaitHostingViewController.swift */,
+				6859F4122D36A7EE00CECBF3 /* ProgressOverlayManager.swift */,
+				689B51D52D48D3EE00FBB6D1 /* iCloudAcitivityIndicatorManager.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -3985,7 +3980,6 @@
 				686490E329B82BD600AF1D39 /* OpenSSL.xcframework */,
 				686490E229B82BA700AF1D39 /* Frameworks */,
 				68CFACD328A3A6F800C6B4F0 /* UniformTypeIdentifiers.framework */,
-				68854E63273CEF000009D028 /* Ensembles.xcframework */,
 				6878361D1E6E4D7000828BA8 /* WebKit.framework */,
 				686FCF701775CF9D00F19332 /* Accelerate.framework */,
 				687AEE9E1CBB73F900C2D844 /* AddressBook.framework */,
@@ -4814,7 +4808,7 @@
 				68330B4D2A17748C005EEEBC /* SecuredTextFieldView.swift */,
 				68E600B92A249CC80083587D /* PasscodeField.swift */,
 				6883CBDB29FA609A0053036F /* AppBoxKit-Bridging-Header.h */,
-				689E8B392A190F86008BA7BD /* Localizable.strings */,
+				68C62AFF2D3728CF001FCED6 /* Localizable.xcstrings */,
 				6844C60F2B0FBEFF00C5D08F /* CredentialDetailView.swift */,
 				689806F02B16BBA0008D6890 /* WindowUtility.swift */,
 				6815B3DC2CBA2ACD00B1D53C /* NetworkActivityIndicatorManager.swift */,
@@ -5984,7 +5978,6 @@
 				686DB3FA2A2499B0009BC79C /* NSArray+MASShorthandAdditions.h in Headers */,
 				68B1293729EA0CA7003A5EB1 /* AppBoxKit.h in Headers */,
 				686B6B592B0932F000E39E18 /* A3SyncManager+NSUbiquitousKeyValueStore.h in Headers */,
-				68A2D3252A05D795006D0898 /* Ensembles.xcframework in Headers */,
 				68CA05262C96C141002A5FB0 /* NSString+TextDirectionality.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6413,7 +6406,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				686D966729F290D300AACD02 /* AppBoxKit.xcassets in Resources */,
-				689E8B3A2A190F86008BA7BD /* Localizable.strings in Resources */,
+				68C62B002D3728D0001FCED6 /* Localizable.xcstrings in Resources */,
 				686D966529F28E8B00AACD02 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7226,9 +7219,9 @@
 				686B6B5D2B0932F000E39E18 /* A3KeychainUtils.m in Sources */,
 				686B6B4C2B0932F000E39E18 /* A3UIDevice.m in Sources */,
 				686DB3F72A2499B0009BC79C /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				689B51D62D48D3EE00FBB6D1 /* iCloudAcitivityIndicatorManager.swift in Sources */,
 				686DB4342A2499B0009BC79C /* NSDate-Utilities.m in Sources */,
 				686B6B462B0932F000E39E18 /* A3Utilities.m in Sources */,
-				6834AEEF2D15F4E9002A4509 /* CloudWaitView.swift in Sources */,
 				68CA05252C96C141002A5FB0 /* JVFloatLabeledTextField.m in Sources */,
 				686B6B482B0932F000E39E18 /* A3UserDefaults.m in Sources */,
 				680F72D42CBD259200752A53 /* MigrationHostingViewController.swift in Sources */,
@@ -7240,6 +7233,7 @@
 				68352B3A2CCC81390056B638 /* UIApplication+extension.swift in Sources */,
 				6815B3DD2CBA2ACD00B1D53C /* NetworkActivityIndicatorManager.swift in Sources */,
 				68898E232D155F3400F62AB3 /* CoreDataStack+EventMonitor.swift in Sources */,
+				6859F4112D36A64F00CECBF3 /* ProgressOverlayView.swift in Sources */,
 				68C610C329F7FF0B0002B484 /* PasswordViewController.swift in Sources */,
 				686DB4392A2499B0009BC79C /* NSDate+formatting.m in Sources */,
 				68EA63A52CBD0DD600C2D5D7 /* LottieView.swift in Sources */,
@@ -7257,9 +7251,9 @@
 				686DB4062A2499B0009BC79C /* MASConstraintMaker.m in Sources */,
 				686B6B422B0932F000E39E18 /* A3SyncManager+mainmenu.m in Sources */,
 				68B1292929EA0CA3003A5EB1 /* AppBoxKit.docc in Sources */,
+				6859F4132D36A7EE00CECBF3 /* ProgressOverlayManager.swift in Sources */,
 				68CA05272C96C141002A5FB0 /* NSString+TextDirectionality.m in Sources */,
 				686B6B532B0932F000E39E18 /* A3PasscodeCommonViewController.m in Sources */,
-				6834AEF12D15FA68002A4509 /* CloudWaitHostingViewController.swift in Sources */,
 				686DB4092A2499B0009BC79C /* NSArray+MASAdditions.m in Sources */,
 				68E600BA2A249CC80083587D /* PasscodeField.swift in Sources */,
 				686DB4292A2499B0009BC79C /* NSMutableArray+MoveObject.m in Sources */,
@@ -7324,6 +7318,7 @@
 		};
 		68B1293929EA0CA7003A5EB1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 68B1292429EA0CA1003A5EB1 /* AppBoxKit */;
 			targetProxy = 68B1293829EA0CA7003A5EB1 /* PBXContainerItemProxy */;
 		};
@@ -7930,7 +7925,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.11;
+				CURRENT_PROJECT_VERSION = 4.8.0.13;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -7968,9 +7963,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "AppBox3/Swift/AppBox3-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/External/Masonry/Masonry/**",
 					"${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**",
@@ -7991,7 +7991,7 @@
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4.8.0.11;
+				CURRENT_PROJECT_VERSION = 4.8.0.13;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_BITCODE = NO;
@@ -8029,8 +8029,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "AppBox3/Swift/AppBox3-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/External/Masonry/Masonry/**",
 					"${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**",
@@ -8388,7 +8393,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4.8.0.10;
+				CURRENT_PROJECT_VERSION = 4.8.0.13;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -8435,7 +8440,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 4.8.0.10;
+				CURRENT_PROJECT_VERSION = 4.8.0.13;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 84XB754BWU;
 				ENABLE_NS_ASSERTIONS = NO;

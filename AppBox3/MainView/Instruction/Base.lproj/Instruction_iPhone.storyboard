@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="ysT-2a-nae">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="ysT-2a-nae">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="TrebuchetMS.ttf">
-            <string>TrebuchetMS</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Clock1 Instruction View Controller-->
         <scene sceneID="x2l-Z2-6FY">
@@ -60,7 +51,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="sxx-vG-Pll">
-                                <rect key="frame" x="102" y="75" width="263" height="40"/>
+                                <rect key="frame" x="102" y="75" width="263" height="39.5"/>
                                 <string key="text">Tap the screen to display
 the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -68,7 +59,7 @@ the controls</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="222" translatesAutoresizingMaskIntoConstraints="NO" id="zdJ-br-tkO">
-                                <rect key="frame" x="10" y="265" width="277" height="40"/>
+                                <rect key="frame" x="10" y="265" width="277" height="39.5"/>
                                 <string key="text">Swipe left or right to see
 different clock styles</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -85,12 +76,12 @@ different clock styles</string>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="2E0-oc-3KW" secondAttribute="bottom" constant="62" id="0rQ-Ev-I8X"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="2E0-oc-3KW" secondAttribute="bottom" constant="62" id="0rQ-Ev-I8X"/>
                             <constraint firstAttribute="centerX" secondItem="8OM-Xa-7AG" secondAttribute="centerX" id="13L-ZA-umq"/>
-                            <constraint firstItem="Nw8-e0-0Uz" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="top" constant="265" id="AdP-bj-1oy"/>
+                            <constraint firstItem="Nw8-e0-0Uz" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="topMargin" constant="245" id="AdP-bj-1oy"/>
                             <constraint firstItem="sxx-vG-Pll" firstAttribute="top" secondItem="NMQ-xY-zn5" secondAttribute="top" id="Edl-nV-XMc"/>
                             <constraint firstItem="8OM-Xa-7AG" firstAttribute="top" secondItem="2E0-oc-3KW" secondAttribute="bottom" constant="10" id="G1H-JA-YDm"/>
-                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="top" constant="75" id="M2T-RL-vij"/>
+                            <constraint firstItem="NMQ-xY-zn5" firstAttribute="top" secondItem="Wd6-dN-vyO" secondAttribute="topMargin" constant="55" id="M2T-RL-vij"/>
                             <constraint firstItem="sxx-vG-Pll" firstAttribute="leading" secondItem="NMQ-xY-zn5" secondAttribute="trailing" constant="10" id="M57-Re-LmN"/>
                             <constraint firstItem="0q1-C7-F7b" firstAttribute="top" secondItem="2E0-oc-3KW" secondAttribute="top" id="Man-Hr-XpX"/>
                             <constraint firstAttribute="trailing" secondItem="sxx-vG-Pll" secondAttribute="trailing" constant="10" id="Y6G-6p-KoZ"/>
@@ -122,7 +113,7 @@ different clock styles</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-961" y="-907"/>
+            <point key="canvasLocation" x="-1537.5999999999999" y="-815.8920539730135"/>
         </scene>
         <!--BatteryStatus Instruction View Controller-->
         <scene sceneID="jfM-vE-cmI">
@@ -152,7 +143,7 @@ different clock styles</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="220" translatesAutoresizingMaskIntoConstraints="NO" id="EHY-52-AW9">
-                                <rect key="frame" x="10" y="32" width="275" height="40"/>
+                                <rect key="frame" x="10" y="32" width="275" height="39.5"/>
                                 <string key="text">Tap to change 
 color and more</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -188,7 +179,7 @@ color and more</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="1115"/>
+            <point key="canvasLocation" x="-1528" y="1002.9985007496252"/>
         </scene>
         <!--Calcualtor Instruction View Controller-->
         <scene sceneID="1HM-oD-8eX">
@@ -218,7 +209,7 @@ color and more</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="4Y2-hA-ExK">
-                                <rect key="frame" x="10" y="555" width="355" height="40"/>
+                                <rect key="frame" x="10" y="555.5" width="355" height="39.5"/>
                                 <string key="text">Swipe left or right to change
 keypad for basic/scientific</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -234,7 +225,7 @@ keypad for basic/scientific</string>
                             <constraint firstAttribute="trailing" secondItem="4Y2-hA-ExK" secondAttribute="trailing" constant="10" id="B8h-ZG-34F"/>
                             <constraint firstItem="4Y2-hA-ExK" firstAttribute="leading" secondItem="y9c-JX-lrL" secondAttribute="leading" constant="10" id="M9i-0T-7Xu"/>
                             <constraint firstItem="R09-iC-0lZ" firstAttribute="top" secondItem="4Y2-hA-ExK" secondAttribute="bottom" constant="10" id="WeI-6I-NLR"/>
-                            <constraint firstAttribute="bottom" secondItem="R09-iC-0lZ" secondAttribute="bottom" constant="20" id="qxv-po-VMn"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="R09-iC-0lZ" secondAttribute="bottom" constant="20" id="qxv-po-VMn"/>
                             <constraint firstItem="R09-iC-0lZ" firstAttribute="top" secondItem="apQ-zL-mFz" secondAttribute="top" id="xO4-9p-ei1"/>
                         </constraints>
                         <connections>
@@ -253,7 +244,7 @@ keypad for basic/scientific</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="449"/>
+            <point key="canvasLocation" x="-247" y="440"/>
         </scene>
         <!--Holidays_1 Instruction View Controller-->
         <scene sceneID="xoN-Cs-tBk">
@@ -307,7 +298,7 @@ keypad for basic/scientific</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="ljC-z5-F29">
-                                <rect key="frame" x="102" y="77" width="263" height="40"/>
+                                <rect key="frame" x="102" y="77.5" width="263" height="39.5"/>
                                 <string key="text">Tap the screen to display
 the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -315,7 +306,7 @@ the controls</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="223" translatesAutoresizingMaskIntoConstraints="NO" id="f7p-pa-V3C">
-                                <rect key="frame" x="10" y="204" width="278" height="40"/>
+                                <rect key="frame" x="10" y="204.5" width="278" height="39.5"/>
                                 <string key="text">Swipe left or right to see
 holidays for another country</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -323,7 +314,7 @@ holidays for another country</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="226" translatesAutoresizingMaskIntoConstraints="NO" id="RQJ-Od-NDI" userLabel="Label - Touch and hold an item, then drag it up or down">
-                                <rect key="frame" x="84" y="532" width="281" height="40"/>
+                                <rect key="frame" x="84" y="532.5" width="281" height="39.5"/>
                                 <string key="text">Pull up to see
 more holidays</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -341,18 +332,18 @@ more holidays</string>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="ljC-z5-F29" firstAttribute="leading" secondItem="PxO-xt-eN7" secondAttribute="trailing" constant="10" id="0E3-81-iJd"/>
-                            <constraint firstAttribute="bottom" secondItem="fOb-uW-XaZ" secondAttribute="bottom" constant="94" id="14f-dH-M1i"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="fOb-uW-XaZ" secondAttribute="bottom" constant="94" id="14f-dH-M1i"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="leading" secondItem="f7p-pa-V3C" secondAttribute="trailing" constant="10" id="5ee-bK-g1L"/>
                             <constraint firstItem="fOb-uW-XaZ" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="32" id="6c6-QV-XKZ"/>
-                            <constraint firstItem="d8D-UW-O72" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="203" id="An8-JA-4Cl"/>
-                            <constraint firstAttribute="bottom" secondItem="QSq-Bz-Ppf" secondAttribute="bottom" constant="8" id="Dxz-89-W7s"/>
+                            <constraint firstItem="d8D-UW-O72" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="topMargin" constant="183" id="An8-JA-4Cl"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="QSq-Bz-Ppf" secondAttribute="bottom" constant="8" id="Dxz-89-W7s"/>
                             <constraint firstItem="1GA-EC-PDP" firstAttribute="leading" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="5" id="FiA-cn-3Ja"/>
                             <constraint firstItem="PxO-xt-eN7" firstAttribute="centerY" secondItem="ljC-z5-F29" secondAttribute="centerY" id="GES-3J-Moh"/>
                             <constraint firstItem="QSq-Bz-Ppf" firstAttribute="top" secondItem="1GA-EC-PDP" secondAttribute="top" constant="-5" id="IEm-Tp-Jam"/>
                             <constraint firstItem="d8D-UW-O72" firstAttribute="centerY" secondItem="f7p-pa-V3C" secondAttribute="centerY" id="Kmn-fY-f2Z"/>
                             <constraint firstItem="RQJ-Od-NDI" firstAttribute="leading" secondItem="fOb-uW-XaZ" secondAttribute="trailing" constant="10" id="Krh-95-a76"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="leading" secondItem="WgE-eU-a2a" secondAttribute="leading" constant="10" id="Zcp-Ta-rwT"/>
-                            <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="top" constant="76" id="fsS-BN-oGH"/>
+                            <constraint firstItem="PxO-xt-eN7" firstAttribute="top" secondItem="WgE-eU-a2a" secondAttribute="topMargin" constant="56" id="fsS-BN-oGH"/>
                             <constraint firstAttribute="trailing" secondItem="QSq-Bz-Ppf" secondAttribute="trailing" constant="51" id="kR9-rZ-Bfg"/>
                             <constraint firstAttribute="trailing" secondItem="RQJ-Od-NDI" secondAttribute="trailing" constant="10" id="lKF-iB-mS9"/>
                             <constraint firstItem="9Oc-Jc-FLn" firstAttribute="centerY" secondItem="QSq-Bz-Ppf" secondAttribute="centerY" constant="-4" id="nNg-JA-2el"/>
@@ -382,7 +373,7 @@ more holidays</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-961" y="-223"/>
+            <point key="canvasLocation" x="-1537.5999999999999" y="-200.59970014992504"/>
         </scene>
         <!--Clock2 Instruction View Controller-->
         <scene sceneID="xdw-XG-97Q">
@@ -436,7 +427,7 @@ more holidays</string>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="g69-at-Gdn" firstAttribute="leading" secondItem="SSJ-nS-OBd" secondAttribute="leading" constant="10" id="2R4-iy-tt8"/>
-                            <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="top" constant="32" id="4pZ-Ko-KDF"/>
+                            <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="SSJ-nS-OBd" secondAttribute="topMargin" constant="12" id="4pZ-Ko-KDF"/>
                             <constraint firstItem="M8N-Gv-yfO" firstAttribute="top" secondItem="g69-at-Gdn" secondAttribute="bottom" constant="10" id="6QO-3G-qX7"/>
                             <constraint firstItem="gsy-pY-fd2" firstAttribute="top" secondItem="M8N-Gv-yfO" secondAttribute="top" id="9XS-hX-6XE"/>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="centerY" secondItem="t5T-1i-yhB" secondAttribute="centerY" id="AOz-ql-aCk"/>
@@ -446,7 +437,7 @@ more holidays</string>
                             <constraint firstItem="cR3-VQ-03J" firstAttribute="top" secondItem="t5T-1i-yhB" secondAttribute="top" id="awo-41-v3V"/>
                             <constraint firstItem="gsy-pY-fd2" firstAttribute="leading" secondItem="M8N-Gv-yfO" secondAttribute="trailing" id="cxz-Hf-42F"/>
                             <constraint firstAttribute="trailing" secondItem="M8N-Gv-yfO" secondAttribute="trailing" constant="28" id="nq5-0Y-wnM"/>
-                            <constraint firstAttribute="bottom" secondItem="M8N-Gv-yfO" secondAttribute="bottom" constant="14" id="pGs-ll-ajS"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="M8N-Gv-yfO" secondAttribute="bottom" constant="14" id="pGs-ll-ajS"/>
                             <constraint firstItem="M8N-Gv-yfO" firstAttribute="trailing" secondItem="g69-at-Gdn" secondAttribute="trailing" id="pPT-wp-vbt"/>
                         </constraints>
                         <connections>
@@ -466,7 +457,7 @@ more holidays</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-562" y="-907"/>
+            <point key="canvasLocation" x="-899.20000000000005" y="-815.8920539730135"/>
         </scene>
         <!--CurrencyConverter Instruction View Controller-->
         <scene sceneID="0N1-L5-9or">
@@ -526,7 +517,7 @@ more holidays</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="3r1-n4-BZx">
-                                <rect key="frame" x="10" y="300" width="355" height="40"/>
+                                <rect key="frame" x="10" y="300" width="355" height="39.5"/>
                                 <string key="text">Touch and hold a currency,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -534,7 +525,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="244" translatesAutoresizingMaskIntoConstraints="NO" id="2ma-Z4-hX7" userLabel="Label - slide the currency to the left, then tap options">
-                                <rect key="frame" x="10" y="88" width="299" height="40"/>
+                                <rect key="frame" x="10" y="88" width="299" height="39.5"/>
                                 <string key="text">Slide the currency to the left,
 then tap options</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -593,7 +584,7 @@ then tap options</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="4469"/>
+            <point key="canvasLocation" x="-890" y="4174"/>
         </scene>
         <!--Translator_fav Instruction View Controller-->
         <scene sceneID="jf0-LD-YK2">
@@ -631,7 +622,7 @@ then tap options</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-cW-j6h">
-                                <rect key="frame" x="10" y="120" width="296" height="40"/>
+                                <rect key="frame" x="10" y="120.5" width="296" height="39.5"/>
                                 <string key="text">Slide the language to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -639,7 +630,7 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="Wl0-Ir-Vwx">
-                                <rect key="frame" x="10" y="281" width="355" height="40"/>
+                                <rect key="frame" x="10" y="281" width="355" height="39.5"/>
                                 <string key="text">Touch and hold a language,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -651,7 +642,7 @@ then drag it up or down</string>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="VxI-zM-zGx" secondAttribute="centerX" id="1Gk-Sg-KJo"/>
-                            <constraint firstItem="VEA-FH-9Qn" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="top" constant="119" id="6vQ-hG-BbN"/>
+                            <constraint firstItem="VEA-FH-9Qn" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="topMargin" constant="99" id="6vQ-hG-BbN"/>
                             <constraint firstItem="Wl0-Ir-Vwx" firstAttribute="leading" secondItem="Lqa-Hb-HII" secondAttribute="leading" constant="10" id="Bhd-f4-PN8"/>
                             <constraint firstAttribute="trailing" secondItem="VEA-FH-9Qn" secondAttribute="trailing" constant="17" id="GfX-LS-1XD"/>
                             <constraint firstItem="VEA-FH-9Qn" firstAttribute="centerY" secondItem="qRC-cW-j6h" secondAttribute="centerY" id="HQp-Df-nHs"/>
@@ -660,7 +651,7 @@ then drag it up or down</string>
                             <constraint firstItem="VEA-FH-9Qn" firstAttribute="leading" secondItem="qRC-cW-j6h" secondAttribute="trailing" constant="10" id="NRO-Ll-seU"/>
                             <constraint firstItem="Wl0-Ir-Vwx" firstAttribute="top" secondItem="VxI-zM-zGx" secondAttribute="bottom" constant="10" id="QiK-kg-at2"/>
                             <constraint firstAttribute="trailing" secondItem="Wl0-Ir-Vwx" secondAttribute="trailing" constant="10" id="kmj-Ay-u5z"/>
-                            <constraint firstItem="VxI-zM-zGx" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="top" constant="229" id="vhy-t8-hZB"/>
+                            <constraint firstItem="VxI-zM-zGx" firstAttribute="top" secondItem="Lqa-Hb-HII" secondAttribute="topMargin" constant="209" id="vhy-t8-hZB"/>
                             <constraint firstItem="VxI-zM-zGx" firstAttribute="trailing" secondItem="frS-OQ-6ny" secondAttribute="leading" id="wb6-Ze-ip8"/>
                         </constraints>
                         <connections>
@@ -680,7 +671,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-562" y="1115"/>
+            <point key="canvasLocation" x="-899.20000000000005" y="1002.9985007496252"/>
         </scene>
         <!--Translator Instruction View Controller-->
         <scene sceneID="UqJ-6E-bjD">
@@ -726,7 +717,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="M6u-St-Kuv">
-                                <rect key="frame" x="10" y="120" width="296" height="40"/>
+                                <rect key="frame" x="10" y="120.5" width="296" height="39.5"/>
                                 <string key="text">Slide the language to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -734,7 +725,7 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="tZj-CP-DIE">
-                                <rect key="frame" x="10" y="281" width="355" height="40"/>
+                                <rect key="frame" x="10" y="281" width="355" height="39.5"/>
                                 <string key="text">Touch and hold a language,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -787,7 +778,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="5143"/>
+            <point key="canvasLocation" x="-1528" y="4626.3868065967017"/>
         </scene>
         <!--UnitConverter Instruction View Controller-->
         <scene sceneID="PaW-5h-GFv">
@@ -841,7 +832,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="246" translatesAutoresizingMaskIntoConstraints="NO" id="fgC-K0-IiZ">
-                                <rect key="frame" x="10" y="241" width="301" height="40"/>
+                                <rect key="frame" x="10" y="241.5" width="301" height="39.5"/>
                                 <string key="text">Slide the unit to the left,
 then tap options</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -849,7 +840,7 @@ then tap options</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="DNP-PL-5me">
-                                <rect key="frame" x="10" y="134" width="355" height="40"/>
+                                <rect key="frame" x="10" y="134" width="355" height="39.5"/>
                                 <string key="text">Touch and hold a unit,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -876,16 +867,16 @@ then drag it up or down</string>
                             <constraint firstItem="o5S-tb-Jbp" firstAttribute="bottom" secondItem="K4O-Uu-agC" secondAttribute="top" constant="-2" id="AOu-rW-nuu"/>
                             <constraint firstAttribute="trailing" secondItem="DNP-PL-5me" secondAttribute="trailing" constant="10" id="Gap-KJ-tft"/>
                             <constraint firstItem="1N7-jy-etd" firstAttribute="centerY" secondItem="fgC-K0-IiZ" secondAttribute="centerY" id="HfC-ji-thF"/>
-                            <constraint firstAttribute="bottom" secondItem="3A2-Bq-Ou3" secondAttribute="bottom" constant="15" id="KXh-tD-yvR"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="3A2-Bq-Ou3" secondAttribute="bottom" constant="15" id="KXh-tD-yvR"/>
                             <constraint firstAttribute="trailing" secondItem="3A2-Bq-Ou3" secondAttribute="trailing" constant="37" id="Nao-fn-LEj"/>
                             <constraint firstAttribute="trailing" secondItem="o5S-tb-Jbp" secondAttribute="trailing" constant="10" id="Pdx-pn-Cc6"/>
                             <constraint firstItem="fgC-K0-IiZ" firstAttribute="leading" secondItem="nYH-86-fbC" secondAttribute="leading" constant="10" id="Rhc-Cb-pEv"/>
-                            <constraint firstAttribute="bottom" secondItem="K4O-Uu-agC" secondAttribute="bottom" constant="90" id="Sij-QO-EVg"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="K4O-Uu-agC" secondAttribute="bottom" constant="90" id="Sij-QO-EVg"/>
                             <constraint firstItem="o5S-tb-Jbp" firstAttribute="leading" secondItem="nYH-86-fbC" secondAttribute="leading" constant="10" id="VQO-hs-FiJ"/>
                             <constraint firstItem="3A2-Bq-Ou3" firstAttribute="top" secondItem="eXM-ex-5QK" secondAttribute="top" constant="-5" id="Wbb-WJ-IOH"/>
-                            <constraint firstItem="m5m-AR-sdb" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="top" constant="90" id="Y3I-74-8QU"/>
+                            <constraint firstItem="m5m-AR-sdb" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="topMargin" constant="70" id="Y3I-74-8QU"/>
                             <constraint firstAttribute="trailing" secondItem="1N7-jy-etd" secondAttribute="trailing" constant="17" id="YKj-Go-TCg"/>
-                            <constraint firstItem="1N7-jy-etd" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="top" constant="240" id="bYI-c1-qg9"/>
+                            <constraint firstItem="1N7-jy-etd" firstAttribute="top" secondItem="nYH-86-fbC" secondAttribute="topMargin" constant="220" id="bYI-c1-qg9"/>
                             <constraint firstItem="eXM-ex-5QK" firstAttribute="leading" secondItem="3A2-Bq-Ou3" secondAttribute="trailing" constant="5" id="cur-Yk-Glo"/>
                             <constraint firstItem="3A2-Bq-Ou3" firstAttribute="centerY" secondItem="uz1-Ap-8Ft" secondAttribute="centerY" id="dwb-aH-7gu"/>
                             <constraint firstAttribute="centerX" secondItem="K4O-Uu-agC" secondAttribute="centerX" id="fAb-36-4QR"/>
@@ -914,7 +905,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="2456"/>
+            <point key="canvasLocation" x="-863" y="2232"/>
         </scene>
         <!--Wallet_1 Instruction View Controller-->
         <scene sceneID="b6N-aD-J0d">
@@ -997,7 +988,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="5813"/>
+            <point key="canvasLocation" x="-631" y="5219"/>
         </scene>
         <!--Wallet_2 Instruction View Controller-->
         <scene sceneID="0Nc-Er-bFn">
@@ -1049,7 +1040,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="tkT-KJ-PpW" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="120" width="296" height="40"/>
+                                <rect key="frame" x="10" y="120.5" width="296" height="39.5"/>
                                 <string key="text">Slide the item to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1057,7 +1048,7 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="nPF-RG-8hQ" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="278" width="355" height="40"/>
+                                <rect key="frame" x="10" y="278" width="355" height="39.5"/>
                                 <string key="text">Touch and hold an item,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1073,14 +1064,14 @@ then drag it up or down</string>
                             <constraint firstAttribute="centerX" secondItem="2Qv-uJ-bDn" secondAttribute="centerX" id="ADC-z1-jc2"/>
                             <constraint firstAttribute="trailing" secondItem="6iN-1o-f26" secondAttribute="trailing" constant="50" id="FKV-JY-n1c"/>
                             <constraint firstItem="YDr-cP-huy" firstAttribute="leading" secondItem="tkT-KJ-PpW" secondAttribute="trailing" constant="10" id="IcT-S9-bwA"/>
-                            <constraint firstItem="2Qv-uJ-bDn" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" constant="226" id="JAv-rD-nmF"/>
+                            <constraint firstItem="2Qv-uJ-bDn" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="topMargin" constant="206" id="JAv-rD-nmF"/>
                             <constraint firstItem="YDr-cP-huy" firstAttribute="centerY" secondItem="tkT-KJ-PpW" secondAttribute="centerY" id="Kbn-Lx-ti9"/>
                             <constraint firstItem="o7F-5b-l1S" firstAttribute="leading" secondItem="2Qv-uJ-bDn" secondAttribute="trailing" constant="5" id="Kmt-if-MYk"/>
                             <constraint firstItem="tkT-KJ-PpW" firstAttribute="leading" secondItem="YLh-Fg-eRh" secondAttribute="leading" constant="10" id="MNr-qT-5fO"/>
-                            <constraint firstItem="YDr-cP-huy" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" constant="119" id="Nv2-ua-444"/>
+                            <constraint firstItem="YDr-cP-huy" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="topMargin" constant="99" id="Nv2-ua-444"/>
                             <constraint firstItem="2Qv-uJ-bDn" firstAttribute="top" secondItem="o7F-5b-l1S" secondAttribute="top" id="YYJ-mm-GmM"/>
                             <constraint firstItem="m1h-st-ypH" firstAttribute="centerY" secondItem="6iN-1o-f26" secondAttribute="centerY" id="cdl-0P-lAg"/>
-                            <constraint firstItem="6iN-1o-f26" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="top" constant="28" id="fYf-eN-2R5"/>
+                            <constraint firstItem="6iN-1o-f26" firstAttribute="top" secondItem="YLh-Fg-eRh" secondAttribute="topMargin" constant="8" id="fYf-eN-2R5"/>
                             <constraint firstAttribute="trailing" secondItem="YDr-cP-huy" secondAttribute="trailing" constant="17" id="lfP-Cx-uqc"/>
                             <constraint firstItem="m1h-st-ypH" firstAttribute="leading" secondItem="YLh-Fg-eRh" secondAttribute="leading" constant="10" id="mZQ-Be-FIb"/>
                             <constraint firstItem="nPF-RG-8hQ" firstAttribute="leading" secondItem="YLh-Fg-eRh" secondAttribute="leading" constant="10" id="rmL-yd-DsQ"/>
@@ -1104,7 +1095,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-628" y="5813"/>
+            <point key="canvasLocation" x="41" y="5219"/>
         </scene>
         <!--Wallet_3 Instruction View Controller-->
         <scene sceneID="vGH-nB-TVw">
@@ -1156,7 +1147,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="208" translatesAutoresizingMaskIntoConstraints="NO" id="rHi-Jq-5Rp" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="102" y="388" width="263" height="40"/>
+                                <rect key="frame" x="102" y="388.5" width="263" height="39.5"/>
                                 <string key="text">Select which categories
 to view</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1164,7 +1155,7 @@ to view</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="203" translatesAutoresizingMaskIntoConstraints="NO" id="ls1-5i-Gos" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="507" width="258" height="60"/>
+                                <rect key="frame" x="10" y="507.5" width="258" height="59.5"/>
                                 <string key="text">Touch and hold ≡
 to the right of an item,
 then drag it up or down</string>
@@ -1181,7 +1172,7 @@ then drag it up or down</string>
                             <constraint firstItem="ls1-5i-Gos" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="10" id="32y-4A-IbS"/>
                             <constraint firstAttribute="trailing" secondItem="0gd-1F-IlN" secondAttribute="trailing" constant="10" id="6RB-Ko-P1G"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="centerY" secondItem="ls1-5i-Gos" secondAttribute="centerY" id="EoH-3I-7Zb"/>
-                            <constraint firstItem="wjt-Kq-a4W" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="top" constant="20" id="Szj-1t-VZu"/>
+                            <constraint firstItem="wjt-Kq-a4W" firstAttribute="top" secondItem="gkS-8h-tzO" secondAttribute="topMargin" id="Szj-1t-VZu"/>
                             <constraint firstItem="CJz-2K-52H" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="50" id="TMI-uf-kbC"/>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="centerY" secondItem="0gd-1F-IlN" secondAttribute="centerY" id="VUE-MY-kMp"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="leading" secondItem="ls1-5i-Gos" secondAttribute="trailing" constant="10" id="mGH-FG-JG1"/>
@@ -1191,7 +1182,7 @@ then drag it up or down</string>
                             <constraint firstItem="wjt-Kq-a4W" firstAttribute="leading" secondItem="gkS-8h-tzO" secondAttribute="leading" constant="42" id="twX-3N-Cfr"/>
                             <constraint firstItem="48R-jm-Hbu" firstAttribute="top" secondItem="UFc-4O-EbR" secondAttribute="bottom" constant="109" id="uVg-Va-0WT"/>
                             <constraint firstAttribute="trailing" secondItem="rHi-Jq-5Rp" secondAttribute="trailing" constant="10" id="uYw-e7-65k"/>
-                            <constraint firstAttribute="bottom" secondItem="CJz-2K-52H" secondAttribute="bottom" constant="238" id="zM3-Vt-mfa"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="CJz-2K-52H" secondAttribute="bottom" constant="238" id="zM3-Vt-mfa"/>
                             <constraint firstItem="UFc-4O-EbR" firstAttribute="top" secondItem="AE6-fy-46s" secondAttribute="top" id="zQU-se-01N"/>
                         </constraints>
                         <connections>
@@ -1214,7 +1205,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-298" y="5813"/>
+            <point key="canvasLocation" x="694" y="5220"/>
         </scene>
         <!--DaysCounter_1 Instruction View Controller-->
         <scene sceneID="8aK-me-Hpr">
@@ -1266,7 +1257,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="afl-C5-OsY" userLabel="Label - slide the currency to the left, then tap options">
-                                <rect key="frame" x="10" y="228" width="296" height="40"/>
+                                <rect key="frame" x="10" y="228" width="296" height="39.5"/>
                                 <string key="text">Slide the calendar to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1283,18 +1274,18 @@ then tap Delete</string>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="uuv-Tb-Oej" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="233" id="7fX-jQ-B35"/>
+                            <constraint firstItem="uuv-Tb-Oej" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="topMargin" constant="213" id="7fX-jQ-B35"/>
                             <constraint firstAttribute="centerX" secondItem="cEZ-6S-HPg" secondAttribute="centerX" id="BKc-Xx-w92"/>
                             <constraint firstItem="M89-TC-emC" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" constant="10" id="FNn-5e-f2r"/>
                             <constraint firstItem="j7s-5h-AsK" firstAttribute="leading" secondItem="naR-7Q-eRX" secondAttribute="leading" constant="10" id="Lm9-QS-4xV"/>
                             <constraint firstItem="p7z-Xt-zJ7" firstAttribute="top" secondItem="cEZ-6S-HPg" secondAttribute="top" id="VWG-QC-XcJ"/>
-                            <constraint firstItem="Mez-kf-gJI" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="top" constant="22" id="Wp5-SS-gR1"/>
+                            <constraint firstItem="Mez-kf-gJI" firstAttribute="top" secondItem="naR-7Q-eRX" secondAttribute="topMargin" constant="2" id="Wp5-SS-gR1"/>
                             <constraint firstAttribute="trailing" secondItem="Mez-kf-gJI" secondAttribute="trailing" constant="37" id="YU1-gb-Vab"/>
                             <constraint firstAttribute="trailing" secondItem="uuv-Tb-Oej" secondAttribute="trailing" constant="17" id="cmS-6y-I9K"/>
                             <constraint firstItem="Mez-kf-gJI" firstAttribute="centerY" secondItem="j7s-5h-AsK" secondAttribute="centerY" id="hCA-PL-YuV"/>
                             <constraint firstItem="Mez-kf-gJI" firstAttribute="leading" secondItem="j7s-5h-AsK" secondAttribute="trailing" constant="10" id="m4p-MQ-xEj"/>
                             <constraint firstItem="M89-TC-emC" firstAttribute="bottom" secondItem="cEZ-6S-HPg" secondAttribute="top" constant="-10" id="mQF-h8-lWa"/>
-                            <constraint firstAttribute="bottom" secondItem="cEZ-6S-HPg" secondAttribute="bottom" constant="95" id="mbF-iA-trD"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="cEZ-6S-HPg" secondAttribute="bottom" constant="95" id="mbF-iA-trD"/>
                             <constraint firstItem="uuv-Tb-Oej" firstAttribute="leading" secondItem="afl-C5-OsY" secondAttribute="trailing" constant="10" id="nip-or-5TY"/>
                             <constraint firstItem="p7z-Xt-zJ7" firstAttribute="leading" secondItem="cEZ-6S-HPg" secondAttribute="trailing" id="pmF-cb-Wgl"/>
                             <constraint firstAttribute="trailing" secondItem="M89-TC-emC" secondAttribute="trailing" constant="10" id="qCI-uh-VSV"/>
@@ -1319,7 +1310,7 @@ then tap Delete</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="3803"/>
+            <point key="canvasLocation" x="-1530" y="3515"/>
         </scene>
         <!--DaysCounter_2 Instruction View Controller-->
         <scene sceneID="eoJ-IZ-Xql">
@@ -1357,7 +1348,7 @@ then tap Delete</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="222" translatesAutoresizingMaskIntoConstraints="NO" id="yXR-Yi-555" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="208" width="277" height="40"/>
+                                <rect key="frame" x="10" y="208.5" width="277" height="39.5"/>
                                 <string key="text">Swipe left or right to see
 prev/next events</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1365,7 +1356,7 @@ prev/next events</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the screen to display the controls" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="p6a-KD-zgx" userLabel="Label - Tap the screen to display the controls">
-                                <rect key="frame" x="50" y="126" width="325" height="40"/>
+                                <rect key="frame" x="50" y="126" width="325" height="39.5"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1380,10 +1371,10 @@ prev/next events</string>
                             <constraint firstAttribute="trailing" secondItem="Tub-Vc-yVU" secondAttribute="trailing" constant="36" id="N3c-9p-8ql"/>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="top" secondItem="Tub-Vc-yVU" secondAttribute="top" id="UPB-2a-ScL"/>
                             <constraint firstItem="yL6-t8-Rsz" firstAttribute="leading" secondItem="dKN-6d-SOe" secondAttribute="leading" constant="50" id="Yje-aU-wLZ"/>
-                            <constraint firstItem="Tub-Vc-yVU" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="207" id="ZlN-NI-PPf"/>
+                            <constraint firstItem="Tub-Vc-yVU" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="topMargin" constant="187" id="ZlN-NI-PPf"/>
                             <constraint firstItem="p6a-KD-zgx" firstAttribute="leading" secondItem="yL6-t8-Rsz" secondAttribute="leading" id="huS-GP-oea"/>
                             <constraint firstItem="p6a-KD-zgx" firstAttribute="top" secondItem="yL6-t8-Rsz" secondAttribute="bottom" constant="8" id="pMy-ve-IgA"/>
-                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="top" constant="76" id="pWi-8t-deg"/>
+                            <constraint firstItem="yL6-t8-Rsz" firstAttribute="top" secondItem="dKN-6d-SOe" secondAttribute="topMargin" constant="56" id="pWi-8t-deg"/>
                             <constraint firstAttribute="trailing" secondItem="p6a-KD-zgx" secondAttribute="trailing" id="wXb-Mm-Kah"/>
                             <constraint firstItem="Adg-z8-lei" firstAttribute="leading" secondItem="Tub-Vc-yVU" secondAttribute="trailing" id="zgv-0Q-9gx"/>
                         </constraints>
@@ -1404,7 +1395,7 @@ prev/next events</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-621" y="3803"/>
+            <point key="canvasLocation" x="-890" y="3515"/>
         </scene>
         <!--DaysCounter_3 Instruction View Controller-->
         <scene sceneID="kGY-hA-Glf">
@@ -1442,7 +1433,7 @@ prev/next events</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="7qV-NL-Ajb">
-                                <rect key="frame" x="10" y="77" width="296" height="40"/>
+                                <rect key="frame" x="10" y="77.5" width="296" height="39.5"/>
                                 <string key="text">Slide the event to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1450,7 +1441,7 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="g74-h9-vmQ" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="259" width="355" height="40"/>
+                                <rect key="frame" x="10" y="259" width="355" height="39.5"/>
                                 <string key="text">Touch and hold an event,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1462,13 +1453,13 @@ then drag it up or down</string>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="g74-h9-vmQ" secondAttribute="trailing" constant="10" id="2gL-V2-hf8"/>
-                            <constraint firstItem="XWc-yO-6so" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="76" id="57B-n0-7fP"/>
+                            <constraint firstItem="XWc-yO-6so" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="topMargin" constant="56" id="57B-n0-7fP"/>
                             <constraint firstAttribute="centerX" secondItem="DGY-Qa-nOV" secondAttribute="centerX" id="91i-8Z-vbz"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="leading" secondItem="7qV-NL-Ajb" secondAttribute="trailing" constant="10" id="Dsh-HT-enT"/>
                             <constraint firstItem="7qV-NL-Ajb" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" constant="10" id="GHB-Z1-hmt"/>
                             <constraint firstItem="93e-Mv-Dn4" firstAttribute="leading" secondItem="DGY-Qa-nOV" secondAttribute="trailing" id="HOO-ZM-y1E"/>
                             <constraint firstItem="g74-h9-vmQ" firstAttribute="top" secondItem="DGY-Qa-nOV" secondAttribute="bottom" constant="10" id="NHe-rl-gNd"/>
-                            <constraint firstItem="DGY-Qa-nOV" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="top" constant="207" id="RXs-9B-2NZ"/>
+                            <constraint firstItem="DGY-Qa-nOV" firstAttribute="top" secondItem="1rt-wf-O4Q" secondAttribute="topMargin" constant="187" id="RXs-9B-2NZ"/>
                             <constraint firstItem="XWc-yO-6so" firstAttribute="centerY" secondItem="7qV-NL-Ajb" secondAttribute="centerY" id="eTU-ux-nqU"/>
                             <constraint firstItem="g74-h9-vmQ" firstAttribute="leading" secondItem="1rt-wf-O4Q" secondAttribute="leading" constant="10" id="gfc-m8-Ine"/>
                             <constraint firstItem="93e-Mv-Dn4" firstAttribute="top" secondItem="DGY-Qa-nOV" secondAttribute="top" id="i2J-I3-Oxm"/>
@@ -1491,7 +1482,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-290" y="3803"/>
+            <point key="canvasLocation" x="-247" y="3515"/>
         </scene>
         <!--Wallet_4 Instruction View Controller-->
         <scene sceneID="JJG-9F-p1K">
@@ -1529,7 +1520,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="241" translatesAutoresizingMaskIntoConstraints="NO" id="FNw-cz-Xbp">
-                                <rect key="frame" x="10" y="121" width="296" height="40"/>
+                                <rect key="frame" x="10" y="121.5" width="296" height="39.5"/>
                                 <string key="text">Slide the item to left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1537,7 +1528,7 @@ then tap Delete</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="rqI-qD-Dqd" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="278" width="355" height="40"/>
+                                <rect key="frame" x="10" y="278" width="355" height="39.5"/>
                                 <string key="text">Touch and hold an item,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1578,7 +1569,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="29" y="5813"/>
+            <point key="canvasLocation" x="1353" y="5221"/>
         </scene>
         <!--ExpenseList Instruction View Controller-->
         <scene sceneID="xoC-2K-ytF">
@@ -1644,7 +1635,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="UvH-ng-N3W">
-                                <rect key="frame" x="10" y="331" width="355" height="40"/>
+                                <rect key="frame" x="10" y="331" width="355" height="39.5"/>
                                 <string key="text">Touch and hold an item,
 then drag it up or down</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1652,7 +1643,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="221" translatesAutoresizingMaskIntoConstraints="NO" id="qMW-Th-lrs" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="413" width="276" height="40"/>
+                                <rect key="frame" x="10" y="413.5" width="276" height="39.5"/>
                                 <string key="text">Slide the item to the left,
 then tap Delete</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1663,10 +1654,10 @@ then tap Delete</string>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="rEC-MK-OMc" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="190" id="4Y5-2I-2Hh"/>
+                            <constraint firstItem="rEC-MK-OMc" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="topMargin" constant="170" id="4Y5-2I-2Hh"/>
                             <constraint firstItem="XSW-3J-Xgf" firstAttribute="bottom" secondItem="1dD-l5-TzF" secondAttribute="top" constant="-4" id="7eY-Mf-db1"/>
                             <constraint firstItem="UvH-ng-N3W" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" constant="10" id="99E-ju-LeQ"/>
-                            <constraint firstItem="8pP-NA-IQY" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="279" id="A4A-JK-Lyp"/>
+                            <constraint firstItem="8pP-NA-IQY" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="topMargin" constant="259" id="A4A-JK-Lyp"/>
                             <constraint firstItem="yvc-2S-7eq" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="412" id="AMr-C1-SlR"/>
                             <constraint firstItem="tzz-zS-7rf" firstAttribute="leading" secondItem="yvc-2S-7eq" secondAttribute="trailing" id="Bln-dE-ue8"/>
                             <constraint firstAttribute="trailing" secondItem="rEC-MK-OMc" secondAttribute="trailing" constant="10" id="DbQ-XA-xoA"/>
@@ -1677,7 +1668,7 @@ then tap Delete</string>
                             <constraint firstAttribute="trailing" secondItem="yvc-2S-7eq" secondAttribute="trailing" constant="37" id="ZiH-oK-qtg"/>
                             <constraint firstItem="1dD-l5-TzF" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" constant="10" id="aZN-2M-EcT"/>
                             <constraint firstItem="qMW-Th-lrs" firstAttribute="leading" secondItem="Zlj-Dm-tA5" secondAttribute="leading" constant="10" id="bkd-yo-Gp2"/>
-                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="top" constant="92" id="ds1-OM-09l"/>
+                            <constraint firstItem="XSW-3J-Xgf" firstAttribute="top" secondItem="Zlj-Dm-tA5" secondAttribute="topMargin" constant="72" id="ds1-OM-09l"/>
                             <constraint firstAttribute="trailing" secondItem="UvH-ng-N3W" secondAttribute="trailing" constant="10" id="gSK-Ea-aqD"/>
                             <constraint firstItem="rEC-MK-OMc" firstAttribute="bottom" secondItem="U1j-Mc-LaR" secondAttribute="bottom" id="huq-ZG-ATS"/>
                             <constraint firstItem="yvc-2S-7eq" firstAttribute="top" secondItem="tzz-zS-7rf" secondAttribute="top" id="lG2-n8-Rh6"/>
@@ -1705,7 +1696,7 @@ then tap Delete</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-951" y="6477"/>
+            <point key="canvasLocation" x="-1476" y="5740"/>
         </scene>
         <!--Holidays_2 Instruction View Controller-->
         <scene sceneID="sKs-A1-plS">
@@ -1762,7 +1753,7 @@ then drag it up or down</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the plus button to add a country" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="nP5-9M-28L" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="61" y="20" width="220" height="60"/>
+                                <rect key="frame" x="61.5" y="20" width="220" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="lhG-yC-Iew"/>
                                     <constraint firstAttribute="width" constant="220" id="nIG-4e-Lhw"/>
@@ -1787,18 +1778,18 @@ then drag it up or down</string>
                             <constraint firstItem="zc4-ox-WX3" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="top" id="AEt-OS-Sd8"/>
                             <constraint firstItem="r3X-mN-bU4" firstAttribute="leading" secondItem="nP5-9M-28L" secondAttribute="trailing" constant="11.5" id="Cr8-AO-RB9"/>
                             <constraint firstAttribute="trailing" secondItem="0ze-pQ-4fo" secondAttribute="trailing" constant="10" id="DoK-bw-RMu"/>
-                            <constraint firstItem="r3X-mN-bU4" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="20" id="IMz-3r-vr2"/>
+                            <constraint firstItem="r3X-mN-bU4" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="topMargin" id="IMz-3r-vr2"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="top" secondItem="8Bb-Xt-gYd" secondAttribute="bottom" constant="10" id="JDO-re-LbB"/>
                             <constraint firstItem="DHT-qK-x4H" firstAttribute="centerY" secondItem="xdE-si-SAi" secondAttribute="centerY" id="NIx-ZU-doL"/>
                             <constraint firstAttribute="right" secondItem="r3X-mN-bU4" secondAttribute="right" constant="40" id="Qa1-pF-h0y"/>
-                            <constraint firstItem="xdE-si-SAi" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="260" id="TI1-Df-iCw"/>
+                            <constraint firstItem="xdE-si-SAi" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="topMargin" constant="240" id="TI1-Df-iCw"/>
                             <constraint firstItem="0ze-pQ-4fo" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="VLF-gK-bBW"/>
                             <constraint firstItem="r3X-mN-bU4" firstAttribute="top" secondItem="nP5-9M-28L" secondAttribute="top" id="cA0-2o-Ymk"/>
                             <constraint firstAttribute="trailing" secondItem="xdE-si-SAi" secondAttribute="trailing" constant="17" id="fGe-r7-NAk"/>
                             <constraint firstItem="DHT-qK-x4H" firstAttribute="leading" secondItem="9Q7-aH-fjF" secondAttribute="leading" constant="10" id="niU-Qd-s7y"/>
                             <constraint firstAttribute="centerX" secondItem="8Bb-Xt-gYd" secondAttribute="centerX" id="oI2-bC-UNy"/>
                             <constraint firstItem="xdE-si-SAi" firstAttribute="leading" secondItem="DHT-qK-x4H" secondAttribute="trailing" constant="10" id="vmN-lz-4ee"/>
-                            <constraint firstItem="8Bb-Xt-gYd" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="top" constant="100" id="zw2-ou-E6s"/>
+                            <constraint firstItem="8Bb-Xt-gYd" firstAttribute="top" secondItem="9Q7-aH-fjF" secondAttribute="topMargin" constant="80" id="zw2-ou-E6s"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="pHP-mH-IdF" appends="YES" id="sxP-hS-rZN"/>
@@ -1819,7 +1810,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-562" y="-223"/>
+            <point key="canvasLocation" x="-899.20000000000005" y="-200.59970014992504"/>
         </scene>
         <!--LadyCalendar Instruction View Controller-->
         <scene sceneID="JIq-Cc-6Pm">
@@ -1904,8 +1895,8 @@ then drag it up or down</string>
                             <constraint firstItem="Z6w-KA-rfd" firstAttribute="trailing" secondItem="ZkW-mi-nXJ" secondAttribute="trailing" id="8Sk-LR-NUq"/>
                             <constraint firstItem="r9Y-2d-qlN" firstAttribute="leading" secondItem="qF4-08-u3n" secondAttribute="trailing" constant="10" id="C83-Vr-ZQY"/>
                             <constraint firstItem="qF4-08-u3n" firstAttribute="leading" secondItem="G3r-so-6LW" secondAttribute="leading" constant="10" id="Ctq-Oh-TMz"/>
-                            <constraint firstItem="Z6w-KA-rfd" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" constant="34" id="EwG-zl-yI2"/>
-                            <constraint firstAttribute="bottom" secondItem="R5z-eZ-0ii" secondAttribute="bottom" constant="80" id="Fog-zY-Lm1"/>
+                            <constraint firstItem="Z6w-KA-rfd" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="topMargin" constant="14" id="EwG-zl-yI2"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="R5z-eZ-0ii" secondAttribute="bottom" constant="80" id="Fog-zY-Lm1"/>
                             <constraint firstItem="ZkW-mi-nXJ" firstAttribute="leading" secondItem="G3r-so-6LW" secondAttribute="leading" constant="10" id="HLx-oa-hlg"/>
                             <constraint firstItem="ZkW-mi-nXJ" firstAttribute="top" secondItem="Z6w-KA-rfd" secondAttribute="bottom" constant="10" id="HoX-dX-d8N"/>
                             <constraint firstItem="RUR-9p-HGC" firstAttribute="leading" secondItem="r9Y-2d-qlN" secondAttribute="trailing" constant="5" id="KqM-AS-r1z"/>
@@ -1918,8 +1909,8 @@ then drag it up or down</string>
                             <constraint firstAttribute="centerX" secondItem="YcB-fl-yv1" secondAttribute="centerX" id="gxx-Uj-qkW"/>
                             <constraint firstAttribute="trailing" secondItem="cXb-sm-2AK" secondAttribute="trailing" constant="10" id="i7W-TX-inh"/>
                             <constraint firstItem="r9Y-2d-qlN" firstAttribute="centerY" secondItem="qF4-08-u3n" secondAttribute="centerY" id="keL-NC-EES"/>
-                            <constraint firstAttribute="bottom" secondItem="r9Y-2d-qlN" secondAttribute="bottom" constant="10" id="mSK-rf-F8S"/>
-                            <constraint firstItem="YcB-fl-yv1" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="top" constant="185" id="nt4-xb-wTD"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="r9Y-2d-qlN" secondAttribute="bottom" constant="10" id="mSK-rf-F8S"/>
+                            <constraint firstItem="YcB-fl-yv1" firstAttribute="top" secondItem="G3r-so-6LW" secondAttribute="topMargin" constant="165" id="nt4-xb-wTD"/>
                             <constraint firstAttribute="trailing" secondItem="r9Y-2d-qlN" secondAttribute="trailing" constant="38" id="qpc-9a-Qeg"/>
                             <constraint firstAttribute="centerX" secondItem="R5z-eZ-0ii" secondAttribute="centerX" id="wQw-TB-T9A"/>
                         </constraints>
@@ -1942,7 +1933,7 @@ then drag it up or down</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="1785"/>
+            <point key="canvasLocation" x="-1529" y="1658"/>
         </scene>
         <!--Magnifier Instruction View Controller-->
         <scene sceneID="Q5E-Kk-nGQ">
@@ -1972,7 +1963,7 @@ then drag it up or down</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="BOF-lT-L6x" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="167" width="355" height="40"/>
+                                <rect key="frame" x="10" y="167" width="355" height="39.5"/>
                                 <string key="text">Tap the screen to display
 the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -1988,7 +1979,7 @@ the controls</string>
                             <constraint firstAttribute="trailing" secondItem="BOF-lT-L6x" secondAttribute="trailing" constant="10" id="H8p-qA-iki"/>
                             <constraint firstItem="BOF-lT-L6x" firstAttribute="top" secondItem="51h-tn-90N" secondAttribute="bottom" constant="10" id="bJb-R2-J5p"/>
                             <constraint firstAttribute="centerX" secondItem="51h-tn-90N" secondAttribute="centerX" id="pEw-bX-tJO"/>
-                            <constraint firstItem="51h-tn-90N" firstAttribute="top" secondItem="MRm-p5-tZc" secondAttribute="top" constant="115" id="qr4-TG-M7U"/>
+                            <constraint firstItem="51h-tn-90N" firstAttribute="top" secondItem="MRm-p5-tZc" secondAttribute="topMargin" constant="95" id="qr4-TG-M7U"/>
                             <constraint firstItem="BOF-lT-L6x" firstAttribute="leading" secondItem="MRm-p5-tZc" secondAttribute="leading" constant="10" id="xzI-Uj-Knj"/>
                         </constraints>
                         <connections>
@@ -2007,7 +1998,7 @@ the controls</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-955" y="3125"/>
+            <point key="canvasLocation" x="-1529" y="2858"/>
         </scene>
         <!--Mirror Instruction View Controller-->
         <scene sceneID="Nve-VB-CmF">
@@ -2037,7 +2028,7 @@ the controls</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="k0p-RN-RCK" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="167" width="355" height="40"/>
+                                <rect key="frame" x="10" y="167" width="355" height="39.5"/>
                                 <string key="text">Tap the screen to display
 the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -2072,7 +2063,7 @@ the controls</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-949" y="7147"/>
+            <point key="canvasLocation" x="-1518.4000000000001" y="6429.0854572713652"/>
         </scene>
         <!--Flashlight Instruction View Controller-->
         <scene sceneID="063-PG-vee">
@@ -2102,7 +2093,7 @@ the controls</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="300" translatesAutoresizingMaskIntoConstraints="NO" id="hpm-3C-8l8" userLabel="Label - swipe left or right to change keypad for basic/scientific">
-                                <rect key="frame" x="10" y="167" width="355" height="40"/>
+                                <rect key="frame" x="10" y="167" width="355" height="39.5"/>
                                 <string key="text">Tap the screen to display
 the controls</string>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
@@ -2118,7 +2109,7 @@ the controls</string>
                             <constraint firstAttribute="trailing" secondItem="hpm-3C-8l8" secondAttribute="trailing" constant="10" id="DeG-kM-SJZ"/>
                             <constraint firstItem="hpm-3C-8l8" firstAttribute="leading" secondItem="vzN-PV-l0D" secondAttribute="leading" constant="10" id="L7Z-XE-25D"/>
                             <constraint firstItem="WpF-0L-7tw" firstAttribute="leading" secondItem="4Ji-D7-GjZ" secondAttribute="trailing" constant="5" id="SHc-Mm-sR0"/>
-                            <constraint firstItem="4Ji-D7-GjZ" firstAttribute="top" secondItem="vzN-PV-l0D" secondAttribute="top" constant="115" id="eBG-4O-8LM"/>
+                            <constraint firstItem="4Ji-D7-GjZ" firstAttribute="top" secondItem="vzN-PV-l0D" secondAttribute="topMargin" constant="95" id="eBG-4O-8LM"/>
                             <constraint firstItem="4Ji-D7-GjZ" firstAttribute="top" secondItem="WpF-0L-7tw" secondAttribute="top" constant="-5" id="nBC-11-Rq0"/>
                         </constraints>
                         <connections>
@@ -2137,7 +2128,7 @@ the controls</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-949" y="7147"/>
+            <point key="canvasLocation" x="-1518.4000000000001" y="6429.0854572713652"/>
         </scene>
         <!--CurrencyConverter Instruction View Controller-->
         <scene sceneID="WU4-vI-8Vl">
@@ -2194,13 +2185,13 @@ You can reorder the currency list.</string>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="TIr-MB-LIC" secondAttribute="centerX" constant="-43" id="6bI-li-qKw"/>
                             <constraint firstAttribute="trailingMargin" secondItem="0s9-xh-ntL" secondAttribute="trailing" constant="7" id="AwI-n4-eo7"/>
-                            <constraint firstItem="TIr-MB-LIC" firstAttribute="top" secondItem="E8o-Un-isq" secondAttribute="top" constant="38" id="BmH-tK-UsJ"/>
+                            <constraint firstItem="TIr-MB-LIC" firstAttribute="top" secondItem="E8o-Un-isq" secondAttribute="topMargin" constant="18" id="BmH-tK-UsJ"/>
                             <constraint firstItem="WLX-0L-uDC" firstAttribute="leading" secondItem="AiW-n8-806" secondAttribute="trailing" id="CKo-Jt-w8e"/>
                             <constraint firstItem="WLX-0L-uDC" firstAttribute="top" secondItem="AiW-n8-806" secondAttribute="top" id="ENl-xj-ahE"/>
                             <constraint firstItem="ilf-hM-2IG" firstAttribute="bottom" secondItem="AiW-n8-806" secondAttribute="top" constant="-3" id="F4Y-Fu-UQh"/>
                             <constraint firstAttribute="trailing" secondItem="ilf-hM-2IG" secondAttribute="trailing" constant="10" id="L1d-rZ-Cc4"/>
                             <constraint firstItem="ilf-hM-2IG" firstAttribute="leading" secondItem="E8o-Un-isq" secondAttribute="leading" constant="10" id="Q2h-fD-gc2"/>
-                            <constraint firstAttribute="bottom" secondItem="AiW-n8-806" secondAttribute="bottom" constant="39" id="WMs-1a-3R3"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="AiW-n8-806" secondAttribute="bottom" constant="39" id="WMs-1a-3R3"/>
                             <constraint firstItem="0s9-xh-ntL" firstAttribute="leading" secondItem="E8o-Un-isq" secondAttribute="leading" constant="10" id="bVX-sL-pNC"/>
                             <constraint firstAttribute="centerX" secondItem="AiW-n8-806" secondAttribute="centerX" id="gao-pC-m7j"/>
                             <constraint firstItem="0s9-xh-ntL" firstAttribute="top" secondItem="TIr-MB-LIC" secondAttribute="bottom" constant="8" symbolic="YES" id="kDp-aV-Jwk"/>
@@ -2222,7 +2213,7 @@ You can reorder the currency list.</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-621" y="4469"/>
+            <point key="canvasLocation" x="-247" y="4174"/>
         </scene>
         <!--HomeStyle Instruction View Controller-->
         <scene sceneID="xhf-Ud-NUc">
@@ -2328,7 +2319,7 @@ style in the settings</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-950" y="7876"/>
+            <point key="canvasLocation" x="-1520" y="7084.8575712143929"/>
         </scene>
         <!--QRCode Instruction View Controller-->
         <scene sceneID="5hr-NF-Hlp">
@@ -2391,7 +2382,7 @@ style in the settings</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-562" y="7147"/>
+            <point key="canvasLocation" x="-899.20000000000005" y="6429.0854572713652"/>
         </scene>
     </scenes>
     <resources>

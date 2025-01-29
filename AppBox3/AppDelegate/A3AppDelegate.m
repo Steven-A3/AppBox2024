@@ -129,6 +129,8 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
         // 이 값이 없다는 것은 설치되고 나서 실행된 적이 없다는 것을 의미함
         // 한번이라도 실행이 되었다면 이 값이 설정되어야 한다.
         self->_firstRunAfterInstall = YES;
+        [[A3SyncManager sharedSyncManager] setIgnoreDataReset:YES];
+        
         [A3KeychainUtils removePassword];
         [self initializePasscodeUserDefaults];
         
@@ -343,14 +345,11 @@ NSString *const kA3TheDateFirstRunAfterInstall = @"kA3TheDateFirstRunAfterInstal
     NSInteger numberOfDidBecomeAcive = [[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive];
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfDidBecomeAcive + 1 forKey:kA3ApplicationNumberOfDidBecomeActive];
     FNLOG(@"Number Of DidBecomeActive = %ld", (long)[[NSUserDefaults standardUserDefaults] integerForKey:kA3ApplicationNumberOfDidBecomeActive]);
+
+    if (!_firstRunAfterInstall) {
+        [A3SyncManager sharedSyncManager].ignoreDataReset = NO;
+    }
     
-    // TODO: Dropbox V2 Pending work
-//    UINavigationController *navigationController = [self navigationController];
-//    UIViewController *topViewController = self.navigationController.topViewController;
-//    if ([topViewController isKindOfClass:[A3SettingsBackupRestoreViewController class]] && ![[DBSession sharedSession] isLinked]) {
-//        [navigationController popViewControllerAnimated:NO];
-//    }
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [self applicationDidBecomeActive_passcodeAfterLaunch:_appIsNotActiveYet];
     
     if (_appIsNotActiveYet) {

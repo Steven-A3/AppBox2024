@@ -7,7 +7,6 @@
 //
 
 #import "A3SyncManager.h"
-#import <Ensembles/Ensembles.h>
 #import "common.h"
 #import "NSString+conversion.h"
 #import "NSManagedObject+extension.h"
@@ -74,7 +73,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	A3SyncStartDeniedBecauseCloudDeleteStartedWithin10Minutes
 };
 
-@interface A3SyncManager () <CDEPersistentStoreEnsembleDelegate>
+@interface A3SyncManager ()
 @end
 
 @implementation A3SyncManager
@@ -99,6 +98,7 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 	self = [super init];
 	if (self) {
 		_fileManager = [NSFileManager new];
+        _ignoreDataReset = NO;
 
 		NSUbiquitousKeyValueStore *store = [NSUbiquitousKeyValueStore defaultStore];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:store];
@@ -175,12 +175,6 @@ typedef NS_ENUM(NSUInteger, A3SyncStartDenyReasonValue) {
 
 - (void)reset
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEMonitoredManagedObjectContextDidSaveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEICloudFileSystemDidDownloadFilesNotification object:nil];
-
-//	_ensemble.delegate = nil;
-//	_ensemble = nil;
-
 	[[A3UserDefaults standardUserDefaults] removeObjectForKey:A3SyncManagerCloudEnabled];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 }

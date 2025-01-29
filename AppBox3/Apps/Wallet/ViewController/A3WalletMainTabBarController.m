@@ -58,7 +58,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 	[self setupTabBar];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudStoreDidImport:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
-    
+
 	// 카테고리 이름/아이콘이 바뀌면 탭바의 표시되는 정보도 변경되어야 하므로 노티를 수신한다.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryChangedNotification:) name:A3WalletNotificationCategoryChanged object:nil];
 
@@ -145,13 +145,13 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	[self.navigationController setNavigationBarHidden:YES animated:NO];
-
-	UIImage *image = [UIImage new];
-	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-	[self.navigationController.navigationBar setShadowImage:image];
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    
+    UIImage *image = [UIImage new];
+    [self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:image];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

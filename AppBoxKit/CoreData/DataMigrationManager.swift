@@ -42,10 +42,10 @@ class DataMigrationManager: NSObject, ObservableObject {
     }
     
     @objc public
-    func migrateData(fromV3: Bool, completion: @escaping () -> Void) {
-        let oldStoreURL = CoreDataStack.shared.V47StoreURL()
-        self.oldPersistentContainer = CoreDataStack.shared.loadPersistentContainer(modelName: "AppBox3", storeURL: oldStoreURL)
+    func migrateData(fromV3: Bool, sourceContainer: NSPersistentContainer, completion: @escaping () -> Void) {
+        self.oldPersistentContainer = sourceContainer
         self.newPersistentContainer = CoreDataStack.shared.persistentContainer
+
         isMigrating = true
         progress = 0.0
         
@@ -59,8 +59,7 @@ class DataMigrationManager: NSObject, ObservableObject {
             "DaysCounterEventLocation", "DaysCounterFavorite", "DaysCounterReminder", "ExpenseListBudget",
             "ExpenseListBudgetLocation", "ExpenseListHistory", "ExpenseListItem", "KaomojiFavorite",
             "LadyCalendarAccount", "LadyCalendarPeriod", "LoanCalcComparisonHistory", "LoanCalcHistory",
-            /* Pedometer 데이터는 마이그레이션에서 제외하고, 시스템에서 다시 읽어오기로 한다. */
-            /*"Pedometer",*/ "PercentCalcHistory", "QRCodeHistory", "SalesCalcHistory", "TipCalcHistory",
+            "Pedometer", "PercentCalcHistory", "QRCodeHistory", "SalesCalcHistory", "TipCalcHistory",
             "TipCalcRecent", "TranslatorFavorite", "TranslatorGroup", "TranslatorHistory", "UnitHistory",
             "UnitHistoryItem", "UnitPriceHistory", "UnitPriceInfo", "WalletCategory", "WalletFavorite",
             "WalletField", "WalletFieldItem", "WalletItem"
@@ -158,17 +157,24 @@ class DataMigrationManager: NSObject, ObservableObject {
             return
         }
 #endif
-        
-        self.migrateData(fromV3: true) {
-            if #available(iOS 17.0, *) {
-                let mediaManager = CloudKitMediaFileManagerWrapper.shared
-                let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
-                
-                mediaManager.addAllMediaFiles(from: url) { error in
+        let stack = CoreDataStack.shared
+        let sourceBaseURL = stack.appGroupContainerURL()!
+        stack.loadPersistentContainer(modelName: "AppBox3", baseURL: sourceBaseURL) { sourceContainer, storeDescription, error in
+            guard let sourceContainer = sourceContainer else {
+                Logger.shared.error("Error loading source container: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+            self.migrateData(fromV3: true, sourceContainer: sourceContainer) {
+                if #available(iOS 17.0, *) {
+                    let mediaManager = CloudKitMediaFileManagerWrapper.shared
+                    let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER)!.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
+                    
+                    mediaManager.addAllMediaFiles(from: url) { error in
+                        completion()
+                    }
+                } else {
                     completion()
                 }
-            } else {
-                completion()
             }
         }
     }

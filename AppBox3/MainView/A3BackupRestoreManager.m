@@ -176,49 +176,44 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (NSString *)migrateCoreDataStoreToTemp {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
+    CoreDataStack *stack = [CoreDataStack shared];
 
     // Generate a temporary path for the Core Data store
-    NSString *tempCoreDataPath = [[fileManager storeFilename] pathInTemporaryDirectory];
+    NSURL *tempBaseURL = [NSURL fileURLWithPath:NSTemporaryDirectory()];
     
-    // Remove any existing temporary file
-    [self removeExistingTempFile:fileManager path:tempCoreDataPath];
-    
+    NSURL *cloudStoreURL = [stack cloudStoreURLWithBaseURL:tempBaseURL];
+    [stack deleteStoreFilesWithStoreURL:cloudStoreURL];
+    NSURL *localStoreURL = [stack localStoreURLWithBaseURL:tempBaseURL];
+    [stack deleteStoreFilesWithStoreURL:localStoreURL];
+
     @try {
-        // Call the backupStoreFile method
-        [[CoreDataStack shared] backupStoreFileTo:[NSURL fileURLWithPath:tempCoreDataPath] error:nil];
-        NSLog(@"Backup successfully created at %@", tempCoreDataPath);
+        [stack backupAllStoreFilesTo:tempBaseURL error:nil];
+        FNLOG(@"Backup successfully created at %@", tempBaseURL.path);
     } @catch (NSError *error) {
-        NSLog(@"Failed to create backup: %@", error.localizedDescription);
+        FNLOG(@"Failed to create backup: %@", error.localizedDescription);
     }
-    return tempCoreDataPath;
+    if (![stack purgePersistentHistoryForStoreAt:tempBaseURL]) {
+        FNLOG(@"Failed to purge persistent history for %@", tempBaseURL.path);
+    }
+    return tempBaseURL.path;
 }
 
 - (void)backupCoreDataAndFiles:(NSFileManager *)fileManager {
-    [CoreDataStack.shared.persistentContainer.viewContext reset];
+    CoreDataStack *stack = [CoreDataStack shared];
+    
+    [stack.persistentContainer.viewContext reset];
     
     _backupCoreDataStorePath = [self migrateCoreDataStoreToTemp];
+    NSURL *baseURL = [NSURL fileURLWithPath:_backupCoreDataStorePath];
     
     NSMutableArray *fileList = [NSMutableArray new];
     _deleteFilesAfterZip = [NSMutableArray new];
     
-    NSString *path;
-    NSString *filename = [fileManager storeFilename];
-    
-    if ([fileManager isDeletableFileAtPath:_backupCoreDataStorePath]) {
-        [fileList addObject:@{A3ZipFilename : _backupCoreDataStorePath, A3ZipNewFilename : filename}];
-    }
-    
-    path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-shm"];
-    if ([fileManager fileExistsAtPath:path]) {
-        [fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-shm"]}];
-    }
-    
-    path = [NSString stringWithFormat:@"%@%@", _backupCoreDataStorePath, @"-wal"];
-    if ([fileManager fileExistsAtPath:path]) {
-        [fileList addObject:@{A3ZipFilename : path, A3ZipNewFilename : [NSString stringWithFormat:@"%@%@", filename, @"-wal"]}];
-    }
-    
+     NSURL *cloudStoreURL = [stack cloudStoreURLWithBaseURL:baseURL];
+     NSURL *localStoreURL = [stack localStoreURLWithBaseURL:baseURL];
+    [fileList addObjectsFromArray:[stack getBackupFileListFor:cloudStoreURL using:fileManager]];
+    [fileList addObjectsFromArray:[stack getBackupFileListFor:localStoreURL using:fileManager]];
+
     // Backup data files
     [self addDaysCounterPhotosWith:fileManager fileList:fileList forBackup:YES];
     
@@ -263,6 +258,8 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     [_hostingView addSubview:self.HUD];
     [self.HUD showAnimated:YES];
 
+    FNLOG(@"%@", fileList);
+    
     AAAZip *zip = [AAAZip new];
     zip.delegate = self;
     _backupFilePath = [self uniqueBackupFilenameWithPostfix:nil extension:nil];
@@ -638,11 +635,10 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 }
 
 - (void)taskAfterDBMigration:(NSString *)backupFilePath backupInfo:(NSDictionary *)backupInfo backupInfoFilePath:(NSString *)backupInfoFilePath fileManager:(NSFileManager *)fileManager sourceBaseURL:(NSURL *)sourceBaseURL version:(float)version {
-    // version >= 4.8
+    // 1. Extract Media Files
     MediaFileMover *mover = [[MediaFileMover alloc] init];
-    NSURL *mediaFilesURL = nil;
     NSURL *appGroupContainerURL = [fileManager containerURLForSecurityApplicationGroupIdentifier:iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER];
-    mediaFilesURL = [appGroupContainerURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
+    NSURL *mediaFilesURL = [appGroupContainerURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
     NSError *error;
     if (version >= 4.8) {
         NSURL *mediaSourceURL = [sourceBaseURL URLByAppendingPathComponent:iCloudConstants.MEDIA_FILES_PATH];
@@ -650,38 +646,54 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     } else {
         [mover moveMediaFilesFrom:sourceBaseURL error:&error];
     }
-    if (@available(iOS 17.0, *)) {
-        if ([CKContainer defaultContainer]) {
-            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
-            [manager addAllMediaFilesFrom:mediaFilesURL completion:^(NSError * _Nullable error) {
-                // Final completion block
-            }];
-        }
-    }
+
+    // 2. Migrate User Defaults
     [self migrateUserDefaults:backupInfo version:version];
 
+    // 3. Apply Theme Color
     NSNumber *selectedColor = [[A3SyncManager sharedSyncManager] objectForKey:A3SettingsUserDefaultsThemeColorIndex];
     if (selectedColor) {
         [A3AppDelegate instance].window.tintColor = [[A3UserDefaults standardUserDefaults] themeColor];
     }
-    [fileManager removeItemAtPath:backupInfoFilePath error:NULL];
-    
-    // Cleanup restore source directory
-    [fileManager removeItemAtPath:backupFilePath error:NULL];
-    
-    if ([self->_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
-        [self->_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
+
+    // 4. Cleanup and Notify Delegate
+    void (^completionBlock)(NSError * _Nullable error) = ^(NSError * _Nullable error) {
+        [fileManager removeItemAtPath:backupInfoFilePath error:NULL];
+        [fileManager removeItemAtPath:backupFilePath error:NULL];
+        
+        if ([self->_delegate respondsToSelector:@selector(backupRestoreManager:restoreCompleteWithSuccess:)]) {
+            [self->_delegate backupRestoreManager:self restoreCompleteWithSuccess:YES];
+        }
+        self.dataMigrationManager = nil;
+    };
+
+    if (@available(iOS 17.0, *)) {
+        if ([CKContainer defaultContainer]) {
+            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
+            [manager addAllMediaFilesFrom:mediaFilesURL completion:completionBlock];
+        } else {
+            completionBlock(nil);
+        }
+    } else {
+        completionBlock(nil);
     }
-    self.dataMigrationManager = nil;
 }
 
 - (void)restoreDataAt:(NSString *)backupFilePath {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.HUD.label.text = NSLocalizedString(@"Restoring Data ...", @"");
+        self.HUD.progress = 0;
+        [[[[[A3AppDelegate instance] window] rootViewController] view] addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+    });
+    
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
     NSString *backupInfoFilePath = [backupFilePath stringByAppendingPathComponent:A3BackupInfoFilename];
     if (![fileManager fileExistsAtPath:backupInfoFilePath]) {
         // A3BackupInfoFilename이 없다는 것은 3.0 이전의 백업 데이터라는 의미
         [self restoreV1BackupFile:backupFilePath];
+        [self.HUD hideAnimated:YES];
         return;
     }
 
@@ -689,38 +701,52 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
     float version = [backupInfo[A3BackupFileVersionKey] floatValue];
     NSURL *sourceBaseURL = [NSURL fileURLWithPath:backupFilePath];
 
-    // Delete all records and data files
+    A3SyncManager *syncManager = [A3SyncManager sharedSyncManager];
+    [syncManager setBool:YES forKey:kUserDefaultsKeyForSystemInitiatesDataReset state:A3DataObjectStateModified];
+    
     CoreDataStack *coreDataStack = [CoreDataStack shared];
-    [coreDataStack deleteAllRecords:^(BOOL success, NSError * _Nullable error) {
-        if (!success) return;
-        
-        [self removeMediaFiles];
+    [coreDataStack resetContainerWithCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            FNLOG(@"Error resetting container: %@", error.localizedDescription);
+            [self.HUD hideAnimated:YES];
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.HUD.progress = 0.2;
+        });
 
         NSString *modelName = nil;
-        NSURL *storeURL = nil;
         if (version < 4.8) {
             modelName = @"AppBox3";
-            storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore.sqlite"];
         } else {
             modelName = @"AppBox2024";
-            storeURL = [sourceBaseURL URLByAppendingPathComponent:@"AppBoxStore2024.sqlite"];
         }
-        NSPersistentContainer *sourceContainer = [coreDataStack loadPersistentContainerWithModelName:modelName storeURL:storeURL];
         self.dataMigrationManager = [[DataMigrationManager alloc] init];
-        [self.dataMigrationManager migrateDataFromV3:version < 4.8
-                                          completion:^{
-            // Delete Store file
-            [coreDataStack unloadPersistentContainerWithContainer:sourceContainer];
-            [coreDataStack deleteStoreFilesWithStoreURL:storeURL];
-            
-            [WalletData createSystemCategory];
-            
-            [self taskAfterDBMigration:backupFilePath
-                            backupInfo:backupInfo
-                    backupInfoFilePath:backupInfoFilePath
-                           fileManager:fileManager
-                         sourceBaseURL:sourceBaseURL
-                               version:version];
+        
+        [coreDataStack loadPersistentContainerWithModelName:modelName
+                                                    baseURL:sourceBaseURL
+                                                 completion:^(NSPersistentContainer * _Nullable sourceContainer, NSPersistentStoreDescription *description, NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.HUD.progress = 0.4;
+            });
+            if (version >= 4.8 && [sourceContainer.persistentStoreDescriptions count] != 2) {
+                return;
+            }
+            [self.dataMigrationManager migrateDataFromV3:version < 4.8
+                                         sourceContainer:sourceContainer
+                                              completion:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.HUD.progress = 0.9;
+                });
+
+                [self taskAfterDBMigration:backupFilePath
+                                backupInfo:backupInfo
+                        backupInfoFilePath:backupInfoFilePath
+                               fileManager:fileManager
+                             sourceBaseURL:sourceBaseURL
+                                   version:version];
+                [self.HUD hideAnimated:YES];
+            }];
         }];
     }];
 }
@@ -792,28 +818,6 @@ NSString *const A3BackupInfoFilename = @"BackupInfo.plist";
 
 	NSURL *shmFileURL = [baseURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@%@", storeFilename, @"-shm"]];
 	[fileManager removeItemAtURL:shmFileURL error:NULL];
-}
-
-- (void)removeMediaFiles {
-    [self removeFilesAtDirectory:[A3DaysCounterImageDirectory pathInAppGroupContainer]];
-    [self removeFilesAtDirectory:[A3DaysCounterImageThumbnailDirectory pathInAppGroupContainer]];
-    [self removeFilesAtDirectory:[A3WalletImageDirectory pathInAppGroupContainer]];
-    [self removeFilesAtDirectory:[A3WalletImageThumbnailDirectory pathInAppGroupContainer]];
-    [self removeFilesAtDirectory:[A3WalletVideoDirectory pathInAppGroupContainer]];
-    [self removeFilesAtDirectory:[A3WalletVideoThumbnailDirectory pathInAppGroupContainer]];
-    
-    if (@available(iOS 17.0, *)) {
-        if ([CKContainer defaultContainer]) {
-            CloudKitMediaFileManagerWrapper *manager = [CloudKitMediaFileManagerWrapper shared];
-            [manager deleteAllRecordsFor:A3DaysCounterImageDirectory completion:^(NSError * _Nullable error) {
-                [manager deleteAllRecordsFor:A3WalletImageDirectory completion:^(NSError * _Nullable error) {
-                    [manager deleteAllRecordsFor:A3WalletVideoDirectory completion:^(NSError * _Nullable error) {
-                        
-                    }];
-                }];
-            }];
-        }
-    }
 }
 
 - (void)removeFilesAtDirectory:(NSString *)path {

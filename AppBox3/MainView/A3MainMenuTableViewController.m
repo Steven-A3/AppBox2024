@@ -34,7 +34,6 @@
 #import "UIViewController+extension.h"
 #import "A3UIDevice.h"
 #import "A3UserDefaults+A3Addition.h"
-#import <Ensembles/Ensembles.h>
 
 NSString *const A3NotificationAppsMainMenuContentsChanged = @"A3NotificationAppsMainMenuContentsChanged";
 NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
@@ -71,21 +70,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3NotificationAppsMainMenuContentsChanged object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncDidMakeProgress:) name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
-}
-
-- (void)syncDidMakeProgress:(NSNotification *)notification {
-	@autoreleasepool {
-		NSNumber *progress = [notification.userInfo objectForKey:CDEProgressFractionKey];
-		if ([progress doubleValue] == 1.0) {
-			FNLOG(@"%@", [notification.userInfo objectForKey:CDEEnsembleActivityKey]);
-		}
-		NSNumberFormatter *formatter = [NSNumberFormatter new];
-		[formatter setNumberStyle:NSNumberFormatterPercentStyle];
-		self.title = [NSString stringWithFormat:NSLocalizedString(@"Syncing...(%@)", @"Syncing...(%@)"), [formatter stringFromNumber:progress]];
-		[_titleResetTimer invalidate];
-		_titleResetTimer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(resetTitle) userInfo:nil repeats:NO];
-	}
 }
 
 - (void)resetTitle {
@@ -95,7 +79,6 @@ NSString *const A3NotificationMainMenuDidHide = @"A3NotificationMainMenuDidHide"
 }
 
 - (void)removeObserver {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:CDEPersistentStoreEnsembleDidMakeProgressWithActivityNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCloudKeyValueStoreDidImport object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationAppsMainMenuContentsChanged object:nil];
 }

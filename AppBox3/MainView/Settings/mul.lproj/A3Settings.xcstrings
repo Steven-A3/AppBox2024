@@ -69,7 +69,7 @@
     },
     "1dJ-y3-yh7.footerTitle" : {
       "comment" : "Class = \"UITableViewSection\"; footerTitle = \"Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items.\"; ObjectID = \"1dJ-y3-yh7\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -3889,66 +3889,65 @@
       }
     },
     "QlJ-9d-VlK.text" : {
-      "comment" : "Class = \"UILabel\"; text = \"Reset iCloud Data\"; ObjectID = \"QlJ-9d-VlK\";",
-      "extractionState" : "extracted_with_value",
+      "comment" : "Class = \"UILabel\"; text = \"Remove All Contents\"; ObjectID = \"QlJ-9d-VlK\";",
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "iCloud-Daten zurücksetzen"
           }
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reset iCloud Data"
+            "state" : "translated",
+            "value" : "Remove All Contents"
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Restablecer datos de iCloud"
           }
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Réinitialiser les données iCloud"
           }
         },
         "it" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Reimposta i dati di iCloud"
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "iCloudデータをリセット"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iCloud 데이터 삭제"
+            "value" : "모든 데이터 삭제"
           }
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Zresetuj dane iCloud"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "重置iCloud数据"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "重置iCloud資料"
           }
         }

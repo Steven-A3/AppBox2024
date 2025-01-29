@@ -10,41 +10,115 @@ import Foundation
 import CloudKit
 
 extension CoreDataStack {
-    public func backupStoreFile(to backupURL: URL) throws {
-        guard let storeURL = self.persistentContainer?.persistentStoreDescriptions.first?.url else {
-            throw NSError(domain: "CoreDataBackup", code: 1, userInfo: [NSLocalizedDescriptionKey: "Could not find the persistent store URL."])
-        }
-        
+    public func backupAllStoreFiles(to backupDirectoryURL: URL) throws {
         let fileManager = FileManager.default
+        let storeFilesToBackup = [cloudStoreURL(), localStoreURL()]
+        for storeURL in storeFilesToBackup {
+            guard let storeURL = storeURL else {
+                Logger.shared.debug("Skipping nil store URL.")
+                continue
+            }
+            
+            // Ensure the store file exists before proceeding
+            guard fileManager.fileExists(atPath: storeURL.path) else {
+                Logger.shared.debug("Skipping non-existent store file: \(storeURL.path)")
+                continue
+            }
+            
+            let storeFileName = storeURL.lastPathComponent
+            let backupStoreFileURL = backupDirectoryURL.appendingPathComponent(storeFileName)
+            
+            // Backup the main SQLite file
+            do {
+                try fileManager.copyItem(at: storeURL, to: backupStoreFileURL)
+                Logger.shared.info("Backed up store file to: \(backupStoreFileURL.path)")
+            }
+            catch {
+                Logger.shared.error("Failed to backup store file: \(error.localizedDescription)")
+                throw error
+            }
+            
+            // Backup associated WAL and SHM files
+            let storeDirectory = storeURL.deletingLastPathComponent()
+            let walFileURL = storeDirectory.appendingPathComponent("\(storeFileName)-wal")
+            let shmFileURL = storeDirectory.appendingPathComponent("\(storeFileName)-shm")
+            
+            let backupWalURL = backupDirectoryURL.appendingPathComponent("\(storeFileName)-wal")
+            let backupShmURL = backupDirectoryURL.appendingPathComponent("\(storeFileName)-shm")
+            
+            if fileManager.fileExists(atPath: walFileURL.path) {
+                try fileManager.copyItem(at: walFileURL, to: backupWalURL)
+                Logger.shared.debug("Backed up WAL file to: \(backupWalURL.path)")
+            }
+            
+            if fileManager.fileExists(atPath: shmFileURL.path) {
+                try fileManager.copyItem(at: shmFileURL, to: backupShmURL)
+                Logger.shared.debug("Backed up SHM file to: \(backupShmURL.path)")
+            }
+        }
+    }
+    
+    public func getBackupFileList(for storeURL: URL, using fileManager: FileManager) -> [[String: String]] {
+        var fileList: [[String: String]] = []
         
-        // Check if the store file exists
+        // Ensure the store file exists before proceeding
         guard fileManager.fileExists(atPath: storeURL.path) else {
-            throw NSError(domain: "CoreDataBackup", code: 2, userInfo: [NSLocalizedDescriptionKey: "Persistent store file does not exist."])
+            print("Skipping non-existent store file: \(storeURL.path)")
+            return fileList
         }
         
-        // Backup the main SQLite file
-        let backupMainFileURL = backupURL
-        try fileManager.copyItem(at: storeURL, to: backupMainFileURL)
-        print("Main store file backed up to \(backupMainFileURL.path)")
+        let storeFileName = storeURL.lastPathComponent
         
-        // Backup related files if using SQLite
+        fileList.append(["name": storeURL.path, "newname": storeFileName])
+        
+        // Associated WAL and SHM files
         let storeDirectory = storeURL.deletingLastPathComponent()
-        let fileName = storeURL.lastPathComponent
-        
-        let walFileURL = storeDirectory.appendingPathComponent("\(fileName)-wal")
-        let shmFileURL = storeDirectory.appendingPathComponent("\(fileName)-shm")
-        
-        let backupWalURL = backupURL.deletingLastPathComponent().appendingPathComponent("\(fileName)-wal")
-        let backupShmURL = backupURL.deletingLastPathComponent().appendingPathComponent("\(fileName)-shm")
+        let walFileURL = storeDirectory.appendingPathComponent("\(storeFileName)-wal")
+        let shmFileURL = storeDirectory.appendingPathComponent("\(storeFileName)-shm")
         
         if fileManager.fileExists(atPath: walFileURL.path) {
-            try fileManager.copyItem(at: walFileURL, to: backupWalURL)
-            print("WAL file backed up to \(backupWalURL.path)")
+            fileList.append(["name": walFileURL.path, "newname": "\(storeFileName)-wal"])
         }
         
         if fileManager.fileExists(atPath: shmFileURL.path) {
-            try fileManager.copyItem(at: shmFileURL, to: backupShmURL)
-            print("SHM file backed up to \(backupShmURL.path)")
+            fileList.append(["name": shmFileURL.path, "newname": "\(storeFileName)-shm"])
         }
+        
+        return fileList
+    }
+    
+    public func purgePersistentHistoryForStore(at storeURL: URL) -> Error? {
+        let semaphore = DispatchSemaphore(value: 0) // Create a semaphore
+        var resultError: Error? = nil
+        
+        loadPersistentContainer(modelName: "AppBox2024", baseURL: storeURL) { persistentContainer, description, error in
+            if let error = error {
+                resultError = error
+                semaphore.signal()
+                return
+            }
+            
+            guard let persistentContainer = persistentContainer else {
+                resultError = NSError(domain: "CoreDataBackup", code: 1, userInfo: [NSLocalizedDescriptionKey: "Persistent container is not available."])
+                semaphore.signal()
+                return
+            }
+            
+            let context = persistentContainer.newBackgroundContext()
+            context.performAndWait {
+                let request = NSPersistentHistoryChangeRequest.deleteHistory(before: Date())
+                do {
+                    try context.execute(request)
+                    Logger.shared.info("Persistent history successfully purged.")
+                } catch {
+                    Logger.shared.error("Failed to purge persistent history: \(error)")
+                    resultError = error
+                }
+                semaphore.signal() // Signal completion
+            }
+        }
+        
+        semaphore.wait() // Wait for completion
+        return resultError
     }
 }

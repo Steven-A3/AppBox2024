@@ -1,0 +1,364 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%@ requires camera access." : {
+
+    },
+    "%@ requires Photo Library access." : {
+
+    },
+    "%@ syncing is in progress. Try after 10 minutes." : {
+
+    },
+    "%li Passcode Failed Attempts" : {
+
+    },
+    "1 Passcode Failed Attempt" : {
+      "comment" : "1 Passcode Failed Attempt"
+    },
+    "Alert" : {
+      "comment" : "Alert",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "안내사항"
+          }
+        }
+      }
+    },
+    "ALL_DATA_REMOVED" : {
+      "comment" : "Message for successful removal of all data",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "All data was successfully removed."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AppBox Pro의 모든 데이터를 삭제했습니다."
+          }
+        }
+      }
+    },
+    "Apps" : {
+      "comment" : "Apps"
+    },
+    "Back to Home" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "홈으로 돌아가기"
+          }
+        }
+      }
+    },
+    "Camera access not authorized." : {
+
+    },
+    "Cancel" : {
+      "comment" : "Cancel button title",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        }
+      }
+    },
+    "Change Passcode" : {
+
+    },
+    "Choose and Resize" : {
+
+    },
+    "Choose Existing" : {
+
+    },
+    "ClearingICloudData" : {
+      "comment" : "Shown while clearing iCloud data",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removing All Contents ..."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 데이터 삭제중 …"
+          }
+        }
+      }
+    },
+    "Confirm Passcode" : {
+      "comment" : "Confirm Passcode"
+    },
+    "Create new passcode" : {
+      "comment" : "Localizable.strings\n  AppBox3\n\n  Created by BYEONG KWON KWAK on 2023/05/20.\n  Copyright © 2023 ALLABOUTAPPS. All rights reserved.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create new passcode"
+          }
+        }
+      }
+    },
+    "Data migration is in progress." : {
+
+    },
+    "Data migration is in progress.\nEnter Encryption Key for Wallet." : {
+
+    },
+    "Delete Photo" : {
+
+    },
+    "Download from AppStore" : {
+
+    },
+    "Encryption key did not match." : {
+
+    },
+    "Encryption Key for Wallet" : {
+
+    },
+    "Enter Passcode" : {
+
+    },
+    "Enter your new passcode" : {
+
+    },
+    "Enter your old passcode" : {
+
+    },
+    "Enter your passcode" : {
+      "comment" : "Enter your passcode"
+    },
+    "ERROR_ALERT_TITLE" : {
+      "comment" : "Title for error alert",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Error"
+          }
+        }
+      }
+    },
+    "Hint" : {
+      "comment" : "Hint"
+    },
+    "iCloud" : {
+      "comment" : "iCloud"
+    },
+    "iCloud delete is in progress. Try after 10 minutes." : {
+
+    },
+    "iCloud_goto_settings" : {
+      "comment" : "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."
+    },
+    "Immediately" : {
+      "comment" : "Immediately"
+    },
+    "Info" : {
+      "comment" : "Info"
+    },
+    "Internet connection is not available." : {
+
+    },
+    "Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather." : {
+
+    },
+    "Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." : {
+
+    },
+    "microphone access denied" : {
+      "comment" : "microphone access denied"
+    },
+    "New Passcode" : {
+      "comment" : "New Passcode"
+    },
+    "OK" : {
+      "comment" : "OK",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        }
+      }
+    },
+    "OK_ALERT_ACTION" : {
+      "comment" : "Default OK button title",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OK"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        }
+      }
+    },
+    "Old Passcode" : {
+      "comment" : "Old Passcode"
+    },
+    "Passcode" : {
+      "comment" : "View title while confirm passcode"
+    },
+    "Passcode did not match." : {
+      "comment" : "Passcode did not match."
+    },
+    "Passcode did not match. Try again." : {
+
+    },
+    "Password" : {
+
+    },
+    "Passwords" : {
+
+    },
+    "Photo Library access not authorized." : {
+
+    },
+    "Please enter confirm passcode." : {
+      "comment" : "Please enter confirm passcode."
+    },
+    "Please enter new passcode." : {
+      "comment" : "Please enter new passcode."
+    },
+    "Please enter passcode." : {
+      "comment" : "Please enter passcode."
+    },
+    "Re-enter your new passcode" : {
+
+    },
+    "Re-enter your passcode" : {
+
+    },
+    "RemoveAllDataButton" : {
+      "comment" : "Button title for removing data",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove All Contents"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 데이터 삭제"
+          }
+        }
+      }
+    },
+    "RemoveAllDataMessage" : {
+      "comment" : "Ask user if they're sure about removing data",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to remove all contents in the app?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AppBox Pro에 저장된 데이터를 모두 삭제하시겠습니까?"
+          }
+        }
+      }
+    },
+    "RemoveAllDataTitle" : {
+      "comment" : "Title for remove all data alert",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset All Contents"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 데이터 초기화"
+          }
+        }
+      }
+    },
+    "Set Passcode" : {
+
+    },
+    "SUCCESS_ALERT_TITLE" : {
+      "comment" : "Title for success alert",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Success"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "완료"
+          }
+        }
+      }
+    },
+    "Take Photo" : {
+
+    },
+    "Turn Off Passcode" : {
+
+    },
+    "UNKNOWN_ERROR" : {
+      "comment" : "Fallback message if error is nil",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Unknown error occurred."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알 수 없는 오류입니다."
+          }
+        }
+      }
+    },
+    "User Name" : {
+
+    },
+    "WEBSITE" : {
+
+    }
+  },
+  "version" : "1.0"
+}

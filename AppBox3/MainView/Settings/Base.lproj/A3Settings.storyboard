@@ -18,7 +18,7 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="0.75" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
-                            <tableViewSection footerTitle="Sync or Backup of History of every apps, Days Counter events, Expense Lists, Lady Calendar periods and Wallet items." id="1dJ-y3-yh7">
+                            <tableViewSection footerTitle="" id="1dJ-y3-yh7">
                                 <cells>
                                     <tableViewCell tag="1200" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="ehr-w2-0vk" style="IBUITableViewCellStyleDefault" id="74g-d6-ttr" customClass="A3StandardTableViewCell">
                                         <rect key="frame" x="0.0" y="10" width="375" height="44"/>
@@ -98,7 +98,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="348.5" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Reset iCloud Data" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="QlJ-9d-VlK">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Remove All Contents" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" id="QlJ-9d-VlK">
                                                     <rect key="frame" x="16" y="0.0" width="324.5" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -113,7 +113,7 @@
                             <tableViewSection id="wXG-nm-dYv">
                                 <cells>
                                     <tableViewCell tag="2100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="pjv-dt-D5o" detailTextLabel="Mzm-Rw-Yrb" style="IBUITableViewCellStyleValue1" id="gyl-bD-egH" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="302.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="262.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gyl-bD-egH" id="FHx-pt-18t">
                                             <rect key="frame" x="0.0" y="0.0" width="348.5" height="44"/>
@@ -141,7 +141,7 @@
                             <tableViewSection headerTitle="HOME SCREEN STYLE" id="4kk-Sh-oCc">
                                 <cells>
                                     <tableViewCell tag="5200" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="160" id="w9G-1V-Z0I" customClass="A3SettingsHomeStyleSelectTableViewCell">
-                                        <rect key="frame" x="0.0" y="394.5" width="375" height="160"/>
+                                        <rect key="frame" x="0.0" y="354.5" width="375" height="160"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w9G-1V-Z0I" id="lru-Uv-67d">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
@@ -224,7 +224,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="3200" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="m3s-eA-4WD" style="IBUITableViewCellStyleDefault" id="bN8-Zi-geh" userLabel="Favorites STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="554.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="514.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bN8-Zi-geh" id="Tep-KN-CeD">
                                             <rect key="frame" x="0.0" y="0.0" width="348.5" height="44"/>
@@ -241,7 +241,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell tag="3300" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="BGG-KB-Wog" detailTextLabel="UKS-0H-yut" style="IBUITableViewCellStyleValue1" id="HzD-k5-cgj" userLabel="Recent to Keep STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="598.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="558.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HzD-k5-cgj" id="eZT-eZ-B4Z">
                                             <rect key="frame" x="0.0" y="0.0" width="348.5" height="44"/>
@@ -265,7 +265,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell tag="3200" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="phR-44-yze" style="IBUITableViewCellStyleDefault" id="L4w-Ew-laf" userLabel="Favorites STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="642.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="602.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L4w-Ew-laf" id="sC1-Bo-ytU">
                                             <rect key="frame" x="0.0" y="0.0" width="348.5" height="44"/>
@@ -286,7 +286,7 @@
                             <tableViewSection id="kKz-LW-AL6">
                                 <cells>
                                     <tableViewCell tag="3100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Of0-YK-9dc" detailTextLabel="WZi-Up-6bJ" style="IBUITableViewCellStyleValue1" id="FiU-Nr-rfH" userLabel="Default App STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="706.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="666.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FiU-Nr-rfH" id="ALU-IG-lNe">
                                             <rect key="frame" x="0.0" y="0.0" width="356.5" height="44"/>
@@ -313,7 +313,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell tag="4100" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Vgb-6m-SyM" style="IBUITableViewCellStyleDefault" id="6HN-jy-OKz" userLabel="Theme Color STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="750.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="710.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6HN-jy-OKz" id="ZqQ-ey-pbQ">
                                             <rect key="frame" x="0.0" y="0.0" width="356.5" height="44"/>
@@ -337,7 +337,7 @@
                             <tableViewSection id="BNJ-4X-PwF">
                                 <cells>
                                     <tableViewCell tag="6200" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="52u-SH-gyS" detailTextLabel="F3e-bo-QJX" style="IBUITableViewCellStyleValue1" id="beC-ia-dKW" userLabel="Remove Ads STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="814.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="774.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="beC-ia-dKW" id="lyk-Ma-uy6">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -361,7 +361,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell tag="6200" contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="yfZ-vk-zWG" detailTextLabel="4TD-S6-29N" style="IBUITableViewCellStyleValue1" id="75h-zV-g9e" userLabel="Remove Ads STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="858.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="818.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="75h-zV-g9e" id="a28-0F-nef">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -385,7 +385,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="b9v-1Y-xnC" style="IBUITableViewCellStyleDefault" id="SdY-Xa-uY8" userLabel="About STD CELL" customClass="A3StandardTableViewCell">
-                                        <rect key="frame" x="0.0" y="902.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="862.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SdY-Xa-uY8" id="pX5-0I-ezm">
                                             <rect key="frame" x="0.0" y="0.0" width="356.5" height="44"/>

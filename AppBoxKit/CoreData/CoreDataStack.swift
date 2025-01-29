@@ -16,6 +16,7 @@ public class iCloudConstants: NSObject {
     public static let ICLOUD_CONTAINER_IDENTIFIER: String = "iCloud.net.allaboutapps.AppBox"
     public static let APP_GROUP_CONTAINER_IDENTIFIER: String = "group.allaboutapps.appbox"
     public static let MEDIA_FILES_PATH: String = "Library/AppBox/MediaFiles"
+    public static let COREDATA_READY_TO_USE_NOTIFICATION: String = "CoreDataReadyToUseNotification"
 }
 
 @objcMembers
@@ -28,10 +29,10 @@ public class CoreDataStack: NSObject {
     public var coreDataReady: Bool = false
     
     private let modelName = "AppBox2024"
-    private let cloudStoreFileName = "AppBoxStore2024.sqlite"
-    private let localStoreFileName = "AppBoxStore2024Local.sqlite"
+    public let cloudStoreFileName = "AppBoxStore2024.sqlite"
+    public let localStoreFileName = "AppBoxStore2024Local.sqlite"
     
-    var isICloudAccountAvailable: Bool = false
+    public var isICloudAccountAvailable: Bool = false
     
     let cloudContainer = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
     let cloudDatabase: CKDatabase
@@ -48,7 +49,7 @@ public class CoreDataStack: NSObject {
     }
     
     /// Sets up the Core Data stack.
-    /// - Parameter completion: Completion handler called when setup is complete.
+    /// - Parameter completionB: Completion handler called when setup is complete.
     public func setupStackWithCompletion(_ completionB: @escaping () -> Void) {
         checkICloudAccountStatus { [weak self] available in
             self?.isICloudAccountAvailable = available
@@ -64,7 +65,7 @@ public class CoreDataStack: NSObject {
     }
     
     private func setupPersistentContainer(_ completionC: @escaping () -> Void) {
-        print("completion of setupPersistentContainer")
+        let modelName = self.modelName
         
         // Load the model
         guard let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd"),
@@ -93,7 +94,6 @@ public class CoreDataStack: NSObject {
         }
         let cloudStoreDescription = createStoreDescription(for: cloudStoreURL, configuration: "Cloud", options: cloudKitOptions)
         let localStoreDescription = createStoreDescription(for: localStoreURL, configuration: "Local")
-        container.persistentStoreDescriptions = [cloudStoreDescription, localStoreDescription]
         
         // Enable persistent history tracking
         cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
@@ -124,7 +124,37 @@ public class CoreDataStack: NSObject {
             }
         }
     }
-    
+
+    // 이 함수는 백업 데이터에서 복원하기 위해서 사용하는 함수이다.
+    public func loadPersistentContainer(modelName: String?, baseURL: URL, completion: @escaping (NSPersistentContainer?, NSPersistentStoreDescription?, Error?) -> Void) {
+        let modelName = modelName ?? self.modelName
+        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
+        let oldModel = NSManagedObjectModel(contentsOf: modelURL)
+        let container = NSPersistentContainer(name: modelName, managedObjectModel: oldModel!)
+
+        if modelName == "AppBox3" {
+            let storeDescription = NSPersistentStoreDescription(url: baseURL.appendingPathComponent("AppBoxStore.sqlite"))
+            container.persistentStoreDescriptions = [storeDescription]
+        } else {
+            let cloudStoreURL = cloudStoreURL(baseURL: baseURL)
+            let localStoreURL = localStoreURL(baseURL: baseURL)
+            let cloudStoreDescription = createStoreDescription(for: cloudStoreURL!, configuration: "Cloud")
+            let localStoreDescription = createStoreDescription(for: localStoreURL!, configuration: "Local")
+            container.persistentStoreDescriptions = [cloudStoreDescription, localStoreDescription]
+        }
+
+        container.loadPersistentStores { (description, error) in
+            // 모델명이 AppBox3인 경우에는 description이 한번 호출되고, configuration은 "Default"로 호출된다.
+            // 모델명이 AppBox20245인 경우에는 description이 두번 호출되고, configuration은 "Cloud"와 "Local"로 호출된다.
+            if let error = error {
+                Logger.shared.error("Error loading old persistent store: \(error)")
+                completion(nil, nil, error)
+            } else {
+                completion(container, description, nil)
+            }
+        }
+    }
+
     private func createStoreDescription(for url: URL, configuration: String, options: NSPersistentCloudKitContainerOptions? = nil) -> NSPersistentStoreDescription {
         let description = NSPersistentStoreDescription(url: url)
         description.configuration = configuration
@@ -134,16 +164,16 @@ public class CoreDataStack: NSObject {
         return description
     }
     
-    private func cloudStoreURL() -> URL? {
-        guard let containerURL = appGroupContainerURL() else {
+    public func cloudStoreURL(baseURL: URL? = nil) -> URL? {
+        guard let containerURL = baseURL ?? appGroupContainerURL() else {
             assertionFailure("Unable to access app group container.")
             return nil
         }
         return containerURL.appendingPathComponent(cloudStoreFileName)
     }
     
-    private func localStoreURL() -> URL? {
-        guard let containerURL = appGroupContainerURL() else {
+    public func localStoreURL(baseURL: URL? = nil) -> URL? {
+        guard let containerURL = baseURL ?? appGroupContainerURL() else {
             assertionFailure("Unable to access app group container.")
             return nil
         }
@@ -165,13 +195,18 @@ public class CoreDataStack: NSObject {
     /// Unloads the persistent container.
     @objc
     public func unloadPersistentContainer(container: NSPersistentContainer) {
+        let coordinator = container.persistentStoreCoordinator
+        container.viewContext.reset()
+        
         for store in container.persistentStoreCoordinator.persistentStores {
             do {
-                try container.persistentStoreCoordinator.remove(store)
+                try coordinator.remove(store)
+                try coordinator.destroyPersistentStore(at: store.url!, ofType: store.type, options: nil)
             } catch {
-                print("Failed to remove persistent store: \(error)")
+                Logger.shared.error("Failed to remove persistent store: \(error)")
             }
         }
+        self.persistentContainer = nil
     }
     
     /// Deletes the Core Data store files.
@@ -189,9 +224,11 @@ public class CoreDataStack: NSObject {
         do {
             for url in urls where fileManager.fileExists(atPath: url.path) {
                 try fileManager.removeItem(at: url)
+                Logger.shared.debug("Deleted file: \(url.path)")
             }
             completion?(nil)
         } catch {
+            Logger.shared.error("Failed to delete files: \(error)")
             completion?(error)
         }
     }
@@ -200,31 +237,13 @@ public class CoreDataStack: NSObject {
     /// - Parameter container: The NSPersistentCloudKitContainer instance.
     private func initializeCloudKitSchema(container: NSPersistentCloudKitContainer) {
         do {
-            print("Initializing CloudKit schema...")
             try container.initializeCloudKitSchema(options: [])
-            print("CloudKit schema successfully initialized.")
+            Logger.shared.debug("CloudKit schema successfully initialized.")
         } catch {
-            print("Failed to initialize CloudKit schema: \(error)")
+            Logger.shared.error("Failed to initialize CloudKit schema: \(error)")
         }
     }
-    
-    public func loadPersistentContainer(modelName: String?, storeURL: URL) -> NSPersistentContainer {
-        let modelName = modelName ?? self.modelName
-        let modelURL = Bundle.main.url(forResource: modelName, withExtension: "momd")!
-        let oldModel = NSManagedObjectModel(contentsOf: modelURL)
-        let container = NSPersistentContainer(name: modelName, managedObjectModel: oldModel!)
-        
-        let storeDescription = NSPersistentStoreDescription(url: storeURL)
-        container.persistentStoreDescriptions = [storeDescription]
-        
-        container.loadPersistentStores { (description, error) in
-            if let error = error {
-                print("Error loading old persistent store: \(error)")
-            }
-        }
-        return container
-    }
-    
+   
     /**
      Resets the Core Data stack by unloading the current persistent container,
      deleting the associated store files, and resetting the state if iCloud is available.
@@ -247,16 +266,40 @@ public class CoreDataStack: NSObject {
      */
     @objc
     public func resetContainer(completion: @escaping (Error?) -> Void) {
-        // Step 1: Check if iCloud is available
-        guard isICloudAccountAvailable else {
-            print("iCloud is not available. Reset operation skipped.")
-            completion(nil)
+        guard persistentContainer != nil else {
+            completion(NSError(domain: "CoreDataStack", code: 1, userInfo: [NSLocalizedDescriptionKey: "Persistent container is not initialized."]))
             return
         }
+
+        resetLocalContainer()
         
-        // Step 2: Check if persistentContainer is initialized
+        // Step 5: Reset CloudKit sync
+        if isICloudAccountAvailable {
+            resetCloudKitSync { success, error in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                
+                if success {
+                    print("CloudKit sync successfully reset.")
+                }
+                
+                // Step 6: Reinitialize the Core Data stack
+                self.setupStackWithCompletion {
+                    completion(nil) // Indicate successful reset
+                }
+            }
+        } else {
+            // Step 6: Reinitialize the Core Data stack
+            setupStackWithCompletion {
+                completion(nil) // Indicate successful reset
+            }
+        }
+    }
+    
+    public func resetLocalContainer() {
         guard let container = persistentContainer else {
-            completion(NSError(domain: "CoreDataStack", code: 1, userInfo: [NSLocalizedDescriptionKey: "Persistent container is not initialized."]))
             return
         }
         
@@ -271,22 +314,38 @@ public class CoreDataStack: NSObject {
         if let localStoreURL = localStoreURL() {
             deleteStoreFiles(storeURL: localStoreURL)
         }
+        deleteAllLocalMediaFiles()
+    }
+    
+    func deleteAllLocalMediaFiles() {
+        guard let appGroupContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: iCloudConstants.APP_GROUP_CONTAINER_IDENTIFIER) else {
+            print("Failed to retrieve app group container URL.")
+            return
+        }
         
-        // Step 5: Reset CloudKit sync
-        resetCloudKitSync { success, error in
-            if let error = error {
-                print("Failed to reset CloudKit sync: \(error.localizedDescription)")
-                completion(error)
-                return
-            }
+        // Base path
+        let basePath = appGroupContainerURL.appendingPathComponent(iCloudConstants.MEDIA_FILES_PATH)
+        
+        // Directories to delete files from
+        let directories = ["DaysCounterImages", "WalletImages", "WalletVideos"]
+        
+        for directory in directories {
+            let directoryPath = basePath.appendingPathComponent(directory)
             
-            if success {
-                print("CloudKit sync successfully reset.")
-            }
-            
-            // Step 6: Reinitialize the Core Data stack
-            self.setupStackWithCompletion {
-                completion(nil) // Indicate successful reset
+            do {
+                // Retrieve the contents of the directory
+                let files = try FileManager.default.contentsOfDirectory(at: directoryPath, includingPropertiesForKeys: nil, options: [])
+                
+                // Iterate through files and delete each one
+                for file in files {
+                    try FileManager.default.removeItem(at: file)
+                    Logger.shared.debug("Deleted file: \(file.path)")
+                }
+                
+                Logger.shared.debug("Successfully cleared all files in directory: \(directoryPath.path)")
+                
+            } catch {
+                Logger.shared.error("Failed to delete files in directory: \(directoryPath.path), Error: \(error.localizedDescription)")
             }
         }
     }

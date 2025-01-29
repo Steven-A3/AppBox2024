@@ -172,4 +172,6 @@ extern NSString *const kUserDefaultsKeyForAskPasscodeForWallet;
 #pragma mark ------ Wallet
 extern NSString *const A3WalletUserDefaultsSelectedTab;
 
+extern NSString *const kUserDefaultsKeyForSystemInitiatesDataReset;
+
 #endif

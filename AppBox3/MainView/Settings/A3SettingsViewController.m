@@ -128,7 +128,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 2) {
+    if (section == 0) {
+        if (!CoreDataStack.shared.isICloudAccountAvailable) {
+            return [super tableView:tableView numberOfRowsInSection:section] - 1;
+        }
+    } else if (section == 2) {
 		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		if ([appDelegate isMainMenuStyleList]) {
 			return 3;
@@ -330,7 +334,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
                     [self exportPhotosVideos];
                     break;
                 case 4:
-                    [self resetiCloudContainer];
+                {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    [[CoreDataStack shared] removeDataButtonTapped:cell :self];
+                }
                 default:
                     break;
             }
@@ -463,31 +470,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		default:
 			break;
 	}
-}
-
-- (void)resetiCloudContainer {
-    CoreDataStack *stack = [CoreDataStack shared];
-
-    self.HUD.label.text = NSLocalizedString(@"Clearing iCloud Data ...", @"");
-    self.HUD.progress = 0;
-    [self.navigationController.view addSubview:self.HUD];
-    [self.HUD showAnimated:YES];
-
-    // Reset the Core Data stack
-    [stack resetContainerWithCompletion:^(NSError * _Nullable error) {
-        if (error) {
-            // Log the error if the reset fails
-            NSLog(@"Failed to reset iCloud container: %@", error.localizedDescription);
-            // Optionally, notify the user about the failure
-            [[UIApplication sharedApplication] showAlertWithTitle:@"Error" message:@"Unable to reset iCloud container. Please try again later."];
-        } else {
-            // Log success
-            NSLog(@"Successfully reset iCloud container.");
-            // Optionally, notify the user about the successful reset
-            [[UIApplication sharedApplication] showAlertWithTitle:@"Success" message:@"iCloud container has been successfully reset."];
-        }
-        [self.HUD hideAnimated:YES];
-    }];
 }
 
 - (A3BackupRestoreManager *)backupRestoreManager {

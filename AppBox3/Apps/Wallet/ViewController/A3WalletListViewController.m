@@ -31,6 +31,8 @@
 #import "NSManagedObjectContext+extension.h"
 #import "A3SyncManager.h"
 #import "A3UIDevice.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
+#import "UIViewController+extension.h"
 
 NSString *const A3WalletTextCellID1 = @"A3WalletListTextCell";
 NSString *const A3WalletBigVideoCellID1 = @"A3WalletListBigVideoCell";
@@ -92,12 +94,12 @@ NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
-		[self leftBarButtonAppsButton];
-	}
-	[self.navigationController setNavigationBarHidden:NO];
+    [super viewDidAppear:animated];
+    
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
+        [self leftBarButtonAppsButton];
+    }
+    [self.navigationController setNavigationBarHidden:NO];
     [self setValuePrefersStatusBarHidden:NO];
     [self setValueStatusBarStyle:UIStatusBarStyleDefault];
     [self setNeedsStatusBarAppearanceUpdate];

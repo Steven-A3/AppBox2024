@@ -250,41 +250,41 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
+    [super viewDidAppear:animated];
+    
     [self setValuePrefersStatusBarHidden:NO];
     [self setValueStatusBarStyle:UIStatusBarStyleDefault];
     [self setNeedsStatusBarAppearanceUpdate];
-	
-	if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
-		[self leftBarButtonAppsButton];
-		[self.addEventButton setHidden:NO];
-		[self setToolbarItems:_bottomToolbar.items];
-		[self.navigationController setToolbarHidden:NO animated:YES];
-	}
-	if (_addEventButtonPressed) {
-		_addEventButtonPressed = NO;
-		
-		double delayInSeconds = 4.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self reloadTableView];
-		});
-	}
+    
+    if (IS_IPHONE && [UIWindow interfaceOrientationIsPortrait]) {
+        [self leftBarButtonAppsButton];
+        [self.addEventButton setHidden:NO];
+        [self setToolbarItems:_bottomToolbar.items];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    }
+    if (_addEventButtonPressed) {
+        _addEventButtonPressed = NO;
+        
+        double delayInSeconds = 4.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self reloadTableView];
+        });
+    }
     if ([self isMovingToParentViewController] || [self isBeingPresented]) {
         [self setupBannerViewForAdUnitID:AdMobAdUnitIDDaysCounter keywords:@[@"calendar", @"anniversary"] adSize:IS_IPHONE ? GADAdSizeFluid : GADAdSizeLeaderboard delegate:self];
     }
-	
-	UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	[self.navigationItem setRightBarButtonItems:@[edit, space, [self instructionHelpBarButton]] animated:YES];
-
-	if ([self.navigationController.navigationBar isHidden]) {
-		[self showNavigationBarOn:self.navigationController];
-	}
-	[self.navigationController setToolbarHidden:NO];
-	
-	[self setupInstructionView];
+    
+    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    [self.navigationItem setRightBarButtonItems:@[edit, space, [self instructionHelpBarButton]] animated:YES];
+    
+    if ([self.navigationController.navigationBar isHidden]) {
+        [self showNavigationBarOn:self.navigationController];
+    }
+    [self.navigationController setToolbarHidden:NO];
+    
+    [self setupInstructionView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -485,7 +485,7 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 
 - (void)setupInstructionView
 {
-    if (![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterCalendarList]) {
+    if ([[CoreDataStack shared] coreDataReady] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForDaysCounterCalendarList]) {
         [self showInstructionView];
     }
 }

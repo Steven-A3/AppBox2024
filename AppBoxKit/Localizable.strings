@@ -7,3 +7,8 @@
 */
 
 "Create new passcode" = "Create new passcode";
+"RemoveAllDataTitle" = "Remove All Data?";
+"RemoveAllDataMessage" = "Are you sure you want to remove all data?";
+"RemoveAllDataButton" = "Remove All Data";
+"ClearingICloudData" = "Clearing iCloud Data ...";
+"Cancel" = "Cancel";

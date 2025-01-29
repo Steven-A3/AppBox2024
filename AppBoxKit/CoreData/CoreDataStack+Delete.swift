@@ -51,6 +51,79 @@ extension CoreDataStack {
         }
     }
     
+    public func removeDataButtonTapped(_ sender: UIView, _ viewController: UIViewController) {
+        let bundle = Bundle(identifier: "net.allaboutapps.AppBoxKit")!
+        // Present action sheet
+        let alert = UIAlertController(
+            title: NSLocalizedString("RemoveAllDataTitle", bundle:bundle, comment: "Title for remove all data alert"),
+            message: NSLocalizedString("RemoveAllDataMessage", bundle:bundle, comment: "Ask user if they're sure about removing data"),
+            preferredStyle: .actionSheet
+        )
+        
+        let removeAllAction = UIAlertAction(
+            title: NSLocalizedString("RemoveAllDataButton", bundle:bundle, comment: "Button title for removing data"),
+            style: .destructive
+        ) { _ in
+            ProgressOverlayManager.shared.show(NSLocalizedString("ClearingICloudData", bundle:bundle, comment: "Shown while clearing iCloud data"))
+            self.removeAllData(viewController)
+        }
+        
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("Cancel", bundle:bundle, comment: "Cancel button title"),
+            style: .cancel,
+            handler: nil
+        )
+        
+        alert.addAction(removeAllAction)
+        alert.addAction(cancelAction)
+        
+        // On iPad, you must configure the popover presentation
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = sender
+            popoverController.sourceRect = sender.bounds
+        }
+        
+        viewController.present(alert, animated: true, completion: nil)
+    }
+    
+    private func removeAllData(_ viewController: UIViewController? = nil) {
+        // create event record before reset, this record will be deleted while reset
+        // However, this creation will propagate to other devices
+        if #available(iOS 17.0, *) {
+            A3SyncManager.shared().setBool(true, forKey: kUserDefaultsKeyForSystemInitiatesDataReset, state: .modified)
+        }
+        resetContainer { error in
+            DispatchQueue.main.async {
+                ProgressOverlayManager.shared.hide()
+                
+                // 1. Get the framework bundle with the specified identifier
+                let frameworkBundle = Bundle(identifier: "net.allaboutapps.AppBoxKit") ?? .main
+                
+                // 2. Retrieve localized strings from that bundle
+                let alertTitle = error == nil
+                    ? NSLocalizedString("SUCCESS_ALERT_TITLE", tableName: nil, bundle: frameworkBundle, value: "Success", comment: "Title for success alert")
+                    : NSLocalizedString("ERROR_ALERT_TITLE", tableName: nil, bundle: frameworkBundle, value: "Error", comment: "Title for error alert")
+                
+                let unknownError = NSLocalizedString("UNKNOWN_ERROR", tableName: nil, bundle: frameworkBundle, value: "Unknown error occurred.", comment: "Fallback message if error is nil")
+                let alertMessage = error == nil
+                    ? NSLocalizedString("ALL_DATA_REMOVED", tableName: nil, bundle: frameworkBundle, value: "All data was successfully removed.", comment: "Message for successful removal of all data")
+                    : (error?.localizedDescription ?? unknownError)
+                
+                let okButtonTitle = NSLocalizedString("OK_ALERT_ACTION", tableName: nil, bundle: frameworkBundle, value: "OK", comment: "Default OK button title")
+                
+                // 3. Present the alert
+                let alertController = UIAlertController(
+                    title: alertTitle,
+                    message: alertMessage,
+                    preferredStyle: .alert
+                )
+                
+                alertController.addAction(UIAlertAction(title: okButtonTitle, style: .default))
+                viewController?.present(alertController, animated: true)
+            }
+        }
+    }
+    
     public func resetCloudKitSync(_ completion: @escaping @convention(block) (Bool, Error?) -> Void) {
         let container = CKContainer(identifier: iCloudConstants.ICLOUD_CONTAINER_IDENTIFIER)
         deleteAllCustomZones(from: container

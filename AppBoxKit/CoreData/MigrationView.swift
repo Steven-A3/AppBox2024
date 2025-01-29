@@ -11,7 +11,6 @@ import CoreData
 
 struct MigrationView: View {
     var completion: (() -> Void)?
-    var oldPersistentContainer: NSPersistentContainer
     var newPersistentContainer: NSPersistentContainer?
 
     @State private var publisher = NotificationCenter.default.publisher(for: NSPersistentCloudKitContainer.eventChangedNotification)
@@ -23,11 +22,6 @@ struct MigrationView: View {
     // MARK: - Initializer
     init(completion: (() -> Void)? = nil) {
         self.completion = completion
-
-        let stack = CoreDataStack.shared
-        let storeURL = stack.V47StoreURL()
-        let oldContainer = stack.loadPersistentContainer(modelName: "AppBox3", storeURL: storeURL)
-        self.oldPersistentContainer = oldContainer
 
         _migrationManager = StateObject(wrappedValue: DataMigrationManager())
     }
@@ -102,26 +96,10 @@ struct MigrationView: View {
     }
 
     // MARK: - Actions
-    private func resetiCloud() {
-        CoreDataStack.shared.resetCloudKitSync { success, error in
-            let stack = CoreDataStack.shared
-            self.monitorCloudKitEventsForMigration = true
-            
-            if #available(iOS 17.0, *) {
-                CloudKitMediaFileManagerWrapper.shared.ensureMediaFilesRecordZoneExists { error in
-                    stack.setupStackWithCompletion {
-                    }
-                }
-            } else {
-                stack.setupStackWithCompletion {
-                }
-            }
-        }
-    }
 
     private func startOptimization() {
-        let stack = CoreDataStack.shared
         self.monitorCloudKitEventsForMigration = true
+        let stack = CoreDataStack.shared
         if #available(iOS 17.0, *) {
             CloudKitMediaFileManagerWrapper.shared.ensureMediaFilesRecordZoneExists { error in
                 stack.setupStackWithCompletion {

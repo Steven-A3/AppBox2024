@@ -68,11 +68,10 @@ typedef void (^CDECompletionBlock)(NSError * _Nullable error);
 //@property (nonatomic, strong) CDEICloudFileSystem *cloudFileSystem;
 @property (nonatomic, copy) NSString *storePath;
 @property (nonatomic, strong) NSFileManager *fileManager;
+@property (nonatomic, assign) BOOL ignoreDataReset;
 
 + (instancetype)sharedSyncManager;
-
 - (BOOL)canSyncStart;
-
 - (BOOL)isCloudEnabled;
 
 @end

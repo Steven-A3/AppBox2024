@@ -193,7 +193,7 @@ static NSString *const A3V3InstructionDidShowForWalletFavorite = @"A3V3Instructi
 }
 
 - (BOOL)shouldShowHelpView {
-	return ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletFavorite];
+	return [[CoreDataStack shared] coreDataReady] && ![[A3UserDefaults standardUserDefaults] boolForKey:A3V3InstructionDidShowForWalletFavorite];
 }
 
 - (void)showInstructionView
