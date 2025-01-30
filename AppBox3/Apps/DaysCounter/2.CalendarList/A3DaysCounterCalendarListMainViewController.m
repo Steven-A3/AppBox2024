@@ -675,14 +675,16 @@ static NSString *const A3V3InstructionDidShowForDaysCounterCalendarList = @"A3V3
 			DaysCounterDate_ *startDate = [event startDate];
             NSDate *nextDate;
             if ([event.isLunar boolValue]) {
-                nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
-                                                                                                                                                toLunar:[event.isLunar boolValue]]
+                nextDate = [A3DaysCounterModelManager nextSolarDateFromLunarDateComponents:
+                            [A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
+                                                                                 toLunar:[event.isLunar boolValue]]
                                                                                  leapMonth:[startDate.isLeapMonth boolValue]
                                                                                   fromDate:today];
             }
             else {
                 nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                      firstDate:[startDate solarDate]
+                                                                 repeatEndDate:event.repeatEndDate
                                                                       fromDate:today
                                                                       isAllDay:[event.isAllDay boolValue]];
             }

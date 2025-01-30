@@ -113,9 +113,12 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 
 	[self makeBackButtonEmptyArrow];
 	
-	[self.dataManager prepare];
-	[self.dataManager prepareAccount];
-	[self.dataManager currentAccount];
+    CoreDataStack *stack = [CoreDataStack shared];
+    if (stack.coreDataReady) {
+        [self.dataManager prepare];
+        [self.dataManager prepareAccount];
+        [self.dataManager currentAccount];
+    }
 	
 	[self setupCalendarRange];
 	numberOfMonthInPage = 2;
@@ -262,7 +265,7 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 }
 
 - (void)reloadWatchingDateAndMove {
-	NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
+    NSDate *currentWatchingDate = [[CoreDataStack shared] coreDataReady] ? [self.dataManager currentAccount].watchingDate : [NSDate date];
 	if (!currentWatchingDate) {
 		LadyCalendarPeriod_ *lastPeriod = [[_dataManager periodListSortedByStartDateIsAscending:YES] lastObject];
 		if (!lastPeriod) {
@@ -275,7 +278,9 @@ A3CalendarViewDelegate, GADBannerViewDelegate>
 	
 	_currentMonth = currentWatchingDate;
 	
-	[self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
+    if ([[CoreDataStack shared] coreDataReady]) {
+        [self.dataManager setWatchingDateForCurrentAccount:currentWatchingDate];
+    }
 	
 	[self moveToCurrentWatchingDate];
 	[self updateCurrentMonthLabel];
@@ -402,10 +407,11 @@ if (IS_IPAD) {
 
 - (void)setupNavigationTitle {
 	self.dataManager.currentAccount = nil;
-	if ([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]]) {
+    
+    if (![[CoreDataStack shared] coreDataReady] ||
+        ([self.dataManager numberOfAccount] == 1 && [[self.dataManager currentAccount].name isEqualToString:[self.dataManager defaultAccountName]])) {
 		self.navigationItem.title = NSLocalizedString(A3AppName_LadiesCalendar, nil);
-	}
-	else{
+	} else {
 		FNLOG(@"%@", self.dataManager.currentAccount);
 		self.navigationItem.title = [self.dataManager currentAccount].name;
 	}
@@ -526,7 +532,7 @@ if (IS_IPAD) {
 
 - (void)moveToCurrentWatchingDate
 {
-    NSDate *currentWatchingDate = [self.dataManager currentAccount].watchingDate;
+    NSDate *currentWatchingDate = [[CoreDataStack shared] coreDataReady] ? [self.dataManager currentAccount].watchingDate : [NSDate date];
     
     if (!currentWatchingDate) {
         currentWatchingDate = [self.dataManager startDateForCurrentAccount];

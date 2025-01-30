@@ -652,19 +652,21 @@ static NSString *const A3V3InstructionDidShowForWalletAllView = @"A3V3Instructio
 
 - (void)showInstructionView
 {
-	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletAllView];
-	[[A3UserDefaults standardUserDefaults] synchronize];
+    [[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletAllView];
+    [[A3UserDefaults standardUserDefaults] synchronize];
 
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
-    self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
-    self.instructionViewController.delegate = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+        self.instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_1"];
+        self.instructionViewController.delegate = self;
 
-	UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
-    [mainWindow addSubview:self.instructionViewController.view];
-	[mainWindow.rootViewController addChildViewController:self.instructionViewController];
+        UIWindow *mainWindow = [UIApplication sharedApplication].myKeyWindow;
+        [mainWindow addSubview:self.instructionViewController.view];
+        [mainWindow.rootViewController addChildViewController:self.instructionViewController];
 
-    self.instructionViewController.view.frame = self.tabBarController.view.frame;
-    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+        self.instructionViewController.view.frame = self.tabBarController.view.frame;
+        self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+    });
 }
 
 #pragma mark - Search relative

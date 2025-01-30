@@ -51,17 +51,6 @@
     "Apps" : {
       "comment" : "Apps"
     },
-    "Back to Home" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "홈으로 돌아가기"
-          }
-        }
-      }
-    },
     "Camera access not authorized." : {
 
     },
@@ -167,6 +156,26 @@
     },
     "iCloud delete is in progress. Try after 10 minutes." : {
 
+    },
+    "iCloud exporting data..." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud로 데이터 업로드중..."
+          }
+        }
+      }
+    },
+    "iCloud importing data..." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iCloud 데이터 다운로드…"
+          }
+        }
+      }
     },
     "iCloud_goto_settings" : {
       "comment" : "Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature."

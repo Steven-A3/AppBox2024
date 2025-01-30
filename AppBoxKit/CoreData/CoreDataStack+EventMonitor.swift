@@ -31,13 +31,14 @@ extension CoreDataStack {
             return
         }
         
+        let bundle = Bundle(identifier: "net.allaboutapps.AppBoxKit")!
         switch event.type {
         case .setup:
             Logger.shared.info("CoreDataStack: Setup event occurred.")
         case .import:
             Logger.shared.info("CoreDataStack: Import event occurred.")
             if event.endDate == nil {
-                iCloudActivityIndicatorManager.shared.show("iCloud importing data...")
+                iCloudActivityIndicatorManager.shared.show(NSLocalizedString("iCloud importing data...", bundle:bundle, comment: ""))
             } else {
                 iCloudActivityIndicatorManager.shared.hide()
             }
@@ -49,7 +50,7 @@ extension CoreDataStack {
             }
         case .export:
             if event.endDate == nil {
-                iCloudActivityIndicatorManager.shared.show("iCloud exporting data...")
+                iCloudActivityIndicatorManager.shared.show(NSLocalizedString("iCloud exporting data...", bundle:bundle, comment: ""))
             } else {
                 iCloudActivityIndicatorManager.shared.hide()
             }

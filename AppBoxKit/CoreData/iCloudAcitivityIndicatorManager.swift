@@ -6,14 +6,6 @@
 //  Copyright © 2025 ALLABOUTAPPS. All rights reserved.
 //
 
-//
-//  iCloudAcitivityIndicatorManager.swift
-//  AppBoxKit
-//
-//  Created by BYEONG KWON KWAK on 1/28/25.
-//  Copyright © 2025 ALLABOUTAPPS. All rights reserved.
-//
-
 import SwiftUI
 
 struct iCloudActivityView: View {
@@ -26,6 +18,8 @@ struct iCloudActivityView: View {
                 .font(.system(size: 10, weight: .medium, design: .rounded))
                 .foregroundColor(.black.opacity(0.8))
                 .textCase(nil)
+                .frame(maxWidth:300)
+                .fixedSize(horizontal: true, vertical: false)
         }
         .padding(5)
         .background(
@@ -110,8 +104,8 @@ public class iCloudActivityIndicatorManager: NSObject {
         DispatchQueue.main.async {
             // Re-setup if needed
             self.layoutViews()
-            self.data.message = message
             self.hostingView?.isHidden = false
+            self.data.message = message
             Logger.shared.debug("iCloudActivityIndicatorManager: show, message: \(message)")
         }
     }

@@ -843,6 +843,7 @@
 		68DBF05517CB8AAB009CAC33 /* HolidayData+Country.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426EC699433D4B659CF5B /* HolidayData+Country.m */; };
 		68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayData+Europe.m */; };
 		68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
+		68E00BD72D4AEC2B00D3C2E0 /* NSManagedObject+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E00BD62D4AEC2B00D3C2E0 /* NSManagedObject+extension.swift */; };
 		68E02E701C9286BD00C5A24A /* A3AppSelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */; };
 		68E2777E19D177DB000EC931 /* MWPhotoBrowser+rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2777D19D177DB000EC931 /* MWPhotoBrowser+rotation.m */; };
 		68E2778519D180FE000EC931 /* A3ClockAutoDimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2778419D180FE000EC931 /* A3ClockAutoDimViewController.m */; };
@@ -2559,6 +2560,7 @@
 		68DAF44C2B0997E4006BA60A /* A3StandardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardTableViewCell.m; sourceTree = "<group>"; };
 		68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		68DE21521CEB038D00E31DDF /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		68E00BD62D4AEC2B00D3C2E0 /* NSManagedObject+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+extension.swift"; sourceTree = "<group>"; };
 		68E02E6E1C9286BD00C5A24A /* A3AppSelectTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppSelectTableViewController.h; sourceTree = "<group>"; };
 		68E02E6F1C9286BD00C5A24A /* A3AppSelectTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppSelectTableViewController.m; sourceTree = "<group>"; };
 		68E088B71EA9973F00B8C950 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Abbreviation.strings; sourceTree = "<group>"; };
@@ -3446,6 +3448,7 @@
 				6817C3752CE976FF00019829 /* MediaFileManager.swift */,
 				6859F4122D36A7EE00CECBF3 /* ProgressOverlayManager.swift */,
 				689B51D52D48D3EE00FBB6D1 /* iCloudAcitivityIndicatorManager.swift */,
+				68E00BD62D4AEC2B00D3C2E0 /* NSManagedObject+extension.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -7248,6 +7251,7 @@
 				686DB4382A2499B0009BC79C /* NSManagedObjectContext+extension.m in Sources */,
 				68CA05232C96C141002A5FB0 /* A3FloatLabeledPasswordTextField.m in Sources */,
 				68898E212D15570500F62AB3 /* CoreDataStack+Delete.swift in Sources */,
+				68E00BD72D4AEC2B00D3C2E0 /* NSManagedObject+extension.swift in Sources */,
 				686DB4062A2499B0009BC79C /* MASConstraintMaker.m in Sources */,
 				686B6B422B0932F000E39E18 /* A3SyncManager+mainmenu.m in Sources */,
 				68B1292929EA0CA3003A5EB1 /* AppBoxKit.docc in Sources */,

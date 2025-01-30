@@ -133,10 +133,11 @@
 - (NSMutableArray *)waveCirclesArray {
 	A3UserDefaults *userDefaults = [A3UserDefaults standardUserDefaults];
 	NSMutableArray *circleArray = [[userDefaults objectForKey:A3ClockWaveCircleLayout] mutableCopy];
-    circleArray = [self deduplicateArray:circleArray];
-    FNLOG(@"%@", circleArray);
 
-	if (circleArray) return circleArray;
+    if (circleArray) {
+        circleArray = [self deduplicateArray:circleArray];
+        return circleArray;
+    }
 
 	circleArray = [NSMutableArray new];
 	[circleArray addObject:@(A3ClockWaveCircleTypeTime)];

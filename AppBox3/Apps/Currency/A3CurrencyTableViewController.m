@@ -234,7 +234,6 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 - (void)addObserver {
     FNLOG();
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:A3NotificationCloudKeyValueStoreDidImport object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
     if (IS_IPAD) {
@@ -331,6 +330,8 @@ NSString *const A3CurrencyAdCellID = @"A3CurrencyAdCell";
 }
 
 - (void)coreDataChanged:(NSNotification *)notification {
+    _favorites = nil;
+    [self.tableView reloadData];
     if (IS_IPAD) {
         [_mainViewController.historyBarButton setEnabled:[CurrencyHistory_ countOfEntities] > 0];
     }

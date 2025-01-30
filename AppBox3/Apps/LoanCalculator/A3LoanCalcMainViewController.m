@@ -552,7 +552,6 @@ NSString *const A3LoanCalcAdCellID = @"A3LoanCalcAdCell";
         NSData *loanData = [[A3SyncManager sharedSyncManager] objectForKey:A3LoanCalcUserDefaultsLoanDataKey_A];
         
         if (loanData) {
-            NSError *error = nil;
             _loanDataA = [LoanCalcData unarchivedObject:loanData];
             
             if (_loanDataA == nil) {

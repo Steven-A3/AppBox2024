@@ -77,9 +77,9 @@
 
 - (NSString * _Nonnull)versionInfoString {
     return [NSString stringWithFormat:@"%@(%@,%@)",
-            [A3AppDelegate instance].originalAppVersion,
-            [A3AppDelegate instance].removeAdsActive ? @"RemoveAds Active" : @"RemoveAds Non",
-            [A3AppDelegate instance].hasAdsFreePass ? @"Subs Active" : @"Subs Non"
+            [A3AppDelegate instance].originalAppVersion ? [A3AppDelegate instance].originalAppVersion : NSLocalizedString(@"Login required", @""),
+            [A3AppDelegate instance].removeAdsActive ? @"RemoveAds Active" : @"RemoveAds None",
+            [A3AppDelegate instance].hasAdsFreePass ? @"Subs Active" : @"Subs None"
     ];
 }
 
@@ -117,7 +117,7 @@
 	switch (row) {
 		case 0: {
 			A3BasicWebViewController *viewController = [A3BasicWebViewController new];
-			viewController.url = [NSURL URLWithString:@"http://www.allaboutapps.net"];
+			viewController.url = [NSURL URLWithString:@"https://www.allaboutapps.net"];
 			[self.navigationController pushViewController:viewController animated:YES];
 			break;
 		}

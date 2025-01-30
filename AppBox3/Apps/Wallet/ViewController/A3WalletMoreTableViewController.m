@@ -287,21 +287,23 @@ static NSString *const A3V3InstructionDidShowForWalletMore = @"A3V3InstructionDi
 	[[A3UserDefaults standardUserDefaults] setBool:YES forKey:A3V3InstructionDidShowForWalletMore];
 	[[A3UserDefaults standardUserDefaults] synchronize];
 
-    UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
-    _instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_3"];
-    self.instructionViewController.delegate = self;
-	if (_isEditing) {
-		[self.navigationController.view addSubview:self.instructionViewController.view];
-	} else {
-		[self.mainTabBarController.view addSubview:self.instructionViewController.view];
-	}
-    self.instructionViewController.view.frame = self.view.superview.frame;
-    self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
-    
-    if (IS_IPHONE35) {
-        self.instructionViewController.wallet3_finger2BottomConst.constant = 150;
-        self.instructionViewController.wallet3_finger3BottomConst.constant = 62;
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIStoryboard *instructionStoryBoard = [UIStoryboard storyboardWithName:IS_IPHONE ? A3StoryboardInstruction_iPhone : A3StoryboardInstruction_iPad bundle:nil];
+        self->_instructionViewController = [instructionStoryBoard instantiateViewControllerWithIdentifier:@"Wallet_3"];
+        self.instructionViewController.delegate = self;
+        if (self->_isEditing) {
+            [self.navigationController.view addSubview:self.instructionViewController.view];
+        } else {
+            [self.mainTabBarController.view addSubview:self.instructionViewController.view];
+        }
+        self.instructionViewController.view.frame = self.view.superview.frame;
+        self.instructionViewController.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight;
+        
+        if (IS_IPHONE35) {
+            self.instructionViewController.wallet3_finger2BottomConst.constant = 150;
+            self.instructionViewController.wallet3_finger3BottomConst.constant = 62;
+        }
+    });
 }
 
 - (void)dismissInstructionViewController:(UIView *)view

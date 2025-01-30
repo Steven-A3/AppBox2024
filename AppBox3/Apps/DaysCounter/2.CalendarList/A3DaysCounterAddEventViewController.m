@@ -1205,7 +1205,7 @@
         
         if ([repeatType integerValue] == RepeatType_Never) {
             // EffectiveStartDate 갱신.
-            self->_eventItem.effectiveStartDate =[self->_eventItem.startDate solarDate];
+            self->_eventItem.effectiveStartDate = [self->_eventItem.startDate solarDate];
             self->_eventItem.repeatEndDate = nil;
             
             // EffectiveStartDate & EffectiveAlertDate 갱신.

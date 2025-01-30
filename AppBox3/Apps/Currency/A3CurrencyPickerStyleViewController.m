@@ -145,10 +145,16 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 		make.height.equalTo(@44);
 	}];
 	
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     
     UITapGestureRecognizer *chartCoverViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapChartCoverView)];
     [_chartCoverView addGestureRecognizer:chartCoverViewTapGestureRecognizer];
+}
+
+- (void)cloudDidImportChanges:(NSNotification *)notification {
+    _favorites = nil;
+    [_pickerView reloadAllComponents];
 }
 
 - (void)didTapChartCoverView {
@@ -157,6 +163,7 @@ NSString *const A3CurrencyPickerSelectedIndexColumnTwo = @"A3CurrencyPickerSelec
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 

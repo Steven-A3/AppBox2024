@@ -192,7 +192,7 @@
     [self.tableView reloadData];
 }
 
--(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.tableView reloadData];
 }
@@ -731,10 +731,11 @@
 																			  fromDate:now];
 		}
 		else {
-			nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[info.repeatType integerValue]
-																 firstDate:[startDate solarDate]
-																  fromDate:now
-																  isAllDay:[info.isAllDay boolValue]];
+            nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[info.repeatType integerValue]
+                                                                 firstDate:[startDate solarDate]
+                                                             repeatEndDate:info.repeatEndDate
+                                                                  fromDate:now
+                                                                  isAllDay:[info.isAllDay boolValue]];
 		}
 
         NSDate *endDate = [[info endDateCreateIfNotExist:NO ] solarDate];
@@ -1171,7 +1172,7 @@ EXIT_FUCTION:
             startDate = convertDate;
         }
         
-        NSDate *nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[info.isAllDay boolValue]];
+        NSDate *nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate repeatEndDate:info.repeatEndDate fromDate:now isAllDay:[info.isAllDay boolValue]];
         
         // until/since & durationOption string
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now

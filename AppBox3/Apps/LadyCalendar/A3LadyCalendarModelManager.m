@@ -19,6 +19,7 @@
 #import "NSManagedObject+extension.h"
 #import "NSManagedObjectContext+extension.h"
 #import "NSString+conversion.h"
+#import "AppBoxKit/AppBoxKit-Swift.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
@@ -37,6 +38,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)addDefaultAccount {
+    if (![[CoreDataStack shared] coreDataReady]) return;
+    
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     LadyCalendarAccount_ *account = [[LadyCalendarAccount_ alloc] initWithContext:context];
 	account.uniqueID = DefaultAccountID;
@@ -67,6 +70,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)prepareAccount {
+    if (![[CoreDataStack shared] coreDataReady]) return;
+    
 	// 기본 계정을 한개 추가한다.
 	if ([self numberOfAccount] < 1 ){
 		[self addDefaultAccount];
@@ -78,6 +83,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)deleteAccount:(LadyCalendarAccount_ *)account {
+    if (![[CoreDataStack shared] coreDataReady]) return;
+
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context deleteObject:account];
     [context saveIfNeeded];
@@ -85,6 +92,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)makePredictPeriodsBeforeCurrentPeriod
 {
+    if (![[CoreDataStack shared] coreDataReady]) return;
+    
     NSDictionary *setting = [self currentSetting];
 	if ( ![[setting objectForKey:SettingItem_AutoRecord] boolValue] )
         return;
@@ -129,6 +138,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 #pragma mark - account
 
 - (NSInteger)numberOfAccount {
+    if (![[CoreDataStack shared] coreDataReady]) return 0;
     return [LadyCalendarAccount_ countOfEntities];
 }
 
@@ -147,6 +157,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (void)setWatchingDateForCurrentAccount:(NSDate *)date {
+    if (![[CoreDataStack shared] coreDataReady]) return;
+    
 	self.currentAccount.watchingDate = date;
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     [context saveIfNeeded];
@@ -156,11 +168,17 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID
 {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return 0;
+    }
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@",accountID];
     return [LadyCalendarPeriod_ countOfEntitiesWithPredicate:predicate];
 }
 
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", [self currentAccount].uniqueID, @(NO)];
     return [LadyCalendarPeriod_ findAllSortedBy:@"startDate"
                                      ascending:ascending
@@ -168,6 +186,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@ AND isPredict == %@", [self currentAccount].uniqueID, @(YES)];
     return [LadyCalendarPeriod_ findAllSortedBy:@"startDate"
                                      ascending:ascending
@@ -198,6 +219,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (NSArray *)periodListStartsInMonth:(NSDate *)month {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
 	NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
 
 	return [LadyCalendarPeriod_ findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(accountID == %@) AND ((startDate >= %@) AND (startDate < %@))", [self currentAccount].uniqueID, month, nextMonth]];
@@ -205,6 +229,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (NSArray *)periodListInRangeWithMonth:(NSDate*)month accountID:(NSString*)accountID
 {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
     NSDate *prevMonth = [month dateByAddingCalendarMonth:-1];
 	NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
 
@@ -213,6 +240,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (NSArray*)periodListWithMonth:(NSDate*)month accountID:(NSString*)accountID containPredict:(BOOL)containPredict
 {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
     NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
     
     if ( containPredict )
@@ -223,33 +253,51 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (NSArray*)periodListWithMonth:(NSDate*)month period:(NSInteger)period accountID:(NSString*)accountID
 {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
     NSDate *startMonth = [month dateByAddingCalendarMonth:-period];
 
     return [LadyCalendarPeriod_ findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isPredict == %@ AND (accountID == %@) AND ((startDate >= %@) AND (startDate < %@))",@(NO),accountID,startMonth,month]];
 }
 
 - (LadyCalendarPeriod_ *)currentPeriodFromDate:(NSDate *)date {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@ && periodEnds > %@) AND (accountID == %@)", date, date, [self currentAccount].uniqueID];
     return [LadyCalendarPeriod_ findFirstWithPredicate:predicate];
 }
 
 - (LadyCalendarPeriod_ *)previousPeriodFromDate:(NSDate *)date {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (accountID == %@) AND isPredict == NO", date, [self currentAccount].uniqueID];
 	return [LadyCalendarPeriod_ findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 }
 
 - (LadyCalendarPeriod_ *)nextPeriodFromDate:(NSDate *)date {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate > %@) AND (accountID == %@)", date, [self currentAccount].uniqueID];
     return [LadyCalendarPeriod_ findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
 }
 
 - (LadyCalendarPeriod_ *)lastPeriod {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return nil;
+    }
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(accountID == %@) AND isPredict == NO", [self currentAccount].uniqueID];
     return [LadyCalendarPeriod_ findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 }
 
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID
 {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return YES;
+    }
     NSArray *array = nil;
     if ( [periodID length] < 1 ) {
         array = [LadyCalendarPeriod_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"(uniqueID != nil) AND (accountID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))", accountID, @(NO), startDate, startDate, endDate, endDate]];
@@ -407,6 +455,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 
 - (void)recalculateDates
 {
+    if (![[CoreDataStack shared] coreDataReady]) return;
+    
 	NSDictionary *setting = [[A3SyncManager sharedSyncManager] objectForKey:A3LadyCalendarUserDefaultsSettings];
 
 	NSInteger periodLength = [[setting objectForKey:SettingItem_ForeCastingPeriods] integerValue];
@@ -424,8 +474,11 @@ NSString *const A3LadyCalendarChangedDateKey = @"A3LadyCalendarChangedDateKey";
 }
 
 - (NSDate *)startDateForCurrentAccount {
+    if (![[CoreDataStack shared] coreDataReady]) {
+        return [NSDate date];
+    }
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountID == %@", self.currentAccount.uniqueID];
-	LadyCalendarPeriod_ *firstPeriod = [LadyCalendarPeriod_ findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
+    LadyCalendarPeriod_ *firstPeriod = (LadyCalendarPeriod_ *)[LadyCalendarPeriod_ findFirstWith:predicate sortedBy:@"startDate" ascending:YES in:CoreDataStack.shared.persistentContainer.viewContext];
 	return firstPeriod ? firstPeriod.startDate : [NSDate date];
 }
 

@@ -178,7 +178,7 @@
     NSManagedObjectContext *context = CoreDataStack.shared.persistentContainer.viewContext;
     __block id firstObject = nil;
     [context performBlockAndWait:^{
-        NSFetchRequest *fetchRequest = [self fetchRequest];
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:NSStringFromClass(self)];
         if (searchTerm) {
             [fetchRequest setPredicate:searchTerm];
         }

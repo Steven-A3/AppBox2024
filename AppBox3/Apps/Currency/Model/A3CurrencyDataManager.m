@@ -117,7 +117,10 @@ NSString *const kA3CurrencyDataSymbol = @"symbol";
 		newFavorite.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
 	}
-    [context saveIfNeeded];
+    // Coredata save는 import가 완료된 경우에만 한다.
+    if ([[CoreDataStack shared] coreDataReady]) {
+        [context saveIfNeeded];
+    }
 }
 
 + (BOOL)yahooNetworkAvailable {

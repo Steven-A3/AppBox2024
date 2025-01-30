@@ -89,7 +89,6 @@
     }
     
 	if (inOriginalDirectory) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
         NSString *path = [[A3DaysCounterImageDirectory stringByAppendingPathComponent:self.photoID] pathInAppGroupContainer];
         return [NSURL fileURLWithPath:path];
 	}
@@ -112,7 +111,6 @@
 }
 
 - (void)setPhoto:(UIImage *)image inOriginalDirectory:(BOOL)inOriginalDirectory {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     self.photoID = [[NSUUID UUID] UUIDString];
     NSURL *photoURL = [self photoURLInOriginalDirectory:inOriginalDirectory];
     
@@ -197,7 +195,6 @@
 
 - (void)moveImagesToOriginalDirectory {
 	if (![self.photoID length]) {
-		[self deletePhoto];
 		return;
 	}
 

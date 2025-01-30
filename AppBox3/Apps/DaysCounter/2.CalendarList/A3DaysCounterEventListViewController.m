@@ -659,6 +659,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
         else {
             nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                  firstDate:[startDate solarDate]
+                                                             repeatEndDate:event.repeatEndDate
                                                                   fromDate:today
                                                                   isAllDay:[event.isAllDay boolValue]];
         }
@@ -833,6 +834,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     else {
         NSDate *nextRepeatStartDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                 firstDate:[item.startDate solarDate]
+                                                                            repeatEndDate:item.repeatEndDate
                                                                                  fromDate:today
                                                                                  isAllDay:[item.isAllDay boolValue]];
         resultDaysGap = [A3DateHelper diffDaysFromDate:today
@@ -857,6 +859,7 @@ NSString *const A3DaysCounterListSortKeyName = @"name";
     else {
         nextRepeatStartDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                         firstDate:[item.startDate solarDate]
+                                                                    repeatEndDate:item.repeatEndDate
                                                                          fromDate:today
                                                                          isAllDay:[item.isAllDay boolValue]];
         daysGap = [A3DateHelper diffDaysFromDate:today

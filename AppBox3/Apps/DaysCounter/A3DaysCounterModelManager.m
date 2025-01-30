@@ -148,7 +148,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 		newCalendar.order = [NSString orderStringWithOrder:order];
 		order += 1000000;
 	}
-    [context saveIfNeeded];
+    if ([[CoreDataStack shared] coreDataReady]) {
+        [context saveIfNeeded];
+    }
 
 	return [NSMutableArray arrayWithArray:[DaysCounterCalendar_ findAllSortedBy:@"order" ascending:YES]];
 }
@@ -610,10 +612,10 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date withHiddenCalendar:(BOOL)hiddenCalendar
 {
     if (hiddenCalendar) {
-        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@)", date, @(RepeatType_Never), date]];
+        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != nil && repeatEndDate < %@)", date, @(RepeatType_Never), date]];
     }
     else {
-        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))", [self hiddenCalendars], date, @(RepeatType_Never), date]];
+        return [DaysCounterEvent_ countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"NOT calendarID IN %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != nil && repeatEndDate < %@))", [self hiddenCalendars], date, @(RepeatType_Never), date]];
     }
 }
 
@@ -652,13 +654,16 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:
-			@"NOT calendarID IN %@ && \
-			(effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == nil))",
-					[self hiddenCalendars],
-					date,
-					date,
-					@(RepeatType_Never)];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+        @"NOT calendarID IN %@ && \
+        ((repeatType == %@ && effectiveStartDate > %@) || \
+        (repeatType != %@ && (repeatEndDate == nil || repeatEndDate >= %@)))",
+        [self hiddenCalendars],
+        @(RepeatType_Never),
+        date,
+        @(RepeatType_Never),
+        date];
+
     return [DaysCounterEvent_ findAllWithPredicate:predicate];
 }
 
@@ -666,7 +671,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
 {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:
 			@"NOT calendarID IN %@ && \
- 			((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate == nil && repeatEndDate < %@))",
+ 			((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != nil && repeatEndDate < %@))",
 					[self hiddenCalendars],
 					date,
 					@(RepeatType_Never),
@@ -698,8 +703,8 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
     return [DaysCounterReminder_ findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
 }
 
-+ (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay
-{
++ (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate repeatEndDate:(NSDate *)repeatEndDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay {
+
     NSDate *retDate = nil;
     if (isAllDay) {
         fromDate = [A3DateHelper midnightForDate:fromDate];
@@ -758,6 +763,9 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
             retDate = [A3DateHelper dateByAddingDays:days+(dayUnit-remainNum) fromDate:firstDate];
         }
             break;
+    }
+    if ([repeatEndDate isEarlierThanDate:retDate]) {
+        return [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
     }
     return retDate;
 }
@@ -1227,6 +1235,7 @@ extern NSString *const A3DaysCounterImageThumbnailDirectory;
         
         nextDate = [A3DaysCounterModelManager nextDateWithRepeatOption:[event.repeatType integerValue]
                                                              firstDate:startDate
+                                                         repeatEndDate:event.repeatEndDate
                                                               fromDate:now
                                                               isAllDay:[event.isLunar boolValue] ? YES : [event.isAllDay boolValue]];
         
